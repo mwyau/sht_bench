@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sht-bench"
+version = "0.1.0"
+description = "Reproducible Python benchmarks for spherical harmonic transform libraries"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+ducc = ["ducc0>=0.41.0"]
+shtns = ["shtns>=3.7.5"]
+pyshtools = ["pyshtools>=4.14.1"]
+pyspharm = ["pyspharm-syl>=1.2.1"]
+plot = ["matplotlib>=3.9"]
+all = [
+    "ducc0>=0.41.0",
+    "shtns>=3.7.5",
+    "pyshtools>=4.14.1",
+    "pyspharm-syl>=1.2.1",
+    "matplotlib>=3.9",
+]
+
+[project.scripts]
+sht-bench = "sht_bench.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.4"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sht_bench"]

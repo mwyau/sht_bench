@@ -1,0 +1,8 @@
+.venv/
+.venv-bench-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+uv.lock
+results/
