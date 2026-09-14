@@ -1,0 +1,98 @@
+name: FFT benchmark
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: FFT benchmark / ${{ matrix.label }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-26.04
+            label: x86-64
+            artifact: fft-benchmark-ubuntu-26.04-x86_64
+          - runner: ubuntu-26.04-arm
+            label: ARM64
+            artifact: fft-benchmark-ubuntu-26.04-arm64
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install build and plotting dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes build-essential cmake ninja-build
+          uv sync --extra plot
+
+      - name: Build pinned DUCC source with pybind11
+        env:
+          CC: gcc
+          CXX: g++
+          DUCC0_OPTIMIZATION: portable
+          FFT_BENCH_BUILD_MODE: source
+          DUCC_SOURCE: "ducc0==0.41.0 source distribution"
+        run: |
+          unset DUCC0_USE_NANOBIND
+          uv --no-cache pip install --no-binary ducc0 --force-reinstall ducc0==0.41.0
+          uv run python -c 'import ducc0; assert ducc0.__wrapper__ == "pybind11", ducc0.__wrapper__; print(ducc0.__version__, ducc0.__wrapper__)'
+
+      - name: Run FFT matrix and render report
+        env:
+          CC: gcc
+          CXX: g++
+          DUCC0_OPTIMIZATION: portable
+          FFT_BENCH_BUILD_MODE: source
+          DUCC_SOURCE: "ducc0==0.41.0 source distribution"
+        run: |
+          threads=1
+          cpus="$(nproc)"
+          if [ "$cpus" -ge 2 ]; then threads="$threads,2"; fi
+          if [ "$cpus" -ge 4 ]; then threads="$threads,4"; fi
+          uv run --extra plot fft-bench matrix \
+            --kind r2c,c2c \
+            --dtype float32,float64,longdouble \
+            --sizes 256,1024,4096,16384,65536,262144,1048576 \
+            --threads "$threads" \
+            --warmup 2 \
+            --repeat 5 \
+            --min-time 0.1 \
+            --strict \
+            --output results/fft \
+            --plot
+
+      - name: Stage human-readable artifact only
+        run: |
+          stage="$RUNNER_TEMP/fft-benchmark-artifact"
+          mkdir -p "$stage"
+          cp results/fft/report/README.md "$stage/README.md"
+          find results/fft/report -maxdepth 1 -type f -name '*.png' -exec cp {} "$stage/" \;
+          unexpected="$(find "$stage" -type f ! \( -name 'README.md' -o -name '*.png' \) -print -quit)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected artifact file: $unexpected" >&2
+            exit 1
+          fi
+          find "$stage" -maxdepth 1 -type f -print | sort
+
+      - name: Upload FFT report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ runner.temp }}/fft-benchmark-artifact
+          if-no-files-found: error

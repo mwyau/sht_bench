@@ -28,9 +28,10 @@ all = [
 
 [project.scripts]
 sht-bench = "sht_bench.cli:main"
+fft-bench = "fft_bench.cli:main"
 
 [dependency-groups]
 dev = ["pytest>=8.4"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/sht_bench"]
+packages = ["src/sht_bench", "src/fft_bench", "src/bench_common"]

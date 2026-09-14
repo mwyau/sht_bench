@@ -2,6 +2,13 @@
 
 `sht_bench` measures CPU performance of spherical harmonic transform (SHT) implementations exposed through Python. It benchmarks repeated scalar analysis and synthesis on atmospheric Gaussian grids and endpoint-including regular/Clenshaw–Curtis grids, with build and timing metadata retained for reproducibility.
 
+The project exposes two independent executables:
+
+- `sht-bench` — spherical harmonic transform backend benchmarks.
+- `fft-bench` — DUCC one-dimensional FFT precision and scaling benchmarks.
+
+The FFT experiment includes a runtime characterization of NumPy `longdouble`. It is kept separate from the SHT benchmark because DUCC's Python SHT API exposes `float32`/`float64`, while its genuine long-double Python FFT path requires the pybind11 binding. See [docs/FFT.md](docs/FFT.md) for the focused FFT usage notes.
+
 The default comparison includes DUCC, SHTns, and Spherepack/pyspharm where their grid interfaces are compatible. Native SHTOOLS/pyshtools remains available for compact GLQ experiments but is not part of the default atmospheric full-Gaussian-grid comparison.
 
 ## Results

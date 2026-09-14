@@ -2,19 +2,19 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gc
 import json
-import math
 import os
 import platform
 import re
 import statistics
 import subprocess
 import sys
-import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Iterable
+from typing import TYPE_CHECKING, Any, Iterable
+
+from bench_common.environment import collect_environment
+from bench_common.timing import measure
 
 from .grids import (
     ATMOSPHERIC_GL_GRIDS,
@@ -159,59 +159,8 @@ def _set_thread_environment(threads: int) -> None:
         os.environ[name] = value
 
 
-def _cpu_model() -> str:
-    if sys.platform.startswith("linux"):
-        try:
-            for line in Path("/proc/cpuinfo").read_text().splitlines():
-                if line.lower().startswith("model name"):
-                    return line.split(":", 1)[1].strip()
-        except OSError:
-            pass
-    return platform.processor() or "unknown"
-
-
 def _environment() -> dict[str, Any]:
-    return {
-        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "python": sys.version.split()[0],
-        "python_implementation": platform.python_implementation(),
-        "platform": platform.platform(),
-        "machine": platform.machine(),
-        "cpu": _cpu_model(),
-        "logical_cpus": os.cpu_count(),
-    }
-
-
-def _time_block(fn: Callable[[], object], iterations: int) -> float:
-    start = time.perf_counter_ns()
-    for _ in range(iterations):
-        fn()
-    return (time.perf_counter_ns() - start) / 1e9
-
-
-def measure(
-    fn: Callable[[], object], *, warmup: int, repeat: int, min_time: float
-) -> tuple[int, list[float]]:
-    for _ in range(warmup):
-        fn()
-    iterations = 1
-    while True:
-        elapsed = _time_block(fn, iterations)
-        if elapsed >= min_time or iterations >= 1 << 20:
-            break
-        scale = max(2, min(16, math.ceil(min_time / max(elapsed, 1e-12))))
-        iterations *= scale
-    samples: list[float] = []
-    was_enabled = gc.isenabled()
-    gc.disable()
-    try:
-        for _ in range(repeat):
-            elapsed = _time_block(fn, iterations)
-            samples.append(elapsed / iterations)
-    finally:
-        if was_enabled:
-            gc.enable()
-    return iterations, samples
+    return collect_environment()
 
 
 def _grid_label(grid: str, lmax: int) -> str:

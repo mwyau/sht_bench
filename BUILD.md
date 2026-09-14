@@ -95,3 +95,21 @@ sudo apt-get install build-essential gfortran libfftw3-dev
 Build runs store package source and revision information together with available compiler-related environment variables. Environment provenance records the operating system, machine architecture, requested backend set, unavailable wheels, and build failures. Matrix timing records contain `build_mode`, which keeps binary-package and source-build measurements separate during plotting.
 
 The recorded build metadata do not yet include compiler version strings, linked FFT/BLAS/LAPACK libraries, CPU instruction-set selection, or the complete compiler and linker command lines. These omissions should be considered when comparing source-build results across systems.
+
+## FFT Actions build
+
+The manually triggered FFT workflow is a separate build experiment. On both
+Ubuntu runners it installs `ducc0==0.41.0` from its source distribution with
+the normal pybind11 CMake branch. `DUCC0_USE_NANOBIND` is left unset,
+`DUCC0_OPTIMIZATION=portable` is used on both architectures, and the run
+verifies `ducc0.__wrapper__ == "pybind11"` before benchmarking. This is
+required because DUCC 0.41.0's nanobind binding aliases its long-double FFT
+type to double.
+
+The workflow uses Python 3.13, records the binding, optimization, compiler
+environment, and runtime NumPy long-double characterization in each raw
+record, and runs thread counts no greater than the runner's reported CPU
+count. It is manual-only because the measurements are performance-sensitive.
+Before upload, it stages only the generated `README.md` and PNG figures;
+JSON, logs, environments, wheels, extensions, and other working files remain
+outside the uploaded artifact.
