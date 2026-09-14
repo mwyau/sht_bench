@@ -13,9 +13,31 @@ The default comparison includes DUCC, SHTns, and Spherepack/pyspharm where their
 
 ## Results
 
+### FFT
+
+Forward one-dimensional DUCC FFT timings on GitHub-hosted runners. These panels show the 4-thread results; full reports include 1-, 2-, and 4-thread measurements.
+
+#### GitHub-hosted Ubuntu x86_64 26.04 runner
+
+[Full x86_64 FFT results](results/fft/ubuntu-26.04-x86_64/README.md)
+
+| r2c                                                                                                                                                                       | c2c                                                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a href="results/fft/ubuntu-26.04-x86_64/r2c-threads-4.png"><img src="results/fft/ubuntu-26.04-x86_64/r2c-threads-4.png" alt="x86_64 r2c FFT, 4 threads" width="430"></a> | <a href="results/fft/ubuntu-26.04-x86_64/c2c-threads-4.png"><img src="results/fft/ubuntu-26.04-x86_64/c2c-threads-4.png" alt="x86_64 c2c FFT, 4 threads" width="430"></a> |
+
+#### GitHub-hosted Ubuntu ARM64 26.04 runner
+
+[Full ARM64 FFT results](results/fft/ubuntu-26.04-arm64/README.md)
+
+| r2c                                                                                                                                                                    | c2c                                                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a href="results/fft/ubuntu-26.04-arm64/r2c-threads-4.png"><img src="results/fft/ubuntu-26.04-arm64/r2c-threads-4.png" alt="ARM64 r2c FFT, 4 threads" width="430"></a> | <a href="results/fft/ubuntu-26.04-arm64/c2c-threads-4.png"><img src="results/fft/ubuntu-26.04-arm64/c2c-threads-4.png" alt="ARM64 c2c FFT, 4 threads" width="430"></a> |
+
+### SHT
+
 Median transform time is shown in milliseconds; lower is better. Backend colors are fixed across figures. Wheel/installed builds use solid lines and source builds use dashed lines. SHTns is source-built and shown once as a dashed series.
 
-### AMD64 — AMD Ryzen 9 5950X, 16 threads
+#### AMD64 — AMD Ryzen 9 5950X, 16 threads
 
 [Full AMD64 plot matrix](results/matrix/plots/README.md)
 
@@ -24,7 +46,7 @@ Median transform time is shown in milliseconds; lower is better. Backend colors 
 | CC | <a href="results/matrix/plots/by-lmax/cc/analysis/threads-16.png"><img src="results/matrix/plots/by-lmax/cc/analysis/threads-16.png" alt="AMD64 CC analysis, 16 threads" width="430"></a> | <a href="results/matrix/plots/by-lmax/cc/synthesis/threads-16.png"><img src="results/matrix/plots/by-lmax/cc/synthesis/threads-16.png" alt="AMD64 CC synthesis, 16 threads" width="430"></a> |
 | GL | <a href="results/matrix/plots/by-lmax/gl/analysis/threads-16.png"><img src="results/matrix/plots/by-lmax/gl/analysis/threads-16.png" alt="AMD64 GL analysis, 16 threads" width="430"></a> | <a href="results/matrix/plots/by-lmax/gl/synthesis/threads-16.png"><img src="results/matrix/plots/by-lmax/gl/synthesis/threads-16.png" alt="AMD64 GL synthesis, 16 threads" width="430"></a> |
 
-### ARM64 — Raspberry Pi 5 8GB, 4 threads
+#### ARM64 — Raspberry Pi 5 8GB, 4 threads
 
 [Full ARM64 plot matrix](results/matrix-arm64/plots/README.md)
 
