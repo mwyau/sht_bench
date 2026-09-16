@@ -89,6 +89,50 @@ The default CC sweep uses common equal-angle resolutions with both poles include
 
 For CC, `nlat = 2L + 1`, `nlon = 4L`, and the angular spacing is `90/L` degrees. A custom GL `lmax` outside the atmospheric table uses the compact quadrature geometry `nlat = L + 1`, `nlon = 2L + 1`.
 
+## Direct DUCC/torch-harmonics comparison
+
+The focused `compare` command measures direct `ducc0.sht` and
+`torch-harmonics` scalar analysis and synthesis with separate accuracy and
+steady-state timing records:
+
+```bash
+uv run sht-bench compare \
+  --backend ducc,torch \
+  --case cc-73x144-t70,cc-73x144-t71 \
+  --dtype float32,float64 \
+  --operation analysis,synthesis \
+  --threads 1,16 \
+  --torch-device cpu,cuda \
+  --torch-source /path/to/torch-harmonics \
+  --output results/torch-ducc
+```
+
+The command writes `results/torch-ducc.json` (the authoritative rich result)
+and `results/torch-ducc.csv` (a flattened convenience view). It requires the
+named local torch-harmonics source checkout; the imported module path and Git
+SHA are verified and recorded, so a released wheel is not silently reported as
+the feature branch. The checkout used while developing this comparison was
+`feature/high-bandwidth-equiangular-sht` at
+`fa1af8ddc2d9462fb69d2f9ffaf49be6284e9e7b`.
+
+This comparison does not redefine the historical `matrix --grid cc` results.
+Those results retain `nlat = 2*lmax + 1`, `nlon = 4*lmax` for each legacy cell.
+The focused cases name fixed grids and inclusive triangular bandwidths:
+`cc-73x144-t36`, `cc-73x144-t70`, `cc-73x144-t71`, `cc-129x256-t127`, and
+`cc-257x512-t255`. `t36` is the low-bandwidth control; its Torch analysis is
+reported for both `quadrature` and `sampling-theorem`. The high-bandwidth
+analysis result uses `sampling-theorem` explicitly. In `sht_bench`, `lmax` and
+`mmax` are inclusive mathematical limits; Torch receives `lmax=L+1` and
+`mmax=L+1`.
+
+Accuracy uses one deterministic rectangular `(ell, m)` coefficient field for
+both backends, DUCC's synthesized map as the common analysis input, direct
+cross-backend synthesis and analysis metrics, and separate same-backend
+round-trip diagnostics. The four low-degree `Y00`, `Y10`, `Y11` real, and
+`Y11` imaginary modes are calibrated before random spectra. Analysis and
+synthesis retain relative L2, maximum absolute, and dtype-scaled bounded
+relative errors.
+
 ## Run the benchmark
 
 On Debian/Ubuntu, SHTns requires FFTW and Python development headers in addition to the compiler toolchain:

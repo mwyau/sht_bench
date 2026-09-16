@@ -7,18 +7,24 @@ from sht_bench.cli import (
     BACKEND_COLORS,
     BACKEND_NAMES,
     BUILD_LINESTYLES,
+    COMPARE_BACKEND_NAMES,
     DEFAULT_CC_LMAX,
     DEFAULT_GL_LMAX,
     UNSUPPORTED_BENCHMARK_CASES,
     _cc_resolution,
     _matrix_lmax,
+    _parse_compare_backends,
+    _parse_compare_cases,
+    _parse_compare_dtypes,
     _parse_lmax,
+    _parse_torch_devices,
     _parse_threads,
     _plot_index,
     _plot_style,
     _prepare_plot_records,
+    build_parser,
 )
-from sht_bench.grids import ATMOSPHERIC_GL_GRIDS, gl_grid_label
+from sht_bench.grids import ATMOSPHERIC_GL_GRIDS, HIGH_BANDWIDTH_CC_CASES, gl_grid_label
 
 
 def test_parse_lmax_values():
@@ -35,6 +41,25 @@ def test_parse_lmax_mixed_and_deduplicated():
 
 def test_parse_threads():
     assert _parse_threads("1,2,4,8") == [1, 2, 4, 8]
+
+
+def test_parse_focused_comparison_choices():
+    assert _parse_compare_backends("ducc,torch") == list(COMPARE_BACKEND_NAMES)
+    assert _parse_compare_cases("cc-73x144-t70,cc-73x144-t71") == [
+        "cc-73x144-t70",
+        "cc-73x144-t71",
+    ]
+    assert _parse_compare_dtypes("float32,float64") == ["float32", "float64"]
+    assert _parse_torch_devices("cpu,cuda") == ["cpu", "cuda"]
+
+
+def test_compare_parser_has_explicit_focused_defaults():
+    args = build_parser().parse_args(["compare"])
+    assert args.backend == ["ducc", "torch"]
+    assert args.case == [case.name for case in HIGH_BANDWIDTH_CC_CASES]
+    assert args.dtype == ["float32", "float64"]
+    assert args.operation == ["analysis", "synthesis"]
+    assert args.torch_device == ["cpu"]
 
 
 def test_parse_lmax_rejects_zero_step():

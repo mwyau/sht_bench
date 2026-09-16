@@ -20,6 +20,7 @@ from .grids import (
     ATMOSPHERIC_GL_GRIDS,
     DEFAULT_CC_LMAX,
     DEFAULT_GL_LMAX,
+    HIGH_BANDWIDTH_CC_CASES,
     cc_resolution,
     gl_grid_label,
     gl_grid_number,
@@ -29,6 +30,7 @@ if TYPE_CHECKING:
     from .backends import PreparedCase
 
 BACKEND_NAMES = ("ducc", "shtns", "pyshtools", "pyspharm")
+COMPARE_BACKEND_NAMES = ("ducc", "torch")
 BACKEND_MODULES = {
     "ducc": "ducc0",
     "shtns": "shtns",
@@ -145,6 +147,23 @@ def _parse_grids(value: str) -> list[str]:
 
 def _parse_operations(value: str) -> list[str]:
     return _parse_choices(value, OPERATION_NAMES, "operation")
+
+
+def _parse_compare_backends(value: str) -> list[str]:
+    return _parse_choices(value, COMPARE_BACKEND_NAMES, "comparison backend")
+
+
+def _parse_compare_cases(value: str) -> list[str]:
+    choices = tuple(case.name for case in HIGH_BANDWIDTH_CC_CASES)
+    return _parse_choices(value, choices, "comparison case")
+
+
+def _parse_compare_dtypes(value: str) -> list[str]:
+    return _parse_choices(value, ("float32", "float64"), "dtype")
+
+
+def _parse_torch_devices(value: str) -> list[str]:
+    return _parse_choices(value, ("cpu", "cuda"), "Torch device")
 
 
 def _set_thread_environment(threads: int) -> None:
@@ -906,6 +925,14 @@ def run_matrix(args: argparse.Namespace) -> int:
     return 1 if args.strict and failures else (0 if combined else 1)
 
 
+def _run_compare_command(args: argparse.Namespace, *, worker: bool) -> int:
+    # Importing this module does not import Torch.  The worker imports Torch only
+    # after its process-level thread environment has been set.
+    from .comparison import run_compare, run_compare_worker
+
+    return run_compare_worker(args) if worker else run_compare(args)
+
+
 def _add_common_run_arguments(parser: argparse.ArgumentParser, *, matrix: bool) -> None:
     parser.add_argument(
         "--backend",
@@ -999,6 +1026,93 @@ def build_parser() -> argparse.ArgumentParser:
         help="run plot-all into OUTPUT/plots after the matrix",
     )
     matrix.set_defaults(func=run_matrix)
+
+    compare = subparsers.add_parser(
+        "compare",
+        help="compare direct DUCC and source-checkout torch-harmonics SHTs",
+    )
+    compare.add_argument(
+        "--backend",
+        type=_parse_compare_backends,
+        default=list(COMPARE_BACKEND_NAMES),
+        help="ducc,torch, or both (default: both); direct comparison backends only",
+    )
+    compare.add_argument(
+        "--case",
+        type=_parse_compare_cases,
+        default=[case.name for case in HIGH_BANDWIDTH_CC_CASES],
+        help="explicit focused case names (default: all focused CC cases)",
+    )
+    compare.add_argument(
+        "--dtype",
+        type=_parse_compare_dtypes,
+        default=["float32", "float64"],
+        help="float32,float64 (default: both)",
+    )
+    compare.add_argument(
+        "--operation",
+        type=_parse_operations,
+        default=list(OPERATION_NAMES),
+        help="analysis,synthesis,all (default: both)",
+    )
+    compare.add_argument(
+        "--threads",
+        type=_parse_threads,
+        default=[1],
+        help="isolated CPU thread cells (default: 1)",
+    )
+    compare.add_argument(
+        "--torch-device",
+        type=_parse_torch_devices,
+        default=["cpu"],
+        help="cpu,cuda (CUDA is skipped when unavailable; default: cpu)",
+    )
+    compare.add_argument(
+        "--torch-source",
+        type=Path,
+        default=None,
+        help=(
+            "local torch-harmonics Git checkout; if omitted, the imported source "
+            "must itself resolve to a Git checkout"
+        ),
+    )
+    compare.add_argument(
+        "--spharmgrid-reference",
+        type=Path,
+        default=None,
+        help="read-only spharmgrid reference checkout used for provenance",
+    )
+    compare.add_argument("--warmup", type=int, default=3)
+    compare.add_argument("--repeat", type=int, default=7)
+    compare.add_argument("--min-time", type=float, default=0.2)
+    compare.add_argument("--seed", type=int, default=20260910)
+    compare.add_argument("--strict", action="store_true")
+    compare.add_argument(
+        "--output",
+        type=Path,
+        default=Path("results/torch-ducc"),
+        help="JSON/CSV stem or JSON output path",
+    )
+    compare.set_defaults(func=lambda args: _run_compare_command(args, worker=False))
+
+    compare_worker = subparsers.add_parser(
+        "compare-worker",
+        help=argparse.SUPPRESS,
+    )
+    compare_worker.add_argument("--backend", type=_parse_compare_backends, required=True)
+    compare_worker.add_argument("--case", type=_parse_compare_cases, required=True)
+    compare_worker.add_argument("--dtype", type=_parse_compare_dtypes, required=True)
+    compare_worker.add_argument("--operation", type=_parse_operations, required=True)
+    compare_worker.add_argument("--threads", type=_parse_threads, required=True)
+    compare_worker.add_argument("--torch-device", type=_parse_torch_devices, required=True)
+    compare_worker.add_argument("--torch-source", type=Path, default=None)
+    compare_worker.add_argument("--spharmgrid-reference", type=Path, default=None)
+    compare_worker.add_argument("--warmup", type=int, default=3)
+    compare_worker.add_argument("--repeat", type=int, default=7)
+    compare_worker.add_argument("--min-time", type=float, default=0.2)
+    compare_worker.add_argument("--seed", type=int, default=20260910)
+    compare_worker.add_argument("--output", type=Path, required=True)
+    compare_worker.set_defaults(func=lambda args: _run_compare_command(args, worker=True))
 
     plot = subparsers.add_parser("plot", help="plot one or more result files")
     plot.add_argument("input", type=Path, nargs="+")

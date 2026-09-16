@@ -96,6 +96,57 @@ Build runs store package source and revision information together with available
 
 The recorded build metadata do not yet include compiler version strings, linked FFT/BLAS/LAPACK libraries, CPU instruction-set selection, or the complete compiler and linker command lines. These omissions should be considered when comparing source-build results across systems.
 
+## Direct torch-harmonics comparison environment
+
+The focused `sht-bench compare` command is separate from the historical matrix
+runner and does not add Torch or the private `spharmgrid` checkout to normal
+project dependencies. Install the exact local torch-harmonics checkout under
+test into the active `uv` environment, or expose it with `PYTHONPATH`, and pass
+the checkout explicitly:
+
+```bash
+uv pip install -e /path/to/torch-harmonics
+uv run sht-bench compare \
+  --backend ducc,torch \
+  --case cc-73x144-t70,cc-73x144-t71 \
+  --dtype float32,float64 \
+  --torch-device cpu \
+  --torch-source /path/to/torch-harmonics \
+  --spharmgrid-reference /path/to/spharmgrid \
+  --output results/torch-ducc
+```
+
+The source checkout used for the current feature work is
+`feature/high-bandwidth-equiangular-sht` at
+`fa1af8ddc2d9462fb69d2f9ffaf49be6284e9e7b`. The runner records the actual
+checkout path, branch, dirty state, and SHA at runtime and verifies that
+`torch_harmonics.RealSHT` accepts `analysis="sampling-theorem"` before any
+high-bandwidth cell runs. A source checkout is required; a released wheel is
+not substituted. The read-only spharmgrid checkout is used only to preserve
+verified grid, normalization, phase, dtype/device, and reusable-module
+conventions. It is provenance, not a runtime dependency or benchmark path.
+
+The focused comparison keeps `sht_bench`'s inclusive mathematical `lmax` and
+`mmax`; the Torch adapters pass the exclusive values `L+1`. DUCC receives the
+inclusive values directly. Both float32/complex64 and float64/complex128 are
+allocated explicitly. Module/grid/planning construction, coefficient and
+NumPy/Torch conversion, transfers, validation, and checksums are outside
+steady-state transform timing. CPU records use synchronized synchronous
+`perf_counter_ns` wall timing. CPU thread-count cells run in fresh worker
+processes with `torch.set_num_threads(requested)` and one inter-op thread. CUDA
+records use preloaded device tensors and synchronized CUDA-event compute timing;
+they are not combined with CPU wall-clock metrics. Raw samples, warmup,
+repeat, iteration, setup, device, dtype, thread, and backend provenance are
+retained in JSON.
+
+The focused comparison currently accepts the measured starting tolerances of
+relative L2 `5e-5` and maximum absolute `5e-6` for float32 analysis, and
+`1e-10` for both float64 analysis metrics. Synthesis is reported separately;
+its source-revision map envelope is `5e-5` relative L2 and `1.5e-4` maximum
+absolute for float32, and `1e-10` relative L2 and `2e-10` maximum absolute for
+float64. These are comparison acceptance limits for the recorded checkout,
+not general claims about another torch-harmonics revision.
+
 ## FFT Actions build
 
 The manually triggered FFT workflow is a separate build experiment. On both
