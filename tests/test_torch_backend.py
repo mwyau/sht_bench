@@ -12,6 +12,7 @@ from sht_bench.comparison import (
     load_torch_runtime,
     prepare_ducc,
     prepare_torch,
+    required_single_modes,
     run_comparison_case,
 )
 from sht_bench.grids import HIGH_BANDWIDTH_CC_CASES
@@ -83,7 +84,7 @@ def test_high_bandwidth_cross_backend_accuracy(case_index, dtype):
     assert all(record["analysis_method"] == "sampling-theorem" for record in accuracy)
     assert all(record["accuracy_pass"] for record in accuracy)
     modes = {(record["mode_degree"], record["mode_order"]) for record in accuracy if record["spectrum_kind"] == "mode"}
-    assert {(case.lmax, 0), (case.lmax, 1), (case.lmax, case.lmax)} <= modes
+    assert modes == set(required_single_modes(case))
     assert any(record["spectrum_kind"] == "random" for record in accuracy)
 
 
