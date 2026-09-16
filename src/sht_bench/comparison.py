@@ -900,6 +900,7 @@ def _record_base(
         "spectral_dtype": "complex64"
         if dtype_spec(dtype).name == "float32"
         else "complex128",
+        "numpy_version": np.__version__,
         "device": device,
         "thread_cell_requested": threads,
         "threads_requested": threads if device == "cpu" else None,
@@ -917,6 +918,7 @@ def _record_base(
         ),
         "operation": operation,
         "process_isolated": process_isolated,
+        "process_pid": os.getpid(),
         "timing_method": None,
         "warmup": None,
         "repeat": None,

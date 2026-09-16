@@ -156,3 +156,4 @@ def test_torch_cuda_dtype_and_device_are_preserved():
     assert {record["device"] for record in torch_records} == {"cuda"}
     assert {record["dtype"] for record in torch_records} == {"float64"}
     assert all(record["timing_method"] == "cuda-event-compute" for record in torch_records)
+    assert all(record["process_pid"] > 0 for record in torch_records)
