@@ -256,6 +256,7 @@ def _contraction_comparison(
     device: torch.device,
     warmup: int,
     repeat: int,
+    compile_versions: bool = False,
 ) -> dict[str, Any]:
     transformed = torch.fft.rfft(sample, dim=-1, norm="forward")[..., : module.mmax]
     transformed = transformed.transpose(-1, -2)
@@ -269,13 +270,50 @@ def _contraction_comparison(
     bmm = lambda: _scalar_bmm(values, weights)
     einsum_samples = _timed(einsum, device, warmup, repeat)
     bmm_samples = _timed(bmm, device, warmup, repeat)
-    return {
+    result = {
         "einsum_samples_s": einsum_samples,
         "einsum_median_s": statistics.median(einsum_samples),
         "bmm_samples_s": bmm_samples,
         "bmm_median_s": statistics.median(bmm_samples),
         "bmm_relative_l2": _error(bmm(), einsum())["relative_l2"],
     }
+    if not compile_versions:
+        return result
+
+    def einsum_function(
+        input_values: torch.Tensor, input_weights: torch.Tensor
+    ) -> torch.Tensor:
+        return torch.einsum("...mk,mlk->...lm", input_values, input_weights)
+
+    def bmm_function(
+        input_values: torch.Tensor, input_weights: torch.Tensor
+    ) -> torch.Tensor:
+        return _scalar_bmm(input_values, input_weights)
+
+    for name, function in (("einsum", einsum_function), ("bmm", bmm_function)):
+        try:
+            compiled = torch.compile(function, fullgraph=True, dynamic=False)
+            expected = function(values, weights)
+            actual = compiled(values, weights)
+            samples = _timed(
+                lambda function=compiled: function(values, weights),
+                device,
+                warmup,
+                repeat,
+            )
+            result[f"compiled_{name}_samples_s"] = samples
+            result[f"compiled_{name}_median_s"] = statistics.median(samples)
+            result[f"compiled_{name}_relative_l2"] = _error(actual, expected)[
+                "relative_l2"
+            ]
+            result[f"compiled_{name}_error"] = None
+            del compiled, expected, actual
+        except Exception as exc:  # noqa: BLE001 - record compiler limits as data
+            result[f"compiled_{name}_samples_s"] = None
+            result[f"compiled_{name}_median_s"] = None
+            result[f"compiled_{name}_relative_l2"] = None
+            result[f"compiled_{name}_error"] = f"{type(exc).__name__}: {exc}"
+    return result
 
 
 def _run(args: argparse.Namespace) -> dict[str, Any]:
@@ -377,6 +415,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
                                 device,
                                 args.warmup,
                                 args.repeat,
+                                compile_versions=args.compile,
                             )
                             records.append(
                                 {
