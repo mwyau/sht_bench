@@ -84,6 +84,17 @@ def _parse_positive_ints(value: str) -> tuple[int, ...]:
     return result
 
 
+def _parse_implementations(value: str) -> tuple[str, ...]:
+    result = tuple(item.strip() for item in value.split(",") if item.strip())
+    if not result or any(item not in IMPLEMENTATIONS for item in result):
+        raise ValueError(
+            "implementations must be selected from " + ", ".join(IMPLEMENTATIONS)
+        )
+    if len(set(result)) != len(result):
+        raise ValueError("implementations must not contain duplicates")
+    return result
+
+
 def _synchronize(device: torch.device) -> None:
     if device.type == "cuda":
         torch.cuda.synchronize(device)
@@ -324,6 +335,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     torch.set_num_threads(args.threads)
     records: list[dict[str, Any]] = []
     cases = _parse_cases(args.cases)
+    implementations = args.implementations
     for case_index, (nlat, nlon, lmax) in enumerate(cases):
         for dtype_name in args.dtypes.split(","):
             dtype_name = dtype_name.strip()
@@ -331,7 +343,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
             for transform in args.transforms.split(","):
                 transform = transform.strip()
                 vector = transform == "vector"
-                for implementation in IMPLEMENTATIONS:
+                for implementation in implementations:
                     if device.type == "cuda":
                         torch.cuda.empty_cache()
                         torch.cuda.synchronize(device)
@@ -539,63 +551,64 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     # Separate float64 gradient comparisons provide correctness records for
     # both scalar and vector C autograd paths instead of treating a timing run
     # as validation.
-    nlat, nlon, lmax = cases[0]
-    for transform in args.transforms.split(","):
-        transform = transform.strip()
-        vector = transform == "vector"
-        modules = {}
-        for implementation in IMPLEMENTATIONS:
-            module, _ = _build_module(
-                implementation,
-                package,
-                dense,
-                vector=vector,
-                nlat=nlat,
-                nlon=nlon,
-                lmax=lmax,
+    if set(implementations) == set(IMPLEMENTATIONS):
+        nlat, nlon, lmax = cases[0]
+        for transform in args.transforms.split(","):
+            transform = transform.strip()
+            vector = transform == "vector"
+            modules = {}
+            for implementation in IMPLEMENTATIONS:
+                module, _ = _build_module(
+                    implementation,
+                    package,
+                    dense,
+                    vector=vector,
+                    nlat=nlat,
+                    nlon=nlon,
+                    lmax=lmax,
+                )
+                modules[implementation] = _move_module(
+                    module, implementation, "float64", device
+                )
+            validation_sample = _sample(
+                transform, 2, nlat, nlon, torch.float64, device, 2718
             )
-            modules[implementation] = _move_module(
-                module, implementation, "float64", device
-            )
-        validation_sample = _sample(
-            transform, 2, nlat, nlon, torch.float64, device, 2718
-        )
-        outputs = {
-            implementation: module(validation_sample)
-            for implementation, module in modules.items()
-        }
-        gradients = {
-            implementation: _gradient(module, validation_sample)[1]
-            for implementation, module in modules.items()
-        }
-        for implementation in IMPLEMENTATIONS[1:]:
-            records.append(
-                {
-                    "record_type": "correctness",
-                    "transform": transform,
-                    "dtype": "float64",
-                    "nlat": nlat,
-                    "nlon": nlon,
-                    "exclusive_lmax_mmax": lmax,
-                    "implementation": implementation,
-                    "output_vs_dense": _error(
-                        outputs[implementation], outputs["dense"]
-                    ),
-                    "gradient_vs_dense": _error(
-                        gradients[implementation], gradients["dense"]
-                    ),
-                    "output_vs_runtime_fold": _error(
-                        outputs[implementation], outputs["runtime_fold"]
-                    ),
-                    "gradient_vs_runtime_fold": _error(
-                        gradients[implementation], gradients["runtime_fold"]
-                    ),
-                }
-            )
-        del modules, validation_sample, outputs, gradients
-        gc.collect()
-        if device.type == "cuda":
-            torch.cuda.empty_cache()
+            outputs = {
+                implementation: module(validation_sample)
+                for implementation, module in modules.items()
+            }
+            gradients = {
+                implementation: _gradient(module, validation_sample)[1]
+                for implementation, module in modules.items()
+            }
+            for implementation in IMPLEMENTATIONS[1:]:
+                records.append(
+                    {
+                        "record_type": "correctness",
+                        "transform": transform,
+                        "dtype": "float64",
+                        "nlat": nlat,
+                        "nlon": nlon,
+                        "exclusive_lmax_mmax": lmax,
+                        "implementation": implementation,
+                        "output_vs_dense": _error(
+                            outputs[implementation], outputs["dense"]
+                        ),
+                        "gradient_vs_dense": _error(
+                            gradients[implementation], gradients["dense"]
+                        ),
+                        "output_vs_runtime_fold": _error(
+                            outputs[implementation], outputs["runtime_fold"]
+                        ),
+                        "gradient_vs_runtime_fold": _error(
+                            gradients[implementation], gradients["runtime_fold"]
+                        ),
+                    }
+                )
+            del modules, validation_sample, outputs, gradients
+            gc.collect()
+            if device.type == "cuda":
+                torch.cuda.empty_cache()
     return {
         "schema": "sht_bench.torch_abc.v1",
         "source": str(source),
@@ -603,6 +616,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         "dense_base_sha": args.base,
         "device": args.device,
         "cases": cases,
+        "implementations": implementations,
         "contraction_diagnostics": not args.skip_contractions,
         "records": records,
     }
@@ -626,6 +640,7 @@ def main() -> int:
     parser.add_argument("--cases", default=DEFAULT_CASES)
     parser.add_argument("--dtypes", default="float32")
     parser.add_argument("--transforms", default="scalar,vector")
+    parser.add_argument("--implementations", default=",".join(IMPLEMENTATIONS))
     parser.add_argument("--batches", default="1,4,8")
     parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--warmup", type=int, default=2)
@@ -642,6 +657,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
     args.batches = _parse_positive_ints(args.batches)
+    args.implementations = _parse_implementations(args.implementations)
     if args.device == "cuda" and not torch.cuda.is_available():
         parser.error("CUDA is unavailable")
     result = _run(args)

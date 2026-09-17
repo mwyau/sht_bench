@@ -1,0 +1,47 @@
+{
+  "schema": "sht_bench.torch_abc.v1",
+  "source": "/home/albert/torch-harmonics",
+  "source_sha": "f4cc65515d79d66ff7ab1f02d53518e0b063fc99",
+  "dense_base_sha": "3278fb669483d04537aa60c87fb0754d989e2e70",
+  "device": "cuda",
+  "cases": [
+    [
+      361,
+      720,
+      360
+    ]
+  ],
+  "implementations": [
+    "precomputed_projection"
+  ],
+  "contraction_diagnostics": false,
+  "records": [
+    {
+      "record_type": "performance",
+      "implementation": "precomputed_projection",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 512,
+      "measurement": "forward",
+      "samples_s": [
+        0.10305648087523878,
+        0.10314119001850486,
+        0.10302907112054527,
+        0.10306847398169339,
+        0.10298110102303326
+      ],
+      "median_s": 0.10305648087523878,
+      "milliseconds_per_frame": 0.20128218920945073,
+      "module_buffer_bytes": 748569600,
+      "construction_s": 13.265097975032404,
+      "cuda_peak_constructor_delta_bytes": 748683264,
+      "cuda_peak_forward_delta_bytes": 3192791040,
+      "effective_max_imag": 1.7122823086674596e-05,
+      "effective_relative_imag": 0.001786298846299717
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "schema": "sht_bench.torch_abc.v1",
+  "source": "/home/albert/torch-harmonics",
+  "source_sha": "f4cc65515d79d66ff7ab1f02d53518e0b063fc99",
+  "dense_base_sha": "3278fb669483d04537aa60c87fb0754d989e2e70",
+  "device": "cuda",
+  "cases": [
+    [
+      361,
+      720,
+      360
+    ]
+  ],
+  "contraction_diagnostics": false,
+  "records": [
+    {
+      "record_type": "performance",
+      "implementation": "dense",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 128,
+      "measurement": "forward",
+      "samples_s": [
+        0.05884615797549486,
+        0.05879844888113439,
+        0.05890016909688711,
+        0.05878591584041715,
+        0.05884627788327634
+      ],
+      "median_s": 0.05884615797549486,
+      "milliseconds_per_frame": 0.4597356091835536,
+      "module_buffer_bytes": 747533160,
+      "construction_s": 8.669963094871491,
+      "cuda_peak_constructor_delta_bytes": 747533312,
+      "cuda_peak_forward_delta_bytes": 3186884608
+    },
+    {
+      "record_type": "performance",
+      "implementation": "runtime_fold",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 128,
+      "measurement": "forward",
+      "samples_s": [
+        0.05063278414309025,
+        0.050592448795214295,
+        0.05053875804878771,
+        0.05057629803195596,
+        0.05070227291435003
+      ],
+      "median_s": 0.050592448795214295,
+      "milliseconds_per_frame": 0.3952535062126117,
+      "module_buffer_bytes": 374293804,
+      "construction_s": 3.925030456157401,
+      "cuda_peak_constructor_delta_bytes": 374294528,
+      "cuda_peak_forward_delta_bytes": 2921111552
+    },
+    {
+      "record_type": "performance",
+      "implementation": "precomputed_projection",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 128,
+      "measurement": "forward",
+      "samples_s": [
+        0.025377945974469185,
+        0.025307704927399755,
+        0.025314607890322804,
+        0.025329655967652798,
+        0.025308787124231458
+      ],
+      "median_s": 0.025314607890322804,
+      "milliseconds_per_frame": 0.1977703741431469,
+      "module_buffer_bytes": 748569600,
+      "construction_s": 12.762368530966341,
+      "cuda_peak_constructor_delta_bytes": 748683264,
+      "cuda_peak_forward_delta_bytes": 799574016,
+      "effective_max_imag": 1.7122823086674596e-05,
+      "effective_relative_imag": 0.001786298846299717
+    },
+    {
+      "record_type": "correctness",
+      "transform": "vector",
+      "dtype": "float64",
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "implementation": "runtime_fold",
+      "output_vs_dense": {
+        "relative_l2": 5.3059483426054826e-15,
+        "maximum_absolute": 8.285461368446635e-18
+      },
+      "gradient_vs_dense": {
+        "relative_l2": 1.3857335051827e-15,
+        "maximum_absolute": 3.0292258760486853e-27
+      },
+      "output_vs_runtime_fold": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "gradient_vs_runtime_fold": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "correctness",
+      "transform": "vector",
+      "dtype": "float64",
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "implementation": "precomputed_projection",
+      "output_vs_dense": {
+        "relative_l2": 5.317759640543755e-15,
+        "maximum_absolute": 7.825055957265286e-18
+      },
+      "gradient_vs_dense": {
+        "relative_l2": 1.4540774497941625e-15,
+        "maximum_absolute": 2.7263032884438168e-27
+      },
+      "output_vs_runtime_fold": {
+        "relative_l2": 9.353360102536532e-16,
+        "maximum_absolute": 9.544219212080588e-18
+      },
+      "gradient_vs_runtime_fold": {
+        "relative_l2": 1.6104538780896026e-15,
+        "maximum_absolute": 3.3826355615876986e-27
+      }
+    }
+  ]
+}

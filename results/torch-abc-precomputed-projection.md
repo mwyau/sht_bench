@@ -197,6 +197,27 @@ frame. All values are inference-only medians.
 | 16 | `49.716 / 36.790 / 17.581` | `18.928 / 14.290 / 9.678` | `15.607 / 11.158 / 7.679` |
 | 64 | `45.743 / 42.934 / 18.103` | `15.934 / 16.043 / 9.178` | `12.378 / 12.047 / 6.024` |
 
+## 0.5° CUDA batch scaling
+
+This scaling probe keeps the maximum tested grid at `361×720` and doubles the
+batch from 64 through 1024. It uses `--skip-contractions`. Values are median
+milliseconds per frame; `OOM` is an observed CUDA allocator failure.
+
+| Transform | Implementation | b64 | b128 | b256 | b512 | b1024 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Scalar | A dense | `0.167` | `0.167` | `0.170` | `0.171` | OOM |
+| Scalar | B runtime fold | `0.161` | `0.162` | `0.165` | `0.166` | OOM |
+| Scalar | C precomputed | `0.045` | `0.045` | `0.046` | `0.046` | `0.053` |
+| Vector | A dense | `0.456` | `0.460` | `0.464` | OOM | — |
+| Vector | B runtime fold | `0.392` | `0.395` | `0.399` | OOM | — |
+| Vector | C precomputed | `0.197` | `0.198` | `0.200` | `0.201` | `0.231` |
+
+At this grid, C is the only tested implementation that reaches batch 1024 for
+both scalar and vector transforms. A and B fail at scalar batch 1024; A and B
+fail at vector batch 512. The vector C batch-512/1024 runs completed despite
+the corresponding A/B failures. No 0.25° run is included in this push; the
+next probe is isolated to option B as requested.
+
 The batch-16/64 Torch JSONs set `contraction_diagnostics` to `false`. This
 only skips the optional dense BMM diagnostic, whose intentional batch
 expansion is not part of the SHT forward path and attempted a 22.3 GiB
@@ -247,6 +268,15 @@ The complete raw JSON outputs are archived beside this report:
 - [CUDA scalar isolated training](torch-abc-half-degree-grid-cuda-scalar-train-isolated.json)
 - [CUDA vector isolated training](torch-abc-half-degree-grid-cuda-vector-train-isolated.json)
 - [CUDA A/B/C batch 16/64](torch-abc-half-degree-grid-cuda-b16-b64.json)
+- [CUDA 0.5° scalar batch 128](torch-abc-05-degree-cuda-scalar-b128.json)
+- [CUDA 0.5° scalar batch 256](torch-abc-05-degree-cuda-scalar-b256.json)
+- [CUDA 0.5° scalar batch 512](torch-abc-05-degree-cuda-scalar-b512.json)
+- [CUDA 0.5° scalar C batch 1024](torch-abc-05-degree-cuda-scalar-b1024-c.json)
+- [CUDA 0.5° vector batch 128](torch-abc-05-degree-cuda-vector-b128.json)
+- [CUDA 0.5° vector batch 256](torch-abc-05-degree-cuda-vector-b256.json)
+- [CUDA 0.5° vector C batch 512](torch-abc-05-degree-cuda-vector-b512-c.json)
+- [CUDA 0.5° vector C batch 1024](torch-abc-05-degree-cuda-vector-b1024-c.json)
+- [CUDA 0.5° batch-scaling status manifest](torch-abc-05-degree-cuda-batch-scaling.json)
 - [CPU A/B/C one thread, batch 1/4](torch-abc-half-degree-grid-cpu-t1-b1-b4.json)
 - [CPU A/B/C one thread, batch 16/64](torch-abc-half-degree-grid-cpu-b16-b64.json)
 - [CPU A/B/C four threads, batch 1/4/16/64](torch-abc-half-degree-grid-cpu-t4-b1-b4-b16-b64.json)
