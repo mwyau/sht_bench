@@ -65,3 +65,29 @@ def test_precomputed_projection_has_standard_backward(research_modules):
     assert output.shape == (2, 4, 4)
     assert values.grad is not None
     assert torch.isfinite(values.grad).all()
+
+
+def test_precomputed_vector_projection_has_standard_backward(research_modules):
+    _, benchmark, optimized, _ = research_modules
+    runtime = optimized.RealVectorSHT(5, 8, lmax=4, mmax=4)
+    module = benchmark.PrecomputedProjection(runtime, vector=True).eval()
+    values = torch.randn(2, 2, 5, 8, dtype=torch.float64, requires_grad=True)
+    output = module(values)
+    output.abs().square().mean().backward()
+    assert output.shape == (2, 2, 4, 4)
+    assert values.grad is not None
+    assert torch.isfinite(values.grad).all()
+
+
+def test_precomputed_projection_gradcheck(research_modules):
+    _, benchmark, optimized, _ = research_modules
+    runtime = optimized.RealSHT(5, 8, lmax=4, mmax=4)
+    module = benchmark.PrecomputedProjection(runtime, vector=False).eval()
+    values = torch.randn(1, 5, 8, dtype=torch.float64, requires_grad=True)
+    assert torch.autograd.gradcheck(
+        module,
+        (values,),
+        eps=1.0e-6,
+        atol=1.0e-5,
+        rtol=1.0e-4,
+    )
