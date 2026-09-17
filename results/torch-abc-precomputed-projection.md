@@ -2,7 +2,9 @@
 
 This report records the final memory-safe matrix for the PyTorch equiangular
 SHT projection experiment. It uses 0.5° resolution steps and stops at 0.5°:
-2.5°, 2.0°, 1.5°, 1.0°, and 0.5°. No 0.25° or finer case is included.
+2.5°, 2.0°, 1.5°, 1.0°, and 0.5°. A later 0.25° B-only attempt was killed by
+the host/container memory limit before producing a result file, so no 0.25° or
+finer case is included.
 
 The comparison includes the three Torch implementations requested for the
 experiment and a scalar CPU cross-backend comparison against DUCC:
@@ -215,8 +217,10 @@ milliseconds per frame; `OOM` is an observed CUDA allocator failure.
 At this grid, C is the only tested implementation that reaches batch 1024 for
 both scalar and vector transforms. A and B fail at scalar batch 1024; A and B
 fail at vector batch 512. The vector C batch-512/1024 runs completed despite
-the corresponding A/B failures. No 0.25° run is included in this push; the
-next probe is isolated to option B as requested.
+the corresponding A/B failures. A 0.25° B-only attempt was started after this
+scaling probe, but the container's host-memory OOM counter incremented and no
+CUDA allocator traceback was emitted; no JSON was written. It is intentionally
+skipped, leaving 0.5° as the maximum completed resolution.
 
 The batch-16/64 Torch JSONs set `contraction_diagnostics` to `false`. This
 only skips the optional dense BMM diagnostic, whose intentional batch
