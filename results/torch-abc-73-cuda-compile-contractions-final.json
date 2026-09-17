@@ -1,0 +1,660 @@
+{
+  "schema": "sht_bench.torch_abc.v1",
+  "source": "/home/albert/torch-harmonics",
+  "source_sha": "f4cc65515d79d66ff7ab1f02d53518e0b063fc99",
+  "dense_base_sha": "3278fb669483d04537aa60c87fb0754d989e2e70",
+  "device": "cuda",
+  "cases": [
+    [
+      73,
+      144,
+      72
+    ]
+  ],
+  "records": [
+    {
+      "record_type": "performance",
+      "implementation": "dense",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0006347610615193844,
+        0.0004051441792398691
+      ],
+      "median_s": 0.0005199526203796268,
+      "milliseconds_per_frame": 0.5199526203796268,
+      "module_buffer_bytes": 3006792,
+      "construction_s": 0.02179278014227748,
+      "cuda_peak_constructor_delta_bytes": 3007488,
+      "cuda_peak_forward_delta_bytes": 497664
+    },
+    {
+      "record_type": "performance",
+      "implementation": "dense",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0017061850521713495,
+        0.001362465089187026
+      ],
+      "median_s": 0.0015343250706791878,
+      "milliseconds_per_frame": 1.5343250706791878,
+      "module_buffer_bytes": 3006792,
+      "construction_s": 0.02179278014227748,
+      "cuda_peak_constructor_delta_bytes": 3007488,
+      "cuda_peak_forward_backward_delta_bytes": 540160
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "dense",
+      "transform": "scalar",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0005541008431464434,
+        0.0005236337892711163
+      ],
+      "median_s": 0.0005388673162087798,
+      "error": null
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "dense",
+      "transform": "scalar",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0019939809571951628,
+        0.0016899139154702425
+      ],
+      "median_s": 0.0018419474363327026,
+      "error": null
+    },
+    {
+      "record_type": "performance",
+      "implementation": "runtime_fold",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0005663828924298286,
+        0.000527411000803113
+      ],
+      "median_s": 0.0005468969466164708,
+      "milliseconds_per_frame": 0.5468969466164708,
+      "module_buffer_bytes": 1515532,
+      "construction_s": 0.012417636113241315,
+      "cuda_peak_constructor_delta_bytes": 1517056,
+      "cuda_peak_forward_delta_bytes": 459264
+    },
+    {
+      "record_type": "performance",
+      "implementation": "runtime_fold",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0015972519759088755,
+        0.0014972961507737637
+      ],
+      "median_s": 0.0015472740633413196,
+      "milliseconds_per_frame": 1.5472740633413196,
+      "module_buffer_bytes": 1515532,
+      "construction_s": 0.012417636113241315,
+      "cuda_peak_constructor_delta_bytes": 1517056,
+      "cuda_peak_forward_backward_delta_bytes": 501760
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "runtime_fold",
+      "transform": "scalar",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.00077871885150671,
+        0.0007286958862096071
+      ],
+      "median_s": 0.0007537073688581586,
+      "error": null
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "runtime_fold",
+      "transform": "scalar",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.00196739099919796,
+        0.0019298000261187553
+      ],
+      "median_s": 0.0019485955126583576,
+      "error": null
+    },
+    {
+      "record_type": "performance",
+      "implementation": "precomputed_projection",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.00030002882704138756,
+        0.00012974091805517673
+      ],
+      "median_s": 0.00021488487254828215,
+      "milliseconds_per_frame": 0.21488487254828215,
+      "module_buffer_bytes": 3027456,
+      "construction_s": 0.031234138878062367,
+      "cuda_peak_constructor_delta_bytes": 3027456,
+      "cuda_peak_forward_delta_bytes": 126976,
+      "effective_max_imag": 0.030903621098549078,
+      "effective_relative_imag": 0.022674533240502462
+    },
+    {
+      "record_type": "contraction",
+      "implementation": "precomputed_projection",
+      "transform": "scalar",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "batch_size": 1,
+      "einsum_samples_s": [
+        7.01600220054388e-05,
+        6.813695654273033e-05
+      ],
+      "einsum_median_s": 6.914848927408457e-05,
+      "bmm_samples_s": [
+        0.00011334102600812912,
+        9.554717689752579e-05
+      ],
+      "bmm_median_s": 0.00010444410145282745,
+      "bmm_relative_l2": 1.213731867857768e-07,
+      "compiled_einsum_samples_s": [
+        0.00020270701497793198,
+        0.0001729121431708336
+      ],
+      "compiled_einsum_median_s": 0.00018780957907438278,
+      "compiled_einsum_relative_l2": 0.0,
+      "compiled_einsum_error": null,
+      "compiled_bmm_samples_s": [
+        0.00021651200950145721,
+        0.00025186920538544655
+      ],
+      "compiled_bmm_median_s": 0.00023419060744345188,
+      "compiled_bmm_relative_l2": 0.0,
+      "compiled_bmm_error": null
+    },
+    {
+      "record_type": "performance",
+      "implementation": "precomputed_projection",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0006020800210535526,
+        0.0005793280433863401
+      ],
+      "median_s": 0.0005907040322199464,
+      "milliseconds_per_frame": 0.5907040322199464,
+      "module_buffer_bytes": 3027456,
+      "construction_s": 0.031234138878062367,
+      "cuda_peak_constructor_delta_bytes": 3027456,
+      "cuda_peak_forward_backward_delta_bytes": 3237888,
+      "effective_max_imag": 0.030903621098549078,
+      "effective_relative_imag": 0.022674533240502462
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "precomputed_projection",
+      "transform": "scalar",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.000249634962528944,
+        0.00022241403348743916
+      ],
+      "median_s": 0.00023602449800819159,
+      "error": null
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "precomputed_projection",
+      "transform": "scalar",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0009453091770410538,
+        0.0009282969404011965
+      ],
+      "median_s": 0.0009368030587211251,
+      "error": null
+    },
+    {
+      "record_type": "performance",
+      "implementation": "dense",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0009318941738456488,
+        0.0007482320070266724
+      ],
+      "median_s": 0.0008400630904361606,
+      "milliseconds_per_frame": 0.8400630904361606,
+      "module_buffer_bytes": 6013512,
+      "construction_s": 0.044516954105347395,
+      "cuda_peak_constructor_delta_bytes": 6013952,
+      "cuda_peak_forward_delta_bytes": 995328
+    },
+    {
+      "record_type": "performance",
+      "implementation": "dense",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.002542329952120781,
+        0.0024212950374931097
+      ],
+      "median_s": 0.0024818124948069453,
+      "milliseconds_per_frame": 2.4818124948069453,
+      "module_buffer_bytes": 6013512,
+      "construction_s": 0.044516954105347395,
+      "cuda_peak_constructor_delta_bytes": 6013952,
+      "cuda_peak_forward_backward_delta_bytes": 1079808
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "dense",
+      "transform": "vector",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0006014388054609299,
+        0.000584837980568409
+      ],
+      "median_s": 0.0005931383930146694,
+      "error": null
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "dense",
+      "transform": "vector",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0017518799286335707,
+        0.001704671885818243
+      ],
+      "median_s": 0.0017282759072259068,
+      "error": null
+    },
+    {
+      "record_type": "performance",
+      "implementation": "runtime_fold",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0009145520161837339,
+        0.0008831738959997892
+      ],
+      "median_s": 0.0008988629560917616,
+      "milliseconds_per_frame": 0.8988629560917616,
+      "module_buffer_bytes": 3029260,
+      "construction_s": 0.021134064998477697,
+      "cuda_peak_constructor_delta_bytes": 3030528,
+      "cuda_peak_forward_delta_bytes": 916480
+    },
+    {
+      "record_type": "performance",
+      "implementation": "runtime_fold",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.002653587842360139,
+        0.002613682998344302
+      ],
+      "median_s": 0.0026336354203522205,
+      "milliseconds_per_frame": 2.6336354203522205,
+      "module_buffer_bytes": 3029260,
+      "construction_s": 0.021134064998477697,
+      "cuda_peak_constructor_delta_bytes": 3030528,
+      "cuda_peak_forward_backward_delta_bytes": 1000960
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "runtime_fold",
+      "transform": "vector",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0007747211493551731,
+        0.0007434729486703873
+      ],
+      "median_s": 0.0007590970490127802,
+      "error": null
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "runtime_fold",
+      "transform": "vector",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.002170067047700286,
+        0.0021180210169404745
+      ],
+      "median_s": 0.00214404403232038,
+      "error": null
+    },
+    {
+      "record_type": "performance",
+      "implementation": "precomputed_projection",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0003488389775156975,
+        0.0003237728960812092
+      ],
+      "median_s": 0.00033630593679845333,
+      "milliseconds_per_frame": 0.33630593679845333,
+      "module_buffer_bytes": 6054912,
+      "construction_s": 0.05129277100786567,
+      "cuda_peak_constructor_delta_bytes": 6054912,
+      "cuda_peak_forward_delta_bytes": 252416,
+      "effective_max_imag": 0.00042625996739100526,
+      "effective_relative_imag": 0.006876799613859359
+    },
+    {
+      "record_type": "contraction",
+      "implementation": "precomputed_projection",
+      "transform": "vector",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "batch_size": 1,
+      "einsum_samples_s": [
+        6.703496910631657e-05,
+        6.464100442826748e-05
+      ],
+      "einsum_median_s": 6.583798676729202e-05,
+      "bmm_samples_s": [
+        9.181094355881214e-05,
+        8.865492418408394e-05
+      ],
+      "bmm_median_s": 9.023293387144804e-05,
+      "bmm_relative_l2": 1.378957524202676e-07,
+      "compiled_einsum_samples_s": [
+        0.00017736991867423058,
+        0.00018249009735882282
+      ],
+      "compiled_einsum_median_s": 0.0001799300080165267,
+      "compiled_einsum_relative_l2": 0.0,
+      "compiled_einsum_error": null,
+      "compiled_bmm_samples_s": [
+        0.00019905995577573776,
+        0.0001852151472121477
+      ],
+      "compiled_bmm_median_s": 0.00019213755149394274,
+      "compiled_bmm_relative_l2": 0.0,
+      "compiled_bmm_error": null
+    },
+    {
+      "record_type": "performance",
+      "implementation": "precomputed_projection",
+      "transform": "vector",
+      "dtype": "float32",
+      "device": "cuda",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0012557469308376312,
+        0.0012982359621673822
+      ],
+      "median_s": 0.0012769914465025067,
+      "milliseconds_per_frame": 1.2769914465025067,
+      "module_buffer_bytes": 6054912,
+      "construction_s": 0.05129277100786567,
+      "cuda_peak_constructor_delta_bytes": 6054912,
+      "cuda_peak_forward_backward_delta_bytes": 3489280,
+      "effective_max_imag": 0.00042625996739100526,
+      "effective_relative_imag": 0.006876799613859359
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "precomputed_projection",
+      "transform": "vector",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward",
+      "samples_s": [
+        0.0005538300611078739,
+        0.0005198370199650526
+      ],
+      "median_s": 0.0005368335405364633,
+      "error": null
+    },
+    {
+      "record_type": "compiled",
+      "implementation": "precomputed_projection",
+      "transform": "vector",
+      "dtype": "float32",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "measurement": "forward_backward",
+      "samples_s": [
+        0.0015627171378582716,
+        0.0015392738860100508
+      ],
+      "median_s": 0.0015509955119341612,
+      "error": null
+    },
+    {
+      "record_type": "correctness",
+      "transform": "scalar",
+      "dtype": "float64",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "implementation": "runtime_fold",
+      "output_vs_dense": {
+        "relative_l2": 2.63961487949702e-15,
+        "maximum_absolute": 1.0244323015053509e-15
+      },
+      "gradient_vs_dense": {
+        "relative_l2": 3.5168285279159773e-15,
+        "maximum_absolute": 3.467541127822292e-21
+      },
+      "output_vs_runtime_fold": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "gradient_vs_runtime_fold": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "correctness",
+      "transform": "scalar",
+      "dtype": "float64",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "implementation": "precomputed_projection",
+      "output_vs_dense": {
+        "relative_l2": 2.658175183386687e-15,
+        "maximum_absolute": 1.008429403283228e-15
+      },
+      "gradient_vs_dense": {
+        "relative_l2": 3.5504653397359855e-15,
+        "maximum_absolute": 3.3087224502121107e-21
+      },
+      "output_vs_runtime_fold": {
+        "relative_l2": 4.790325376858251e-16,
+        "maximum_absolute": 7.152448122690996e-17
+      },
+      "gradient_vs_runtime_fold": {
+        "relative_l2": 7.388681600617584e-16,
+        "maximum_absolute": 4.235164736271502e-22
+      }
+    },
+    {
+      "record_type": "correctness",
+      "transform": "vector",
+      "dtype": "float64",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "implementation": "runtime_fold",
+      "output_vs_dense": {
+        "relative_l2": 1.2310191211482026e-15,
+        "maximum_absolute": 2.4532694666933986e-17
+      },
+      "gradient_vs_dense": {
+        "relative_l2": 6.046751627364065e-16,
+        "maximum_absolute": 4.1359030627651384e-24
+      },
+      "output_vs_runtime_fold": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "gradient_vs_runtime_fold": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "correctness",
+      "transform": "vector",
+      "dtype": "float64",
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "implementation": "precomputed_projection",
+      "output_vs_dense": {
+        "relative_l2": 1.2677531346891738e-15,
+        "maximum_absolute": 2.7906839987076445e-17
+      },
+      "gradient_vs_dense": {
+        "relative_l2": 8.823995517713369e-16,
+        "maximum_absolute": 6.617444900424222e-24
+      },
+      "output_vs_runtime_fold": {
+        "relative_l2": 5.026720076094102e-16,
+        "maximum_absolute": 2.223222581375413e-17
+      },
+      "gradient_vs_runtime_fold": {
+        "relative_l2": 8.435835164002538e-16,
+        "maximum_absolute": 4.1359030627651384e-24
+      }
+    }
+  ]
+}

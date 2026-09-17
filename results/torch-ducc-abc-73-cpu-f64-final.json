@@ -1,0 +1,153 @@
+{
+  "schema": "sht_bench.torch_ducc_abc_cpu.v1",
+  "source": "/home/albert/torch-harmonics",
+  "source_sha": "f4cc65515d79d66ff7ab1f02d53518e0b063fc99",
+  "dense_base_sha": "3278fb669483d04537aa60c87fb0754d989e2e70",
+  "ducc0_version": "0.41.0",
+  "device": "cpu",
+  "threads": 1,
+  "cases": [
+    [
+      73,
+      144,
+      72
+    ]
+  ],
+  "implementations": [
+    "ducc0",
+    "dense",
+    "runtime_fold",
+    "precomputed_projection"
+  ],
+  "method": "shared random real map; scalar CC analysis; inference-only timing",
+  "records": [
+    {
+      "record_type": "performance",
+      "backend": "ducc0",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float64",
+      "device": "cpu",
+      "threads": 1,
+      "batch_size": 1,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.0009302848484367132,
+        0.000923581887036562,
+        0.0009113599080592394
+      ],
+      "median_s": 0.000923581887036562,
+      "milliseconds_per_frame": 0.923581887036562,
+      "module_buffer_bytes": 0,
+      "construction_s": 0.0,
+      "setup_s": 0.0,
+      "output_vs_ducc": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "output_vs_dense": {
+        "relative_l2": 7.65617782094651e-15,
+        "maximum_absolute": 6.117332621274595e-14
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "dense",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float64",
+      "device": "cpu",
+      "threads": 1,
+      "batch_size": 1,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.0006171339191496372,
+        0.000531044090166688,
+        0.0005520428530871868
+      ],
+      "median_s": 0.0005520428530871868,
+      "milliseconds_per_frame": 0.5520428530871868,
+      "module_buffer_bytes": 6013512,
+      "construction_s": 0.01973990793339908,
+      "setup_s": 0.01973990793339908,
+      "output_vs_ducc": {
+        "relative_l2": 7.656177820946508e-15,
+        "maximum_absolute": 6.117332621274595e-14
+      },
+      "output_vs_dense": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "runtime_fold",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float64",
+      "device": "cpu",
+      "threads": 1,
+      "batch_size": 1,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.0005044750869274139,
+        0.0005076508969068527,
+        0.0004938459023833275
+      ],
+      "median_s": 0.0005044750869274139,
+      "milliseconds_per_frame": 0.5044750869274139,
+      "module_buffer_bytes": 3030992,
+      "construction_s": 0.009214409161359072,
+      "setup_s": 0.009214409161359072,
+      "output_vs_ducc": {
+        "relative_l2": 6.844844093531866e-15,
+        "maximum_absolute": 5.440358661363852e-14
+      },
+      "output_vs_dense": {
+        "relative_l2": 3.94093389092176e-15,
+        "maximum_absolute": 5.046588827127699e-14
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "precomputed_projection",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float64",
+      "device": "cpu",
+      "threads": 1,
+      "batch_size": 1,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.0005248428788036108,
+        0.0004248770419508219,
+        0.00040797609835863113
+      ],
+      "median_s": 0.0004248770419508219,
+      "milliseconds_per_frame": 0.4248770419508219,
+      "module_buffer_bytes": 6054912,
+      "construction_s": 0.034911178052425385,
+      "setup_s": 0.034911178052425385,
+      "output_vs_ducc": {
+        "relative_l2": 6.8486042706742624e-15,
+        "maximum_absolute": 5.440111652225512e-14
+      },
+      "output_vs_dense": {
+        "relative_l2": 3.961657186339916e-15,
+        "maximum_absolute": 5.046951424675989e-14
+      }
+    }
+  ]
+}
