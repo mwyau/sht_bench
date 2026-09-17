@@ -85,8 +85,8 @@ below.
 
 At batch 1, C is the fastest Torch implementation across the tested scalar
 and vector CUDA cells. At 0.5°, C remains fastest for scalar batches 1, 4, 16,
-and 64; B is fastest for vector batches 4, 16, and 64, while C is fastest for
-vector batch 1.
+and 64. For vector batches at 0.5°, C wins batches 1, 16, and 64, while B
+wins batch 4.
 
 ## Isolated CUDA forward/backward performance
 
@@ -113,9 +113,9 @@ milliseconds per frame; each cell is `DUCC / A / B / C`.
 | 1.0° | `181×360` | `5.573 / 6.664 / 3.307 / 3.643` | `5.608 / 3.061 / 1.940 / 1.308` | `6.037 / 1.696 / 1.468 / 0.663` | `6.020 / 2.905 / 2.483 / 0.511` |
 | 0.5° | `361×720` | `24.994 / 39.287 / 25.654 / 21.396` | `23.043 / 17.355 / 11.778 / 8.284` | `24.657 / 15.928 / 11.795 / 4.392` | `24.903 / 18.943 / 19.191 / 4.378` |
 
-At 0.5°, C is the fastest one-thread Torch CPU path for batches 4, 16, and
-64; B is fastest at batch 1. The one-thread CPU-to-GPU ratios below use the
-same batch size and transform on both sides.
+At 0.5°, C is the fastest one-thread Torch CPU path for batches 1, 4, 16, and
+64. The one-thread CPU-to-GPU ratios below use the same batch size and
+transform on both sides.
 
 The archived five-case CPU files cover Torch A/B/C at 1, 4, and 16 Torch
 threads, and scalar DUCC/A/B/C at 1, 4, and 16 DUCC threads, for batches 1, 4,
