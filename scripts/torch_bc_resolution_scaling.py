@@ -1848,6 +1848,8 @@ def render_report(payload: dict[str, Any]) -> str:
         "| Field | Value |",
         "| --- | --- |",
         f"| starting `sht_bench` SHA | `{metadata.get('starting_sht_bench_sha')}` |",
+        f"| result-generation `sht_bench` SHA | `{metadata.get('result_generation_sht_bench_sha')}` |",
+        f"| measurement worker code SHA(s) | `{metadata.get('measurement_worker_code_shas')}` |",
         f"| torch-harmonics current source SHA | `{metadata.get('torch_harmonics_source_sha')}` |",
         f"| historical report source SHA | `{metadata.get('historical_source_sha') or 'not available'}` |",
         f"| GPU | {metadata.get('gpu_name') or 'unknown'} |",
@@ -2050,6 +2052,12 @@ def _run(args: argparse.Namespace) -> int:
         "float64_cases": [list(case) for case in FLOAT64_CASES],
     }
     progress = load_progress(progress_path, metadata)
+    original_start_sha = progress.get("metadata", {}).get("starting_sht_bench_sha")
+    if original_start_sha:
+        metadata["starting_sht_bench_sha"] = original_start_sha
+    metadata["result_generation_sht_bench_sha"] = _git_sha(
+        Path(__file__).resolve().parents[1]
+    )
     if progress.get("metadata", {}).get("superseded_cuda_ooms"):
         metadata["superseded_cuda_ooms"] = progress["metadata"]["superseded_cuda_ooms"]
     if args.repair_batch_predictions:
@@ -2100,13 +2108,21 @@ def _run(args: argparse.Namespace) -> int:
             host_limit=host_limit,
         )
     metadata["finished_at"] = utc_now()
+    final_progress = _read_json(progress_path)
+    metadata["measurement_worker_code_shas"] = sorted(
+        {
+            result.get("benchmark_code_sha")
+            for result in _result_records(final_progress)
+            if result.get("benchmark_code_sha")
+        }
+    )
     payload = write_outputs(
         output_json=output_json,
         output_csv=output_csv,
         output_markdown=output_markdown,
         progress_path=progress_path,
         metadata=metadata,
-        progress=_read_json(progress_path),
+        progress=final_progress,
     )
     print(
         json.dumps(
