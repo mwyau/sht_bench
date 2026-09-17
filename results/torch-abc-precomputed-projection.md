@@ -24,6 +24,10 @@ experiment and a scalar CPU cross-backend comparison against DUCC:
 - On one-thread CPU scalar analysis at 0.5°, DUCC/A/B/C measured
   `24.994 / 39.287 / 25.654 / 21.396 ms/frame` at batch 1 and
   `23.044 / 17.355 / 11.778 / 8.284 ms/frame` at batch 4.
+- At batch 64 on the 0.5° grid, Torch CPU-to-GPU speedups were
+  `114.3 / 120.4 / 95.3×` for scalar A/B/C and
+  `100.3 / 109.6 / 92.1×` for vector A/B/C. Relative to DUCC CPU, the
+  corresponding scalar GPU ratios were `149.2 / 154.3 / 552.0×`.
 - C requires a larger persistent projection than B and has a material
   construction cost. At 0.5° float32, the C projection occupies
   `374,284,800` bytes for scalar and `748,569,600` bytes for vector.
@@ -104,6 +108,67 @@ milliseconds per frame; each cell is `DUCC / A / B / C`.
 At 0.5°, C is the fastest of the four batch-1 and batch-4 CPU paths. The
 batch-1 1.0° result is the exception where B is slightly faster than C.
 
+## Batch 16/64 device comparison
+
+The additional runs use float32 inference-only forward timing for all three
+Torch implementations on both CPU and CUDA. The DUCC comparison remains
+scalar-only because this DUCC benchmark path is scalar CC analysis. Values are
+median milliseconds per frame; each A/B/C cell is ordered as A, B, C.
+
+At the maximum tested 0.5° grid:
+
+| Transform | Batch | Torch CPU A/B/C | Torch GPU A/B/C | DUCC CPU |
+| --- | ---: | ---: | ---: | ---: |
+| Scalar | 16 | `16.096 / 16.362 / 4.3917` | `0.2334 / 0.1689 / 0.0665` | `24.657` |
+| Scalar | 64 | `19.075 / 19.434 / 4.2976` | `0.1669 / 0.1614 / 0.0451` | `24.903` |
+| Vector | 16 | `49.716 / 36.790 / 17.581` | `0.7975 / 0.5751 / 0.2801` | — |
+| Vector | 64 | `45.743 / 42.934 / 18.103` | `0.4560 / 0.3918 / 0.1965` | — |
+
+### Torch CPU-to-GPU speedup
+
+Speedup is Torch CPU time divided by Torch GPU time; values above `1×` mean
+that CUDA is faster. Each cell is A/B/C.
+
+#### Scalar
+
+| Spacing | Grid | Batch 16 | Batch 64 |
+| ---: | ---: | ---: | ---: |
+| 2.5° | `73×144` | `7.07 / 4.02 / 6.91×` | `66.37 / 38.03 / 20.29×` |
+| 2.0° | `91×180` | `12.20 / 6.71 / 11.49×` | `104.13 / 76.88 / 34.87×` |
+| 1.5° | `121×240` | `24.16 / 15.60 / 22.57×` | `115.88 / 138.57 / 60.01×` |
+| 1.0° | `181×360` | `41.09 / 35.12 / 44.43×` | `117.85 / 136.05 / 82.63×` |
+| 0.5° | `361×720` | `68.96 / 96.89 / 66.70×` | `114.29 / 120.42 / 95.27×` |
+
+#### Vector
+
+| Spacing | Grid | Batch 16 | Batch 64 |
+| ---: | ---: | ---: | ---: |
+| 2.5° | `73×144` | `10.08 / 5.69 / 8.79×` | `72.98 / 53.05 / 31.68×` |
+| 2.0° | `91×180` | `19.30 / 10.15 / 18.85×` | `107.25 / 99.65 / 61.03×` |
+| 1.5° | `121×240` | `38.12 / 25.30 / 39.08×` | `122.00 / 163.27 / 83.84×` |
+| 1.0° | `181×360` | `63.55 / 44.31 / 59.36×` | `107.41 / 87.92 / 73.20×` |
+| 0.5° | `361×720` | `62.34 / 63.97 / 62.77×` | `100.30 / 109.58 / 92.11×` |
+
+### DUCC CPU-to-Torch-GPU ratio
+
+This is a cross-backend comparison, not a DUCC GPU measurement: DUCC is the
+CPU numerator and Torch A/B/C is the CUDA denominator. It is reported only for
+scalar analysis. Each cell is DUCC/A, DUCC/B, DUCC/C.
+
+| Spacing | Grid | Batch 16 | Batch 64 |
+| ---: | ---: | ---: | ---: |
+| 2.5° | `73×144` | `38.30 / 27.96 / 131.00×` | `145.59 / 106.66 / 482.78×` |
+| 2.0° | `91×180` | `62.63 / 46.28 / 192.48×` | `245.32 / 191.68 / 675.86×` |
+| 1.5° | `121×240` | `98.36 / 81.72 / 305.37×` | `281.48 / 321.69 / 954.63×` |
+| 1.0° | `181×360` | `143.72 / 141.42 / 415.62×` | `198.13 / 231.49 / 971.06×` |
+| 0.5° | `361×720` | `105.63 / 146.02 / 370.97×` | `149.20 / 154.31 / 552.02×` |
+
+The batch-16/64 Torch JSONs set `contraction_diagnostics` to `false`. This
+only skips the optional dense BMM diagnostic, whose intentional batch
+expansion is not part of the SHT forward path and attempted a 22.3 GiB
+allocation at batch 64. The A/B/C transform timings and memory measurements
+remain enabled.
+
 ## Accuracy and construction trade-offs
 
 The C effective projection is complex-valued. That is expected from the
@@ -147,10 +212,15 @@ The complete raw JSON outputs are archived beside this report:
 - [CUDA vector forward](torch-abc-half-degree-grid-cuda-vector-final.json)
 - [CUDA scalar isolated training](torch-abc-half-degree-grid-cuda-scalar-train-isolated.json)
 - [CUDA vector isolated training](torch-abc-half-degree-grid-cuda-vector-train-isolated.json)
+- [CUDA A/B/C batch 16/64](torch-abc-half-degree-grid-cuda-b16-b64.json)
+- [CPU A/B/C batch 16/64](torch-abc-half-degree-grid-cpu-b16-b64.json)
 - [CUDA compiled contractions](torch-abc-73-cuda-compile-contractions-final.json)
 - [CPU DUCC/A/B/C batch 1](torch-ducc-abc-half-degree-grid-cpu-final.json)
 - [CPU DUCC/A/B/C batch 4](torch-ducc-abc-half-degree-grid-cpu-b4-final.json)
+- [CPU DUCC/A/B/C batch 16](torch-ducc-abc-half-degree-grid-cpu-b16.json)
+- [CPU DUCC/A/B/C batch 64](torch-ducc-abc-half-degree-grid-cpu-b64.json)
 - [CPU float64 73×144 check](torch-ducc-abc-73-cpu-f64-final.json)
+- [Derived batch 16/64 speedups](torch-abc-batch16-64-speedups.json)
 
 Representative commands, using the exact five-case matrix, are:
 
@@ -161,6 +231,18 @@ uv run python scripts/torch_abc_benchmark.py \
   --dtypes float32 --transforms scalar,vector --batches 1,4 \
   --warmup 2 --repeat 5 \
   --output results/torch-abc-half-degree-grid-cuda.json
+
+uv run python scripts/torch_abc_benchmark.py \
+  --device cuda --cases 73x144x72,91x180x90,121x240x120,181x360x180,361x720x360 \
+  --dtypes float32 --transforms scalar,vector --batches 16,64 \
+  --warmup 2 --repeat 5 --skip-contractions \
+  --output results/torch-abc-half-degree-grid-cuda-b16-b64.json
+
+uv run python scripts/torch_abc_benchmark.py \
+  --device cpu --cases 73x144x72,91x180x90,121x240x120,181x360x180,361x720x360 \
+  --dtypes float32 --transforms scalar,vector --batches 16,64 \
+  --threads 1 --warmup 2 --repeat 5 --skip-contractions \
+  --output results/torch-abc-half-degree-grid-cpu-b16-b64.json
 
 uv run python scripts/torch_ducc_abc_cpu_benchmark.py \
   --cases 73x144x72,91x180x90,121x240x120,181x360x180,361x720x360 \

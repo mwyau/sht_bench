@@ -407,7 +407,10 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
                                 **construction_diagnostics,
                             }
                         )
-                    if implementation == "precomputed_projection":
+                    if (
+                        implementation == "precomputed_projection"
+                        and not args.skip_contractions
+                    ):
                         for contraction_batch in args.batches:
                             contraction = _contraction_comparison(
                                 module,
@@ -600,6 +603,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         "dense_base_sha": args.base,
         "device": args.device,
         "cases": cases,
+        "contraction_diagnostics": not args.skip_contractions,
         "records": records,
     }
 
@@ -630,6 +634,11 @@ def main() -> int:
     parser.add_argument("--backward-batch", type=int, default=1)
     parser.add_argument("--compile", action="store_true")
     parser.add_argument("--compile-max-batch", type=int, default=1)
+    parser.add_argument(
+        "--skip-contractions",
+        action="store_true",
+        help="skip the optional dense BMM contraction diagnostic",
+    )
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
     args.batches = _parse_positive_ints(args.batches)
