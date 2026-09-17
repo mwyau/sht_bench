@@ -1,10 +1,10 @@
 # PyTorch A/B/C precomputed-projection benchmark
 
-This report records the final memory-safe matrix for the PyTorch equiangular
-SHT projection experiment. It uses 0.5° resolution steps and stops at 0.5°:
-2.5°, 2.0°, 1.5°, 1.0°, and 0.5°. A later 0.25° B-only attempt was killed by
-the host/container memory limit before producing a result file, so no 0.25° or
-finer case is included.
+This report records the final completed matrix for the PyTorch equiangular SHT
+projection experiment. It uses 0.5° resolution steps and stops at 0.5°:
+2.5°, 2.0°, 1.5°, 1.0°, and 0.5°. A later 0.25° all-method attempt still hit
+the host-memory limit before producing a result file, so no 0.25° or finer case
+is included.
 
 The comparison includes the three Torch implementations requested for the
 experiment and a scalar CPU cross-backend comparison against DUCC:
@@ -30,6 +30,8 @@ experiment and a scalar CPU cross-backend comparison against DUCC:
   `114.3 / 120.4 / 95.3×` for scalar A/B/C and
   `100.3 / 109.6 / 92.1×` for vector A/B/C. Relative to DUCC CPU, the
   corresponding scalar GPU ratios were `149.2 / 154.3 / 552.0×`.
+- CUDA batch scaling now covers b64/b128/b256/b512 at every completed grid;
+  only 0.5° vector A/B fail at b512, while C completes.
 - C requires a larger persistent projection than B and has a material
   construction cost. At 0.5° float32, the C projection occupies
   `374,284,800` bytes for scalar and `748,569,600` bytes for vector.
@@ -115,6 +117,11 @@ At 0.5°, C is the fastest one-thread Torch CPU path for batches 4, 16, and
 64; B is fastest at batch 1. The one-thread CPU-to-GPU ratios below use the
 same batch size and transform on both sides.
 
+The archived five-case CPU files cover Torch A/B/C at 1, 4, and 16 Torch
+threads, and scalar DUCC/A/B/C at 1, 4, and 16 DUCC threads, for batches 1, 4,
+16, and 64. The thread-scaling tables below show the 0.5° endpoint; the raw
+JSON links include every lower-resolution case.
+
 ## Batch 1/4/16/64 device comparison
 
 The complete batch comparison uses float32 inference-only forward timing for
@@ -199,34 +206,38 @@ frame. All values are inference-only medians.
 | 16 | `49.716 / 36.790 / 17.581` | `18.928 / 14.290 / 9.678` | `15.607 / 11.158 / 7.679` |
 | 64 | `45.743 / 42.934 / 18.103` | `15.934 / 16.043 / 9.178` | `12.378 / 12.047 / 6.024` |
 
-## 0.5° CUDA batch scaling
+## CUDA batch scaling across the completed grid
 
-This scaling probe keeps the maximum tested grid at `361×720` and doubles the
-batch from 64 through 1024. It uses `--skip-contractions`. Values are median
-milliseconds per frame; `OOM` is an observed CUDA allocator failure.
+This probe adds b128/b256/b512 to the existing b64 baseline for all five
+completed resolutions, scalar/vector transforms, and A/B/C. Values are median
+milliseconds per frame; each cell is `A / B / C`, and `OOM` is an observed CUDA
+allocator failure. The complete 120-cell status/value manifest is archived in
+[torch-abc-grid-cuda-batch-scaling.json](torch-abc-grid-cuda-batch-scaling.json).
 
-| Transform | Implementation | b64 | b128 | b256 | b512 | b1024 |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Scalar | A dense | `0.167` | `0.167` | `0.170` | `0.171` | OOM |
-| Scalar | B runtime fold | `0.161` | `0.162` | `0.165` | `0.166` | OOM |
-| Scalar | C precomputed | `0.045` | `0.045` | `0.046` | `0.046` | `0.053` |
-| Vector | A dense | `0.456` | `0.460` | `0.464` | OOM | — |
-| Vector | B runtime fold | `0.392` | `0.395` | `0.399` | OOM | — |
-| Vector | C precomputed | `0.197` | `0.198` | `0.200` | `0.201` | `0.231` |
+| Spacing | Grid | Scalar b64 | Scalar b128 | Scalar b256 | Scalar b512 | Vector b64 | Vector b128 | Vector b256 | Vector b512 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2.5° | `73×144` | `0.0066 / 0.0090 / 0.0020` | `0.0034 / 0.0053 / 0.0013` | `0.0036 / 0.0030 / 0.0009` | `0.0045 / 0.0045 / 0.0008` | `0.0122 / 0.0143 / 0.0055` | `0.0088 / 0.0070 / 0.0034` | `0.0104 / 0.0094 / 0.0032` | `0.0117 / 0.0118 / 0.0041` |
+| 2.0° | `91×180` | `0.0061 / 0.0078 / 0.0022` | `0.0057 / 0.0048 / 0.0015` | `0.0068 / 0.0057 / 0.0012` | `0.0077 / 0.0081 / 0.0012` | `0.0136 / 0.0134 / 0.0056` | `0.0162 / 0.0123 / 0.0050` | `0.0179 / 0.0172 / 0.0058` | `0.0191 / 0.0188 / 0.0068` |
+| 1.5° | `121×240` | `0.0095 / 0.0083 / 0.0028` | `0.0117 / 0.0096 / 0.0022` | `0.0138 / 0.0138 / 0.0021` | `0.0147 / 0.0156 / 0.0028` | `0.0276 / 0.0199 / 0.0090` | `0.0318 / 0.0301 / 0.0103` | `0.0342 / 0.0335 / 0.0122` | `0.0346 / 0.0341 / 0.0130` |
+| 1.0° | `181×360` | `0.0304 / 0.0260 / 0.0062` | `0.0341 / 0.0361 / 0.0063` | `0.0360 / 0.0382 / 0.0077` | `0.0368 / 0.0389 / 0.0079` | `0.0875 / 0.0805 / 0.0290` | `0.0909 / 0.0864 / 0.0332` | `0.0919 / 0.0883 / 0.0349` | `0.0942 / 0.0909 / 0.0356` |
+| 0.5° | `361×720` | `0.1669 / 0.1614 / 0.0451` | `0.1680 / 0.1630 / 0.0459` | `0.1705 / 0.1651 / 0.0459` | `0.1712 / 0.1664 / 0.0462` | `0.4560 / 0.3918 / 0.1965` | `0.4604 / 0.3964 / 0.1987` | `0.4645 / 0.3993 / 0.2001` | `OOM / OOM / 0.2013` |
 
-At this grid, C is the only tested implementation that reaches batch 1024 for
-both scalar and vector transforms. A and B fail at scalar batch 1024; A and B
-fail at vector batch 512. The vector C batch-512/1024 runs completed despite
-the corresponding A/B failures. A 0.25° B-only attempt was started after this
-scaling probe, but the container's host-memory OOM counter incremented and no
-CUDA allocator traceback was emitted; no JSON was written. It is intentionally
-skipped, leaving 0.5° as the maximum completed resolution.
+The 0.25° attempt was stopped after repeated host-memory kills. The container
+reached its 96 GiB limit (`oom_kill` increased) during the high-resolution
+vector path; the GPU was idle for the CPU failures, and no 0.25° JSON was
+written. It is intentionally excluded from the completed matrix.
 
-The batch-16/64 Torch JSONs set `contraction_diagnostics` to `false`. This
-only skips the optional dense BMM diagnostic, whose intentional batch
-expansion is not part of the SHT forward path and attempted a 22.3 GiB
-allocation at batch 64. The A/B/C transform timings and memory measurements
-remain enabled.
+## Memory controls
+
+The benchmark now clears the source package's cached Legendre/quadrature
+tables after each module is released. Those tables are needed while building
+the A/B/C projection modules, but retaining every scalar/vector and
+implementation copy is not needed for a sequential benchmark and can retain
+multiple GiB. `--skip-contractions` disables the optional BMM diagnostic, whose
+weight-repeat allocation is not part of the SHT forward path. The optional
+float64 cross-implementation check can be disabled with `--skip-correctness`
+for high-resolution timing. `--forward-batch-chunk` is available for bounded
+CPU forward experiments; it was not used for the completed CUDA matrix above.
 
 ## Accuracy and construction trade-offs
 
@@ -281,6 +292,10 @@ The complete raw JSON outputs are archived beside this report:
 - [CUDA 0.5° vector C batch 512](torch-abc-05-degree-cuda-vector-b512-c.json)
 - [CUDA 0.5° vector C batch 1024](torch-abc-05-degree-cuda-vector-b1024-c.json)
 - [CUDA 0.5° batch-scaling status manifest](torch-abc-05-degree-cuda-batch-scaling.json)
+- [CUDA all completed grids, scalar b128/b256/b512](torch-abc-grid-cuda-scalar-b128-b256-b512.json)
+- [CUDA all completed grids, vector b128/b256](torch-abc-grid-cuda-vector-b128-b256.json)
+- [CUDA all completed grids, vector b512](torch-abc-grid-cuda-vector-b512.json)
+- [CUDA all-grid b64/b128/b256/b512 status manifest](torch-abc-grid-cuda-batch-scaling.json)
 - [CPU A/B/C one thread, batch 1/4](torch-abc-half-degree-grid-cpu-t1-b1-b4.json)
 - [CPU A/B/C one thread, batch 16/64](torch-abc-half-degree-grid-cpu-b16-b64.json)
 - [CPU A/B/C four threads, batch 1/4/16/64](torch-abc-half-degree-grid-cpu-t4-b1-b4-b16-b64.json)
@@ -331,5 +346,5 @@ uv run python scripts/torch_ducc_abc_cpu_benchmark.py \
 
 The C prototype remains research-only; no production `torch-harmonics` source
 files were changed by this benchmark run. The report intentionally omits the
-older finer-resolution matrix rather than presenting it as part of this
-memory-safe result set.
+0.25° finer-resolution matrix after host-memory OOM rather than presenting it
+as a completed result.

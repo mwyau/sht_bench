@@ -11,6 +11,7 @@ import argparse
 import gc
 import json
 import statistics
+import sys
 import time
 from collections.abc import Callable
 from pathlib import Path
@@ -104,6 +105,33 @@ def _buffer_bytes(module: torch.nn.Module) -> int:
     return sum(buffer.numel() * buffer.element_size() for buffer in module.buffers())
 
 
+def _clear_torch_harmonics_precompute_caches() -> None:
+    """Release cached Legendre/quadrature tables between benchmark modules.
+
+    The source package's copy-returning cache keeps the original multi-GB
+    tables alive even after a module is deleted. That is useful for normal
+    repeated application, but it makes a sequential high-resolution benchmark
+    accumulate every scalar/vector and A/B/C construction. The modules own
+    their returned copies, so clearing the source cache after deletion is safe.
+    """
+
+    seen: set[int] = set()
+    for module_name in ("torch_harmonics.legendre", "torch_harmonics.quadrature"):
+        cached_module = sys.modules.get(module_name)
+        if cached_module is None:
+            continue
+        for function in vars(cached_module).values():
+            for cell in getattr(function, "__closure__", ()) or ():
+                try:
+                    cached_function = cell.cell_contents
+                except ValueError:
+                    continue
+                clear = getattr(cached_function, "cache_clear", None)
+                if callable(clear) and id(cached_function) not in seen:
+                    clear()
+                    seen.add(id(cached_function))
+
+
 def _build_module(
     implementation: str,
     package: Any,
@@ -169,6 +197,26 @@ def _timed(
         _synchronize(device)
         samples.append(time.perf_counter() - started)
     return samples
+
+
+def _forward_in_batch_chunks(
+    module: torch.nn.Module, value: torch.Tensor, chunk_size: int | None
+) -> torch.Tensor:
+    """Run a logical batch in bounded physical chunks.
+
+    The high-resolution CPU einsum path can otherwise ask the backend for a
+    broadcast workspace proportional to the full batch and projection tensor.
+    Chunking bounds that temporary workspace while preserving the logical
+    batch size reported by the benchmark.
+    """
+
+    if chunk_size is None or value.shape[0] <= chunk_size:
+        return module(value)
+    outputs = [
+        module(value[start : start + chunk_size])
+        for start in range(0, value.shape[0], chunk_size)
+    ]
+    return torch.cat(outputs, dim=0)
 
 
 def _error(actual: torch.Tensor, reference: torch.Tensor) -> dict[str, float]:
@@ -336,6 +384,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
     records: list[dict[str, Any]] = []
     cases = _parse_cases(args.cases)
     implementations = args.implementations
+    forward_chunk_size = args.forward_batch_chunk or None
     for case_index, (nlat, nlon, lmax) in enumerate(cases):
         for dtype_name in args.dtypes.split(","):
             dtype_name = dtype_name.strip()
@@ -383,13 +432,17 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
                     for batch in args.batches:
                         batch_sample = sample[:batch]
                         forward_samples = _timed(
-                            lambda function=module, value=batch_sample: function(value),
+                            lambda function=module, value=batch_sample, chunk_size=forward_chunk_size: _forward_in_batch_chunks(
+                                function, value, chunk_size
+                            ),
                             device,
                             args.warmup,
                             args.repeat,
                         )
                         forward_peak = _peak_delta(
-                            lambda function=module, value=batch_sample: function(value),
+                            lambda function=module, value=batch_sample, chunk_size=forward_chunk_size: _forward_in_batch_chunks(
+                                function, value, chunk_size
+                            ),
                             device,
                         )
                         forward_samples_by_batch[batch] = forward_samples
@@ -416,6 +469,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
                                 "construction_s": construction_s,
                                 "cuda_peak_constructor_delta_bytes": construction_peak,
                                 "cuda_peak_forward_delta_bytes": forward_peak,
+                                "forward_batch_chunk": forward_chunk_size,
                                 **construction_diagnostics,
                             }
                         )
@@ -545,13 +599,14 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
                             )
                     del module, sample
                     gc.collect()
+                    _clear_torch_harmonics_precompute_caches()
                     if device.type == "cuda":
                         torch.cuda.empty_cache()
 
     # Separate float64 gradient comparisons provide correctness records for
     # both scalar and vector C autograd paths instead of treating a timing run
     # as validation.
-    if set(implementations) == set(IMPLEMENTATIONS):
+    if set(implementations) == set(IMPLEMENTATIONS) and not args.skip_correctness:
         nlat, nlon, lmax = cases[0]
         for transform in args.transforms.split(","):
             transform = transform.strip()
@@ -618,6 +673,8 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
         "cases": cases,
         "implementations": implementations,
         "contraction_diagnostics": not args.skip_contractions,
+        "correctness_checks": not args.skip_correctness,
+        "forward_batch_chunk": forward_chunk_size,
         "records": records,
     }
 
@@ -654,10 +711,23 @@ def main() -> int:
         action="store_true",
         help="skip the optional dense BMM contraction diagnostic",
     )
+    parser.add_argument(
+        "--skip-correctness",
+        action="store_true",
+        help="skip the optional final float64 A/B/C correctness check",
+    )
+    parser.add_argument(
+        "--forward-batch-chunk",
+        type=int,
+        default=0,
+        help="split each logical forward batch into this many samples",
+    )
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
     args.batches = _parse_positive_ints(args.batches)
     args.implementations = _parse_implementations(args.implementations)
+    if args.forward_batch_chunk < 0:
+        parser.error("forward-batch-chunk must be non-negative")
     if args.device == "cuda" and not torch.cuda.is_available():
         parser.error("CUDA is unavailable")
     result = _run(args)

@@ -25,6 +25,7 @@ from torch_abc_benchmark import (
     DTYPES,
     _buffer_bytes,
     _build_module,
+    _clear_torch_harmonics_precompute_caches,
     _move_module,
     _parse_cases,
     _timed,
@@ -283,6 +284,7 @@ def _run(args: argparse.Namespace) -> dict[str, Any]:
 
             del torch_modules, torch_outputs, sample, ducc_output
             gc.collect()
+            _clear_torch_harmonics_precompute_caches()
 
     return {
         "schema": "sht_bench.torch_ducc_abc_cpu.v1",

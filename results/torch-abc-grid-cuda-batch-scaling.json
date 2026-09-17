@@ -1,0 +1,1244 @@
+{
+  "schema": "sht_bench.torch_abc_cuda_batch_scaling.v2",
+  "grids": [
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2.0
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1.0
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5
+    }
+  ],
+  "dtype": "float32",
+  "device": "cuda",
+  "contraction_diagnostics": false,
+  "correctness_checks": false,
+  "forward_batch_chunk": null,
+  "logical_batches": [
+    64,
+    128,
+    256,
+    512
+  ],
+  "source_files": [
+    "torch-abc-half-degree-grid-cuda-b16-b64.json",
+    "torch-abc-grid-cuda-scalar-b128-b256-b512.json",
+    "torch-abc-grid-cuda-vector-b128-b256.json",
+    "torch-abc-grid-cuda-vector-b512.json",
+    "torch-abc-05-degree-cuda-batch-scaling.json"
+  ],
+  "records": [
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.006559264875249937,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.008953578799264506,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0019780636648647487,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01216549935634248,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.014251734683057293,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.005459874955704436,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.006107795343268663,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.007816764991730452,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0022169369913171977,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.013563734682975337,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.013360076991375536,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.005632842658087611,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.009495361155131832,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.008308310498250648,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0027997484721709043,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.02760742063401267,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01992857869481668,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.009000064892461523,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03038416980416514,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.026005844119936228,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.006199530616868287,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0874790785019286,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.08045925278565846,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.029012702725594863,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.16690609481884167,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.16138343562488444,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.04511193765210919,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.45604557817569,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.3917898138752207,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 64,
+      "status": "ok",
+      "milliseconds_per_frame": 0.19653884373838082,
+      "source": "torch-abc-half-degree-grid-cuda-b16-b64.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.003434195605223067,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0036409492167877033,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.004455548605619697,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.005321999196894467,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0029868006095057353,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.004460127001948422,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0013025783118791878,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0008945944500737824,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0007531384653702844,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.005746616807300597,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.006833914085291326,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.007704144536546664,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.004843295755563304,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.005748968760599382,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.008068338047451107,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.001548420186736621,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0012276368579478003,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0012470250112528447,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.011678117516567,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.013802218745695427,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01465830291635939,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.009577413948136382,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.013842843145539518,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01563715431984747,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0022306321625364944,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0021434771042549983,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0027839828362630215,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.034140655770897865,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03604062840167899,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03676625419757329,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03611267311498523,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03821881273324834,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.038933953419473255,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.006286687494139187,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0077141048677731305,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.007879509666963713,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.16799525110400282,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.17054428099072538,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.17118355481215985,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.16304988275805954,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.16509301622136263,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.16637659200569033,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.04587018702295609,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0459007151221158,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "scalar",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.04615761690729414,
+      "source": "torch-abc-grid-cuda-scalar-b128-b256-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.008797296686680056,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01042273379425751,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.007044889571261592,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.00939711753744632,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.003416897015995346,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0032373436624766327,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01621130468265619,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01794640593288932,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.012299116860958748,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.017151843167084735,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.00500633723277133,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.005760472959082108,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03177828875777777,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.034153445085394196,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03013586683664471,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.033467991670477204,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0102750382211525,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.01222682749357773,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0908662495930912,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.09190243417833699,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.08637024257041048,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.08826727753330488,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.033238500691368245,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.034905981010524556,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.4604412733897334,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.46450151967292186,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.39638525777263567,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.3993159725723672,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 128,
+      "status": "ok",
+      "milliseconds_per_frame": 0.19868886010954157,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 256,
+      "status": "ok",
+      "milliseconds_per_frame": 0.20009064883197425,
+      "source": "torch-abc-grid-cuda-vector-b128-b256.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.011720165730366716,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.011762841950258007,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "73x144x72",
+      "spacing_deg": 2.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.004105501830053981,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.019120463093713624,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.018762257695925655,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "91x180x90",
+      "spacing_deg": 2,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.006826712706242688,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.034593599593790714,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.03407995109228068,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "121x240x120",
+      "spacing_deg": 1.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.012992648407816887,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.09415959993930301,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.09087380294658942,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "181x360x180",
+      "spacing_deg": 1,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.0356326017936226,
+      "source": "torch-abc-grid-cuda-vector-b512.json"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "dense",
+      "batch_size": 512,
+      "status": "cuda_oom",
+      "error": "Tried to allocate 3.96 GiB with 2.69 GiB free in dense A"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "runtime_fold",
+      "batch_size": 512,
+      "status": "cuda_oom",
+      "error": "Tried to allocate 1.98 GiB with 1.06 GiB free in runtime-fold B"
+    },
+    {
+      "grid": "361x720x360",
+      "spacing_deg": 0.5,
+      "transform": "vector",
+      "implementation": "precomputed_projection",
+      "batch_size": 512,
+      "status": "ok",
+      "milliseconds_per_frame": 0.20128218920945073,
+      "source": "torch-abc-05-degree-cuda-vector-b512-c.json"
+    }
+  ]
+}
+
