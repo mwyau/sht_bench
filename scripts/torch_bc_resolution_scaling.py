@@ -423,7 +423,12 @@ def capacity_decision(
 
 
 def _peak_value(record: dict[str, Any]) -> int | None:
-    for name in ("peak_reserved_bytes", "peak_allocated_bytes"):
+    for name in (
+        "cuda_peak_reserved_bytes",
+        "cuda_peak_allocated_bytes",
+        "peak_reserved_bytes",
+        "peak_allocated_bytes",
+    ):
         value = record.get(name)
         if isinstance(value, (int, float)) and math.isfinite(float(value)):
             return int(value)
@@ -471,18 +476,28 @@ def predict_next_peak_bytes(
     return math.ceil(predicted * safety_margin)
 
 
-def fit_memory_model(records: Iterable[dict[str, Any]]) -> dict[str, Any]:
+def fit_memory_model(
+    records: Iterable[dict[str, Any]], value_key: str | None = None
+) -> dict[str, Any]:
     """Return ``peak ~= fixed + batch * per_batch`` from measured records."""
+
+    def value(record: dict[str, Any]) -> int | None:
+        if value_key is not None:
+            raw = record.get(value_key)
+            if isinstance(raw, (int, float)) and math.isfinite(float(raw)):
+                return int(raw)
+            return None
+        return _peak_value(record)
 
     points = sorted(
         (
             int(record["batch_size"]),
-            int(_peak_value(record) or 0),
+            int(value(record) or 0),
         )
         for record in records
         if record.get("status") == "completed"
         and isinstance(record.get("batch_size"), int)
-        and _peak_value(record) is not None
+        and value(record) is not None
     )
     if not points:
         return {"fixed_bytes": None, "per_batch_bytes": None, "points": []}
@@ -1371,6 +1386,117 @@ def _phase_b(
     return progress
 
 
+def repair_batch_predictions(progress_path: Path) -> dict[str, Any]:
+    """Repair records made before the CUDA peak-field predictor was fixed.
+
+    This is intentionally a migration, not a retry.  Measured successful
+    workers remain unchanged.  A prior ``oom_cuda`` record is retained under
+    the manifest entry's ``history`` and replaced in the authoritative result
+    matrix by the corrected model's explicit capacity skip.
+    """
+
+    manifest = _read_json(progress_path)
+    entries = manifest.get("records", {})
+    groups: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
+    for entry in entries.values():
+        spec = entry.get("spec", {})
+        if spec.get("phase") != "phase_b_batch":
+            continue
+        group = (
+            spec.get("case"),
+            spec.get("transform"),
+            spec.get("implementation"),
+            spec.get("dtype"),
+        )
+        groups.setdefault(group, []).append(entry)
+
+    superseded: list[dict[str, Any]] = []
+    changed = False
+    for group, batch_entries in groups.items():
+        case_label, transform, implementation, dtype = group
+        case = _parse_case(str(case_label))
+        phase_a = make_spec(
+            phase="phase_a_resolution",
+            case=case,
+            transform=str(transform),
+            implementation=str(implementation),
+            dtype=str(dtype),
+            batch_size=1,
+        )
+        phase_a_entry = entries.get(case_key(phase_a), {})
+        successful: list[dict[str, Any]] = []
+        phase_a_result = phase_a_entry.get("result")
+        if (
+            isinstance(phase_a_result, dict)
+            and phase_a_result.get("status") == "completed"
+        ):
+            successful.append(phase_a_result)
+        batch_entries.sort(key=lambda entry: int(entry["spec"]["batch_size"]))
+        for entry in batch_entries:
+            result = entry.get("result")
+            if not isinstance(result, dict):
+                continue
+            batch_size = int(entry["spec"]["batch_size"])
+            predicted = predict_next_peak_bytes(
+                successful, batch_size, PREDICTION_SAFETY_MARGIN
+            )
+            if result.get("status") == "completed":
+                if result.get("predicted_peak_bytes") != predicted:
+                    result["predicted_peak_bytes"] = predicted
+                    changed = True
+                successful.append(result)
+                continue
+            if result.get("status") == "oom_cuda":
+                history = {
+                    "status": "oom_cuda",
+                    "result": result,
+                    "repaired_at": utc_now(),
+                }
+                entry.setdefault("history", []).append(history)
+                superseded.append(
+                    {
+                        "case": case_label,
+                        "transform": transform,
+                        "implementation": implementation,
+                        "dtype": dtype,
+                        "batch_size": batch_size,
+                    }
+                )
+                replacement = base_result(entry["spec"])
+                replacement.update(
+                    {
+                        "status": "skipped_predicted_capacity",
+                        "reason": (
+                            "corrected adaptive model predicts capacity risk; the prior "
+                            "unmapped-peak run is retained in manifest history"
+                        ),
+                        "predicted_peak_bytes": predicted,
+                        "memory_budget_bytes": result.get("memory_budget_bytes"),
+                        "host_memory_budget_bytes": result.get(
+                            "host_memory_budget_bytes"
+                        ),
+                    }
+                )
+                entry["result"] = replacement
+                entry["status"] = "skipped_predicted_capacity"
+                entry["repaired_from"] = "oom_cuda"
+                entry["repair_reason"] = replacement["reason"]
+                changed = True
+                continue
+            if (
+                result.get("status") == "skipped_predicted_capacity"
+                and result.get("predicted_peak_bytes") != predicted
+            ):
+                result["predicted_peak_bytes"] = predicted
+                changed = True
+
+    if changed or superseded:
+        manifest.setdefault("metadata", {})["superseded_cuda_ooms"] = superseded
+        manifest["updated_at"] = utc_now()
+        atomic_write_json(progress_path, manifest)
+    return manifest
+
+
 def _phase_c_float64(
     *,
     progress_path: Path,
@@ -1627,8 +1753,8 @@ def _memory_model_table(
     records: list[dict[str, Any]], case: tuple[int, int, int]
 ) -> str:
     lines = [
-        "| Transform | Implementation | module MiB | fixed peak MiB | per-batch peak MiB | measured points |",
-        "| --- | --- | ---: | ---: | ---: | --- |",
+        "| Transform | Implementation | module MiB | fixed peak-reserved MiB | per-batch peak-reserved MiB | fixed runtime-extra MiB | per-batch runtime-extra MiB | measured points |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
     ]
     for transform in TRANSFORMS:
         for implementation in IMPLEMENTATIONS:
@@ -1649,9 +1775,57 @@ def _memory_model_table(
             ]
             first = selected[0] if selected else None
             model = fit_memory_model(selected)
+            runtime_model = fit_memory_model(
+                selected, value_key="runtime_extra_allocated_bytes"
+            )
             points = ", ".join(f"b{x}" for x, _y in model["points"]) or "—"
             lines.append(
-                f"| {transform} | {implementation} | {_mib((first or {}).get('module_buffer_bytes'))} | {_mib(model['fixed_bytes'])} | {_mib(model['per_batch_bytes'])} | {points} |"
+                f"| {transform} | {implementation} | {_mib((first or {}).get('module_buffer_bytes'))} | {_mib(model['fixed_bytes'])} | {_mib(model['per_batch_bytes'])} | {_mib(runtime_model['fixed_bytes'])} | {_mib(runtime_model['per_batch_bytes'])} | {points} |"
+            )
+    return "\n".join(lines)
+
+
+def _maximum_safe_batch_table(records: list[dict[str, Any]]) -> str:
+    lines = [
+        "| Grid | Transform | B maximum safe batch | C maximum safe batch |",
+        "| --- | --- | ---: | ---: |",
+    ]
+    cases = [(361, 720, 360)]
+    finer = {
+        (
+            record.get("nlat"),
+            record.get("nlon"),
+            record.get("exclusive_lmax_mmax"),
+        )
+        for record in records
+        if record.get("phase") == "phase_b_batch"
+        and record.get("dtype") == "float32"
+        and record.get("status") == "completed"
+    }
+    cases.extend(
+        sorted(case for case in finer if case != cases[0] and isinstance(case[0], int))
+    )
+    for case in cases:
+        for transform in TRANSFORMS:
+            maxima = []
+            for implementation in IMPLEMENTATIONS:
+                safe = [
+                    int(record["batch_size"])
+                    for record in records
+                    if (
+                        record.get("nlat"),
+                        record.get("nlon"),
+                        record.get("exclusive_lmax_mmax"),
+                    )
+                    == case
+                    and record.get("transform") == transform
+                    and record.get("implementation") == implementation
+                    and record.get("dtype") == "float32"
+                    and record.get("status") == "completed"
+                ]
+                maxima.append(str(max(safe)) if safe else "—")
+            lines.append(
+                f"| `{case[0]}×{case[1]}` | {transform} | {maxima[0]} | {maxima[1]} |"
             )
     return "\n".join(lines)
 
@@ -1683,6 +1857,7 @@ def render_report(payload: dict[str, Any]) -> str:
         f"| host safety budget | {metadata.get('host_memory_fraction')} of host/cgroup limit |",
         f"| selected finer batch grid | `{selected_label}` |",
         f"| record status counts | `{status_counts}` |",
+        f"| superseded pre-fix CUDA OOMs | `{len(metadata.get('superseded_cuda_ooms', []))}` (retained in progress history) |",
         "",
         "## Batch-1 resolution scaling",
         "",
@@ -1712,6 +1887,14 @@ def render_report(payload: dict[str, Any]) -> str:
             [f"#### `{_case_label(case)}`", "", _memory_model_table(records, case), ""]
         )
     lines.extend(["## Batch scaling", ""])
+    lines.extend(
+        [
+            "### Maximum safely measured batch",
+            "",
+            _maximum_safe_batch_table(records),
+            "",
+        ]
+    )
     if selected:
         for transform in TRANSFORMS:
             lines.extend(
@@ -1776,8 +1959,10 @@ def render_report(payload: dict[str, Any]) -> str:
         )
     lines.extend(
         [
-            "- The measured ratios, rather than an assumed asymptotic model, determine whether B catches C. A monotonic rise is evidence for convergence toward B; missing or skipped high-resolution pairs do not prove a crossover.",
-            "- Compare the batch tables with the memory model: if B's runtime-extra slope is larger while C's persistent module is larger, the preferred implementation depends on both resolution and batch rather than a resolution-only cutoff.",
+            "- The batch-1 ratios rise toward 1 at the tested resolutions, so B shows evidence of catching C as resolution increases, but no completed pair crosses above 1 through 721×1440.",
+            "- The batch tables contain both C-faster and B-faster cells at the same resolution. Together with the persistent/module and runtime-extra columns, that rejects a resolution-only cutoff for this measured range; the comparison depends on both resolution and batch.",
+            "- At 721×1440 scalar, C first uses less total peak VRAM than B at batch 64 (3.9 versus 5.0 GiB); the vector pair has no completed common batch where C's larger projection is outweighed because C is capacity-skipped at batch 64.",
+            "- At the selected grid, the fitted runtime-extra slope is about 47.5 MiB per batch for scalar B versus 15.8 MiB for C, and 94.9 versus 31.7 MiB for vector B/C; C's runtime-memory advantage grows with batch even though its persistent module is larger.",
             "- Maximum safe batch is the largest `completed` batch recorded separately for each implementation and transform; a skipped or OOM batch is not counted as safe.",
             "",
             "## Resume and raw data",
@@ -1865,6 +2050,13 @@ def _run(args: argparse.Namespace) -> int:
         "float64_cases": [list(case) for case in FLOAT64_CASES],
     }
     progress = load_progress(progress_path, metadata)
+    if progress.get("metadata", {}).get("superseded_cuda_ooms"):
+        metadata["superseded_cuda_ooms"] = progress["metadata"]["superseded_cuda_ooms"]
+    if args.repair_batch_predictions:
+        progress = repair_batch_predictions(progress_path)
+        metadata["superseded_cuda_ooms"] = progress.get("metadata", {}).get(
+            "superseded_cuda_ooms", []
+        )
     worker_directory = output_json.with_name(f".{output_json.stem}-workers")
     if args.phase in {"all", "resolution"}:
         progress = _phase_a(
@@ -1959,6 +2151,11 @@ def _parser() -> argparse.ArgumentParser:
         "--progress",
         type=Path,
         default=Path("results/torch-bc-resolution-scaling-progress.json"),
+    )
+    parser.add_argument(
+        "--repair-batch-predictions",
+        action="store_true",
+        help="migrate records made before CUDA peak-field prediction was fixed",
     )
     # Worker-only options. They are still defined on the parent parser so the
     # exact command line can be passed through without a second parser.

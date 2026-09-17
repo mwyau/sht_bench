@@ -113,6 +113,11 @@ def test_capacity_skip_and_memory_model_are_conservative(benchmark_module):
     assert model["fixed_bytes"] == 100
     assert model["per_batch_bytes"] == 100
     assert benchmark_module.predict_next_peak_bytes(records, 4, 1.2) == 600
+    cuda_records = [
+        {"status": "completed", "batch_size": 1, "cuda_peak_reserved_bytes": 200},
+        {"status": "completed", "batch_size": 2, "cuda_peak_reserved_bytes": 300},
+    ]
+    assert benchmark_module.predict_next_peak_bytes(cuda_records, 4, 1.2) == 600
 
 
 def test_module_estimate_keeps_c_complex_and_vector_double(benchmark_module):
