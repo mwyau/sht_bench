@@ -1,0 +1,725 @@
+{
+  "schema": "sht_bench.torch_ducc_abc_cpu.v1",
+  "source": "/home/albert/torch-harmonics",
+  "source_sha": "f4cc65515d79d66ff7ab1f02d53518e0b063fc99",
+  "dense_base_sha": "3278fb669483d04537aa60c87fb0754d989e2e70",
+  "ducc0_version": "0.41.0",
+  "device": "cpu",
+  "threads": 16,
+  "cases": [
+    [
+      73,
+      144,
+      72
+    ],
+    [
+      91,
+      180,
+      90
+    ],
+    [
+      121,
+      240,
+      120
+    ],
+    [
+      181,
+      360,
+      180
+    ],
+    [
+      361,
+      720,
+      360
+    ]
+  ],
+  "implementations": [
+    "ducc0",
+    "dense",
+    "runtime_fold",
+    "precomputed_projection"
+  ],
+  "method": "shared random real map; scalar CC analysis; inference-only timing",
+  "records": [
+    {
+      "record_type": "performance",
+      "backend": "ducc0",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.004086849978193641,
+        0.004342486150562763,
+        0.004255733918398619,
+        0.004260173067450523,
+        0.003878291929140687
+      ],
+      "median_s": 0.004255733918398619,
+      "milliseconds_per_frame": 1.0639334795996547,
+      "module_buffer_bytes": 0,
+      "construction_s": 0.0,
+      "setup_s": 0.0,
+      "output_vs_ducc": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.642457559431932e-07,
+        "maximum_absolute": 1.6701335425750585e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "dense",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.0005936149973422289,
+        0.0005811220034956932,
+        0.0005829650908708572,
+        0.0005658429581671953,
+        0.0005752409342676401
+      ],
+      "median_s": 0.0005811220034956932,
+      "milliseconds_per_frame": 0.1452805008739233,
+      "module_buffer_bytes": 3006792,
+      "construction_s": 0.01728623709641397,
+      "setup_s": 0.01728623709641397,
+      "output_vs_ducc": {
+        "relative_l2": 2.6424578436490265e-07,
+        "maximum_absolute": 1.6701335425750585e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "runtime_fold",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.0006958348676562309,
+        0.0007075369358062744,
+        0.0006973778363317251,
+        0.0006944129709154367,
+        0.0007071569561958313
+      ],
+      "median_s": 0.0006973778363317251,
+      "milliseconds_per_frame": 0.17434445908293128,
+      "module_buffer_bytes": 1515532,
+      "construction_s": 0.009076511021703482,
+      "setup_s": 0.009076511021703482,
+      "output_vs_ducc": {
+        "relative_l2": 2.2165751545344392e-07,
+        "maximum_absolute": 1.431475652680092e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.6049201551359147e-07,
+        "maximum_absolute": 1.4312990970211104e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "precomputed_projection",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "ducc_inclusive_lmax_mmax": 71,
+      "samples_s": [
+        0.0008915001526474953,
+        0.0008774739690124989,
+        0.0008910489268600941,
+        0.0008780250791460276,
+        0.0008930731564760208
+      ],
+      "median_s": 0.0008910489268600941,
+      "milliseconds_per_frame": 0.22276223171502352,
+      "module_buffer_bytes": 3027456,
+      "construction_s": 0.02591972309164703,
+      "setup_s": 0.02591972309164703,
+      "output_vs_ducc": {
+        "relative_l2": 2.1695507257391e-07,
+        "maximum_absolute": 1.4331967577163596e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.724232786022185e-07,
+        "maximum_absolute": 1.6714939192752354e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "ducc0",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "ducc_inclusive_lmax_mmax": 89,
+      "samples_s": [
+        0.005625194171443582,
+        0.005618161056190729,
+        0.005585360107943416,
+        0.005529044894501567,
+        0.0055402659345418215
+      ],
+      "median_s": 0.005585360107943416,
+      "milliseconds_per_frame": 1.396340026985854,
+      "module_buffer_bytes": 0,
+      "construction_s": 0.0,
+      "setup_s": 0.0,
+      "output_vs_ducc": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.8573273880283523e-07,
+        "maximum_absolute": 1.4316080978460377e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "dense",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "ducc_inclusive_lmax_mmax": 89,
+      "samples_s": [
+        0.0008895669598132372,
+        0.0008851189631968737,
+        0.0008770630229264498,
+        0.0008799789939075708,
+        0.0008695090655237436
+      ],
+      "median_s": 0.0008799789939075708,
+      "milliseconds_per_frame": 0.2199947484768927,
+      "module_buffer_bytes": 5864490,
+      "construction_s": 0.016417328966781497,
+      "setup_s": 0.016417328966781497,
+      "output_vs_ducc": {
+        "relative_l2": 2.8573273880283523e-07,
+        "maximum_absolute": 1.4316080978460377e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "runtime_fold",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "ducc_inclusive_lmax_mmax": 89,
+      "samples_s": [
+        0.0010215630754828453,
+        0.0010521190706640482,
+        0.0010192079935222864,
+        0.001014498993754387,
+        0.0010490629356354475
+      ],
+      "median_s": 0.0010215630754828453,
+      "milliseconds_per_frame": 0.2553907688707113,
+      "module_buffer_bytes": 2950654,
+      "construction_s": 0.011386109981685877,
+      "setup_s": 0.011386109981685877,
+      "output_vs_ducc": {
+        "relative_l2": 2.423004161755671e-07,
+        "maximum_absolute": 1.026085215016792e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.901202265093161e-07,
+        "maximum_absolute": 1.6698948002158431e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "precomputed_projection",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "ducc_inclusive_lmax_mmax": 89,
+      "samples_s": [
+        0.0012525119818747044,
+        0.001245739869773388,
+        0.001257861964404583,
+        0.0012394979130476713,
+        0.0012433950323611498
+      ],
+      "median_s": 0.001245739869773388,
+      "milliseconds_per_frame": 0.311434967443347,
+      "module_buffer_bytes": 5896800,
+      "construction_s": 0.039058858063071966,
+      "setup_s": 0.039058858063071966,
+      "output_vs_ducc": {
+        "relative_l2": 2.1332876087853947e-07,
+        "maximum_absolute": 1.017159661387268e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.884665377678175e-07,
+        "maximum_absolute": 2.1495618511835346e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "ducc0",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "ducc_inclusive_lmax_mmax": 119,
+      "samples_s": [
+        0.00991376000456512,
+        0.009535053977742791,
+        0.009445527102798223,
+        0.009458251995965838,
+        0.009294116171076894
+      ],
+      "median_s": 0.009458251995965838,
+      "milliseconds_per_frame": 2.3645629989914596,
+      "module_buffer_bytes": 0,
+      "construction_s": 0.0,
+      "setup_s": 0.0,
+      "output_vs_ducc": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.6074934567077435e-07,
+        "maximum_absolute": 1.550440856590285e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "dense",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "ducc_inclusive_lmax_mmax": 119,
+      "samples_s": [
+        0.0010980849619954824,
+        0.0011134031228721142,
+        0.0010382540058344603,
+        0.0010351170785725117,
+        0.0010577889624983072
+      ],
+      "median_s": 0.0010577889624983072,
+      "milliseconds_per_frame": 0.2644472406245768,
+      "module_buffer_bytes": 13881720,
+      "construction_s": 0.02870097104460001,
+      "setup_s": 0.02870097104460001,
+      "output_vs_ducc": {
+        "relative_l2": 2.6074934567077435e-07,
+        "maximum_absolute": 1.550440856590285e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "runtime_fold",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "ducc_inclusive_lmax_mmax": 119,
+      "samples_s": [
+        0.0010699930135160685,
+        0.0011166189797222614,
+        0.0011307050008326769,
+        0.001126586925238371,
+        0.0011100869160145521
+      ],
+      "median_s": 0.0011166189797222614,
+      "milliseconds_per_frame": 0.27915474493056536,
+      "module_buffer_bytes": 6972604,
+      "construction_s": 0.019098972203209996,
+      "setup_s": 0.019098972203209996,
+      "output_vs_ducc": {
+        "relative_l2": 2.533864176257339e-07,
+        "maximum_absolute": 1.4318629837362096e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.740127342804044e-07,
+        "maximum_absolute": 1.5502487258345354e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "precomputed_projection",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "ducc_inclusive_lmax_mmax": 119,
+      "samples_s": [
+        0.0018263710662722588,
+        0.001760637853294611,
+        0.0017373550217598677,
+        0.001762100961059332,
+        0.0017107650637626648
+      ],
+      "median_s": 0.001760637853294611,
+      "milliseconds_per_frame": 0.44015946332365274,
+      "module_buffer_bytes": 13939200,
+      "construction_s": 0.06622834713198245,
+      "setup_s": 0.06622834713198245,
+      "output_vs_ducc": {
+        "relative_l2": 2.361534541250876e-07,
+        "maximum_absolute": 1.4406020909518702e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.743514926351054e-07,
+        "maximum_absolute": 2.147129862350994e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "ducc0",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "ducc_inclusive_lmax_mmax": 179,
+      "samples_s": [
+        0.020369637990370393,
+        0.02017932408489287,
+        0.020118671003729105,
+        0.020340343937277794,
+        0.02031773212365806
+      ],
+      "median_s": 0.02031773212365806,
+      "milliseconds_per_frame": 5.079433030914515,
+      "module_buffer_bytes": 0,
+      "construction_s": 0.0,
+      "setup_s": 0.0,
+      "output_vs_ducc": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "output_vs_dense": {
+        "relative_l2": 2.9438862725328363e-07,
+        "maximum_absolute": 1.43540671615483e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "dense",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "ducc_inclusive_lmax_mmax": 179,
+      "samples_s": [
+        0.0033082710579037666,
+        0.0033159039448946714,
+        0.003322215983644128,
+        0.003358132904395461,
+        0.0030624831560999155
+      ],
+      "median_s": 0.0033159039448946714,
+      "milliseconds_per_frame": 0.8289759862236679,
+      "module_buffer_bytes": 46785780,
+      "construction_s": 0.07156590605154634,
+      "setup_s": 0.07156590605154634,
+      "output_vs_ducc": {
+        "relative_l2": 2.9438862725328363e-07,
+        "maximum_absolute": 1.43540671615483e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "runtime_fold",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "ducc_inclusive_lmax_mmax": 179,
+      "samples_s": [
+        0.002097905846312642,
+        0.0020582331344485283,
+        0.002049605827778578,
+        0.002116902032867074,
+        0.002081845887005329
+      ],
+      "median_s": 0.002081845887005329,
+      "milliseconds_per_frame": 0.5204614717513323,
+      "module_buffer_bytes": 23462104,
+      "construction_s": 0.04232363705523312,
+      "setup_s": 0.04232363705523312,
+      "output_vs_ducc": {
+        "relative_l2": 2.8381353445183777e-07,
+        "maximum_absolute": 1.909140564748668e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 3.218476649635704e-07,
+        "maximum_absolute": 1.909645334308152e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "precomputed_projection",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "ducc_inclusive_lmax_mmax": 179,
+      "samples_s": [
+        0.003269477980211377,
+        0.0030124690383672714,
+        0.0029502729885280132,
+        0.002957367105409503,
+        0.002890432020649314
+      ],
+      "median_s": 0.002957367105409503,
+      "milliseconds_per_frame": 0.7393417763523757,
+      "module_buffer_bytes": 46915200,
+      "construction_s": 0.18965191300958395,
+      "setup_s": 0.18965191300958395,
+      "output_vs_ducc": {
+        "relative_l2": 2.652063244568126e-07,
+        "maximum_absolute": 1.9142455585097196e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 3.170338800373429e-07,
+        "maximum_absolute": 2.1487246613105526e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "ducc0",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "ducc_inclusive_lmax_mmax": 359,
+      "samples_s": [
+        0.07781780697405338,
+        0.07705282187089324,
+        0.07750814990140498,
+        0.07602336606942117,
+        0.07619439414702356
+      ],
+      "median_s": 0.07705282187089324,
+      "milliseconds_per_frame": 19.26320546772331,
+      "module_buffer_bytes": 0,
+      "construction_s": 0.0,
+      "setup_s": 0.0,
+      "output_vs_ducc": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      },
+      "output_vs_dense": {
+        "relative_l2": 3.1692485435996787e-07,
+        "maximum_absolute": 1.9186845747753978e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "dense",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "ducc_inclusive_lmax_mmax": 359,
+      "samples_s": [
+        0.02930471603758633,
+        0.026485836831852794,
+        0.02972009894438088,
+        0.029617757769301534,
+        0.02594615099951625
+      ],
+      "median_s": 0.02930471603758633,
+      "milliseconds_per_frame": 7.326179009396583,
+      "module_buffer_bytes": 373766760,
+      "construction_s": 0.43341955984942615,
+      "setup_s": 0.43341955984942615,
+      "output_vs_ducc": {
+        "relative_l2": 3.1692485435996787e-07,
+        "maximum_absolute": 1.9186845747753978e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 0.0,
+        "maximum_absolute": 0.0
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "runtime_fold",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "ducc_inclusive_lmax_mmax": 359,
+      "samples_s": [
+        0.015418910188600421,
+        0.014992886921390891,
+        0.01634060707874596,
+        0.015675097005441785,
+        0.015559611842036247
+      ],
+      "median_s": 0.015559611842036247,
+      "milliseconds_per_frame": 3.889902960509062,
+      "module_buffer_bytes": 187151404,
+      "construction_s": 0.18695169501006603,
+      "setup_s": 0.18695169501006603,
+      "output_vs_ducc": {
+        "relative_l2": 2.92987522243493e-07,
+        "maximum_absolute": 1.7884462977235671e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 3.42082728366222e-07,
+        "maximum_absolute": 2.3863415208325023e-06
+      }
+    },
+    {
+      "record_type": "performance",
+      "backend": "precomputed_projection",
+      "operation": "analysis",
+      "transform": "scalar",
+      "dtype": "float32",
+      "device": "cpu",
+      "threads": 16,
+      "batch_size": 4,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "ducc_inclusive_lmax_mmax": 359,
+      "samples_s": [
+        0.017599411075934768,
+        0.01784884510561824,
+        0.017775879008695483,
+        0.017979477997869253,
+        0.017876124940812588
+      ],
+      "median_s": 0.01784884510561824,
+      "milliseconds_per_frame": 4.46221127640456,
+      "module_buffer_bytes": 374284800,
+      "construction_s": 1.5500547499395907,
+      "setup_s": 1.5500547499395907,
+      "output_vs_ducc": {
+        "relative_l2": 2.7070012720287195e-07,
+        "maximum_absolute": 1.669188350206241e-06
+      },
+      "output_vs_dense": {
+        "relative_l2": 3.3926900755432143e-07,
+        "maximum_absolute": 2.3849097487982363e-06
+      }
+    }
+  ]
+}

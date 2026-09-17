@@ -1,0 +1,663 @@
+{
+  "schema": "sht_bench.torch_abc_speedups.v2",
+  "source_results": {
+    "torch_gpu_small_scalar": "torch-abc-half-degree-grid-cuda-scalar-final.json",
+    "torch_gpu_small_vector": "torch-abc-half-degree-grid-cuda-vector-final.json",
+    "torch_gpu_large_batches": "torch-abc-half-degree-grid-cuda-b16-b64.json",
+    "torch_cpu_small_batches": "torch-abc-half-degree-grid-cpu-t1-b1-b4.json",
+    "torch_cpu_large_batches": "torch-abc-half-degree-grid-cpu-b16-b64.json",
+    "ducc_cpu_batches": [
+      "torch-ducc-abc-half-degree-grid-cpu-final.json",
+      "torch-ducc-abc-half-degree-grid-cpu-b4-final.json",
+      "torch-ducc-abc-half-degree-grid-cpu-b16.json",
+      "torch-ducc-abc-half-degree-grid-cpu-b64.json"
+    ]
+  },
+  "definitions": {
+    "torch_cpu_to_gpu": "one-thread Torch CPU median milliseconds per frame divided by Torch GPU median milliseconds per frame",
+    "ducc_cpu_to_torch_gpu": "one-thread DUCC CPU scalar median milliseconds per frame divided by Torch GPU A/B/C median milliseconds per frame",
+    "speedup_interpretation": "Values greater than 1 mean the GPU path is faster"
+  },
+  "records": [
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 1.0612774524780109,
+        "runtime_fold": 0.7884291015151604,
+        "precomputed_projection": 2.264064113876146
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 2.2915668354787884,
+        "runtime_fold": 1.7651936930979837,
+        "precomputed_projection": 8.177026139827797
+      }
+    },
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 1,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 1.3838402023433216,
+        "runtime_fold": 0.9595306838866372,
+        "precomputed_projection": 3.002725995482758
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 4,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 1.9370813870967183,
+        "runtime_fold": 1.4166884139442353,
+        "precomputed_projection": 3.3596585472309424
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 9.316908049089914,
+        "runtime_fold": 7.209963410950261,
+        "precomputed_projection": 33.85707750675687
+      }
+    },
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 4,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 2.46664953670939,
+        "runtime_fold": 1.8385696647254826,
+        "precomputed_projection": 4.168347333967307
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 16,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 7.069187089148999,
+        "runtime_fold": 4.024007213354786,
+        "precomputed_projection": 6.914998188938718
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 38.300687786882605,
+        "runtime_fold": 27.959821255050265,
+        "precomputed_projection": 130.99655798297803
+      }
+    },
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 16,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 10.078513074199691,
+        "runtime_fold": 5.689912592373763,
+        "precomputed_projection": 8.78508738214974
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 64,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 66.37075935234502,
+        "runtime_fold": 38.02993611499707,
+        "precomputed_projection": 20.285772613411904
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 145.58966653854665,
+        "runtime_fold": 106.65692538542083,
+        "precomputed_projection": 482.77575837830085
+      }
+    },
+    {
+      "spacing_deg": 2.5,
+      "nlat": 73,
+      "nlon": 144,
+      "exclusive_lmax_mmax": 72,
+      "batch_size": 64,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 72.98271365631916,
+        "runtime_fold": 53.0540019660563,
+        "precomputed_projection": 31.683718472626914
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 1,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 1.4561111548238892,
+        "runtime_fold": 1.0596245191107647,
+        "precomputed_projection": 3.8201226941863298
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 3.527424575244908,
+        "runtime_fold": 2.740879480848783,
+        "precomputed_projection": 12.634960426356999
+      }
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 1,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 2.9594844113357395,
+        "runtime_fold": 1.474851657270713,
+        "precomputed_projection": 4.801394306758889
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 4,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 3.2679128947691165,
+        "runtime_fold": 2.1960944691491457,
+        "precomputed_projection": 5.225953621905437
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 15.207221374511528,
+        "runtime_fold": 11.186800514753363,
+        "precomputed_projection": 49.596586513765004
+      }
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 4,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 6.595502523629284,
+        "runtime_fold": 3.149430983911208,
+        "precomputed_projection": 7.326971680006464
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 16,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 12.198966201401443,
+        "runtime_fold": 6.710877055243533,
+        "precomputed_projection": 11.49204781040622
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 62.631744158119425,
+        "runtime_fold": 46.28168914614958,
+        "precomputed_projection": 192.47936283307362
+      }
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 16,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 19.297832532434633,
+        "runtime_fold": 10.15379634854817,
+        "precomputed_projection": 18.850611913029734
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 64,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 104.1320574567365,
+        "runtime_fold": 76.87869254082553,
+        "precomputed_projection": 34.872552253329985
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 245.3171228984727,
+        "runtime_fold": 191.68374416379356,
+        "precomputed_projection": 675.86349397017
+      }
+    },
+    {
+      "spacing_deg": 2.0,
+      "nlat": 91,
+      "nlon": 180,
+      "exclusive_lmax_mmax": 90,
+      "batch_size": 64,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 107.24680349675502,
+        "runtime_fold": 99.64894959413353,
+        "precomputed_projection": 61.027597872307446
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 1,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 3.0952063531645932,
+        "runtime_fold": 1.5818846935481996,
+        "precomputed_projection": 8.532767182347381
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 6.3933562241638935,
+        "runtime_fold": 4.767903810854717,
+        "precomputed_projection": 22.808816044413838
+      }
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 1,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 10.503928358049412,
+        "runtime_fold": 3.2232529585462464,
+        "precomputed_projection": 13.658891353180358
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 4,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 8.855240900853934,
+        "runtime_fold": 3.625106139918323,
+        "precomputed_projection": 10.115347665651658
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 26.81706358802672,
+        "runtime_fold": 19.84251647928256,
+        "precomputed_projection": 72.46608210361228
+      }
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 4,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 18.262009340036393,
+        "runtime_fold": 7.301237324273066,
+        "precomputed_projection": 19.04450766955506
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 16,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 24.160381564909862,
+        "runtime_fold": 15.595733116710612,
+        "precomputed_projection": 22.574345529409182
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 98.35798762192383,
+        "runtime_fold": 81.72419457732364,
+        "precomputed_projection": 305.3707257039347
+      }
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 16,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 38.11524829873349,
+        "runtime_fold": 25.302995618625005,
+        "precomputed_projection": 39.079875870085566
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 64,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 115.88170332922743,
+        "runtime_fold": 138.56996126143997,
+        "precomputed_projection": 60.007623549712896
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 281.4762015505361,
+        "runtime_fold": 321.692140761924,
+        "precomputed_projection": 954.627966356068
+      }
+    },
+    {
+      "spacing_deg": 1.5,
+      "nlat": 121,
+      "nlon": 240,
+      "exclusive_lmax_mmax": 120,
+      "batch_size": 64,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 121.99550435056473,
+        "runtime_fold": 163.26529036719373,
+        "precomputed_projection": 83.84262985166451
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 1,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 14.966954685601083,
+        "runtime_fold": 8.481651854810869,
+        "precomputed_projection": 24.411729759846118
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 13.884052800570817,
+        "runtime_fold": 11.002109040326893,
+        "precomputed_projection": 38.429044859660024
+      }
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 1,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 26.62895011545883,
+        "runtime_fold": 19.037924064198496,
+        "precomputed_projection": 37.53550528452041
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 4,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 24.239517524104862,
+        "runtime_fold": 16.37111446271563,
+        "precomputed_projection": 21.911248742421815
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 47.99993124285025,
+        "runtime_fold": 46.08325500432663,
+        "precomputed_projection": 100.85639268474229
+      }
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 4,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 42.257025733691336,
+        "runtime_fold": 26.933144245418475,
+        "precomputed_projection": 31.155966167384747
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 16,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 41.0859988742152,
+        "runtime_fold": 35.12008926760545,
+        "precomputed_projection": 44.42760373413848
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 143.71613769214116,
+        "runtime_fold": 141.42463605929947,
+        "precomputed_projection": 415.6182725953144
+      }
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 16,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 63.554202382778946,
+        "runtime_fold": 44.31161908763706,
+        "precomputed_projection": 59.35525271466712
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 64,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 117.8458369597376,
+        "runtime_fold": 136.0540286317335,
+        "precomputed_projection": 82.62553737602062
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 198.13329578515737,
+        "runtime_fold": 231.49087855910219,
+        "precomputed_projection": 971.0599197002078
+      }
+    },
+    {
+      "spacing_deg": 1.0,
+      "nlat": 181,
+      "nlon": 360,
+      "exclusive_lmax_mmax": 180,
+      "batch_size": 64,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 107.40581424005074,
+        "runtime_fold": 87.92081964613612,
+        "precomputed_projection": 73.204531037244
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 1,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 25.43419438556576,
+        "runtime_fold": 24.348926573227423,
+        "precomputed_projection": 28.975284110633382
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 16.131964375745273,
+        "runtime_fold": 23.516684338046186,
+        "precomputed_projection": 36.35716266995413
+      }
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 1,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 28.552386280051806,
+        "runtime_fold": 31.977445883887107,
+        "precomputed_projection": 32.28243625830824
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 4,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 42.233772444606075,
+        "runtime_fold": 44.363556288021776,
+        "precomputed_projection": 32.96346910256392
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 58.14663077360773,
+        "runtime_fold": 84.22878200754324,
+        "precomputed_projection": 93.54460550175163
+      }
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 4,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 49.38681258924551,
+        "runtime_fold": 62.68619147252512,
+        "precomputed_projection": 34.15537414271203
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 16,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 68.9550781109982,
+        "runtime_fold": 96.8947618556829,
+        "precomputed_projection": 66.6950703159945
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 105.62657062474399,
+        "runtime_fold": 146.01623917290806,
+        "precomputed_projection": 370.97374554264707
+      }
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 16,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 62.33951702074759,
+        "runtime_fold": 63.970108672687196,
+        "precomputed_projection": 62.77134323500658
+      },
+      "ducc_cpu_to_torch_gpu": null
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 64,
+      "transform": "scalar",
+      "torch_cpu_to_gpu": {
+        "dense": 114.28868984318203,
+        "runtime_fold": 120.41820832073117,
+        "precomputed_projection": 95.26628619123366
+      },
+      "ducc_cpu_to_torch_gpu": {
+        "dense": 149.20094717825867,
+        "runtime_fold": 154.30671270797754,
+        "precomputed_projection": 552.0167993854975
+      }
+    },
+    {
+      "spacing_deg": 0.5,
+      "nlat": 361,
+      "nlon": 720,
+      "exclusive_lmax_mmax": 360,
+      "batch_size": 64,
+      "transform": "vector",
+      "torch_cpu_to_gpu": {
+        "dense": 100.30408886936489,
+        "runtime_fold": 109.5831633491981,
+        "precomputed_projection": 92.10821436532149
+      },
+      "ducc_cpu_to_torch_gpu": null
+    }
+  ]
+}
