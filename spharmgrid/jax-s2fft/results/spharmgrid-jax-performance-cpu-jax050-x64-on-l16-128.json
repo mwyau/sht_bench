@@ -1,0 +1,1640 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.5.0",
+      "jaxlib": "0.5.0",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6",
+      "spharmgrid": "0.3.0.dev0"
+    },
+    "jax_enable_x64": true,
+    "backend": "cpu",
+    "devices": [
+      {
+        "platform": "cpu",
+        "device_kind": "cpu",
+        "id": 0,
+        "type": "Device",
+        "repr": "CpuDevice(id=0)"
+      }
+    ],
+    "primary_device": "TFRT_CPU_0",
+    "transform_path": "spharmgrid private adapter with S2FFT O(L^2) precomputes",
+    "direct_comparison": "operation-level timings are compared with direct S2FFT in the study method; the stored operation matrix records spharmgrid timing",
+    "memory": "Linux process peak RSS; JAX device memory_stats when available; array byte counts are explicit",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 120.0
+  },
+  "results": [
+    {
+      "operation": "filter",
+      "bandlimit": 16,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        16,
+        31
+      ],
+      "target_shape": [
+        16,
+        31
+      ],
+      "batch_size": 2,
+      "input_nbytes": 7936,
+      "output_nbytes": 7936,
+      "output_shapes": [
+        [
+          2,
+          16,
+          31
+        ]
+      ],
+      "precompute_setup_seconds": 0.6711716780009738,
+      "precompute_nbytes": 28928,
+      "host_to_device_seconds": 0.00016782300008344464,
+      "device_to_host_seconds": 1.038000118569471e-05,
+      "trace_seconds": 0.2042154569971899,
+      "lower_seconds": 0.10153994299980695,
+      "compile_seconds": 0.15516355799991288,
+      "first_execution_seconds": 0.0004974790026608389,
+      "warm_seconds_median": 0.00016211200272664428,
+      "warm_seconds_per_frame": 8.105600136332214e-05,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.013595098000223516,
+          "lower_seconds": 0.037310061998141464,
+          "compile_seconds": 0.0996391640001093,
+          "first_execution_seconds": 0.0009192569996230304,
+          "warm_seconds_median": 0.00031144099921220914
+        },
+        "inverse": {
+          "trace_seconds": 0.017126351998740574,
+          "lower_seconds": 0.02782012099851272,
+          "compile_seconds": 0.06326849600009155,
+          "first_execution_seconds": 0.0003672259990707971,
+          "warm_seconds_median": 0.00011869100126205012
+        },
+        "warm_seconds_total": 0.00043013200047425926
+      },
+      "operation_to_direct_warm_ratio": 0.3768889609419927,
+      "peak_rss_bytes": 402882560,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 1.9657389990024967,
+      "stderr_tail": "WARNING:2026-09-20 00:46:57,947:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 16,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        17,
+        32
+      ],
+      "target_shape": [
+        17,
+        32
+      ],
+      "batch_size": 2,
+      "input_nbytes": 8704,
+      "output_nbytes": 8704,
+      "output_shapes": [
+        [
+          2,
+          17,
+          32
+        ]
+      ],
+      "precompute_setup_seconds": 0.7748755920001713,
+      "precompute_nbytes": 35072,
+      "host_to_device_seconds": 0.0001636060005694162,
+      "device_to_host_seconds": 1.2363998393993825e-05,
+      "trace_seconds": 0.31941745200310834,
+      "lower_seconds": 0.13684393800213002,
+      "compile_seconds": 0.18913156900089234,
+      "first_execution_seconds": 0.0006594110018340871,
+      "warm_seconds_median": 0.0002546460018493235,
+      "warm_seconds_per_frame": 0.00012732300092466176,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.05658952399971895,
+          "lower_seconds": 0.06183572100053425,
+          "compile_seconds": 0.11540699800025322,
+          "first_execution_seconds": 0.000699717002135003,
+          "warm_seconds_median": 0.00034756899913190864
+        },
+        "inverse": {
+          "trace_seconds": 0.017277584000112256,
+          "lower_seconds": 0.03517873199962196,
+          "compile_seconds": 0.07424192699909327,
+          "first_execution_seconds": 0.00031798399868421257,
+          "warm_seconds_median": 7.34470013412647e-05
+        },
+        "warm_seconds_total": 0.00042101600047317334
+      },
+      "operation_to_direct_warm_ratio": 0.604836874520519,
+      "peak_rss_bytes": 418373632,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.3551344349980354,
+      "stderr_tail": "WARNING:2026-09-20 00:46:59,910:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 32,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        32,
+        63
+      ],
+      "target_shape": [
+        32,
+        63
+      ],
+      "batch_size": 2,
+      "input_nbytes": 32256,
+      "output_nbytes": 32256,
+      "output_shapes": [
+        [
+          2,
+          32,
+          63
+        ]
+      ],
+      "precompute_setup_seconds": 0.6712871640011144,
+      "precompute_nbytes": 115200,
+      "host_to_device_seconds": 0.00019521500144037418,
+      "device_to_host_seconds": 2.2352000087266788e-05,
+      "trace_seconds": 0.217402531998232,
+      "lower_seconds": 0.10929292000218993,
+      "compile_seconds": 0.17465178000202286,
+      "first_execution_seconds": 0.0014206730011210311,
+      "warm_seconds_median": 0.0008466319995932281,
+      "warm_seconds_per_frame": 0.00042331599979661405,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.013411454001470702,
+          "lower_seconds": 0.04147401799855288,
+          "compile_seconds": 0.10494999100046698,
+          "first_execution_seconds": 0.0008309110016853083,
+          "warm_seconds_median": 0.0005833289978909306
+        },
+        "inverse": {
+          "trace_seconds": 0.009898655000142753,
+          "lower_seconds": 0.02648992700051167,
+          "compile_seconds": 0.06420978300229763,
+          "first_execution_seconds": 0.0007651989981241059,
+          "warm_seconds_median": 0.0005059240029368084
+        },
+        "warm_seconds_total": 0.001089253000827739
+      },
+      "operation_to_direct_warm_ratio": 0.7772592767243792,
+      "peak_rss_bytes": 410517504,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.040785227996821,
+      "stderr_tail": "WARNING:2026-09-20 00:47:02,290:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 32,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        33,
+        64
+      ],
+      "target_shape": [
+        33,
+        64
+      ],
+      "batch_size": 2,
+      "input_nbytes": 33792,
+      "output_nbytes": 33792,
+      "output_shapes": [
+        [
+          2,
+          33,
+          64
+        ]
+      ],
+      "precompute_setup_seconds": 0.7719087009973009,
+      "precompute_nbytes": 139776,
+      "host_to_device_seconds": 0.00017740099792717956,
+      "device_to_host_seconds": 1.3285000022733584e-05,
+      "trace_seconds": 0.45702810200236854,
+      "lower_seconds": 0.15912132900120923,
+      "compile_seconds": 0.23368629000106012,
+      "first_execution_seconds": 0.0023384169981000014,
+      "warm_seconds_median": 0.0013980609983264003,
+      "warm_seconds_per_frame": 0.0006990304991632001,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.01961281500189216,
+          "lower_seconds": 0.08032549799827393,
+          "compile_seconds": 0.14214068000001134,
+          "first_execution_seconds": 0.0015061730009620078,
+          "warm_seconds_median": 0.0012330930003372487
+        },
+        "inverse": {
+          "trace_seconds": 0.010937314000329934,
+          "lower_seconds": 0.03241854799853172,
+          "compile_seconds": 0.07509431899961783,
+          "first_execution_seconds": 0.0007926610014692415,
+          "warm_seconds_median": 0.0005466109978442546
+        },
+        "warm_seconds_total": 0.0017797039981815033
+      },
+      "operation_to_direct_warm_ratio": 0.7855581600956874,
+      "peak_rss_bytes": 430346240,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.5790760479976598,
+      "stderr_tail": "WARNING:2026-09-20 00:47:04,301:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 64,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 130048,
+      "output_nbytes": 130048,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 0.6887289439982851,
+      "precompute_nbytes": 459776,
+      "host_to_device_seconds": 0.00017768199904821813,
+      "device_to_host_seconds": 1.2462998711271212e-05,
+      "trace_seconds": 0.24586971000098856,
+      "lower_seconds": 0.1148847320000641,
+      "compile_seconds": 0.21036878700033412,
+      "first_execution_seconds": 0.007832657000108156,
+      "warm_seconds_median": 0.006642304000706645,
+      "warm_seconds_per_frame": 0.0033211520003533224,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.014605764001316857,
+          "lower_seconds": 0.0478303079980833,
+          "compile_seconds": 0.14654164800231229,
+          "first_execution_seconds": 0.0038562110021302942,
+          "warm_seconds_median": 0.003309971001726808
+        },
+        "inverse": {
+          "trace_seconds": 0.00914151100005256,
+          "lower_seconds": 0.026272901002812432,
+          "compile_seconds": 0.06666498800041154,
+          "first_execution_seconds": 0.005513336000149138,
+          "warm_seconds_median": 0.00410716899932595
+        },
+        "warm_seconds_total": 0.007417140001052758
+      },
+      "operation_to_direct_warm_ratio": 0.8955343973234783,
+      "peak_rss_bytes": 429289472,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.271071668001241,
+      "stderr_tail": "WARNING:2026-09-20 00:47:06,902:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 64,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 133120,
+      "output_nbytes": 133120,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 0.7929759819999163,
+      "precompute_nbytes": 558080,
+      "host_to_device_seconds": 0.0001926199984154664,
+      "device_to_host_seconds": 1.2894000974483788e-05,
+      "trace_seconds": 0.6117729790021258,
+      "lower_seconds": 0.1987058779996005,
+      "compile_seconds": 0.31430270000055316,
+      "first_execution_seconds": 0.014709077000588877,
+      "warm_seconds_median": 0.011274233002041001,
+      "warm_seconds_per_frame": 0.0056371165010205004,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.02524346900099772,
+          "lower_seconds": 0.12038439199750428,
+          "compile_seconds": 0.22263459199893987,
+          "first_execution_seconds": 0.010582400998828234,
+          "warm_seconds_median": 0.0074112789989158046
+        },
+        "inverse": {
+          "trace_seconds": 0.00884803299777559,
+          "lower_seconds": 0.03211748500325484,
+          "compile_seconds": 0.0799837890008348,
+          "first_execution_seconds": 0.0063788710031076334,
+          "warm_seconds_median": 0.004301683002267964
+        },
+        "warm_seconds_total": 0.011712962001183769
+      },
+      "operation_to_direct_warm_ratio": 0.9625432918591875,
+      "peak_rss_bytes": 462618624,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.1914817369979573,
+      "stderr_tail": "WARNING:2026-09-20 00:47:09,163:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 128,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        128,
+        255
+      ],
+      "target_shape": [
+        128,
+        255
+      ],
+      "batch_size": 2,
+      "input_nbytes": 522240,
+      "output_nbytes": 522240,
+      "output_shapes": [
+        [
+          2,
+          128,
+          255
+        ]
+      ],
+      "precompute_setup_seconds": 0.700635057000909,
+      "precompute_nbytes": 1837056,
+      "host_to_device_seconds": 0.00020967100135749206,
+      "device_to_host_seconds": 1.6341000446118414e-05,
+      "trace_seconds": 0.30395652999868616,
+      "lower_seconds": 0.1313275069987867,
+      "compile_seconds": 0.31960606400025426,
+      "first_execution_seconds": 0.06968579000022146,
+      "warm_seconds_median": 0.059653705000528134,
+      "warm_seconds_per_frame": 0.029826852500264067,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.018776924000121653,
+          "lower_seconds": 0.1302102109984844,
+          "compile_seconds": 0.249284446999809,
+          "first_execution_seconds": 0.03644467599951895,
+          "warm_seconds_median": 0.029435145999741508
+        },
+        "inverse": {
+          "trace_seconds": 0.010321875000954606,
+          "lower_seconds": 0.02832584499992663,
+          "compile_seconds": 0.07501969900113181,
+          "first_execution_seconds": 0.042177080002147704,
+          "warm_seconds_median": 0.027815752997412346
+        },
+        "warm_seconds_total": 0.057250898997153854
+      },
+      "operation_to_direct_warm_ratio": 1.041969751487985,
+      "peak_rss_bytes": 475578368,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.522439899999881,
+      "stderr_tail": "WARNING:2026-09-20 00:47:12,345:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 128,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        129,
+        256
+      ],
+      "target_shape": [
+        129,
+        256
+      ],
+      "batch_size": 2,
+      "input_nbytes": 528384,
+      "output_nbytes": 528384,
+      "output_shapes": [
+        [
+          2,
+          129,
+          256
+        ]
+      ],
+      "precompute_setup_seconds": 0.8030235139995057,
+      "precompute_nbytes": 2230272,
+      "host_to_device_seconds": 0.0002064059990516398,
+      "device_to_host_seconds": 2.5016997824423015e-05,
+      "trace_seconds": 0.9924883959974977,
+      "lower_seconds": 0.29358188699916354,
+      "compile_seconds": 0.519848591000482,
+      "first_execution_seconds": 0.1034199540008558,
+      "warm_seconds_median": 0.09254203100135783,
+      "warm_seconds_per_frame": 0.046271015500678914,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.13991822999741999,
+          "lower_seconds": 0.20392108600208303,
+          "compile_seconds": 0.4218386400025338,
+          "first_execution_seconds": 0.06103415300094639,
+          "warm_seconds_median": 0.0583892239992565
+        },
+        "inverse": {
+          "trace_seconds": 0.009431481998035451,
+          "lower_seconds": 0.03328734000024269,
+          "compile_seconds": 0.08853074999933597,
+          "first_execution_seconds": 0.03600544499931857,
+          "warm_seconds_median": 0.027750109999033157
+        },
+        "warm_seconds_total": 0.08613933399828966
+      },
+      "operation_to_direct_warm_ratio": 1.0743295391997725,
+      "peak_rss_bytes": 540135424,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.5651996540000255,
+      "stderr_tail": "WARNING:2026-09-20 00:47:15,866:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 16,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        16,
+        31
+      ],
+      "target_shape": [
+        17,
+        32
+      ],
+      "batch_size": 2,
+      "input_nbytes": 7936,
+      "output_nbytes": 8704,
+      "output_shapes": [
+        [
+          2,
+          17,
+          32
+        ]
+      ],
+      "precompute_setup_seconds": 0.7522193350014277,
+      "precompute_nbytes": 29312,
+      "host_to_device_seconds": 0.00016985699767246842,
+      "device_to_host_seconds": 1.3574997865362093e-05,
+      "trace_seconds": 0.24762425599692506,
+      "lower_seconds": 0.12140876499688602,
+      "compile_seconds": 0.16752668499975698,
+      "first_execution_seconds": 0.0006380110025929753,
+      "warm_seconds_median": 0.00021990100140101276,
+      "warm_seconds_per_frame": 0.00010995050070050638,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.015780529000039678,
+          "lower_seconds": 0.0381848760007415,
+          "compile_seconds": 0.0856681950026541,
+          "first_execution_seconds": 0.00035717699938686565,
+          "warm_seconds_median": 0.00011429300138843246
+        },
+        "inverse": {
+          "trace_seconds": 0.013064006001513917,
+          "lower_seconds": 0.03645542600133922,
+          "compile_seconds": 0.07448214499891037,
+          "first_execution_seconds": 0.0003851689980365336,
+          "warm_seconds_median": 0.00011878200166393071
+        },
+        "warm_seconds_total": 0.00023307500305236317
+      },
+      "operation_to_direct_warm_ratio": 0.9434774150860326,
+      "peak_rss_bytes": 422301696,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.130706083997211,
+      "stderr_tail": "WARNING:2026-09-20 00:47:21,443:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 16,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        17,
+        32
+      ],
+      "target_shape": [
+        16,
+        31
+      ],
+      "batch_size": 2,
+      "input_nbytes": 8704,
+      "output_nbytes": 7936,
+      "output_shapes": [
+        [
+          2,
+          16,
+          31
+        ]
+      ],
+      "precompute_setup_seconds": 0.7396188040002016,
+      "precompute_nbytes": 34688,
+      "host_to_device_seconds": 0.0001673520018812269,
+      "device_to_host_seconds": 1.4045999705558643e-05,
+      "trace_seconds": 0.31021351399976993,
+      "lower_seconds": 0.1359791739996581,
+      "compile_seconds": 0.17967780500111985,
+      "first_execution_seconds": 0.000845228998514358,
+      "warm_seconds_median": 0.0003287939980509691,
+      "warm_seconds_per_frame": 0.00016439699902548455,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.02038870400065207,
+          "lower_seconds": 0.10162624400254572,
+          "compile_seconds": 0.11013302999708685,
+          "first_execution_seconds": 0.0008086800007731654,
+          "warm_seconds_median": 0.00037668299773940817
+        },
+        "inverse": {
+          "trace_seconds": 0.021791482999105938,
+          "lower_seconds": 0.028901500001666136,
+          "compile_seconds": 0.06661728900144226,
+          "first_execution_seconds": 0.00043309800093993545,
+          "warm_seconds_median": 0.00011579599959077314
+        },
+        "warm_seconds_total": 0.0004924789973301813
+      },
+      "operation_to_direct_warm_ratio": 0.6676304976119215,
+      "peak_rss_bytes": 422486016,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.2867761150009756,
+      "stderr_tail": "WARNING:2026-09-20 00:47:23,565:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 32,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        32,
+        63
+      ],
+      "target_shape": [
+        33,
+        64
+      ],
+      "batch_size": 2,
+      "input_nbytes": 32256,
+      "output_nbytes": 33792,
+      "output_shapes": [
+        [
+          2,
+          33,
+          64
+        ]
+      ],
+      "precompute_setup_seconds": 0.754936187997373,
+      "precompute_nbytes": 115968,
+      "host_to_device_seconds": 0.00018156900114263408,
+      "device_to_host_seconds": 1.2103002518415451e-05,
+      "trace_seconds": 0.24807000000146218,
+      "lower_seconds": 0.11609484300061013,
+      "compile_seconds": 0.19073582499913755,
+      "first_execution_seconds": 0.0013998139984323643,
+      "warm_seconds_median": 0.0009007119988382328,
+      "warm_seconds_per_frame": 0.0004503559994191164,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.01356132400178467,
+          "lower_seconds": 0.04121712800042587,
+          "compile_seconds": 0.10444314499909524,
+          "first_execution_seconds": 0.000966134000918828,
+          "warm_seconds_median": 0.0006882659981783945
+        },
+        "inverse": {
+          "trace_seconds": 0.010987939000187907,
+          "lower_seconds": 0.03369078299874673,
+          "compile_seconds": 0.07735705399682047,
+          "first_execution_seconds": 0.0008110739981930237,
+          "warm_seconds_median": 0.0005946999990555923
+        },
+        "warm_seconds_total": 0.0012829659972339869
+      },
+      "operation_to_direct_warm_ratio": 0.7020544587932375,
+      "peak_rss_bytes": 428822528,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.1736535819982237,
+      "stderr_tail": "WARNING:2026-09-20 00:47:25,854:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 32,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        33,
+        64
+      ],
+      "target_shape": [
+        32,
+        63
+      ],
+      "batch_size": 2,
+      "input_nbytes": 33792,
+      "output_nbytes": 32256,
+      "output_shapes": [
+        [
+          2,
+          32,
+          63
+        ]
+      ],
+      "precompute_setup_seconds": 0.7645914369968523,
+      "precompute_nbytes": 139008,
+      "host_to_device_seconds": 0.00017972700152313337,
+      "device_to_host_seconds": 1.2813998182537034e-05,
+      "trace_seconds": 0.4411157450012979,
+      "lower_seconds": 0.16173833700304385,
+      "compile_seconds": 0.22955160299898125,
+      "first_execution_seconds": 0.002506651002477156,
+      "warm_seconds_median": 0.0015606460001436062,
+      "warm_seconds_per_frame": 0.0007803230000718031,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.019448079001449514,
+          "lower_seconds": 0.0827436339968699,
+          "compile_seconds": 0.1442675149992283,
+          "first_execution_seconds": 0.0013604010018752888,
+          "warm_seconds_median": 0.0009676340014266316
+        },
+        "inverse": {
+          "trace_seconds": 0.009546511999360519,
+          "lower_seconds": 0.028557872003148077,
+          "compile_seconds": 0.063616514999012,
+          "first_execution_seconds": 0.001098669999919366,
+          "warm_seconds_median": 0.00043383400043239817
+        },
+        "warm_seconds_total": 0.0014014680018590298
+      },
+      "operation_to_direct_warm_ratio": 1.113579473861286,
+      "peak_rss_bytes": 435113984,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.560106013999757,
+      "stderr_tail": "WARNING:2026-09-20 00:47:28,031:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 64,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 130048,
+      "output_nbytes": 133120,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 0.7674555579978914,
+      "precompute_nbytes": 461312,
+      "host_to_device_seconds": 0.0001729440009512473,
+      "device_to_host_seconds": 1.2764001439791173e-05,
+      "trace_seconds": 0.2773273330021766,
+      "lower_seconds": 0.1250095629984571,
+      "compile_seconds": 0.22784252800192917,
+      "first_execution_seconds": 0.008040187000005972,
+      "warm_seconds_median": 0.007532144001743291,
+      "warm_seconds_per_frame": 0.0037660720008716453,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.014160394999635173,
+          "lower_seconds": 0.047350141998322215,
+          "compile_seconds": 0.14353308800127706,
+          "first_execution_seconds": 0.0039736119979352225,
+          "warm_seconds_median": 0.0034481469992897473
+        },
+        "inverse": {
+          "trace_seconds": 0.008824699001706904,
+          "lower_seconds": 0.03220145500017679,
+          "compile_seconds": 0.08287378800014267,
+          "first_execution_seconds": 0.00960385900179972,
+          "warm_seconds_median": 0.0040280140019604005
+        },
+        "warm_seconds_total": 0.007476161001250148
+      },
+      "operation_to_direct_warm_ratio": 1.0074882015627782,
+      "peak_rss_bytes": 445915136,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.4455226649988617,
+      "stderr_tail": "WARNING:2026-09-20 00:47:30,610:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 64,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 133120,
+      "output_nbytes": 130048,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 0.7782438180001918,
+      "precompute_nbytes": 556544,
+      "host_to_device_seconds": 0.00019156900089001283,
+      "device_to_host_seconds": 1.6701000276952982e-05,
+      "trace_seconds": 0.59828920200016,
+      "lower_seconds": 0.19898942199870362,
+      "compile_seconds": 0.30307895300211385,
+      "first_execution_seconds": 0.012133793999964837,
+      "warm_seconds_median": 0.010725763000664301,
+      "warm_seconds_per_frame": 0.005362881500332151,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.02602969199870131,
+          "lower_seconds": 0.11868104500172194,
+          "compile_seconds": 0.2256933280004887,
+          "first_execution_seconds": 0.009274521999032004,
+          "warm_seconds_median": 0.0071196610006154515
+        },
+        "inverse": {
+          "trace_seconds": 0.01025303700225777,
+          "lower_seconds": 0.026145609001105186,
+          "compile_seconds": 0.06495602799986955,
+          "first_execution_seconds": 0.0054486180015373975,
+          "warm_seconds_median": 0.003963631999795325
+        },
+        "warm_seconds_total": 0.011083293000410777
+      },
+      "operation_to_direct_warm_ratio": 0.9677415367677076,
+      "peak_rss_bytes": 467148800,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.131905333000759,
+      "stderr_tail": "WARNING:2026-09-20 00:47:33,066:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 128,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        128,
+        255
+      ],
+      "target_shape": [
+        129,
+        256
+      ],
+      "batch_size": 2,
+      "input_nbytes": 522240,
+      "output_nbytes": 528384,
+      "output_shapes": [
+        [
+          2,
+          129,
+          256
+        ]
+      ],
+      "precompute_setup_seconds": 0.7813472890011326,
+      "precompute_nbytes": 1840128,
+      "host_to_device_seconds": 0.0002024589994107373,
+      "device_to_host_seconds": 1.7051999748218805e-05,
+      "trace_seconds": 0.3685646550002275,
+      "lower_seconds": 0.13747103099740343,
+      "compile_seconds": 0.32788201599760214,
+      "first_execution_seconds": 0.060796908001066186,
+      "warm_seconds_median": 0.058265601997845806,
+      "warm_seconds_per_frame": 0.029132800998922903,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.015449131002242211,
+          "lower_seconds": 0.06301764299860224,
+          "compile_seconds": 0.24023641900203074,
+          "first_execution_seconds": 0.03001428300194675,
+          "warm_seconds_median": 0.02959323399772984
+        },
+        "inverse": {
+          "trace_seconds": 0.008977975998277543,
+          "lower_seconds": 0.03290147799998522,
+          "compile_seconds": 0.08545730200057733,
+          "first_execution_seconds": 0.031286168999940855,
+          "warm_seconds_median": 0.028471300000092015
+        },
+        "warm_seconds_total": 0.058064533997821854
+      },
+      "operation_to_direct_warm_ratio": 1.003462836712536,
+      "peak_rss_bytes": 493322240,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.577551153000968,
+      "stderr_tail": "WARNING:2026-09-20 00:47:36,171:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 128,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        129,
+        256
+      ],
+      "target_shape": [
+        128,
+        255
+      ],
+      "batch_size": 2,
+      "input_nbytes": 528384,
+      "output_nbytes": 522240,
+      "output_shapes": [
+        [
+          2,
+          128,
+          255
+        ]
+      ],
+      "precompute_setup_seconds": 0.8313219319970813,
+      "precompute_nbytes": 2227200,
+      "host_to_device_seconds": 0.0002513310028007254,
+      "device_to_host_seconds": 2.445599966449663e-05,
+      "trace_seconds": 0.9674979949995759,
+      "lower_seconds": 0.28936321400033194,
+      "compile_seconds": 0.4978131649986608,
+      "first_execution_seconds": 0.08733602600113954,
+      "warm_seconds_median": 0.08634671999971033,
+      "warm_seconds_per_frame": 0.043173359999855165,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.06555406900224625,
+          "lower_seconds": 0.2700787699977809,
+          "compile_seconds": 0.4082522880016768,
+          "first_execution_seconds": 0.06466931999966619,
+          "warm_seconds_median": 0.05856218800181523
+        },
+        "inverse": {
+          "trace_seconds": 0.010853773001144873,
+          "lower_seconds": 0.027307528998790076,
+          "compile_seconds": 0.07475441199858324,
+          "first_execution_seconds": 0.03362212899810402,
+          "warm_seconds_median": 0.027649719999317313
+        },
+        "warm_seconds_total": 0.08621190800113254
+      },
+      "operation_to_direct_warm_ratio": 1.0015637282795784,
+      "peak_rss_bytes": 546041856,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.445193948999076,
+      "stderr_tail": "WARNING:2026-09-20 00:47:39,752:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 16,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        16,
+        31
+      ],
+      "target_shape": [
+        16,
+        31
+      ],
+      "batch_size": 2,
+      "input_nbytes": 15872,
+      "output_nbytes": 15872,
+      "output_shapes": [
+        [
+          2,
+          16,
+          31
+        ],
+        [
+          2,
+          16,
+          31
+        ]
+      ],
+      "precompute_setup_seconds": 0.662303333003365,
+      "precompute_nbytes": 43392,
+      "host_to_device_seconds": 0.00033126099879154935,
+      "device_to_host_seconds": 1.2693999451585114e-05,
+      "trace_seconds": 0.22609582199947909,
+      "lower_seconds": 0.13666733400168596,
+      "compile_seconds": 0.28598056100236136,
+      "first_execution_seconds": 0.0008951380004873499,
+      "warm_seconds_median": 0.00033692200304358266,
+      "warm_seconds_per_frame": 0.00016846100152179133,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.00949129899890977,
+          "lower_seconds": 0.043502608001290355,
+          "compile_seconds": 0.1326507710000442,
+          "first_execution_seconds": 0.0009033040005306248,
+          "warm_seconds_median": 0.0004125739978917409
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.002106710999214556,
+          "lower_seconds": 0.049915853996935766,
+          "compile_seconds": 0.12765424199824338,
+          "first_execution_seconds": 0.0006264650000957772,
+          "warm_seconds_median": 0.0002883810011553578
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.03729311400093138,
+          "lower_seconds": 0.027332453999406425,
+          "compile_seconds": 0.06518708099974901,
+          "first_execution_seconds": 0.00034107999817933887,
+          "warm_seconds_median": 0.00010596900028758682
+        },
+        "warm_seconds_total": 0.0008069239993346855
+      },
+      "operation_to_direct_warm_ratio": 0.417538706645703,
+      "peak_rss_bytes": 440930304,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.4615580159988895,
+      "stderr_tail": "WARNING:2026-09-20 00:47:45,197:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 16,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        17,
+        32
+      ],
+      "target_shape": [
+        17,
+        32
+      ],
+      "batch_size": 2,
+      "input_nbytes": 17408,
+      "output_nbytes": 17408,
+      "output_shapes": [
+        [
+          2,
+          17,
+          32
+        ],
+        [
+          2,
+          17,
+          32
+        ]
+      ],
+      "precompute_setup_seconds": 0.7383175970026059,
+      "precompute_nbytes": 55296,
+      "host_to_device_seconds": 0.00025951600036933087,
+      "device_to_host_seconds": 1.2813998182537034e-05,
+      "trace_seconds": 0.34045617499941727,
+      "lower_seconds": 0.19830309500321164,
+      "compile_seconds": 0.3465401829998882,
+      "first_execution_seconds": 0.0010756369993032422,
+      "warm_seconds_median": 0.0005248939996818081,
+      "warm_seconds_per_frame": 0.00026244699984090403,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.014435299999604467,
+          "lower_seconds": 0.06895968599928892,
+          "compile_seconds": 0.14821152099830215,
+          "first_execution_seconds": 0.0005436789979285095,
+          "warm_seconds_median": 0.0002524640003684908
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0024540209997212514,
+          "lower_seconds": 0.06868544099779683,
+          "compile_seconds": 0.15648758099996485,
+          "first_execution_seconds": 0.0004970929985574912,
+          "warm_seconds_median": 0.00024658300026203506
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.04322996600240003,
+          "lower_seconds": 0.034573933997307904,
+          "compile_seconds": 0.0740875320007035,
+          "first_execution_seconds": 0.0003517099976306781,
+          "warm_seconds_median": 9.504799891146831e-05
+        },
+        "warm_seconds_total": 0.0005940949995419942
+      },
+      "operation_to_direct_warm_ratio": 0.8835186293210088,
+      "peak_rss_bytes": 454000640,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.872433312000794,
+      "stderr_tail": "WARNING:2026-09-20 00:47:47,653:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 32,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        32,
+        63
+      ],
+      "target_shape": [
+        32,
+        63
+      ],
+      "batch_size": 2,
+      "input_nbytes": 64512,
+      "output_nbytes": 64512,
+      "output_shapes": [
+        [
+          2,
+          32,
+          63
+        ],
+        [
+          2,
+          32,
+          63
+        ]
+      ],
+      "precompute_setup_seconds": 0.6807225129996368,
+      "precompute_nbytes": 172800,
+      "host_to_device_seconds": 0.00028596700212801807,
+      "device_to_host_seconds": 1.3143999240128323e-05,
+      "trace_seconds": 0.2399374689994147,
+      "lower_seconds": 0.13767708700106596,
+      "compile_seconds": 0.31629834300110815,
+      "first_execution_seconds": 0.0028678380003839266,
+      "warm_seconds_median": 0.0022338999988278374,
+      "warm_seconds_per_frame": 0.0011169499994139187,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.00949232100174413,
+          "lower_seconds": 0.04642895500001032,
+          "compile_seconds": 0.14550066700030584,
+          "first_execution_seconds": 0.0012090269992768299,
+          "warm_seconds_median": 0.0008798700000625104
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0010028799988504034,
+          "lower_seconds": 0.0464282840002852,
+          "compile_seconds": 0.14493709099770058,
+          "first_execution_seconds": 0.0021821219997946173,
+          "warm_seconds_median": 0.0015394069996546023
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.03242318100092234,
+          "lower_seconds": 0.02721825999833527,
+          "compile_seconds": 0.06502143000034266,
+          "first_execution_seconds": 0.0008563060000597034,
+          "warm_seconds_median": 0.0005045459984103218
+        },
+        "warm_seconds_total": 0.0029238229981274344
+      },
+      "operation_to_direct_warm_ratio": 0.7640339378473119,
+      "peak_rss_bytes": 456187904,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.5786341310013086,
+      "stderr_tail": "WARNING:2026-09-20 00:47:50,537:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 32,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        33,
+        64
+      ],
+      "target_shape": [
+        33,
+        64
+      ],
+      "batch_size": 2,
+      "input_nbytes": 67584,
+      "output_nbytes": 67584,
+      "output_shapes": [
+        [
+          2,
+          33,
+          64
+        ],
+        [
+          2,
+          33,
+          64
+        ]
+      ],
+      "precompute_setup_seconds": 0.7609192110030563,
+      "precompute_nbytes": 221184,
+      "host_to_device_seconds": 0.00028301099882810377,
+      "device_to_host_seconds": 1.5128000086406246e-05,
+      "trace_seconds": 0.47805326100206,
+      "lower_seconds": 0.19170733599821688,
+      "compile_seconds": 0.45357442800013814,
+      "first_execution_seconds": 0.005123817998537561,
+      "warm_seconds_median": 0.004152998000790831,
+      "warm_seconds_per_frame": 0.0020764990003954154,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.015402483000798384,
+          "lower_seconds": 0.08537436699771206,
+          "compile_seconds": 0.1839550180011429,
+          "first_execution_seconds": 0.0048735489981481805,
+          "warm_seconds_median": 0.0027667680005833972
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0034683539997786283,
+          "lower_seconds": 0.0840171019990521,
+          "compile_seconds": 0.18782929400185822,
+          "first_execution_seconds": 0.004145294002228184,
+          "warm_seconds_median": 0.002484357999492204
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.042925204998027766,
+          "lower_seconds": 0.033371519999491284,
+          "compile_seconds": 0.07448615900284494,
+          "first_execution_seconds": 0.0007384250020550098,
+          "warm_seconds_median": 0.0004738890020234976
+        },
+        "warm_seconds_total": 0.005725015002099099
+      },
+      "operation_to_direct_warm_ratio": 0.7254125970443952,
+      "peak_rss_bytes": 470372352,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.3155685839992657,
+      "stderr_tail": "WARNING:2026-09-20 00:47:53,114:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 64,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 260096,
+      "output_nbytes": 260096,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ],
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 0.677925388001313,
+      "precompute_nbytes": 689664,
+      "host_to_device_seconds": 0.00029032499878667295,
+      "device_to_host_seconds": 1.485800021328032e-05,
+      "trace_seconds": 0.2604248669995286,
+      "lower_seconds": 0.14448362100301892,
+      "compile_seconds": 0.3846031300017785,
+      "first_execution_seconds": 0.01801322899700608,
+      "warm_seconds_median": 0.017404567002813565,
+      "warm_seconds_per_frame": 0.008702283501406782,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.009962792999431258,
+          "lower_seconds": 0.054224753999733366,
+          "compile_seconds": 0.1808955020023859,
+          "first_execution_seconds": 0.007218626000394579,
+          "warm_seconds_median": 0.0062665619989275
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0009802280001167674,
+          "lower_seconds": 0.05432866900082445,
+          "compile_seconds": 0.18294590599907679,
+          "first_execution_seconds": 0.007701992999500362,
+          "warm_seconds_median": 0.0062788940012978856
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.031180821999441832,
+          "lower_seconds": 0.027454222999949707,
+          "compile_seconds": 0.06426949000160675,
+          "first_execution_seconds": 0.004761870000947965,
+          "warm_seconds_median": 0.004161574001045665
+        },
+        "warm_seconds_total": 0.01670703000127105
+      },
+      "operation_to_direct_warm_ratio": 1.0417511072578098,
+      "peak_rss_bytes": 475389952,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.020277053998143,
+      "stderr_tail": "WARNING:2026-09-20 00:47:56,455:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 64,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 266240,
+      "output_nbytes": 266240,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ],
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 0.7814698790025432,
+      "precompute_nbytes": 884736,
+      "host_to_device_seconds": 0.0002987709995068144,
+      "device_to_host_seconds": 1.7602997104404494e-05,
+      "trace_seconds": 0.641982316999929,
+      "lower_seconds": 0.23449188599988702,
+      "compile_seconds": 0.6304886940015422,
+      "first_execution_seconds": 0.033089681001001736,
+      "warm_seconds_median": 0.032545680998737225,
+      "warm_seconds_per_frame": 0.016272840499368613,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.021371746999648167,
+          "lower_seconds": 0.17950351999752456,
+          "compile_seconds": 0.2637452739982109,
+          "first_execution_seconds": 0.020174572000541957,
+          "warm_seconds_median": 0.013896960001147818
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.005303715999616543,
+          "lower_seconds": 0.13071339799716952,
+          "compile_seconds": 0.26285850099884556,
+          "first_execution_seconds": 0.023516970002674498,
+          "warm_seconds_median": 0.013717153000470717
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.043466169001476374,
+          "lower_seconds": 0.03413257699867245,
+          "compile_seconds": 0.07596404000287293,
+          "first_execution_seconds": 0.009037257001182297,
+          "warm_seconds_median": 0.0045145160001993645
+        },
+        "warm_seconds_total": 0.0321286290018179
+      },
+      "operation_to_direct_warm_ratio": 1.0129806969633135,
+      "peak_rss_bytes": 510676992,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.524755722999544,
+      "stderr_tail": "WARNING:2026-09-20 00:47:59,479:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 128,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        128,
+        255
+      ],
+      "target_shape": [
+        128,
+        255
+      ],
+      "batch_size": 2,
+      "input_nbytes": 1044480,
+      "output_nbytes": 1044480,
+      "output_shapes": [
+        [
+          2,
+          128,
+          255
+        ],
+        [
+          2,
+          128,
+          255
+        ]
+      ],
+      "precompute_setup_seconds": 0.7080590359983034,
+      "precompute_nbytes": 2755584,
+      "host_to_device_seconds": 0.0003514889976941049,
+      "device_to_host_seconds": 2.3593998776050285e-05,
+      "trace_seconds": 0.33799962799821515,
+      "lower_seconds": 0.19844838800054276,
+      "compile_seconds": 0.5415566349984147,
+      "first_execution_seconds": 0.1490697499975795,
+      "warm_seconds_median": 0.1462923219987715,
+      "warm_seconds_per_frame": 0.07314616099938576,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.01342408300115494,
+          "lower_seconds": 0.07025592600257369,
+          "compile_seconds": 0.2793835200027388,
+          "first_execution_seconds": 0.055578242001502076,
+          "warm_seconds_median": 0.055779981001251144
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0011467610020190477,
+          "lower_seconds": 0.06610172599903308,
+          "compile_seconds": 0.28897039699950255,
+          "first_execution_seconds": 0.058315505000791745,
+          "warm_seconds_median": 0.05824494300031802
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.03566730500097037,
+          "lower_seconds": 0.028697845002170652,
+          "compile_seconds": 0.06876149399977294,
+          "first_execution_seconds": 0.03332627400232013,
+          "warm_seconds_median": 0.0273767479993694
+        },
+        "warm_seconds_total": 0.14140167200093856
+      },
+      "operation_to_direct_warm_ratio": 1.0345869318843732,
+      "peak_rss_bytes": 541790208,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.630265761999908,
+      "stderr_tail": "WARNING:2026-09-20 00:48:03,978:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 128,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        129,
+        256
+      ],
+      "target_shape": [
+        129,
+        256
+      ],
+      "batch_size": 2,
+      "input_nbytes": 1056768,
+      "output_nbytes": 1056768,
+      "output_shapes": [
+        [
+          2,
+          129,
+          256
+        ],
+        [
+          2,
+          129,
+          256
+        ]
+      ],
+      "precompute_setup_seconds": 0.8320277259990689,
+      "precompute_nbytes": 3538944,
+      "host_to_device_seconds": 0.0003398970002308488,
+      "device_to_host_seconds": 2.4486002075718716e-05,
+      "trace_seconds": 1.0053274529964256,
+      "lower_seconds": 0.31359530400004587,
+      "compile_seconds": 1.058508490001259,
+      "first_execution_seconds": 0.27866994099895237,
+      "warm_seconds_median": 0.2594588959982502,
+      "warm_seconds_per_frame": 0.1297294479991251,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.13694341099835583,
+          "lower_seconds": 0.19985880199965322,
+          "compile_seconds": 0.46047663100034697,
+          "first_execution_seconds": 0.12884743900212925,
+          "warm_seconds_median": 0.12517084399951273
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.011024352999811526,
+          "lower_seconds": 0.20067932999882032,
+          "compile_seconds": 0.479052253998816,
+          "first_execution_seconds": 0.11917635300051188,
+          "warm_seconds_median": 0.11846592099755071
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.042899526000837795,
+          "lower_seconds": 0.03493893800259684,
+          "compile_seconds": 0.09134921099757776,
+          "first_execution_seconds": 0.03492684600132634,
+          "warm_seconds_median": 0.028651497999817366
+        },
+        "warm_seconds_total": 0.2722882629968808
+      },
+      "operation_to_direct_warm_ratio": 0.952883143557394,
+      "peak_rss_bytes": 615936000,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 10.031520880998869,
+      "stderr_tail": "WARNING:2026-09-20 00:48:09,607:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    }
+  ]
+}

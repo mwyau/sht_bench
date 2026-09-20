@@ -1,0 +1,4092 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.10.2",
+      "jaxlib": "0.10.2",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": true,
+    "backend": "gpu",
+    "devices": [
+      {
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5070",
+        "id": 0,
+        "type": "Device",
+        "repr": "CudaDevice(id=0)"
+      }
+    ],
+    "primary_device": "cuda:0",
+    "precompute_api": "s2fft.generate_precomputes_jax",
+    "precompute_memory": "O(L^2)",
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "timing": "trace uses jitted_function.trace; lower uses traced.lower; compile uses lowered.compile; warm is median of blocking calls",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 180.0,
+    "paths": {
+      "none": "ordinary S2FFT JAX transform with precomps=None",
+      "precomps": "ordinary S2FFT JAX transform with external O(L^2) precomps"
+    }
+  },
+  "results": [
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 3968,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.1105179739970481,
+        "lower_seconds": 0.06830985599663109,
+        "compile_seconds": 0.3706067500024801,
+        "first_execution_seconds": 0.00918489600007888,
+        "warm_seconds_median": 0.0007378959999186918
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04036902900406858,
+        "lower_seconds": 0.06064098899514647,
+        "compile_seconds": 0.30642260900640395,
+        "first_execution_seconds": 0.003861304998281412,
+        "warm_seconds_median": 0.0007382469993899576
+      },
+      "forward_coefficient_relative_max": 6.068020075987619e-16,
+      "inverse_spatial_relative_max": 4.626116490629936e-16,
+      "round_trip_relative_max": 3.3924854264619534e-15,
+      "status": "complete",
+      "worker_wall_seconds": 2.3392078949982533
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": true,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 3968,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.10870011399674695,
+        "lower_seconds": 0.06868954400124494,
+        "compile_seconds": 0.3271088420005981,
+        "first_execution_seconds": 0.00947653800540138,
+        "warm_seconds_median": 0.0005942639982094988
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.031888024997897446,
+        "lower_seconds": 0.056604441997478716,
+        "compile_seconds": 0.25470871799916495,
+        "first_execution_seconds": 0.0037739890030934475,
+        "warm_seconds_median": 0.0005514630029210821
+      },
+      "forward_coefficient_relative_max": 6.068020075987619e-16,
+      "inverse_spatial_relative_max": 3.855097075524947e-16,
+      "round_trip_relative_max": 3.3924854264619534e-15,
+      "status": "complete",
+      "worker_wall_seconds": 2.098027177999029
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 7936,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.11462430199753726,
+        "lower_seconds": 0.0710095230024308,
+        "compile_seconds": 0.38116546499804826,
+        "first_execution_seconds": 0.008345859001565259,
+        "warm_seconds_median": 0.0007499689963879064
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.041332921995490324,
+        "lower_seconds": 0.06075007500476204,
+        "compile_seconds": 0.3066275859964662,
+        "first_execution_seconds": 0.003626450001320336,
+        "warm_seconds_median": 0.0007358919974649325
+      },
+      "forward_coefficient_relative_max": 7.749396551490152e-16,
+      "inverse_spatial_relative_max": 5.898315846983318e-16,
+      "round_trip_relative_max": 2.25909429720773e-15,
+      "status": "complete",
+      "worker_wall_seconds": 2.2885064289948787
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 7936,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.11293900400050916,
+        "lower_seconds": 0.07161089100554818,
+        "compile_seconds": 0.3876959090048331,
+        "first_execution_seconds": 0.00861221199738793,
+        "warm_seconds_median": 0.0007584150007460266
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04201330900104949,
+        "lower_seconds": 0.0604509889963083,
+        "compile_seconds": 0.31258799199713394,
+        "first_execution_seconds": 0.0036311189978732727,
+        "warm_seconds_median": 0.0007418430031975731
+      },
+      "forward_coefficient_relative_max": 7.749396551490152e-16,
+      "inverse_spatial_relative_max": 5.898315846983318e-16,
+      "round_trip_relative_max": 2.25909429720773e-15,
+      "status": "complete",
+      "worker_wall_seconds": 2.3047386970065418
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.15488242100400385,
+        "lower_seconds": 0.09333304400206544,
+        "compile_seconds": 0.4191522059991257,
+        "first_execution_seconds": 0.006214396002178546,
+        "warm_seconds_median": 0.0007164960043155588
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.060616752998612355,
+        "lower_seconds": 0.06662473800679436,
+        "compile_seconds": 0.3279943169982289,
+        "first_execution_seconds": 0.004113932001928333,
+        "warm_seconds_median": 0.0007207539965747856
+      },
+      "forward_coefficient_relative_max": 3.236434705929297e-16,
+      "inverse_spatial_relative_max": 3.0904391736985444e-16,
+      "round_trip_relative_max": 2.1623136242057744e-15,
+      "north_pole_relative_max": 2.1434366999239095e-33,
+      "south_pole_relative_max": 1.5445089156911303e-16,
+      "interior_relative_max": 3.0904391736985444e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.5785814019982354
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": true,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.13741713100171182,
+        "lower_seconds": 0.08933853700000327,
+        "compile_seconds": 0.3554865250043804,
+        "first_execution_seconds": 0.005991625002934597,
+        "warm_seconds_median": 0.0005527160028577782
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.050484134000726044,
+        "lower_seconds": 0.0598385999983293,
+        "compile_seconds": 0.2888416400019196,
+        "first_execution_seconds": 0.003448843999649398,
+        "warm_seconds_median": 0.0005478259990923107
+      },
+      "forward_coefficient_relative_max": 3.2352319628827834e-16,
+      "inverse_spatial_relative_max": 3.0890178313822607e-16,
+      "round_trip_relative_max": 2.1623124819675826e-15,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 3.0890178313822607e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.4201709770059097
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 8704,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14886448600009317,
+        "lower_seconds": 0.09103957500337856,
+        "compile_seconds": 0.41569005599740194,
+        "first_execution_seconds": 0.005914478999329731,
+        "warm_seconds_median": 0.0006934120028745383
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.05910278900410049,
+        "lower_seconds": 0.06975990899809403,
+        "compile_seconds": 0.3550431469993782,
+        "first_execution_seconds": 0.003997792999143712,
+        "warm_seconds_median": 0.0007206839945865795
+      },
+      "forward_coefficient_relative_max": 3.5391071374678296e-16,
+      "inverse_spatial_relative_max": 4.0282842642387753e-16,
+      "round_trip_relative_max": 1.3696859582055616e-15,
+      "north_pole_relative_max": 1.4655036627767641e-16,
+      "south_pole_relative_max": 2.1846438741625155e-16,
+      "interior_relative_max": 4.0282842642387753e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.6094693150007515
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 8704,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14552912600629497,
+        "lower_seconds": 0.09174233499652473,
+        "compile_seconds": 0.4038223659954383,
+        "first_execution_seconds": 0.006021140005032066,
+        "warm_seconds_median": 0.0007043829973554239
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.05900688700057799,
+        "lower_seconds": 0.06364640399988275,
+        "compile_seconds": 0.36485162199824117,
+        "first_execution_seconds": 0.0037736179947387427,
+        "warm_seconds_median": 0.0007119770016288385
+      },
+      "forward_coefficient_relative_max": 3.9565484951114787e-16,
+      "inverse_spatial_relative_max": 3.9384227534606223e-16,
+      "round_trip_relative_max": 1.2889861697527295e-15,
+      "north_pole_relative_max": 1.2212530523139697e-16,
+      "south_pole_relative_max": 1.5639670038620852e-16,
+      "interior_relative_max": 3.9384227534606223e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.583487502997741
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 65024,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.12794081399624702,
+        "lower_seconds": 0.07824301700020442,
+        "compile_seconds": 0.5852654230038752,
+        "first_execution_seconds": 0.008845743999700062,
+        "warm_seconds_median": 0.0029823020013282076
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.042511881998507306,
+        "lower_seconds": 0.06173441700229887,
+        "compile_seconds": 0.31030747799377423,
+        "first_execution_seconds": 0.005790704002720304,
+        "warm_seconds_median": 0.002773797001282219
+      },
+      "forward_coefficient_relative_max": 1.4763604911611753e-15,
+      "inverse_spatial_relative_max": 1.0827908833032338e-15,
+      "round_trip_relative_max": 1.742135052135944e-14,
+      "status": "complete",
+      "worker_wall_seconds": 2.626257963995158
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": true,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 65024,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.12035322000156157,
+        "lower_seconds": 0.07145984499948099,
+        "compile_seconds": 0.5172899789977237,
+        "first_execution_seconds": 0.008936705999076366,
+        "warm_seconds_median": 0.002203338000981603
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.03250792699691374,
+        "lower_seconds": 0.05511110700172139,
+        "compile_seconds": 0.24673084600362927,
+        "first_execution_seconds": 0.005040415999246761,
+        "warm_seconds_median": 0.0020038010043208487
+      },
+      "forward_coefficient_relative_max": 1.4455424599274467e-15,
+      "inverse_spatial_relative_max": 7.707883112157345e-16,
+      "round_trip_relative_max": 1.7265658171232453e-14,
+      "status": "complete",
+      "worker_wall_seconds": 2.407485679999809
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 130048,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.125255703998846,
+        "lower_seconds": 0.0738961940005538,
+        "compile_seconds": 0.563726016000146,
+        "first_execution_seconds": 0.009276208002120256,
+        "warm_seconds_median": 0.003050922001420986
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04206437600078061,
+        "lower_seconds": 0.05935431399848312,
+        "compile_seconds": 0.3153149809950264,
+        "first_execution_seconds": 0.005966156997601502,
+        "warm_seconds_median": 0.0027728659988497384
+      },
+      "forward_coefficient_relative_max": 1.282240988786609e-15,
+      "inverse_spatial_relative_max": 1.0067835670701906e-15,
+      "round_trip_relative_max": 1.501432978184702e-14,
+      "status": "complete",
+      "worker_wall_seconds": 2.5910255529961432
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 130048,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.12179826400097227,
+        "lower_seconds": 0.07399358799739275,
+        "compile_seconds": 0.5632196770020528,
+        "first_execution_seconds": 0.008472918001643848,
+        "warm_seconds_median": 0.0030740160000277683
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.041945390999899246,
+        "lower_seconds": 0.06077535199437989,
+        "compile_seconds": 0.31769163699937053,
+        "first_execution_seconds": 0.005814670003019273,
+        "warm_seconds_median": 0.002780731003440451
+      },
+      "forward_coefficient_relative_max": 1.2537068958025516e-15,
+      "inverse_spatial_relative_max": 1.0233043639883077e-15,
+      "round_trip_relative_max": 1.491244151515342e-14,
+      "status": "complete",
+      "worker_wall_seconds": 2.622680617001606
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.26794920599786565,
+        "lower_seconds": 0.1369913250018726,
+        "compile_seconds": 0.5898001410023426,
+        "first_execution_seconds": 0.008444674997008406,
+        "warm_seconds_median": 0.0033701659995131195
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06200717300089309,
+        "lower_seconds": 0.06380850999994436,
+        "compile_seconds": 0.3270015689995489,
+        "first_execution_seconds": 0.005897445997106843,
+        "warm_seconds_median": 0.003016897004272323
+      },
+      "forward_coefficient_relative_max": 4.557698196035064e-16,
+      "inverse_spatial_relative_max": 4.646438660682031e-16,
+      "round_trip_relative_max": 1.1715597314828544e-14,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 3.0830508638924985e-16,
+      "interior_relative_max": 4.646438660682031e-16,
+      "status": "complete",
+      "worker_wall_seconds": 3.0154426799999783
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": true,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.2634336440023617,
+        "lower_seconds": 0.1330312040008721,
+        "compile_seconds": 0.5203005639996263,
+        "first_execution_seconds": 0.007302274003450293,
+        "warm_seconds_median": 0.0022839599987491965
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.0504557800013572,
+        "lower_seconds": 0.061178534997452516,
+        "compile_seconds": 0.2729997709975578,
+        "first_execution_seconds": 0.004940245999023318,
+        "warm_seconds_median": 0.0021686219988623634
+      },
+      "forward_coefficient_relative_max": 4.557663559386225e-16,
+      "inverse_spatial_relative_max": 4.624576295838748e-16,
+      "round_trip_relative_max": 1.1715593282791496e-14,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 3.0830508638924985e-16,
+      "interior_relative_max": 4.624576295838748e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.7465053439955227
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 133120,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.2715782619998208,
+        "lower_seconds": 0.1345303900016006,
+        "compile_seconds": 0.5749621619979735,
+        "first_execution_seconds": 0.008377418002055492,
+        "warm_seconds_median": 0.0033159029990201816
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.059090946000651456,
+        "lower_seconds": 0.06309627299924614,
+        "compile_seconds": 0.33941565299755894,
+        "first_execution_seconds": 0.006125166997662745,
+        "warm_seconds_median": 0.0030185309951775707
+      },
+      "forward_coefficient_relative_max": 4.663664844792463e-16,
+      "inverse_spatial_relative_max": 7.112353257809058e-16,
+      "round_trip_relative_max": 4.4950633148689366e-15,
+      "north_pole_relative_max": 2.9334136186821397e-16,
+      "south_pole_relative_max": 1.9539137089898954e-16,
+      "interior_relative_max": 7.112353257809058e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.9771066359971883
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 133120,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.27017887399415486,
+        "lower_seconds": 0.13723913399735466,
+        "compile_seconds": 0.5655309000067064,
+        "first_execution_seconds": 0.00824040899897227,
+        "warm_seconds_median": 0.003317444999993313
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.060854611998365726,
+        "lower_seconds": 0.06496361600147793,
+        "compile_seconds": 0.33882560699566966,
+        "first_execution_seconds": 0.00613095800508745,
+        "warm_seconds_median": 0.003086108001298271
+      },
+      "forward_coefficient_relative_max": 4.741271142581065e-16,
+      "inverse_spatial_relative_max": 5.717493403791971e-16,
+      "round_trip_relative_max": 4.409583263754484e-15,
+      "north_pole_relative_max": 1.381625633480114e-16,
+      "south_pole_relative_max": 2.941029590700084e-16,
+      "interior_relative_max": 5.717493403791971e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.996499473003496
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 261120,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.13578284899995197,
+        "lower_seconds": 0.07884140899841441,
+        "compile_seconds": 0.734432912999182,
+        "first_execution_seconds": 0.01120226200146135,
+        "warm_seconds_median": 0.007047622995742131
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.05326382299972465,
+        "lower_seconds": 0.06522741499793483,
+        "compile_seconds": 0.31446089500241214,
+        "first_execution_seconds": 0.009956794994650409,
+        "warm_seconds_median": 0.006644259003223851
+      },
+      "forward_coefficient_relative_max": 2.090755927326372e-15,
+      "inverse_spatial_relative_max": 7.727758635110365e-16,
+      "round_trip_relative_max": 1.2531679970234701e-13,
+      "status": "complete",
+      "worker_wall_seconds": 3.1831160279980395
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": true,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 261120,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.13047021900274558,
+        "lower_seconds": 0.07922173899714835,
+        "compile_seconds": 0.6797883879989968,
+        "first_execution_seconds": 0.01292207499500364,
+        "warm_seconds_median": 0.004888678995484952
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.03461293900181772,
+        "lower_seconds": 0.06086698600120144,
+        "compile_seconds": 0.2556068880003295,
+        "first_execution_seconds": 0.007564810999610927,
+        "warm_seconds_median": 0.004597997998644132
+      },
+      "forward_coefficient_relative_max": 2.0857701952031478e-15,
+      "inverse_spatial_relative_max": 7.707058507320134e-16,
+      "round_trip_relative_max": 1.2547091249917178e-13,
+      "status": "complete",
+      "worker_wall_seconds": 2.8337778329951107
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 522240,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.13957010400190484,
+        "lower_seconds": 0.08085559000028297,
+        "compile_seconds": 0.7443030240028747,
+        "first_execution_seconds": 0.011497781000798568,
+        "warm_seconds_median": 0.007052892004139721
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04362194200075464,
+        "lower_seconds": 0.06444442299834918,
+        "compile_seconds": 0.3258258249989012,
+        "first_execution_seconds": 0.00989729400316719,
+        "warm_seconds_median": 0.006634470999415498
+      },
+      "forward_coefficient_relative_max": 1.5565117101381978e-15,
+      "inverse_spatial_relative_max": 9.901052595366778e-16,
+      "round_trip_relative_max": 1.0527759957690043e-13,
+      "status": "complete",
+      "worker_wall_seconds": 3.2069156799989287
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 522240,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.13718517100642202,
+        "lower_seconds": 0.0801753630003077,
+        "compile_seconds": 0.7350191910009016,
+        "first_execution_seconds": 0.01165644099819474,
+        "warm_seconds_median": 0.007097175999660976
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04403014499985147,
+        "lower_seconds": 0.06375411799672293,
+        "compile_seconds": 0.3251709350006422,
+        "first_execution_seconds": 0.009724536997964606,
+        "warm_seconds_median": 0.006648688002314884
+      },
+      "forward_coefficient_relative_max": 1.5647961520022972e-15,
+      "inverse_spatial_relative_max": 9.767785687800362e-16,
+      "round_trip_relative_max": 1.0576252755650541e-13,
+      "status": "complete",
+      "worker_wall_seconds": 3.1984797219993197
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.5226124280015938,
+        "lower_seconds": 0.1960381579992827,
+        "compile_seconds": 0.873642613994889,
+        "first_execution_seconds": 0.014854812005069107,
+        "warm_seconds_median": 0.009027848005644046
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.09361180099949706,
+        "lower_seconds": 0.06347928799368674,
+        "compile_seconds": 0.32930131000466645,
+        "first_execution_seconds": 0.009412225997948553,
+        "warm_seconds_median": 0.006672572999377735
+      },
+      "forward_coefficient_relative_max": 6.306334118880636e-16,
+      "inverse_spatial_relative_max": 4.639570370780246e-16,
+      "round_trip_relative_max": 1.4181457597119579e-14,
+      "north_pole_relative_max": 8.556733470085542e-33,
+      "south_pole_relative_max": 7.70722033347718e-17,
+      "interior_relative_max": 4.639570370780246e-16,
+      "status": "complete",
+      "worker_wall_seconds": 4.109383234004781
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": true,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.5183800809973036,
+        "lower_seconds": 0.19407553500059294,
+        "compile_seconds": 0.8455683939973824,
+        "first_execution_seconds": 0.011022863000107463,
+        "warm_seconds_median": 0.005793479998828843
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08089917200413765,
+        "lower_seconds": 0.06067206699663075,
+        "compile_seconds": 0.270093272003578,
+        "first_execution_seconds": 0.007295260998944286,
+        "warm_seconds_median": 0.004598999999871012
+      },
+      "forward_coefficient_relative_max": 6.263762659083971e-16,
+      "inverse_spatial_relative_max": 6.165776266781743e-16,
+      "round_trip_relative_max": 1.4027141006928466e-14,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 7.707220333477178e-17,
+      "interior_relative_max": 6.165776266781743e-16,
+      "status": "complete",
+      "worker_wall_seconds": 3.793140329005837
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 528384,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.5244820450025145,
+        "lower_seconds": 0.19823822000034852,
+        "compile_seconds": 0.8633027040050365,
+        "first_execution_seconds": 0.014407394999579992,
+        "warm_seconds_median": 0.00903640500473557
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.09324819399625994,
+        "lower_seconds": 0.0649744059992372,
+        "compile_seconds": 0.33742205199814634,
+        "first_execution_seconds": 0.009490473996265791,
+        "warm_seconds_median": 0.006660580002062488
+      },
+      "forward_coefficient_relative_max": 7.802094579815992e-16,
+      "inverse_spatial_relative_max": 7.946074731104206e-16,
+      "round_trip_relative_max": 8.610918967978535e-15,
+      "north_pole_relative_max": 5.5224868833803e-16,
+      "south_pole_relative_max": 3.812366333726046e-16,
+      "interior_relative_max": 7.946074731104206e-16,
+      "status": "complete",
+      "worker_wall_seconds": 4.08797593700001
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 528384,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.5298789850057801,
+        "lower_seconds": 0.19872063199727563,
+        "compile_seconds": 0.856334951997269,
+        "first_execution_seconds": 0.01435339300223859,
+        "warm_seconds_median": 0.009054178000951651
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08994155799882719,
+        "lower_seconds": 0.06461565799691016,
+        "compile_seconds": 0.3302149479932268,
+        "first_execution_seconds": 0.00976345000526635,
+        "warm_seconds_median": 0.006686970998998731
+      },
+      "forward_coefficient_relative_max": 6.381052991691796e-16,
+      "inverse_spatial_relative_max": 8.301687706484904e-16,
+      "round_trip_relative_max": 8.562950765892421e-15,
+      "north_pole_relative_max": 2.1829546124858027e-16,
+      "south_pole_relative_max": 5.257250885491735e-16,
+      "interior_relative_max": 8.301687706484904e-16,
+      "status": "complete",
+      "worker_wall_seconds": 4.121689745996264
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 3968,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.24718337300146231,
+      "precompute_inverse_seconds": 0.17049050799687393,
+      "precompute_total_seconds": 0.41767388099833624,
+      "forward_timing": {
+        "trace_seconds": 0.05496916899573989,
+        "lower_seconds": 0.039948933001141995,
+        "compile_seconds": 0.2642628230023547,
+        "first_execution_seconds": 0.00429360300040571,
+        "warm_seconds_median": 0.00046939800085965544
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.02983101300196722,
+        "lower_seconds": 0.030102687000180595,
+        "compile_seconds": 0.21149183200031985,
+        "first_execution_seconds": 0.002635384997120127,
+        "warm_seconds_median": 0.00045414900523610413
+      },
+      "forward_coefficient_relative_max": 6.068020075987619e-16,
+      "inverse_spatial_relative_max": 4.626116490629936e-16,
+      "round_trip_relative_max": 3.3924854264619534e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.268120134001947
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 3968,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.24489823899784824,
+      "precompute_inverse_seconds": 0.1712403759956942,
+      "precompute_total_seconds": 0.41613861499354243,
+      "forward_timing": {
+        "trace_seconds": 0.04687465599999996,
+        "lower_seconds": 0.03926584199507488,
+        "compile_seconds": 0.2194689539974206,
+        "first_execution_seconds": 0.003332583997689653,
+        "warm_seconds_median": 0.0003245740008424036
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.019636919001641218,
+        "lower_seconds": 0.026464905000466388,
+        "compile_seconds": 0.1539898419941892,
+        "first_execution_seconds": 0.001981768997211475,
+        "warm_seconds_median": 0.0002737780014285818
+      },
+      "forward_coefficient_relative_max": 6.068020075987619e-16,
+      "inverse_spatial_relative_max": 3.855097075524947e-16,
+      "round_trip_relative_max": 3.3924854264619534e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.0459855169974617
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 7936,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.2487670580012491,
+      "precompute_inverse_seconds": 0.17139733300427906,
+      "precompute_total_seconds": 0.42016439100552816,
+      "forward_timing": {
+        "trace_seconds": 0.05384757700085174,
+        "lower_seconds": 0.03895656699751271,
+        "compile_seconds": 0.2627370760019403,
+        "first_execution_seconds": 0.003911219006113242,
+        "warm_seconds_median": 0.00046970800030976534
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.028199045002111234,
+        "lower_seconds": 0.030743939998501446,
+        "compile_seconds": 0.22120850299688755,
+        "first_execution_seconds": 0.0026036549970740452,
+        "warm_seconds_median": 0.0004428779939189553
+      },
+      "forward_coefficient_relative_max": 7.749396551490152e-16,
+      "inverse_spatial_relative_max": 5.898315846983318e-16,
+      "round_trip_relative_max": 2.25909429720773e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.2459775550014456
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 7936,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.23782139099785127,
+      "precompute_inverse_seconds": 0.17259560999809764,
+      "precompute_total_seconds": 0.4104170009959489,
+      "forward_timing": {
+        "trace_seconds": 0.05576331100019161,
+        "lower_seconds": 0.03868933099874994,
+        "compile_seconds": 0.2699308049996034,
+        "first_execution_seconds": 0.003964559997257311,
+        "warm_seconds_median": 0.0004641880004783161
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.029128815003787167,
+        "lower_seconds": 0.030978533999586944,
+        "compile_seconds": 0.21990535900113173,
+        "first_execution_seconds": 0.0026389929989818484,
+        "warm_seconds_median": 0.0004426669984241016
+      },
+      "forward_coefficient_relative_max": 7.749396551490152e-16,
+      "inverse_spatial_relative_max": 5.898315846983318e-16,
+      "round_trip_relative_max": 2.25909429720773e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.248908569003106
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.2342839089978952,
+      "precompute_inverse_seconds": 0.18553253300342476,
+      "precompute_total_seconds": 0.41981644200131996,
+      "forward_timing": {
+        "trace_seconds": 0.09090392899815924,
+        "lower_seconds": 0.0639786319952691,
+        "compile_seconds": 0.297812739998335,
+        "first_execution_seconds": 0.00458543500280939,
+        "warm_seconds_median": 0.0004261759968358092
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.046446917003777344,
+        "lower_seconds": 0.03663994399539661,
+        "compile_seconds": 0.23739467399718706,
+        "first_execution_seconds": 0.0029124189968570136,
+        "warm_seconds_median": 0.0004418759999680333
+      },
+      "forward_coefficient_relative_max": 3.236434705929297e-16,
+      "inverse_spatial_relative_max": 3.0904391736985444e-16,
+      "round_trip_relative_max": 2.1623136242057744e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 2.1434366999239095e-33,
+      "south_pole_relative_max": 1.5445089156911303e-16,
+      "interior_relative_max": 3.0904391736985444e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.5555458739981987
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.23060329599684337,
+      "precompute_inverse_seconds": 0.17996881900035078,
+      "precompute_total_seconds": 0.41057211499719415,
+      "forward_timing": {
+        "trace_seconds": 0.0796576230059145,
+        "lower_seconds": 0.06305558700114489,
+        "compile_seconds": 0.24810814199736342,
+        "first_execution_seconds": 0.00397099200199591,
+        "warm_seconds_median": 0.0002682880003703758
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.03218311299860943,
+        "lower_seconds": 0.03132139299850678,
+        "compile_seconds": 0.1878249700021115,
+        "first_execution_seconds": 0.0018766599969239905,
+        "warm_seconds_median": 0.00027266499819234014
+      },
+      "forward_coefficient_relative_max": 3.2352319628827834e-16,
+      "inverse_spatial_relative_max": 3.0890178313822607e-16,
+      "round_trip_relative_max": 2.1623124819675826e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 3.0890178313822607e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.393226605003292
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 8704,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.23322392399859382,
+      "precompute_inverse_seconds": 0.17783194599905983,
+      "precompute_total_seconds": 0.41105586999765364,
+      "forward_timing": {
+        "trace_seconds": 0.08726223900157493,
+        "lower_seconds": 0.06396050799958175,
+        "compile_seconds": 0.3043604180056718,
+        "first_execution_seconds": 0.004576518003887031,
+        "warm_seconds_median": 0.000418472001911141
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04262169000139693,
+        "lower_seconds": 0.03718138900148915,
+        "compile_seconds": 0.27530634400318377,
+        "first_execution_seconds": 0.0028250239993212745,
+        "warm_seconds_median": 0.0004485690005822107
+      },
+      "forward_coefficient_relative_max": 3.5391071374678296e-16,
+      "inverse_spatial_relative_max": 4.0282842642387753e-16,
+      "round_trip_relative_max": 1.3696859582055616e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 1.4655036627767641e-16,
+      "south_pole_relative_max": 2.1846438741625155e-16,
+      "interior_relative_max": 4.0282842642387753e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.623952082998585
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_nbytes": 8704,
+      "coefficient_nbytes": 7936,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.2332987449990469,
+      "precompute_inverse_seconds": 0.1831155010004295,
+      "precompute_total_seconds": 0.4164142459994764,
+      "forward_timing": {
+        "trace_seconds": 0.08655734599597054,
+        "lower_seconds": 0.06313947399758035,
+        "compile_seconds": 0.2985951309965458,
+        "first_execution_seconds": 0.0046947209993959405,
+        "warm_seconds_median": 0.00041687899647513404
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04176573000586359,
+        "lower_seconds": 0.035618191002868116,
+        "compile_seconds": 0.2720888370022294,
+        "first_execution_seconds": 0.0028159569992567413,
+        "warm_seconds_median": 0.0004422569982125424
+      },
+      "forward_coefficient_relative_max": 3.9565484951114787e-16,
+      "inverse_spatial_relative_max": 3.9384227534606223e-16,
+      "round_trip_relative_max": 1.2889861697527295e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 1.2212530523139697e-16,
+      "south_pole_relative_max": 1.5639670038620852e-16,
+      "interior_relative_max": 3.9384227534606223e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.5760298750028596
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 65024,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.24335860599967418,
+      "precompute_inverse_seconds": 0.1778611310000997,
+      "precompute_total_seconds": 0.4212197369997739,
+      "forward_timing": {
+        "trace_seconds": 0.06583364099788014,
+        "lower_seconds": 0.04544309699849691,
+        "compile_seconds": 0.4633852150000166,
+        "first_execution_seconds": 0.005484526001964696,
+        "warm_seconds_median": 0.0018740160012384877
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.029507922001357656,
+        "lower_seconds": 0.030682974997034762,
+        "compile_seconds": 0.21328150799672585,
+        "first_execution_seconds": 0.0036621880062739365,
+        "warm_seconds_median": 0.00162960199668305
+      },
+      "forward_coefficient_relative_max": 1.4763604911611753e-15,
+      "inverse_spatial_relative_max": 1.0827908833032338e-15,
+      "round_trip_relative_max": 1.742135052135944e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.5850875199976144
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 65024,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.2437612680005259,
+      "precompute_inverse_seconds": 0.17824909500632202,
+      "precompute_total_seconds": 0.4220103630068479,
+      "forward_timing": {
+        "trace_seconds": 0.05754177500057267,
+        "lower_seconds": 0.0441780640030629,
+        "compile_seconds": 0.4131492700034869,
+        "first_execution_seconds": 0.0039801900056772865,
+        "warm_seconds_median": 0.0010178160009672865
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.020197439000185113,
+        "lower_seconds": 0.02545893200294813,
+        "compile_seconds": 0.1494390130028478,
+        "first_execution_seconds": 0.0027491410000948235,
+        "warm_seconds_median": 0.0008652770047774538
+      },
+      "forward_coefficient_relative_max": 1.4455424599274467e-15,
+      "inverse_spatial_relative_max": 7.707883112157345e-16,
+      "round_trip_relative_max": 1.7265658171232453e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.333000621001702
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 130048,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.24435478100349428,
+      "precompute_inverse_seconds": 0.18202309399930527,
+      "precompute_total_seconds": 0.42637787500279956,
+      "forward_timing": {
+        "trace_seconds": 0.06532775500090793,
+        "lower_seconds": 0.04255827000451973,
+        "compile_seconds": 0.4560863570004585,
+        "first_execution_seconds": 0.00526942900614813,
+        "warm_seconds_median": 0.0018102139947586693
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.029370822994678747,
+        "lower_seconds": 0.02991809800005285,
+        "compile_seconds": 0.22050445200147806,
+        "first_execution_seconds": 0.003725247996044345,
+        "warm_seconds_median": 0.0016290319981635548
+      },
+      "forward_coefficient_relative_max": 1.282240988786609e-15,
+      "inverse_spatial_relative_max": 1.0067835670701906e-15,
+      "round_trip_relative_max": 1.501432978184702e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.531278356000257
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 130048,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.24311469500389649,
+      "precompute_inverse_seconds": 0.1778358629962895,
+      "precompute_total_seconds": 0.420950558000186,
+      "forward_timing": {
+        "trace_seconds": 0.0631931260068086,
+        "lower_seconds": 0.04321227699983865,
+        "compile_seconds": 0.4515832980032428,
+        "first_execution_seconds": 0.005196670004806947,
+        "warm_seconds_median": 0.0018331780011067167
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.02977983600430889,
+        "lower_seconds": 0.02991930000280263,
+        "compile_seconds": 0.21460762700007763,
+        "first_execution_seconds": 0.0035965339993708767,
+        "warm_seconds_median": 0.0016358749999199063
+      },
+      "forward_coefficient_relative_max": 1.2537068958025516e-15,
+      "inverse_spatial_relative_max": 1.0233043639883077e-15,
+      "round_trip_relative_max": 1.491244151515342e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.528077941999072
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.23072659999888856,
+      "precompute_inverse_seconds": 0.20165613499557367,
+      "precompute_total_seconds": 0.4323827349944622,
+      "forward_timing": {
+        "trace_seconds": 0.22474691800016444,
+        "lower_seconds": 0.11065229800442467,
+        "compile_seconds": 0.4747489820001647,
+        "first_execution_seconds": 0.00663467199774459,
+        "warm_seconds_median": 0.002211001999967266
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.041615215995989274,
+        "lower_seconds": 0.03573873900313629,
+        "compile_seconds": 0.2381602719979128,
+        "first_execution_seconds": 0.003971382997406181,
+        "warm_seconds_median": 0.0018937330023618415
+      },
+      "forward_coefficient_relative_max": 4.557698196035064e-16,
+      "inverse_spatial_relative_max": 4.646438660682031e-16,
+      "round_trip_relative_max": 1.1715597314828544e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 3.0830508638924985e-16,
+      "interior_relative_max": 4.646438660682031e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.958683293996728
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.23169450099521782,
+      "precompute_inverse_seconds": 0.18407701999967685,
+      "precompute_total_seconds": 0.41577152099489467,
+      "forward_timing": {
+        "trace_seconds": 0.21044550300575793,
+        "lower_seconds": 0.10622947099909652,
+        "compile_seconds": 0.4232854950023466,
+        "first_execution_seconds": 0.005463316003442742,
+        "warm_seconds_median": 0.0011460780006018467
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.033833314999355935,
+        "lower_seconds": 0.03380314799869666,
+        "compile_seconds": 0.1830999010053347,
+        "first_execution_seconds": 0.0025361869993503205,
+        "warm_seconds_median": 0.001011383006698452
+      },
+      "forward_coefficient_relative_max": 4.557663559386225e-16,
+      "inverse_spatial_relative_max": 4.624576295838748e-16,
+      "round_trip_relative_max": 1.1715593282791496e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 3.0830508638924985e-16,
+      "interior_relative_max": 4.624576295838748e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.7312774660022114
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 133120,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.23193108900159132,
+      "precompute_inverse_seconds": 0.18748308299836935,
+      "precompute_total_seconds": 0.41941417199996067,
+      "forward_timing": {
+        "trace_seconds": 0.21617863900610246,
+        "lower_seconds": 0.10842034599772887,
+        "compile_seconds": 0.4648018840016448,
+        "first_execution_seconds": 0.0067353519989410415,
+        "warm_seconds_median": 0.002184461998695042
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04106446399964625,
+        "lower_seconds": 0.035482464998494834,
+        "compile_seconds": 0.24947821300156647,
+        "first_execution_seconds": 0.0040510440012440085,
+        "warm_seconds_median": 0.0018834430011338554
+      },
+      "forward_coefficient_relative_max": 4.663664844792463e-16,
+      "inverse_spatial_relative_max": 7.112353257809058e-16,
+      "round_trip_relative_max": 4.4950633148689366e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 2.9334136186821397e-16,
+      "south_pole_relative_max": 1.9539137089898954e-16,
+      "interior_relative_max": 7.112353257809058e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.9598327380008413
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_nbytes": 133120,
+      "coefficient_nbytes": 130048,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.2410340689966688,
+      "precompute_inverse_seconds": 0.18862567500036675,
+      "precompute_total_seconds": 0.42965974399703555,
+      "forward_timing": {
+        "trace_seconds": 0.21619477900094353,
+        "lower_seconds": 0.1078023869995377,
+        "compile_seconds": 0.4556054469940136,
+        "first_execution_seconds": 0.006627938004385214,
+        "warm_seconds_median": 0.0021854240039829165
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.041423955000936985,
+        "lower_seconds": 0.036207916993589606,
+        "compile_seconds": 0.2511813759992947,
+        "first_execution_seconds": 0.004113531002076343,
+        "warm_seconds_median": 0.0018827220046659932
+      },
+      "forward_coefficient_relative_max": 4.741271142581065e-16,
+      "inverse_spatial_relative_max": 5.717493403791971e-16,
+      "round_trip_relative_max": 4.409583263754484e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 1.381625633480114e-16,
+      "south_pole_relative_max": 2.941029590700084e-16,
+      "interior_relative_max": 5.717493403791971e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.9891628840050544
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 261120,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.24705652199918404,
+      "precompute_inverse_seconds": 0.18565685900102835,
+      "precompute_total_seconds": 0.4327133810002124,
+      "forward_timing": {
+        "trace_seconds": 0.0788950910064159,
+        "lower_seconds": 0.049841998996271286,
+        "compile_seconds": 0.6240750819997629,
+        "first_execution_seconds": 0.008635136000521015,
+        "warm_seconds_median": 0.004730909000500105
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.030670902000565547,
+        "lower_seconds": 0.03260295699874405,
+        "compile_seconds": 0.22335893199488055,
+        "first_execution_seconds": 0.006838335997599643,
+        "warm_seconds_median": 0.00425045099837007
+      },
+      "forward_coefficient_relative_max": 2.090755927326372e-15,
+      "inverse_spatial_relative_max": 7.727758635110365e-16,
+      "round_trip_relative_max": 1.2531679970234701e-13,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 3.0770250790010323
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 261120,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.253676104999613,
+      "precompute_inverse_seconds": 0.19628227000066545,
+      "precompute_total_seconds": 0.44995837500027847,
+      "forward_timing": {
+        "trace_seconds": 0.0743608829943696,
+        "lower_seconds": 0.05187977499736007,
+        "compile_seconds": 0.5787101020032424,
+        "first_execution_seconds": 0.006201823001902085,
+        "warm_seconds_median": 0.0025089460032177158
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.020917471003485844,
+        "lower_seconds": 0.027159469995240215,
+        "compile_seconds": 0.1745496869989438,
+        "first_execution_seconds": 0.003737089005880989,
+        "warm_seconds_median": 0.002196845998696517
+      },
+      "forward_coefficient_relative_max": 2.0857701952031478e-15,
+      "inverse_spatial_relative_max": 7.707058507320134e-16,
+      "round_trip_relative_max": 1.2547091249917178e-13,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 2.807598068000516
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 522240,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.25499789599416545,
+      "precompute_inverse_seconds": 0.19502326699875994,
+      "precompute_total_seconds": 0.4500211629929254,
+      "forward_timing": {
+        "trace_seconds": 0.08028409800317604,
+        "lower_seconds": 0.05656372499652207,
+        "compile_seconds": 0.6503914760032785,
+        "first_execution_seconds": 0.008668178001244087,
+        "warm_seconds_median": 0.004728455001895782
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.031464262996451,
+        "lower_seconds": 0.041998291002528276,
+        "compile_seconds": 0.23879403200407978,
+        "first_execution_seconds": 0.0068552789962268434,
+        "warm_seconds_median": 0.004251894002663903
+      },
+      "forward_coefficient_relative_max": 1.5565117101381978e-15,
+      "inverse_spatial_relative_max": 9.901052595366778e-16,
+      "round_trip_relative_max": 1.0527759957690043e-13,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 3.186457618998247
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        128,
+        255
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 522240,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.26299069599917857,
+      "precompute_inverse_seconds": 0.19046610600344138,
+      "precompute_total_seconds": 0.45345680200261995,
+      "forward_timing": {
+        "trace_seconds": 0.07723649299441604,
+        "lower_seconds": 0.05180368999572238,
+        "compile_seconds": 0.632263030995091,
+        "first_execution_seconds": 0.008315470993693452,
+        "warm_seconds_median": 0.0047461180001846515
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.03066659400064964,
+        "lower_seconds": 0.03265547599585261,
+        "compile_seconds": 0.2274508929986041,
+        "first_execution_seconds": 0.006698352000967134,
+        "warm_seconds_median": 0.004256972999428399
+      },
+      "forward_coefficient_relative_max": 1.5647961520022972e-15,
+      "inverse_spatial_relative_max": 9.767785687800362e-16,
+      "round_trip_relative_max": 1.0576252755650541e-13,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            128,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 918528,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 3.2152162040001713
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.25200902100186795,
+      "precompute_inverse_seconds": 0.18657943300058832,
+      "precompute_total_seconds": 0.4385884540024563,
+      "forward_timing": {
+        "trace_seconds": 0.46488441100518685,
+        "lower_seconds": 0.20668418800050858,
+        "compile_seconds": 0.7819756809985847,
+        "first_execution_seconds": 0.012067749004927464,
+        "warm_seconds_median": 0.006691197995678522
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.040920111001469195,
+        "lower_seconds": 0.035465161003230605,
+        "compile_seconds": 0.24566493000020273,
+        "first_execution_seconds": 0.007105642005626578,
+        "warm_seconds_median": 0.0043394289969000965
+      },
+      "forward_coefficient_relative_max": 6.306334118880636e-16,
+      "inverse_spatial_relative_max": 4.639570370780246e-16,
+      "round_trip_relative_max": 1.4181457597119579e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            255,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 1308672,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 921600,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 8.556733470085542e-33,
+      "south_pole_relative_max": 7.70722033347718e-17,
+      "interior_relative_max": 4.639570370780246e-16,
+      "status": "complete",
+      "worker_wall_seconds": 4.083931435998238
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.2492631060013082,
+      "precompute_inverse_seconds": 0.1862348619979457,
+      "precompute_total_seconds": 0.4354979679992539,
+      "forward_timing": {
+        "trace_seconds": 0.4589167919984902,
+        "lower_seconds": 0.20817144100146834,
+        "compile_seconds": 0.7089126840000972,
+        "first_execution_seconds": 0.007882792997406796,
+        "warm_seconds_median": 0.0034397969939163886
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.031930976001603995,
+        "lower_seconds": 0.03100858099787729,
+        "compile_seconds": 0.1895136140010436,
+        "first_execution_seconds": 0.004103251994820312,
+        "warm_seconds_median": 0.0022123949966044165
+      },
+      "forward_coefficient_relative_max": 6.263762659083971e-16,
+      "inverse_spatial_relative_max": 6.165776266781743e-16,
+      "round_trip_relative_max": 1.4027141006928466e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            255,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 1308672,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 921600,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 7.707220333477178e-17,
+      "interior_relative_max": 6.165776266781743e-16,
+      "status": "complete",
+      "worker_wall_seconds": 3.7266200379963266
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 528384,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.2339137090020813,
+      "precompute_inverse_seconds": 0.18511518399463966,
+      "precompute_total_seconds": 0.41902889299672097,
+      "forward_timing": {
+        "trace_seconds": 0.471283206003136,
+        "lower_seconds": 0.20133363499917323,
+        "compile_seconds": 0.7624014120010543,
+        "first_execution_seconds": 0.011795625003287569,
+        "warm_seconds_median": 0.006679605998215266
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.041337451002618764,
+        "lower_seconds": 0.035411419994488824,
+        "compile_seconds": 0.241340828993998,
+        "first_execution_seconds": 0.0065651299955789,
+        "warm_seconds_median": 0.004260230001818854
+      },
+      "forward_coefficient_relative_max": 7.802094579815992e-16,
+      "inverse_spatial_relative_max": 7.946074731104206e-16,
+      "round_trip_relative_max": 8.610918967978535e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            255,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 1308672,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 921600,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 5.5224868833803e-16,
+      "south_pole_relative_max": 3.812366333726046e-16,
+      "interior_relative_max": 7.946074731104206e-16,
+      "status": "complete",
+      "worker_wall_seconds": 4.073131766002916
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        129,
+        256
+      ],
+      "coefficient_shape": [
+        128,
+        255
+      ],
+      "field_nbytes": 528384,
+      "coefficient_nbytes": 522240,
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.24722341800224967,
+      "precompute_inverse_seconds": 0.18708915800380055,
+      "precompute_total_seconds": 0.4343125760060502,
+      "forward_timing": {
+        "trace_seconds": 0.46926815299957525,
+        "lower_seconds": 0.20373290499992436,
+        "compile_seconds": 0.7478496240000823,
+        "first_execution_seconds": 0.011571291004656814,
+        "warm_seconds_median": 0.0066627440028241836
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.041137061998597346,
+        "lower_seconds": 0.03593003100104397,
+        "compile_seconds": 0.2507489470008295,
+        "first_execution_seconds": 0.006701787999190856,
+        "warm_seconds_median": 0.004318268998758867
+      },
+      "forward_coefficient_relative_max": 6.381052991691796e-16,
+      "inverse_spatial_relative_max": 8.301687706484904e-16,
+      "round_trip_relative_max": 8.562950765892421e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            255,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 1308672,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            129,
+            128
+          ],
+          [
+            255,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ],
+          [
+            129,
+            128
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 921600,
+        "devices": [
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0",
+          "cuda:0"
+        ]
+      },
+      "north_pole_relative_max": 2.1829546124858027e-16,
+      "south_pole_relative_max": 5.257250885491735e-16,
+      "interior_relative_max": 8.301687706484904e-16,
+      "status": "complete",
+      "worker_wall_seconds": 4.054003940000257
+    }
+  ]
+}

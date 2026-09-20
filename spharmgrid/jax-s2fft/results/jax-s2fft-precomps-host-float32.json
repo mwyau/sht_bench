@@ -1,0 +1,298 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.5.0",
+      "jaxlib": "0.5.0",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": false,
+    "jax_disable_jit": true,
+    "diagnostic_patches": [
+      "gl_quadrature_from_s2fft_numpy",
+      "negative_spin_resampling_sign"
+    ],
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "error": "maximum absolute error divided by maximum absolute reference value"
+  },
+  "results": [
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 2.8513108270807663e-07,
+      "inverse_spatial_relative_max": 1.376204061415158e-07,
+      "round_trip_relative_max": 1.0836867803318546e-06,
+      "elapsed_seconds": 1.297942974997568
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 4.656118293036018e-07,
+      "inverse_spatial_relative_max": 1.3023773710384243e-07,
+      "round_trip_relative_max": 1.3188645420725118e-06,
+      "elapsed_seconds": 0.24458489899916458
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 4.654787520672742e-07,
+      "inverse_spatial_relative_max": 1.302377362369953e-07,
+      "round_trip_relative_max": 1.3727557595162894e-06,
+      "elapsed_seconds": 0.2160966589981399
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 0.09359475978016317,
+      "inverse_spatial_relative_max": 0.08694811003842183,
+      "round_trip_relative_max": 0.14734030697485784,
+      "elapsed_seconds": 1.9675337890002993,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 4.975211380640907e-08,
+      "interior_relative_max": 0.08694811003842183
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 2.3009326563527355e-07,
+      "inverse_spatial_relative_max": 8.840856432304327e-08,
+      "round_trip_relative_max": 5.071892862694094e-07,
+      "elapsed_seconds": 0.2908015820030414,
+      "north_pole_relative_max": 2.320099264955478e-08,
+      "south_pole_relative_max": 3.3902068195379025e-08,
+      "interior_relative_max": 8.840856432304327e-08
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 2.3009326565745742e-07,
+      "inverse_spatial_relative_max": 8.840856438779547e-08,
+      "round_trip_relative_max": 5.071892862694095e-07,
+      "elapsed_seconds": 0.2274760670006799,
+      "north_pole_relative_max": 2.3200992678880712e-08,
+      "south_pole_relative_max": 3.390206822167843e-08,
+      "interior_relative_max": 8.840856438779547e-08
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 6.60223674933906e-07,
+      "inverse_spatial_relative_max": 3.1682436525129107e-07,
+      "round_trip_relative_max": 1.9165543411563804e-06,
+      "elapsed_seconds": 1.4340549650005414
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.110868342662038e-06,
+      "inverse_spatial_relative_max": 1.5061167173558662e-07,
+      "round_trip_relative_max": 2.2896337854269433e-06,
+      "elapsed_seconds": 0.45986013199944864
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.110868342662038e-06,
+      "inverse_spatial_relative_max": 1.5061167173558662e-07,
+      "round_trip_relative_max": 2.2896337854269433e-06,
+      "elapsed_seconds": 0.4583721150011115
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 0.04675173470049484,
+      "inverse_spatial_relative_max": 0.08694811003842158,
+      "round_trip_relative_max": 0.09552993909188705,
+      "elapsed_seconds": 2.271692639998946,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 4.975211473311441e-08,
+      "interior_relative_max": 0.08694811003842158
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.0791016734237774e-06,
+      "inverse_spatial_relative_max": 8.908966759534895e-08,
+      "round_trip_relative_max": 1.984870566842375e-06,
+      "elapsed_seconds": 0.5446798410011979,
+      "north_pole_relative_max": 2.8993627897265162e-08,
+      "south_pole_relative_max": 3.86915582124102e-08,
+      "interior_relative_max": 8.908966759534895e-08
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.0791000385709933e-06,
+      "inverse_spatial_relative_max": 8.908966661445225e-08,
+      "round_trip_relative_max": 1.9671992945397164e-06,
+      "elapsed_seconds": 0.48932911200245144,
+      "north_pole_relative_max": 3.337557484646736e-08,
+      "south_pole_relative_max": 3.910807047246151e-08,
+      "interior_relative_max": 8.908966661445225e-08
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 8.684178378959857e-07,
+      "inverse_spatial_relative_max": 2.0459907928377678e-07,
+      "round_trip_relative_max": 9.034092302821604e-06,
+      "elapsed_seconds": 2.0436197650014947
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.555805664031474e-06,
+      "inverse_spatial_relative_max": 1.6049623908701983e-07,
+      "round_trip_relative_max": 1.2430610310903951e-05,
+      "elapsed_seconds": 1.0055638049998379
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.5531831431159996e-06,
+      "inverse_spatial_relative_max": 1.6049624334605607e-07,
+      "round_trip_relative_max": 1.2561598503888345e-05,
+      "elapsed_seconds": 0.9926990460007801
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 0.023370310795853534,
+      "inverse_spatial_relative_max": 0.08678016314272856,
+      "round_trip_relative_max": 0.08678030953036536,
+      "elapsed_seconds": 2.9004190350024146,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 4.9656104567118547e-08,
+      "interior_relative_max": 0.08678016314272856
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 8.701212219907503e-07,
+      "inverse_spatial_relative_max": 1.4600831963110242e-07,
+      "round_trip_relative_max": 5.2286432563464166e-06,
+      "elapsed_seconds": 1.0977456820000953,
+      "north_pole_relative_max": 4.407902060866869e-08,
+      "south_pole_relative_max": 5.4198573799545727e-08,
+      "interior_relative_max": 1.4600831963110242e-07
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 8.815608425769858e-07,
+      "inverse_spatial_relative_max": 1.4600832055070513e-07,
+      "round_trip_relative_max": 5.331366713506791e-06,
+      "elapsed_seconds": 1.0449522589988192,
+      "north_pole_relative_max": 4.407902063267624e-08,
+      "south_pole_relative_max": 5.4198573601516676e-08,
+      "interior_relative_max": 1.4600832055070513e-07
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.5552479734964916e-06,
+      "inverse_spatial_relative_max": 4.436376201603204e-07,
+      "round_trip_relative_max": 2.7891466705370264e-05,
+      "elapsed_seconds": 3.133142668997607
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 2.1406000389646166e-06,
+      "inverse_spatial_relative_max": 3.847514628028638e-07,
+      "round_trip_relative_max": 3.950256089589315e-05,
+      "elapsed_seconds": 2.031065025999851
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 2.133173061761095e-06,
+      "inverse_spatial_relative_max": 3.847516010105378e-07,
+      "round_trip_relative_max": 3.9762920066302025e-05,
+      "elapsed_seconds": 2.0348085340010584
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 0.011684560334305536,
+      "inverse_spatial_relative_max": 0.08678019346334523,
+      "round_trip_relative_max": 0.08678022659840093,
+      "elapsed_seconds": 4.003638244001195,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 4.965613701622824e-08,
+      "interior_relative_max": 0.08678019346334523
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.4236059432713928e-06,
+      "inverse_spatial_relative_max": 1.679606027036201e-07,
+      "round_trip_relative_max": 3.161693462505448e-05,
+      "elapsed_seconds": 2.1653784759982955,
+      "north_pole_relative_max": 7.998387881327562e-08,
+      "south_pole_relative_max": 9.014951393318373e-08,
+      "interior_relative_max": 1.679606027036201e-07
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps_host",
+      "forward_coefficient_relative_max": 1.4270474303588277e-06,
+      "inverse_spatial_relative_max": 1.679606029266651e-07,
+      "round_trip_relative_max": 3.1616934625205425e-05,
+      "elapsed_seconds": 2.1100033639995672,
+      "north_pole_relative_max": 7.998387872162859e-08,
+      "south_pole_relative_max": 9.014951407015879e-08,
+      "interior_relative_max": 1.679606029266651e-07
+    }
+  ]
+}

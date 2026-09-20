@@ -1,0 +1,1856 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.10.2",
+      "jaxlib": "0.10.2",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6",
+      "spharmgrid": "0.3.0.dev0"
+    },
+    "jax_enable_x64": true,
+    "backend": "gpu",
+    "devices": [
+      {
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5070",
+        "id": 0,
+        "type": "Device",
+        "repr": "CudaDevice(id=0)"
+      }
+    ],
+    "primary_device": "cuda:0",
+    "transform_path": "spharmgrid private adapter with S2FFT O(L^2) precomputes",
+    "direct_comparison": "operation-level timings are compared with direct S2FFT in the study method; the stored operation matrix records spharmgrid timing",
+    "memory": "Linux process peak RSS; JAX device memory_stats when available; array byte counts are explicit",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 120.0
+  },
+  "results": [
+    {
+      "operation": "filter",
+      "bandlimit": 16,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        16,
+        31
+      ],
+      "target_shape": [
+        16,
+        31
+      ],
+      "batch_size": 2,
+      "input_nbytes": 7936,
+      "output_nbytes": 7936,
+      "output_shapes": [
+        [
+          2,
+          16,
+          31
+        ]
+      ],
+      "precompute_setup_seconds": 1.8279542720010795,
+      "precompute_nbytes": 28928,
+      "host_to_device_seconds": 0.0006187430008139927,
+      "device_to_host_seconds": 0.00020275799761293456,
+      "trace_seconds": 0.15496278499995242,
+      "lower_seconds": 0.06335214999853633,
+      "compile_seconds": 0.36941866599954665,
+      "first_execution_seconds": 0.004962330000125803,
+      "warm_seconds_median": 0.0005182460008654743,
+      "warm_seconds_per_frame": 0.00025912300043273717,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009012539998366265,
+          "lower_seconds": 0.03542044500136399,
+          "compile_seconds": 0.19078193200039095,
+          "first_execution_seconds": 0.0027209709987801034,
+          "warm_seconds_median": 0.0003252259994042106
+        },
+        "inverse": {
+          "trace_seconds": 0.006695951000438072,
+          "lower_seconds": 0.024917687998822657,
+          "compile_seconds": 0.12880376300017815,
+          "first_execution_seconds": 0.002405272996838903,
+          "warm_seconds_median": 0.0002751219981291797
+        },
+        "warm_seconds_total": 0.0006003479975333903
+      },
+      "operation_to_direct_warm_ratio": 0.8632426575831968,
+      "peak_rss_bytes": 1220210688,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 431,
+          "bytes_in_use": 95488,
+          "peak_bytes_in_use": 33643008,
+          "largest_alloc_size": 16781568,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.8840497249984764
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 16,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        17,
+        32
+      ],
+      "target_shape": [
+        17,
+        32
+      ],
+      "batch_size": 2,
+      "input_nbytes": 8704,
+      "output_nbytes": 8704,
+      "output_shapes": [
+        [
+          2,
+          17,
+          32
+        ]
+      ],
+      "precompute_setup_seconds": 2.0934493120003026,
+      "precompute_nbytes": 35072,
+      "host_to_device_seconds": 0.0006158879987196997,
+      "device_to_host_seconds": 0.0002104519990098197,
+      "trace_seconds": 0.24569447000249056,
+      "lower_seconds": 0.09698363999996218,
+      "compile_seconds": 0.3818162149982527,
+      "first_execution_seconds": 0.005408371001976775,
+      "warm_seconds_median": 0.0004994310002075508,
+      "warm_seconds_per_frame": 0.0002497155001037754,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009373092001624173,
+          "lower_seconds": 0.05868401900079334,
+          "compile_seconds": 0.2159260219996213,
+          "first_execution_seconds": 0.003480979001324158,
+          "warm_seconds_median": 0.0003180229978170246
+        },
+        "inverse": {
+          "trace_seconds": 0.006076457000744995,
+          "lower_seconds": 0.029764783001155593,
+          "compile_seconds": 0.15731581100044423,
+          "first_execution_seconds": 0.002401716999884229,
+          "warm_seconds_median": 0.0003127430027234368
+        },
+        "warm_seconds_total": 0.0006307660005404614
+      },
+      "operation_to_direct_warm_ratio": 0.7917849087928355,
+      "peak_rss_bytes": 1242238976,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 427,
+          "bytes_in_use": 114688,
+          "peak_bytes_in_use": 16820224,
+          "largest_alloc_size": 16781568,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.369763156999397
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 32,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        32,
+        63
+      ],
+      "target_shape": [
+        32,
+        63
+      ],
+      "batch_size": 2,
+      "input_nbytes": 32256,
+      "output_nbytes": 32256,
+      "output_shapes": [
+        [
+          2,
+          32,
+          63
+        ]
+      ],
+      "precompute_setup_seconds": 1.8026149190009164,
+      "precompute_nbytes": 115200,
+      "host_to_device_seconds": 0.0006150059998617508,
+      "device_to_host_seconds": 0.0002291370001330506,
+      "trace_seconds": 0.15602843099986785,
+      "lower_seconds": 0.06475069699808955,
+      "compile_seconds": 0.43710113799897954,
+      "first_execution_seconds": 0.005006232000596356,
+      "warm_seconds_median": 0.0009182120011246298,
+      "warm_seconds_per_frame": 0.0004591060005623149,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009327455998572987,
+          "lower_seconds": 0.03737802300020121,
+          "compile_seconds": 0.2521688790002372,
+          "first_execution_seconds": 0.002824625000357628,
+          "warm_seconds_median": 0.0004972569986421149
+        },
+        "inverse": {
+          "trace_seconds": 0.006764969999494497,
+          "lower_seconds": 0.025869211000099313,
+          "compile_seconds": 0.12723598099910305,
+          "first_execution_seconds": 0.0022563760030607227,
+          "warm_seconds_median": 0.00048410200179205276
+        },
+        "warm_seconds_total": 0.0009813590004341677
+      },
+      "operation_to_direct_warm_ratio": 0.9356535179464388,
+      "peak_rss_bytes": 1226100736,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 431,
+          "bytes_in_use": 344832,
+          "peak_bytes_in_use": 33868032,
+          "largest_alloc_size": 16793856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.9920362749980995
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 32,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        33,
+        64
+      ],
+      "target_shape": [
+        33,
+        64
+      ],
+      "batch_size": 2,
+      "input_nbytes": 33792,
+      "output_nbytes": 33792,
+      "output_shapes": [
+        [
+          2,
+          33,
+          64
+        ]
+      ],
+      "precompute_setup_seconds": 2.082649952000793,
+      "precompute_nbytes": 139776,
+      "host_to_device_seconds": 0.0006394520023604855,
+      "device_to_host_seconds": 0.00021852699865121394,
+      "trace_seconds": 0.2956498389976332,
+      "lower_seconds": 0.11085538699990138,
+      "compile_seconds": 0.43745001800198224,
+      "first_execution_seconds": 0.007012190999375889,
+      "warm_seconds_median": 0.0008882449983502738,
+      "warm_seconds_per_frame": 0.0004441224991751369,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009320604000095045,
+          "lower_seconds": 0.06897094300074968,
+          "compile_seconds": 0.2720618400016974,
+          "first_execution_seconds": 0.0035602059979282785,
+          "warm_seconds_median": 0.0004261350004526321
+        },
+        "inverse": {
+          "trace_seconds": 0.005906119000428589,
+          "lower_seconds": 0.029194228998676408,
+          "compile_seconds": 0.14245501999903354,
+          "first_execution_seconds": 0.002380566998908762,
+          "warm_seconds_median": 0.000521351998031605
+        },
+        "warm_seconds_total": 0.0009474869984842371
+      },
+      "operation_to_direct_warm_ratio": 0.9374746036317786,
+      "peak_rss_bytes": 1252773888,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 427,
+          "bytes_in_use": 429568,
+          "peak_bytes_in_use": 16929280,
+          "largest_alloc_size": 16793856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.536197725999955
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 64,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 130048,
+      "output_nbytes": 130048,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 1.8412048719983432,
+      "precompute_nbytes": 459776,
+      "host_to_device_seconds": 0.0005990969984850381,
+      "device_to_host_seconds": 0.00025533600273774937,
+      "trace_seconds": 0.1726036779982678,
+      "lower_seconds": 0.06895645699842134,
+      "compile_seconds": 0.5105715380013862,
+      "first_execution_seconds": 0.005886221999389818,
+      "warm_seconds_median": 0.0016392260004067793,
+      "warm_seconds_per_frame": 0.0008196130002033897,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009469962998991832,
+          "lower_seconds": 0.03997563600205467,
+          "compile_seconds": 0.3539291530032642,
+          "first_execution_seconds": 0.0032403200020780787,
+          "warm_seconds_median": 0.0008250769969890825
+        },
+        "inverse": {
+          "trace_seconds": 0.006953791998967063,
+          "lower_seconds": 0.03003065799930482,
+          "compile_seconds": 0.1295335940012592,
+          "first_execution_seconds": 0.0026367039972683415,
+          "warm_seconds_median": 0.0008588509990659077
+        },
+        "warm_seconds_total": 0.0016839279960549902
+      },
+      "operation_to_direct_warm_ratio": 0.9734537368860569,
+      "peak_rss_bytes": 1247236096,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 431,
+          "bytes_in_use": 1387520,
+          "peak_bytes_in_use": 34812928,
+          "largest_alloc_size": 16843264,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.24236520499835
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 64,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 133120,
+      "output_nbytes": 133120,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 2.099548100002721,
+      "precompute_nbytes": 558080,
+      "host_to_device_seconds": 0.0006288020013016649,
+      "device_to_host_seconds": 0.0001979789994948078,
+      "trace_seconds": 0.45495326400123304,
+      "lower_seconds": 0.1954665550001664,
+      "compile_seconds": 0.540309451000212,
+      "first_execution_seconds": 0.0071806349988037255,
+      "warm_seconds_median": 0.001926320997881703,
+      "warm_seconds_per_frame": 0.0009631604989408515,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009490099000686314,
+          "lower_seconds": 0.09920907799823908,
+          "compile_seconds": 0.4138960420023068,
+          "first_execution_seconds": 0.004340229999797884,
+          "warm_seconds_median": 0.0009256560006178916
+        },
+        "inverse": {
+          "trace_seconds": 0.005969847999949707,
+          "lower_seconds": 0.029959716001030756,
+          "compile_seconds": 0.15302594500099076,
+          "first_execution_seconds": 0.0028894160022900905,
+          "warm_seconds_median": 0.0009940830022969749
+        },
+        "warm_seconds_total": 0.0019197390029148664
+      },
+      "operation_to_direct_warm_ratio": 1.0034285884470977,
+      "peak_rss_bytes": 1279610880,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 434,
+          "bytes_in_use": 1686272,
+          "peak_bytes_in_use": 18995968,
+          "largest_alloc_size": 16910336,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.187364958001126
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 128,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        128,
+        255
+      ],
+      "target_shape": [
+        128,
+        255
+      ],
+      "batch_size": 2,
+      "input_nbytes": 522240,
+      "output_nbytes": 522240,
+      "output_shapes": [
+        [
+          2,
+          128,
+          255
+        ]
+      ],
+      "precompute_setup_seconds": 1.826692099999491,
+      "precompute_nbytes": 1837056,
+      "host_to_device_seconds": 0.0007603269987157546,
+      "device_to_host_seconds": 0.00029647200062754564,
+      "trace_seconds": 0.21414378999907058,
+      "lower_seconds": 0.07669156499832752,
+      "compile_seconds": 0.6953106360015227,
+      "first_execution_seconds": 0.009507793001830578,
+      "warm_seconds_median": 0.004265180999937002,
+      "warm_seconds_per_frame": 0.002132590499968501,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.013873371000954648,
+          "lower_seconds": 0.052286933998402674,
+          "compile_seconds": 0.5609445950030931,
+          "first_execution_seconds": 0.005114352999953553,
+          "warm_seconds_median": 0.002072632996714674
+        },
+        "inverse": {
+          "trace_seconds": 0.009328347998234676,
+          "lower_seconds": 0.031235143997037085,
+          "compile_seconds": 0.13447525499941548,
+          "first_execution_seconds": 0.003981311001552967,
+          "warm_seconds_median": 0.002270091001264518
+        },
+        "warm_seconds_total": 0.004342723997979192
+      },
+      "operation_to_direct_warm_ratio": 0.982144156967315,
+      "peak_rss_bytes": 1281150976,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 445,
+          "bytes_in_use": 5523200,
+          "peak_bytes_in_use": 38556928,
+          "largest_alloc_size": 17040384,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.763506856001186
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 128,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        129,
+        256
+      ],
+      "target_shape": [
+        129,
+        256
+      ],
+      "batch_size": 2,
+      "input_nbytes": 528384,
+      "output_nbytes": 528384,
+      "output_shapes": [
+        [
+          2,
+          129,
+          256
+        ]
+      ],
+      "precompute_setup_seconds": 2.1198443030007184,
+      "precompute_nbytes": 2230272,
+      "host_to_device_seconds": 0.0006780740004614927,
+      "device_to_host_seconds": 0.0002826970012392849,
+      "trace_seconds": 0.868409235998115,
+      "lower_seconds": 0.21704147099808324,
+      "compile_seconds": 0.7886056809984439,
+      "first_execution_seconds": 0.011025492000044324,
+      "warm_seconds_median": 0.005201336000027368,
+      "warm_seconds_per_frame": 0.002600668000013684,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009075226000277326,
+          "lower_seconds": 0.14791831299953628,
+          "compile_seconds": 0.6681348700003582,
+          "first_execution_seconds": 0.006407484001101693,
+          "warm_seconds_median": 0.0029819680021319073
+        },
+        "inverse": {
+          "trace_seconds": 0.005944690998148872,
+          "lower_seconds": 0.029097949001879897,
+          "compile_seconds": 0.15970866099814884,
+          "first_execution_seconds": 0.004447701001481619,
+          "warm_seconds_median": 0.0023310949982260354
+        },
+        "warm_seconds_total": 0.005313063000357943
+      },
+      "operation_to_direct_warm_ratio": 0.9789712637845537,
+      "peak_rss_bytes": 1343913984,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 432,
+          "bytes_in_use": 6834944,
+          "peak_bytes_in_use": 25725696,
+          "largest_alloc_size": 17305600,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 6.229130725001596
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 16,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        16,
+        31
+      ],
+      "target_shape": [
+        17,
+        32
+      ],
+      "batch_size": 2,
+      "input_nbytes": 7936,
+      "output_nbytes": 8704,
+      "output_shapes": [
+        [
+          2,
+          17,
+          32
+        ]
+      ],
+      "precompute_setup_seconds": 2.1056342919982853,
+      "precompute_nbytes": 29312,
+      "host_to_device_seconds": 0.0006488309991254937,
+      "device_to_host_seconds": 0.00021654499869327992,
+      "trace_seconds": 0.18981444500241196,
+      "lower_seconds": 0.07866119000027538,
+      "compile_seconds": 0.3728840029980347,
+      "first_execution_seconds": 0.005394643998442916,
+      "warm_seconds_median": 0.0005175570004212204,
+      "warm_seconds_per_frame": 0.0002587785002106102,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009501131997240009,
+          "lower_seconds": 0.0369518830011657,
+          "compile_seconds": 0.19950306699684006,
+          "first_execution_seconds": 0.002280729000631254,
+          "warm_seconds_median": 0.0003269810003985185
+        },
+        "inverse": {
+          "trace_seconds": 0.006270248999499017,
+          "lower_seconds": 0.03053224500035867,
+          "compile_seconds": 0.1584544939978514,
+          "first_execution_seconds": 0.0018323609983781353,
+          "warm_seconds_median": 0.0002807140008371789
+        },
+        "warm_seconds_total": 0.0006076950012356974
+      },
+      "operation_to_direct_warm_ratio": 0.8516723016789857,
+      "peak_rss_bytes": 1242087424,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 435,
+          "bytes_in_use": 98048,
+          "peak_bytes_in_use": 33644800,
+          "largest_alloc_size": 16781568,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.280131961000734
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 16,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        17,
+        32
+      ],
+      "target_shape": [
+        16,
+        31
+      ],
+      "batch_size": 2,
+      "input_nbytes": 8704,
+      "output_nbytes": 7936,
+      "output_shapes": [
+        [
+          2,
+          16,
+          31
+        ]
+      ],
+      "precompute_setup_seconds": 2.096696313998109,
+      "precompute_nbytes": 34688,
+      "host_to_device_seconds": 0.0005845710002176929,
+      "device_to_host_seconds": 0.0001810690009733662,
+      "trace_seconds": 0.2373869900002319,
+      "lower_seconds": 0.09627173500120989,
+      "compile_seconds": 0.37762384400048177,
+      "first_execution_seconds": 0.005531479000637773,
+      "warm_seconds_median": 0.0004967380009475164,
+      "warm_seconds_per_frame": 0.0002483690004737582,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009178088999760803,
+          "lower_seconds": 0.05599447299755411,
+          "compile_seconds": 0.21348972499981755,
+          "first_execution_seconds": 0.0029486759995052125,
+          "warm_seconds_median": 0.00030520899963448755
+        },
+        "inverse": {
+          "trace_seconds": 0.006304553000518354,
+          "lower_seconds": 0.02557450700260233,
+          "compile_seconds": 0.12573035499735852,
+          "first_execution_seconds": 0.001800641999579966,
+          "warm_seconds_median": 0.0002681010009837337
+        },
+        "warm_seconds_total": 0.0005733100006182212
+      },
+      "operation_to_direct_warm_ratio": 0.8664387511326604,
+      "peak_rss_bytes": 1243549696,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 427,
+          "bytes_in_use": 112384,
+          "peak_bytes_in_use": 16820224,
+          "largest_alloc_size": 16781568,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.341412296998897
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 32,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        32,
+        63
+      ],
+      "target_shape": [
+        33,
+        64
+      ],
+      "batch_size": 2,
+      "input_nbytes": 32256,
+      "output_nbytes": 33792,
+      "output_shapes": [
+        [
+          2,
+          33,
+          64
+        ]
+      ],
+      "precompute_setup_seconds": 2.0845338530016306,
+      "precompute_nbytes": 115968,
+      "host_to_device_seconds": 0.0006477089991676621,
+      "device_to_host_seconds": 0.00019033500211662613,
+      "trace_seconds": 0.19010325400086003,
+      "lower_seconds": 0.07991281700014952,
+      "compile_seconds": 0.4356133330002194,
+      "first_execution_seconds": 0.005359227998269489,
+      "warm_seconds_median": 0.0009420889982720837,
+      "warm_seconds_per_frame": 0.00047104449913604185,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009465746999921976,
+          "lower_seconds": 0.03640643400285626,
+          "compile_seconds": 0.24508843099829392,
+          "first_execution_seconds": 0.002581120003014803,
+          "warm_seconds_median": 0.0004892129982181359
+        },
+        "inverse": {
+          "trace_seconds": 0.006136680000054184,
+          "lower_seconds": 0.029610784997203154,
+          "compile_seconds": 0.14811247100078617,
+          "first_execution_seconds": 0.0018437030012137257,
+          "warm_seconds_median": 0.0005262320009933319
+        },
+        "warm_seconds_total": 0.0010154449992114678
+      },
+      "operation_to_direct_warm_ratio": 0.927759749669999,
+      "peak_rss_bytes": 1244332032,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 435,
+          "bytes_in_use": 349184,
+          "peak_bytes_in_use": 33870848,
+          "largest_alloc_size": 16793856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.352660011001717
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 32,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        33,
+        64
+      ],
+      "target_shape": [
+        32,
+        63
+      ],
+      "batch_size": 2,
+      "input_nbytes": 33792,
+      "output_nbytes": 32256,
+      "output_shapes": [
+        [
+          2,
+          32,
+          63
+        ]
+      ],
+      "precompute_setup_seconds": 2.1070104149985127,
+      "precompute_nbytes": 139008,
+      "host_to_device_seconds": 0.0006183740006235894,
+      "device_to_host_seconds": 0.00021924999964539893,
+      "trace_seconds": 0.3011776610001107,
+      "lower_seconds": 0.11259788200186449,
+      "compile_seconds": 0.44033909700010554,
+      "first_execution_seconds": 0.0060778400002163835,
+      "warm_seconds_median": 0.0008210929991037119,
+      "warm_seconds_per_frame": 0.00041054649955185596,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009175203998893267,
+          "lower_seconds": 0.07022525699721882,
+          "compile_seconds": 0.26811334699959843,
+          "first_execution_seconds": 0.003051117000723025,
+          "warm_seconds_median": 0.00042638599916244857
+        },
+        "inverse": {
+          "trace_seconds": 0.006398008001269773,
+          "lower_seconds": 0.024854391998815117,
+          "compile_seconds": 0.12246567900001537,
+          "first_execution_seconds": 0.0017817580010159872,
+          "warm_seconds_median": 0.000466401001176564
+        },
+        "warm_seconds_total": 0.0008927870003390126
+      },
+      "operation_to_direct_warm_ratio": 0.9196964099969234,
+      "peak_rss_bytes": 1257840640,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 427,
+          "bytes_in_use": 427008,
+          "peak_bytes_in_use": 16929280,
+          "largest_alloc_size": 16793856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.563979993999965
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 64,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 130048,
+      "output_nbytes": 133120,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 2.1060693569997966,
+      "precompute_nbytes": 461312,
+      "host_to_device_seconds": 0.0006536710025102366,
+      "device_to_host_seconds": 0.00020908100123051554,
+      "trace_seconds": 0.20752561799963587,
+      "lower_seconds": 0.08362432799913222,
+      "compile_seconds": 0.5507234159995278,
+      "first_execution_seconds": 0.006231437000678852,
+      "warm_seconds_median": 0.0017504190000181552,
+      "warm_seconds_per_frame": 0.0008752095000090776,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009598665001249174,
+          "lower_seconds": 0.03981988899977296,
+          "compile_seconds": 0.3567113830031303,
+          "first_execution_seconds": 0.0026875680014200043,
+          "warm_seconds_median": 0.0008232280015363358
+        },
+        "inverse": {
+          "trace_seconds": 0.005880991997400997,
+          "lower_seconds": 0.029488936997950077,
+          "compile_seconds": 0.15747156800352968,
+          "first_execution_seconds": 0.002507041001081234,
+          "warm_seconds_median": 0.0009889670000120532
+        },
+        "warm_seconds_total": 0.001812195001548389
+      },
+      "operation_to_direct_warm_ratio": 0.965910952476168,
+      "peak_rss_bytes": 1265876992,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 435,
+          "bytes_in_use": 1395456,
+          "peak_bytes_in_use": 34817792,
+          "largest_alloc_size": 16843264,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.649081299001409
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 64,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 133120,
+      "output_nbytes": 130048,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 2.0992059809977945,
+      "precompute_nbytes": 556544,
+      "host_to_device_seconds": 0.000650455000140937,
+      "device_to_host_seconds": 0.0002444569981889799,
+      "trace_seconds": 0.43014508199848933,
+      "lower_seconds": 0.18907746799959568,
+      "compile_seconds": 0.5467628900005366,
+      "first_execution_seconds": 0.0069423940003616735,
+      "warm_seconds_median": 0.0017146520003734622,
+      "warm_seconds_per_frame": 0.0008573260001867311,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.009102598000026774,
+          "lower_seconds": 0.09431699600099819,
+          "compile_seconds": 0.4190663029985444,
+          "first_execution_seconds": 0.0038869679992785677,
+          "warm_seconds_median": 0.000986040999123361
+        },
+        "inverse": {
+          "trace_seconds": 0.006710311001370428,
+          "lower_seconds": 0.024801863997709006,
+          "compile_seconds": 0.1311576400003105,
+          "first_execution_seconds": 0.0022674840001855046,
+          "warm_seconds_median": 0.0008731910020287614
+        },
+        "warm_seconds_total": 0.0018592320011521224
+      },
+      "operation_to_direct_warm_ratio": 0.9222367081197681,
+      "peak_rss_bytes": 1284562944,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 434,
+          "bytes_in_use": 1707520,
+          "peak_bytes_in_use": 19017216,
+          "largest_alloc_size": 16910336,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.0719267899985425
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 128,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        128,
+        255
+      ],
+      "target_shape": [
+        129,
+        256
+      ],
+      "batch_size": 2,
+      "input_nbytes": 522240,
+      "output_nbytes": 528384,
+      "output_shapes": [
+        [
+          2,
+          129,
+          256
+        ]
+      ],
+      "precompute_setup_seconds": 2.13202917399758,
+      "precompute_nbytes": 1840128,
+      "host_to_device_seconds": 0.0007205459987744689,
+      "device_to_host_seconds": 0.00030379700183402747,
+      "trace_seconds": 0.2431191050018242,
+      "lower_seconds": 0.0911818909989961,
+      "compile_seconds": 0.7251835079987359,
+      "first_execution_seconds": 0.00966781299939612,
+      "warm_seconds_median": 0.004332570999395102,
+      "warm_seconds_per_frame": 0.002166285499697551,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.012994194999919273,
+          "lower_seconds": 0.048457107001013355,
+          "compile_seconds": 0.563328434000141,
+          "first_execution_seconds": 0.0048115850004251115,
+          "warm_seconds_median": 0.0020570010019582696
+        },
+        "inverse": {
+          "trace_seconds": 0.006173488000058569,
+          "lower_seconds": 0.0297511159988062,
+          "compile_seconds": 0.1586627420001605,
+          "first_execution_seconds": 0.0038833810031064786,
+          "warm_seconds_median": 0.0023317240011238027
+        },
+        "warm_seconds_total": 0.004388725003082072
+      },
+      "operation_to_direct_warm_ratio": 0.9872049391001864,
+      "peak_rss_bytes": 1301012480,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 449,
+          "bytes_in_use": 5537280,
+          "peak_bytes_in_use": 38564864,
+          "largest_alloc_size": 17040384,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.18004839400237
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 128,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        129,
+        256
+      ],
+      "target_shape": [
+        128,
+        255
+      ],
+      "batch_size": 2,
+      "input_nbytes": 528384,
+      "output_nbytes": 522240,
+      "output_shapes": [
+        [
+          2,
+          128,
+          255
+        ]
+      ],
+      "precompute_setup_seconds": 2.1425965470007213,
+      "precompute_nbytes": 2227200,
+      "host_to_device_seconds": 0.0007010789995547384,
+      "device_to_host_seconds": 0.0002981469988299068,
+      "trace_seconds": 0.8231061260012211,
+      "lower_seconds": 0.20522683499802952,
+      "compile_seconds": 0.7837806409988843,
+      "first_execution_seconds": 0.010798835999594303,
+      "warm_seconds_median": 0.005149867000000086,
+      "warm_seconds_per_frame": 0.002574933500000043,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.00890617099867086,
+          "lower_seconds": 0.143998689,
+          "compile_seconds": 0.6708706760000496,
+          "first_execution_seconds": 0.005964989002677612,
+          "warm_seconds_median": 0.002979804998176405
+        },
+        "inverse": {
+          "trace_seconds": 0.007944404998852406,
+          "lower_seconds": 0.026186470000538975,
+          "compile_seconds": 0.147334959001455,
+          "first_execution_seconds": 0.0037698799969803076,
+          "warm_seconds_median": 0.0022703590002493
+        },
+        "warm_seconds_total": 0.005250163998425705
+      },
+      "operation_to_direct_warm_ratio": 0.9808964065778337,
+      "peak_rss_bytes": 1349545984,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 432,
+          "bytes_in_use": 6822656,
+          "peak_bytes_in_use": 25713408,
+          "largest_alloc_size": 17305600,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 6.159627082997758
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 16,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        16,
+        31
+      ],
+      "target_shape": [
+        16,
+        31
+      ],
+      "batch_size": 2,
+      "input_nbytes": 15872,
+      "output_nbytes": 15872,
+      "output_shapes": [
+        [
+          2,
+          16,
+          31
+        ],
+        [
+          2,
+          16,
+          31
+        ]
+      ],
+      "precompute_setup_seconds": 1.8106443889992079,
+      "precompute_nbytes": 43392,
+      "host_to_device_seconds": 0.0007892630019341595,
+      "device_to_host_seconds": 0.0003061520001210738,
+      "trace_seconds": 0.16677374899882125,
+      "lower_seconds": 0.07079823700041743,
+      "compile_seconds": 0.49418289399909554,
+      "first_execution_seconds": 0.007471431999874767,
+      "warm_seconds_median": 0.0009801710002648178,
+      "warm_seconds_per_frame": 0.0004900855001324089,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.006574667000677437,
+          "lower_seconds": 0.03734232300121221,
+          "compile_seconds": 0.24786346399923787,
+          "first_execution_seconds": 0.0034363070008112118,
+          "warm_seconds_median": 0.0004916580001008697
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0007448110009136144,
+          "lower_seconds": 0.03466730700165499,
+          "compile_seconds": 0.24751763800304616,
+          "first_execution_seconds": 0.0034533480029494967,
+          "warm_seconds_median": 0.0004890430027444381
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.017058314002497355,
+          "lower_seconds": 0.0267806699994253,
+          "compile_seconds": 0.12728916600099183,
+          "first_execution_seconds": 0.001762621002853848,
+          "warm_seconds_median": 0.0002770469982351642
+        },
+        "warm_seconds_total": 0.001257748001080472
+      },
+      "operation_to_direct_warm_ratio": 0.7793063470765202,
+      "peak_rss_bytes": 1255190528,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 490,
+          "bytes_in_use": 126208,
+          "peak_bytes_in_use": 33665792,
+          "largest_alloc_size": 16781568,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.550117478000175
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 16,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        17,
+        32
+      ],
+      "target_shape": [
+        17,
+        32
+      ],
+      "batch_size": 2,
+      "input_nbytes": 17408,
+      "output_nbytes": 17408,
+      "output_shapes": [
+        [
+          2,
+          17,
+          32
+        ],
+        [
+          2,
+          17,
+          32
+        ]
+      ],
+      "precompute_setup_seconds": 2.114541888997337,
+      "precompute_nbytes": 55296,
+      "host_to_device_seconds": 0.0007628950006619561,
+      "device_to_host_seconds": 0.0003561849989637267,
+      "trace_seconds": 0.27502663699851837,
+      "lower_seconds": 0.11015549099829514,
+      "compile_seconds": 0.5827367970014166,
+      "first_execution_seconds": 0.008379206999961752,
+      "warm_seconds_median": 0.0010693969998101238,
+      "warm_seconds_per_frame": 0.0005346984999050619,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.006272922997595742,
+          "lower_seconds": 0.058585661001416156,
+          "compile_seconds": 0.27682746999926167,
+          "first_execution_seconds": 0.004268100001354469,
+          "warm_seconds_median": 0.0004911269970762078
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0007596889990963973,
+          "lower_seconds": 0.05751770699862391,
+          "compile_seconds": 0.2725029840003117,
+          "first_execution_seconds": 0.004238205001456663,
+          "warm_seconds_median": 0.0004767600003106054
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.023613253997609718,
+          "lower_seconds": 0.031921819998387946,
+          "compile_seconds": 0.15523042299901135,
+          "first_execution_seconds": 0.0017823679991124664,
+          "warm_seconds_median": 0.0003004709978995379
+        },
+        "warm_seconds_total": 0.001268357995286351
+      },
+      "operation_to_direct_warm_ratio": 0.8431349853782341,
+      "peak_rss_bytes": 1283747840,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 486,
+          "bytes_in_use": 152832,
+          "peak_bytes_in_use": 16820224,
+          "largest_alloc_size": 16781568,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.251785052998457
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 32,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        32,
+        63
+      ],
+      "target_shape": [
+        32,
+        63
+      ],
+      "batch_size": 2,
+      "input_nbytes": 64512,
+      "output_nbytes": 64512,
+      "output_shapes": [
+        [
+          2,
+          32,
+          63
+        ],
+        [
+          2,
+          32,
+          63
+        ]
+      ],
+      "precompute_setup_seconds": 1.7992723229981493,
+      "precompute_nbytes": 172800,
+      "host_to_device_seconds": 0.0007560119993286207,
+      "device_to_host_seconds": 0.00039146099879872054,
+      "trace_seconds": 0.17427522700018017,
+      "lower_seconds": 0.07256804200005718,
+      "compile_seconds": 0.5699867980001727,
+      "first_execution_seconds": 0.008079045997874346,
+      "warm_seconds_median": 0.0018484120009816252,
+      "warm_seconds_per_frame": 0.0009242060004908126,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.006612048000533832,
+          "lower_seconds": 0.037225344000034966,
+          "compile_seconds": 0.30939307199878385,
+          "first_execution_seconds": 0.0035186410023015924,
+          "warm_seconds_median": 0.0007991429993126076
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.000728470000467496,
+          "lower_seconds": 0.03630913300003158,
+          "compile_seconds": 0.29623183500007144,
+          "first_execution_seconds": 0.003682345999550307,
+          "warm_seconds_median": 0.0008003439979802351
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.017838100997323636,
+          "lower_seconds": 0.025808153000980383,
+          "compile_seconds": 0.1261407819984015,
+          "first_execution_seconds": 0.0019711909990292042,
+          "warm_seconds_median": 0.0004709589993581176
+        },
+        "warm_seconds_total": 0.0020704459966509603
+      },
+      "operation_to_direct_warm_ratio": 0.8927603057367904,
+      "peak_rss_bytes": 1272217600,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 490,
+          "bytes_in_use": 466944,
+          "peak_bytes_in_use": 33957888,
+          "largest_alloc_size": 16793856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 4.746461975999409
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 32,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        33,
+        64
+      ],
+      "target_shape": [
+        33,
+        64
+      ],
+      "batch_size": 2,
+      "input_nbytes": 67584,
+      "output_nbytes": 67584,
+      "output_shapes": [
+        [
+          2,
+          33,
+          64
+        ],
+        [
+          2,
+          33,
+          64
+        ]
+      ],
+      "precompute_setup_seconds": 2.1166634399996838,
+      "precompute_nbytes": 221184,
+      "host_to_device_seconds": 0.0007122800016077235,
+      "device_to_host_seconds": 0.00040600899956189096,
+      "trace_seconds": 0.335419864000869,
+      "lower_seconds": 0.11915823199888109,
+      "compile_seconds": 0.7265413040004205,
+      "first_execution_seconds": 0.009684204000222962,
+      "warm_seconds_median": 0.0018530899978941306,
+      "warm_seconds_per_frame": 0.0009265449989470653,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.00659215999985463,
+          "lower_seconds": 0.07329871600086335,
+          "compile_seconds": 0.3457814729990787,
+          "first_execution_seconds": 0.0045714370025962126,
+          "warm_seconds_median": 0.0007469849988410715
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0007943529999465682,
+          "lower_seconds": 0.07067185999767389,
+          "compile_seconds": 0.33884957800182747,
+          "first_execution_seconds": 0.004852700996707426,
+          "warm_seconds_median": 0.0007442499991157092
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.06466668699795264,
+          "lower_seconds": 0.03075021199765615,
+          "compile_seconds": 0.1444407240014698,
+          "first_execution_seconds": 0.0019026329973712564,
+          "warm_seconds_median": 0.0005344780001905747
+        },
+        "warm_seconds_total": 0.0020257129981473554
+      },
+      "operation_to_direct_warm_ratio": 0.9147840782918906,
+      "peak_rss_bytes": 1299746816,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 486,
+          "bytes_in_use": 578560,
+          "peak_bytes_in_use": 16929280,
+          "largest_alloc_size": 16793856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.6395928249985445
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 64,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 260096,
+      "output_nbytes": 260096,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ],
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 1.8128591450004023,
+      "precompute_nbytes": 689664,
+      "host_to_device_seconds": 0.0007617320006829686,
+      "device_to_host_seconds": 0.0004367259971331805,
+      "trace_seconds": 0.18446540600052685,
+      "lower_seconds": 0.0748135750000074,
+      "compile_seconds": 0.7014882910007145,
+      "first_execution_seconds": 0.01015445200027898,
+      "warm_seconds_median": 0.003742288001376437,
+      "warm_seconds_per_frame": 0.0018711440006882185,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.006925673002115218,
+          "lower_seconds": 0.03948730699994485,
+          "compile_seconds": 0.41763334699862753,
+          "first_execution_seconds": 0.0042265230003977194,
+          "warm_seconds_median": 0.0014754850017197896
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0007560619997093454,
+          "lower_seconds": 0.03905244600173319,
+          "compile_seconds": 0.4055415980001271,
+          "first_execution_seconds": 0.004333601998951053,
+          "warm_seconds_median": 0.0014591649996873457
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.017340820999379503,
+          "lower_seconds": 0.02589426399936201,
+          "compile_seconds": 0.13156312800128944,
+          "first_execution_seconds": 0.0024460880013066344,
+          "warm_seconds_median": 0.0008619399995950516
+        },
+        "warm_seconds_total": 0.003796590001002187
+      },
+      "operation_to_direct_warm_ratio": 0.985697165189969,
+      "peak_rss_bytes": 1293041664,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 490,
+          "bytes_in_use": 1877504,
+          "peak_bytes_in_use": 35172864,
+          "largest_alloc_size": 16843264,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.145484510001552
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 64,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 266240,
+      "output_nbytes": 266240,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ],
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 2.103181083999516,
+      "precompute_nbytes": 884736,
+      "host_to_device_seconds": 0.000784214000304928,
+      "device_to_host_seconds": 0.00034683799822232686,
+      "trace_seconds": 0.48626323500138824,
+      "lower_seconds": 0.19899813400115818,
+      "compile_seconds": 0.9303023419997771,
+      "first_execution_seconds": 0.012872727998910705,
+      "warm_seconds_median": 0.004385189000458922,
+      "warm_seconds_per_frame": 0.002192594500229461,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.0066815159989346284,
+          "lower_seconds": 0.09866889100158005,
+          "compile_seconds": 0.45659116599927074,
+          "first_execution_seconds": 0.005994382998323999,
+          "warm_seconds_median": 0.0018321610004932154
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0009305179992225021,
+          "lower_seconds": 0.09718543200142449,
+          "compile_seconds": 0.46092977799708024,
+          "first_execution_seconds": 0.005923651999182766,
+          "warm_seconds_median": 0.0017290590003540274
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.022712222002155613,
+          "lower_seconds": 0.03135681500134524,
+          "compile_seconds": 0.15230103299836628,
+          "first_execution_seconds": 0.002509656002075644,
+          "warm_seconds_median": 0.0009880049983621575
+        },
+        "warm_seconds_total": 0.0045492249992094
+      },
+      "operation_to_direct_warm_ratio": 0.9639419903875966,
+      "peak_rss_bytes": 1332195328,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 486,
+          "bytes_in_use": 2279168,
+          "peak_bytes_in_use": 17376512,
+          "largest_alloc_size": 16843264,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 6.392381952999131
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 128,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        128,
+        255
+      ],
+      "target_shape": [
+        128,
+        255
+      ],
+      "batch_size": 2,
+      "input_nbytes": 1044480,
+      "output_nbytes": 1044480,
+      "output_shapes": [
+        [
+          2,
+          128,
+          255
+        ],
+        [
+          2,
+          128,
+          255
+        ]
+      ],
+      "precompute_setup_seconds": 1.902570870002819,
+      "precompute_nbytes": 2755584,
+      "host_to_device_seconds": 0.0008895210012269672,
+      "device_to_host_seconds": 0.0005923960015934426,
+      "trace_seconds": 0.22658640100053162,
+      "lower_seconds": 0.089888726000936,
+      "compile_seconds": 0.9453414460003842,
+      "first_execution_seconds": 0.0169674649987428,
+      "warm_seconds_median": 0.010170952999033034,
+      "warm_seconds_per_frame": 0.005085476499516517,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.008163705002516508,
+          "lower_seconds": 0.049105467998742824,
+          "compile_seconds": 0.623617697001464,
+          "first_execution_seconds": 0.007179937998444075,
+          "warm_seconds_median": 0.003891606997058261
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0008093920005194377,
+          "lower_seconds": 0.045342380999500165,
+          "compile_seconds": 0.6225190860022849,
+          "first_execution_seconds": 0.007139823002944468,
+          "warm_seconds_median": 0.0038801049995527137
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.019219409998186165,
+          "lower_seconds": 0.029382668999460293,
+          "compile_seconds": 0.1462217709995457,
+          "first_execution_seconds": 0.003916614001354901,
+          "warm_seconds_median": 0.002281801000208361
+        },
+        "warm_seconds_total": 0.010053512996819336
+      },
+      "operation_to_direct_warm_ratio": 1.011681489072611,
+      "peak_rss_bytes": 1332686848,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 488,
+          "bytes_in_use": 7486208,
+          "peak_bytes_in_use": 39997696,
+          "largest_alloc_size": 17040384,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 6.121554206001747
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 128,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        129,
+        256
+      ],
+      "target_shape": [
+        129,
+        256
+      ],
+      "batch_size": 2,
+      "input_nbytes": 1056768,
+      "output_nbytes": 1056768,
+      "output_shapes": [
+        [
+          2,
+          129,
+          256
+        ],
+        [
+          2,
+          129,
+          256
+        ]
+      ],
+      "precompute_setup_seconds": 2.1200817540011485,
+      "precompute_nbytes": 3538944,
+      "host_to_device_seconds": 0.0009043890022439882,
+      "device_to_host_seconds": 0.0006531500002893154,
+      "trace_seconds": 0.891975121001451,
+      "lower_seconds": 0.21664840399898821,
+      "compile_seconds": 1.4064030290028313,
+      "first_execution_seconds": 0.022769589002564317,
+      "warm_seconds_median": 0.014038085002539447,
+      "warm_seconds_per_frame": 0.007019042501269723,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.006421019999834243,
+          "lower_seconds": 0.1511788469979365,
+          "compile_seconds": 0.6905147190009302,
+          "first_execution_seconds": 0.010223871002381202,
+          "warm_seconds_median": 0.005722936999518424
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0008456590003333986,
+          "lower_seconds": 0.15224368599956506,
+          "compile_seconds": 0.7221142970010987,
+          "first_execution_seconds": 0.009968084003048716,
+          "warm_seconds_median": 0.005721674999222159
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.024411786002019653,
+          "lower_seconds": 0.03202500200131908,
+          "compile_seconds": 0.15982905000055325,
+          "first_execution_seconds": 0.003979040000558598,
+          "warm_seconds_median": 0.002329080001800321
+        },
+        "warm_seconds_total": 0.013773692000540905
+      },
+      "operation_to_direct_warm_ratio": 1.0191955070570882,
+      "peak_rss_bytes": 1405206528,
+      "device_memory_after_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 484,
+          "bytes_in_use": 9200384,
+          "peak_bytes_in_use": 27032832,
+          "largest_alloc_size": 17040384,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 8.09073953999905
+    }
+  ]
+}

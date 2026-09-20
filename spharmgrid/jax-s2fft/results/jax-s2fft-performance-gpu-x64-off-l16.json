@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.10.2",
+      "jaxlib": "0.10.2",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": false,
+    "backend": "gpu",
+    "devices": [
+      {
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5070",
+        "id": 0,
+        "type": "Device",
+        "repr": "CudaDevice(id=0)"
+      }
+    ],
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "attempt": {
+      "bandlimits": [16],
+      "sampling": ["gl", "mwss"],
+      "spins": [0, 1, -1],
+      "requested_dtype": "float32",
+      "repetitions": 7,
+      "command": "JAX_PLATFORMS=cuda JAX_ENABLE_X64=0 python plans/jax-s2fft-performance-study.py --require-cuda --bandlimits 16 --spins 0 1 -1 --dtypes float32 --repetitions 7",
+      "outcome": "terminated after approximately 300 seconds during the first L=16 forward compilation; no case completed",
+      "completed_results": 0
+    },
+  "primary_device": "cuda:0",
+  "transform_path": "historical ordinary S2FFT JAX with precomps=None; not the production path"
+  },
+  "results": []
+}

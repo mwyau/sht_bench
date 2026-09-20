@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.5.0",
+      "jaxlib": "0.5.0",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": true,
+    "jax_disable_jit": true,
+    "diagnostic_patches": [
+      "gl_quadrature_from_s2fft_numpy",
+      "negative_spin_resampling_sign"
+    ],
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "error": "maximum absolute error divided by maximum absolute reference value"
+  },
+  "results": [
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "ordinary_jax",
+      "forward_coefficient_relative_max": 2.2537314158576684e-08,
+      "inverse_spatial_relative_max": 6.167069606290247e-16,
+      "round_trip_relative_max": 2.853880782664228e-07,
+      "elapsed_seconds": 11.616423094998026
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "ordinary_jax",
+      "forward_coefficient_relative_max": 1.835234623825291e-08,
+      "inverse_spatial_relative_max": 1.1877226145502959e-15,
+      "round_trip_relative_max": 2.2664666640202578e-07,
+      "elapsed_seconds": 5.812838554000336
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "ordinary_jax",
+      "forward_coefficient_relative_max": 1.835234700128578e-08,
+      "inverse_spatial_relative_max": 1.2006926706621897e-15,
+      "round_trip_relative_max": 2.2664666440860327e-07,
+      "elapsed_seconds": 5.79721925800186
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "ordinary_jax",
+      "forward_coefficient_relative_max": 6.175745507911778e-10,
+      "inverse_spatial_relative_max": 6.168786165065377e-16,
+      "round_trip_relative_max": 5.944266724491372e-08,
+      "elapsed_seconds": 8.446890383998834,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 7.70722033347718e-17,
+      "interior_relative_max": 6.168786165065377e-16
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "ordinary_jax",
+      "forward_coefficient_relative_max": 1.2542455071769233e-09,
+      "inverse_spatial_relative_max": 7.825214840259888e-16,
+      "round_trip_relative_max": 6.6964854815488e-08,
+      "elapsed_seconds": 5.982897296998999,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.9524939621259863e-16,
+      "interior_relative_max": 7.825214840259888e-16
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "ordinary_jax",
+      "forward_coefficient_relative_max": 1.2542455104545888e-09,
+      "inverse_spatial_relative_max": 8.341057862557145e-16,
+      "round_trip_relative_max": 6.696485540591131e-08,
+      "elapsed_seconds": 6.090475037002761,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 2.1829546124858027e-16,
+      "interior_relative_max": 8.341057862557145e-16
+    }
+  ]
+}

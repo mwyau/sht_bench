@@ -1,0 +1,765 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.5.0",
+      "jaxlib": "0.5.0",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": false,
+    "backend": "cpu",
+    "devices": [
+      {
+        "platform": "cpu",
+        "device_kind": "cpu",
+        "id": 0,
+        "type": "Device",
+        "repr": "CpuDevice(id=0)"
+      }
+    ],
+    "timing": "median of warmed compiled calls; each call blocks until ready",
+    "memory": "Linux process peak RSS from resource.getrusage; cumulative within each worker process; JAX device memory_stats when available",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 20.0,
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "error": "maximum absolute error divided by maximum absolute reference value",
+    "primary_device": "TFRT_CPU_0",
+    "transform_path": "historical ordinary S2FFT JAX with precomps=None; not the production path"
+  },
+  "results": [
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.03927917100009,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:02:18,093:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.037692106001487,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:02:38,166:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.037160599000345,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:02:58,216:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.7512919680011692,
+      "compile_inverse_seconds": 0.44708669699684833,
+      "warm_forward_seconds_median": 0.0001334410007984843,
+      "warm_inverse_seconds_median": 8.911800250643864e-05,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 144142336,
+      "peak_rss_bytes_after_forward_compile": 237731840,
+      "peak_rss_bytes_after_inverse_compile": 258695168,
+      "peak_rss_bytes_after_warm": 258695168,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 2176,
+      "coefficient_nbytes": 3968,
+      "forward_coefficient_relative_max": 0.04675216556334117,
+      "inverse_spatial_relative_max": 0.08694812473958334,
+      "round_trip_relative_max": 0.0955296488712185,
+      "status": "complete",
+      "worker_wall_seconds": 1.8282321010010492,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:03:18,255:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.7709433829986665,
+      "compile_inverse_seconds": 0.4711842950018763,
+      "warm_forward_seconds_median": 0.00014762699720449746,
+      "warm_inverse_seconds_median": 8.634300320409238e-05,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 142737408,
+      "peak_rss_bytes_after_forward_compile": 239255552,
+      "peak_rss_bytes_after_inverse_compile": 259211264,
+      "peak_rss_bytes_after_warm": 259211264,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 3968,
+      "forward_coefficient_relative_max": 6.870212042595129e-07,
+      "inverse_spatial_relative_max": 4.5216082522412187e-07,
+      "round_trip_relative_max": 1.9056280831149656e-06,
+      "status": "complete",
+      "worker_wall_seconds": 1.8236943750016508,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:03:20,056:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.6249148169990804,
+      "compile_inverse_seconds": 0.3996850820003601,
+      "warm_forward_seconds_median": 0.0001151469987235032,
+      "warm_inverse_seconds_median": 7.121399903553538e-05,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 141815808,
+      "peak_rss_bytes_after_forward_compile": 240058368,
+      "peak_rss_bytes_after_inverse_compile": 261509120,
+      "peak_rss_bytes_after_warm": 261509120,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 3968,
+      "forward_coefficient_relative_max": 6.946529750448773e-07,
+      "inverse_spatial_relative_max": 4.521608252241217e-07,
+      "round_trip_relative_max": 1.9064776748561316e-06,
+      "status": "complete",
+      "worker_wall_seconds": 1.5328568490003818,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:03:21,891:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.03598770700046,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:03:23,380:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.02575415800311,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:03:43,438:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.036497376000625,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:04:03,499:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.7696584460027225,
+      "compile_inverse_seconds": 0.4176963319987408,
+      "warm_forward_seconds_median": 0.0006250149999686982,
+      "warm_inverse_seconds_median": 0.0002757889997155871,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 142864384,
+      "peak_rss_bytes_after_forward_compile": 253902848,
+      "peak_rss_bytes_after_inverse_compile": 263139328,
+      "peak_rss_bytes_after_warm": 263401472,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 8448,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 0.023370576144318467,
+      "inverse_spatial_relative_max": 0.08678019220382215,
+      "round_trip_relative_max": 0.08678033439314779,
+      "status": "complete",
+      "worker_wall_seconds": 1.697670941000979,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:04:23,517:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.7791742350018467,
+      "compile_inverse_seconds": 0.4257810300005076,
+      "warm_forward_seconds_median": 0.0006025030015734956,
+      "warm_inverse_seconds_median": 0.0002778230009425897,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 144252928,
+      "peak_rss_bytes_after_forward_compile": 252592128,
+      "peak_rss_bytes_after_inverse_compile": 264871936,
+      "peak_rss_bytes_after_warm": 264871936,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 16896,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 2.304842588114902e-06,
+      "inverse_spatial_relative_max": 4.921604250669479e-07,
+      "round_trip_relative_max": 2.125742490353519e-05,
+      "status": "complete",
+      "worker_wall_seconds": 1.6760760090000986,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:04:25,172:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.8175041139984387,
+      "compile_inverse_seconds": 0.46131206499921973,
+      "warm_forward_seconds_median": 0.0006257069981074892,
+      "warm_inverse_seconds_median": 0.00037811099900864065,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 143966208,
+      "peak_rss_bytes_after_forward_compile": 252588032,
+      "peak_rss_bytes_after_inverse_compile": 264744960,
+      "peak_rss_bytes_after_warm": 264744960,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 16896,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 2.3135778416090634e-06,
+      "inverse_spatial_relative_max": 4.816317142484961e-07,
+      "round_trip_relative_max": 2.1230412060339163e-05,
+      "status": "complete",
+      "worker_wall_seconds": 1.8089477559988154,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:04:26,882:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.032575268000073,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:04:28,677:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.04667268599951,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:04:48,704:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.044748989002983,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:05:08,806:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.156903394999972,
+      "compile_inverse_seconds": 0.39834976400015876,
+      "warm_forward_seconds_median": 0.004885352002020227,
+      "warm_inverse_seconds_median": 0.002059320999251213,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 148803584,
+      "peak_rss_bytes_after_forward_compile": 273616896,
+      "peak_rss_bytes_after_inverse_compile": 283054080,
+      "peak_rss_bytes_after_warm": 284364800,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 33280,
+      "coefficient_nbytes": 65024,
+      "forward_coefficient_relative_max": 0.01168948504409097,
+      "inverse_spatial_relative_max": 0.08678019220381632,
+      "round_trip_relative_max": 0.08678026797840892,
+      "status": "complete",
+      "worker_wall_seconds": 2.2452656399982516,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:05:28,837:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.163979968001513,
+      "compile_inverse_seconds": 0.4171226910002588,
+      "warm_forward_seconds_median": 0.004769022998516448,
+      "warm_inverse_seconds_median": 0.0020652429993788246,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 148176896,
+      "peak_rss_bytes_after_forward_compile": 271663104,
+      "peak_rss_bytes_after_inverse_compile": 279789568,
+      "peak_rss_bytes_after_warm": 280838144,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 65024,
+      "forward_coefficient_relative_max": 8.610034943084298e-06,
+      "inverse_spatial_relative_max": 4.92137422792383e-07,
+      "round_trip_relative_max": 0.00036430702891475066,
+      "status": "complete",
+      "worker_wall_seconds": 2.2851570060011,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:05:31,102:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.0964204230003816,
+      "compile_inverse_seconds": 0.41032996400099364,
+      "warm_forward_seconds_median": 0.004469828003493603,
+      "warm_inverse_seconds_median": 0.0021002089997637086,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 148799488,
+      "peak_rss_bytes_after_forward_compile": 273076224,
+      "peak_rss_bytes_after_inverse_compile": 281989120,
+      "peak_rss_bytes_after_warm": 282763264,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 65024,
+      "forward_coefficient_relative_max": 8.6080809323202e-06,
+      "inverse_spatial_relative_max": 4.81609203360534e-07,
+      "round_trip_relative_max": 0.00036424937462951147,
+      "status": "complete",
+      "worker_wall_seconds": 2.1415369819987973,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:05:33,370:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.0181043090015,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:05:35,478:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.035383242000535,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:05:55,533:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.040145942999516,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:06:15,580:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.8133041959990805,
+      "compile_inverse_seconds": 0.4412870470005146,
+      "warm_forward_seconds_median": 0.037614224002027186,
+      "warm_inverse_seconds_median": 0.016830365999339847,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 150093824,
+      "peak_rss_bytes_after_forward_compile": 317132800,
+      "peak_rss_bytes_after_inverse_compile": 324038656,
+      "peak_rss_bytes_after_warm": 328232960,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 132096,
+      "coefficient_nbytes": 261120,
+      "forward_coefficient_relative_max": 0.005850721400818722,
+      "inverse_spatial_relative_max": 0.08677561230521436,
+      "round_trip_relative_max": 0.08677571923683808,
+      "status": "complete",
+      "worker_wall_seconds": 3.8691524019995995,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:06:35,614:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.8441879990023153,
+      "compile_inverse_seconds": 0.5249296959991625,
+      "warm_forward_seconds_median": 0.044975245000387076,
+      "warm_inverse_seconds_median": 0.017384703998686746,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 150388736,
+      "peak_rss_bytes_after_forward_compile": 318533632,
+      "peak_rss_bytes_after_inverse_compile": 324964352,
+      "peak_rss_bytes_after_warm": 328896512,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 261120,
+      "forward_coefficient_relative_max": 2.093418031882528e-05,
+      "inverse_spatial_relative_max": 6.277384985688063e-07,
+      "round_trip_relative_max": 0.00031119232276296106,
+      "status": "complete",
+      "worker_wall_seconds": 3.9742618380005297,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:06:39,476:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.9125003869994543,
+      "compile_inverse_seconds": 0.5040725699982431,
+      "warm_forward_seconds_median": 0.040450033000524854,
+      "warm_inverse_seconds_median": 0.017040994000126375,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 151339008,
+      "peak_rss_bytes_after_forward_compile": 317263872,
+      "peak_rss_bytes_after_inverse_compile": 324399104,
+      "peak_rss_bytes_after_warm": 328069120,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 261120,
+      "forward_coefficient_relative_max": 2.0926229675632922e-05,
+      "inverse_spatial_relative_max": 6.72674618122231e-07,
+      "round_trip_relative_max": 0.0003110666317984136,
+      "status": "complete",
+      "worker_wall_seconds": 4.053253607999068,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\nWARNING:2026-09-20 00:06:43,486:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    }
+  ]
+}

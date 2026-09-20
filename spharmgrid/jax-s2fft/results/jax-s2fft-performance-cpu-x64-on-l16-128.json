@@ -1,0 +1,1233 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.5.0",
+      "jaxlib": "0.5.0",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": true,
+    "backend": "cpu",
+    "devices": [
+      {
+        "platform": "cpu",
+        "device_kind": "cpu",
+        "id": 0,
+        "type": "Device",
+        "repr": "CpuDevice(id=0)"
+      }
+    ],
+    "timing": "median of warmed compiled calls; each call blocks until ready",
+    "memory": "Linux process peak RSS from resource.getrusage; cumulative within each worker process; JAX device memory_stats when available",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 20.0,
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "error": "maximum absolute error divided by maximum absolute reference value",
+    "primary_device": "TFRT_CPU_0",
+    "transform_path": "historical ordinary S2FFT JAX with precomps=None; not the production path"
+  },
+  "results": [
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.5127662890008651,
+      "compile_inverse_seconds": 0.3712177800007339,
+      "warm_forward_seconds_median": 0.00017292699703830294,
+      "warm_inverse_seconds_median": 0.0001544719998491928,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 105611264,
+      "peak_rss_bytes_after_forward_compile": 230268928,
+      "peak_rss_bytes_after_inverse_compile": 247341056,
+      "peak_rss_bytes_after_warm": 247341056,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 3968,
+      "coefficient_nbytes": 7936,
+      "forward_coefficient_relative_max": 5.577902622279647e-16,
+      "inverse_spatial_relative_max": 3.0840776604199574e-16,
+      "round_trip_relative_max": 2.0046504792729722e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.3633644559995446,
+      "stderr_tail": "WARNING:2026-09-20 00:06:54,586:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.530442563998804,
+      "compile_inverse_seconds": 0.38319509500070126,
+      "warm_forward_seconds_median": 0.00023559500186820515,
+      "warm_inverse_seconds_median": 0.00023966200024005957,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 104648704,
+      "peak_rss_bytes_after_forward_compile": 228171776,
+      "peak_rss_bytes_after_inverse_compile": 248561664,
+      "peak_rss_bytes_after_warm": 248823808,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 7936,
+      "coefficient_nbytes": 7936,
+      "forward_coefficient_relative_max": 7.136967246947888e-16,
+      "inverse_spatial_relative_max": 2.0979809876857112e-16,
+      "round_trip_relative_max": 2.561265300659218e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.374942665999697,
+      "stderr_tail": "WARNING:2026-09-20 00:06:55,944:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.5222478579999006,
+      "compile_inverse_seconds": 0.38096570200286806,
+      "warm_forward_seconds_median": 0.00021908400231041014,
+      "warm_inverse_seconds_median": 0.00016163499822141603,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 106090496,
+      "peak_rss_bytes_after_forward_compile": 229412864,
+      "peak_rss_bytes_after_inverse_compile": 251064320,
+      "peak_rss_bytes_after_warm": 251326464,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 7936,
+      "coefficient_nbytes": 7936,
+      "forward_coefficient_relative_max": 7.136967246947888e-16,
+      "inverse_spatial_relative_max": 2.0979809876857112e-16,
+      "round_trip_relative_max": 2.561265300659218e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.3821754150012566,
+      "stderr_tail": "WARNING:2026-09-20 00:06:57,320:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.6637827919985284,
+      "compile_inverse_seconds": 0.43118777199924807,
+      "warm_forward_seconds_median": 0.00026437000269652344,
+      "warm_inverse_seconds_median": 0.00020743200002470985,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 141889536,
+      "peak_rss_bytes_after_forward_compile": 242114560,
+      "peak_rss_bytes_after_inverse_compile": 256417792,
+      "peak_rss_bytes_after_warm": 256417792,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 7936,
+      "forward_coefficient_relative_max": 2.1905143306003286e-16,
+      "inverse_spatial_relative_max": 3.08999434056885e-16,
+      "round_trip_relative_max": 1.6989598072602434e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.5928442279982846,
+      "stderr_tail": "WARNING:2026-09-20 00:06:58,704:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.7002957229997264,
+      "compile_inverse_seconds": 0.4511204410009668,
+      "warm_forward_seconds_median": 0.00027751399829867296,
+      "warm_inverse_seconds_median": 0.00014437299978453666,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 142393344,
+      "peak_rss_bytes_after_forward_compile": 241340416,
+      "peak_rss_bytes_after_inverse_compile": 258326528,
+      "peak_rss_bytes_after_warm": 258326528,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 8704,
+      "coefficient_nbytes": 7936,
+      "forward_coefficient_relative_max": 3.691715255270154e-16,
+      "inverse_spatial_relative_max": 3.9761118682116576e-16,
+      "round_trip_relative_max": 8.98098567429417e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.671121598003083,
+      "stderr_tail": "WARNING:2026-09-20 00:07:00,295:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.6616309659984836,
+      "compile_inverse_seconds": 0.4232716009973956,
+      "warm_forward_seconds_median": 0.00023339100152952597,
+      "warm_inverse_seconds_median": 0.00018203400031779893,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 142426112,
+      "peak_rss_bytes_after_forward_compile": 238739456,
+      "peak_rss_bytes_after_inverse_compile": 256561152,
+      "peak_rss_bytes_after_warm": 256561152,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 8704,
+      "coefficient_nbytes": 7936,
+      "forward_coefficient_relative_max": 3.4521087362982935e-16,
+      "inverse_spatial_relative_max": 3.9156351595676034e-16,
+      "round_trip_relative_max": 9.879325792984465e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5682148640007654,
+      "stderr_tail": "WARNING:2026-09-20 00:07:01,930:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.5625032230018405,
+      "compile_inverse_seconds": 0.3873222349975549,
+      "warm_forward_seconds_median": 0.0009643420016800519,
+      "warm_inverse_seconds_median": 0.0013881439990655053,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 106237952,
+      "peak_rss_bytes_after_forward_compile": 234037248,
+      "peak_rss_bytes_after_inverse_compile": 253173760,
+      "peak_rss_bytes_after_warm": 253435904,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 16128,
+      "coefficient_nbytes": 32256,
+      "forward_coefficient_relative_max": 1.790124366082682e-15,
+      "inverse_spatial_relative_max": 3.8594752206279094e-16,
+      "round_trip_relative_max": 1.3572142128797576e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.4154325749987038,
+      "stderr_tail": "WARNING:2026-09-20 00:07:03,517:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.5497048159995757,
+      "compile_inverse_seconds": 0.39455032399928314,
+      "warm_forward_seconds_median": 0.0009224130008078646,
+      "warm_inverse_seconds_median": 0.0009070039996004198,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 105668608,
+      "peak_rss_bytes_after_forward_compile": 233914368,
+      "peak_rss_bytes_after_inverse_compile": 254857216,
+      "peak_rss_bytes_after_warm": 254857216,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 32256,
+      "coefficient_nbytes": 32256,
+      "forward_coefficient_relative_max": 1.2175831598871262e-15,
+      "inverse_spatial_relative_max": 4.101804147177361e-16,
+      "round_trip_relative_max": 9.131611561893946e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.4547732309983985,
+      "stderr_tail": "WARNING:2026-09-20 00:07:04,954:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.5554791190006654,
+      "compile_inverse_seconds": 0.39590697700259625,
+      "warm_forward_seconds_median": 0.0009586410014890134,
+      "warm_inverse_seconds_median": 0.0008725899970158935,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 105783296,
+      "peak_rss_bytes_after_forward_compile": 236691456,
+      "peak_rss_bytes_after_inverse_compile": 255995904,
+      "peak_rss_bytes_after_warm": 255995904,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 32256,
+      "coefficient_nbytes": 32256,
+      "forward_coefficient_relative_max": 1.2079707647062602e-15,
+      "inverse_spatial_relative_max": 3.947484089631477e-16,
+      "round_trip_relative_max": 9.318921544318843e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.4116086679969158,
+      "stderr_tail": "WARNING:2026-09-20 00:07:06,377:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.8358820860012202,
+      "compile_inverse_seconds": 0.45789306000006036,
+      "warm_forward_seconds_median": 0.0017593550001038238,
+      "warm_inverse_seconds_median": 0.0012716229975922033,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 141033472,
+      "peak_rss_bytes_after_forward_compile": 249085952,
+      "peak_rss_bytes_after_inverse_compile": 262250496,
+      "peak_rss_bytes_after_warm": 262512640,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 16896,
+      "coefficient_nbytes": 32256,
+      "forward_coefficient_relative_max": 4.246049373585589e-16,
+      "inverse_spatial_relative_max": 3.0866153548426706e-16,
+      "round_trip_relative_max": 4.624576295838809e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.8559979380006553,
+      "stderr_tail": "WARNING:2026-09-20 00:07:07,828:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.8784056469994539,
+      "compile_inverse_seconds": 0.4745898330002092,
+      "warm_forward_seconds_median": 0.0017226849995495286,
+      "warm_inverse_seconds_median": 0.0008984989981399849,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 141041664,
+      "peak_rss_bytes_after_forward_compile": 249778176,
+      "peak_rss_bytes_after_inverse_compile": 262787072,
+      "peak_rss_bytes_after_warm": 263049216,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 33792,
+      "coefficient_nbytes": 32256,
+      "forward_coefficient_relative_max": 6.482673818691713e-16,
+      "inverse_spatial_relative_max": 3.976111868211667e-16,
+      "round_trip_relative_max": 2.1135794402087693e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.9068952449997596,
+      "stderr_tail": "WARNING:2026-09-20 00:07:09,678:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.8377671980015293,
+      "compile_inverse_seconds": 0.4661052390001714,
+      "warm_forward_seconds_median": 0.0018396360028418712,
+      "warm_inverse_seconds_median": 0.0008943399989220779,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 141385728,
+      "peak_rss_bytes_after_forward_compile": 249679872,
+      "peak_rss_bytes_after_inverse_compile": 262254592,
+      "peak_rss_bytes_after_warm": 262778880,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 33792,
+      "coefficient_nbytes": 32256,
+      "forward_coefficient_relative_max": 6.429318478620171e-16,
+      "inverse_spatial_relative_max": 3.5563425693859895e-16,
+      "round_trip_relative_max": 1.961470795673815e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.8421731119997276,
+      "stderr_tail": "WARNING:2026-09-20 00:07:11,588:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.6341655610012822,
+      "compile_inverse_seconds": 0.3969466429989552,
+      "warm_forward_seconds_median": 0.007336424001550768,
+      "warm_inverse_seconds_median": 0.007055975002003834,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 109813760,
+      "peak_rss_bytes_after_forward_compile": 245026816,
+      "peak_rss_bytes_after_inverse_compile": 263114752,
+      "peak_rss_bytes_after_warm": 263630848,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 65024,
+      "coefficient_nbytes": 130048,
+      "forward_coefficient_relative_max": 2.2886739103030838e-15,
+      "inverse_spatial_relative_max": 1.1123145677468757e-15,
+      "round_trip_relative_max": 7.322505183653838e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.701237149998633,
+      "stderr_tail": "WARNING:2026-09-20 00:07:13,415:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.6132791689997248,
+      "compile_inverse_seconds": 0.38514990900148405,
+      "warm_forward_seconds_median": 0.0073138209991157055,
+      "warm_inverse_seconds_median": 0.007140183999581495,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 109371392,
+      "peak_rss_bytes_after_forward_compile": 246255616,
+      "peak_rss_bytes_after_inverse_compile": 263294976,
+      "peak_rss_bytes_after_warm": 263819264,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 130048,
+      "coefficient_nbytes": 130048,
+      "forward_coefficient_relative_max": 2.1365480911084524e-15,
+      "inverse_spatial_relative_max": 8.430431137882052e-16,
+      "round_trip_relative_max": 5.260769285265231e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.7052091069999733,
+      "stderr_tail": "WARNING:2026-09-20 00:07:15,166:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.6556879540003138,
+      "compile_inverse_seconds": 0.38207489699925645,
+      "warm_forward_seconds_median": 0.00732377099848236,
+      "warm_inverse_seconds_median": 0.007177383999078302,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 109051904,
+      "peak_rss_bytes_after_forward_compile": 245915648,
+      "peak_rss_bytes_after_inverse_compile": 262168576,
+      "peak_rss_bytes_after_warm": 263479296,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 130048,
+      "coefficient_nbytes": 130048,
+      "forward_coefficient_relative_max": 2.1300666503043367e-15,
+      "inverse_spatial_relative_max": 8.316501155817691e-16,
+      "round_trip_relative_max": 5.272751292956154e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.7245386760005204,
+      "stderr_tail": "WARNING:2026-09-20 00:07:16,845:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 1.1648823929972423,
+      "compile_inverse_seconds": 0.4465290840016678,
+      "warm_forward_seconds_median": 0.014592406998417573,
+      "warm_inverse_seconds_median": 0.007109534999472089,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 146333696,
+      "peak_rss_bytes_after_forward_compile": 269328384,
+      "peak_rss_bytes_after_inverse_compile": 280076288,
+      "peak_rss_bytes_after_warm": 281645056,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 130048,
+      "forward_coefficient_relative_max": 4.506959714138507e-16,
+      "inverse_spatial_relative_max": 4.630421994855222e-16,
+      "round_trip_relative_max": 3.3142798430588696e-15,
+      "status": "complete",
+      "worker_wall_seconds": 2.430312962998869,
+      "stderr_tail": "WARNING:2026-09-20 00:07:18,583:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 1.2052247129977331,
+      "compile_inverse_seconds": 0.444634422998206,
+      "warm_forward_seconds_median": 0.014734755997778848,
+      "warm_inverse_seconds_median": 0.007014976999926148,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 146780160,
+      "peak_rss_bytes_after_forward_compile": 270061568,
+      "peak_rss_bytes_after_inverse_compile": 280547328,
+      "peak_rss_bytes_after_warm": 281853952,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 133120,
+      "coefficient_nbytes": 130048,
+      "forward_coefficient_relative_max": 4.725808174251495e-16,
+      "inverse_spatial_relative_max": 5.942596548239877e-16,
+      "round_trip_relative_max": 7.925402539542975e-15,
+      "status": "complete",
+      "worker_wall_seconds": 2.496120306001103,
+      "stderr_tail": "WARNING:2026-09-20 00:07:21,029:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 1.2049914319977688,
+      "compile_inverse_seconds": 0.43181461700078216,
+      "warm_forward_seconds_median": 0.01438213000074029,
+      "warm_inverse_seconds_median": 0.006842009999672882,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 147705856,
+      "peak_rss_bytes_after_forward_compile": 270426112,
+      "peak_rss_bytes_after_inverse_compile": 280125440,
+      "peak_rss_bytes_after_warm": 281436160,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 133120,
+      "coefficient_nbytes": 130048,
+      "forward_coefficient_relative_max": 4.815778470154082e-16,
+      "inverse_spatial_relative_max": 4.890886441340477e-16,
+      "round_trip_relative_max": 8.304133263207056e-15,
+      "status": "complete",
+      "worker_wall_seconds": 2.427198386998498,
+      "stderr_tail": "WARNING:2026-09-20 00:07:23,486:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.768128665000404,
+      "compile_inverse_seconds": 0.39383413000177825,
+      "warm_forward_seconds_median": 0.05616707499939366,
+      "warm_inverse_seconds_median": 0.054543365997233195,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 125788160,
+      "peak_rss_bytes_after_forward_compile": 265134080,
+      "peak_rss_bytes_after_inverse_compile": 279617536,
+      "peak_rss_bytes_after_warm": 283811840,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 261120,
+      "coefficient_nbytes": 522240,
+      "forward_coefficient_relative_max": 1.5921827150038572e-15,
+      "inverse_spatial_relative_max": 4.640448224830557e-16,
+      "round_trip_relative_max": 7.42960507610449e-14,
+      "status": "complete",
+      "worker_wall_seconds": 3.075283401998604,
+      "stderr_tail": "WARNING:2026-09-20 00:07:25,960:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.8098128810015623,
+      "compile_inverse_seconds": 0.41334029299832764,
+      "warm_forward_seconds_median": 0.05322635700213141,
+      "warm_inverse_seconds_median": 0.05615873900023871,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 127369216,
+      "peak_rss_bytes_after_forward_compile": 264822784,
+      "peak_rss_bytes_after_inverse_compile": 281317376,
+      "peak_rss_bytes_after_warm": 284987392,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 522240,
+      "coefficient_nbytes": 522240,
+      "forward_coefficient_relative_max": 1.776414798096686e-15,
+      "inverse_spatial_relative_max": 7.825655651470775e-16,
+      "round_trip_relative_max": 6.253389440748652e-14,
+      "status": "complete",
+      "worker_wall_seconds": 3.2145726829985506,
+      "stderr_tail": "WARNING:2026-09-20 00:07:29,031:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 0.8162918779999018,
+      "compile_inverse_seconds": 0.4226447580003878,
+      "warm_forward_seconds_median": 0.05411968200132833,
+      "warm_inverse_seconds_median": 0.05776396899818792,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 127844352,
+      "peak_rss_bytes_after_forward_compile": 267284480,
+      "peak_rss_bytes_after_inverse_compile": 283099136,
+      "peak_rss_bytes_after_warm": 287293440,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 522240,
+      "coefficient_nbytes": 522240,
+      "forward_coefficient_relative_max": 1.785172800388042e-15,
+      "inverse_spatial_relative_max": 6.356515024211606e-16,
+      "round_trip_relative_max": 6.223389059626445e-14,
+      "status": "complete",
+      "worker_wall_seconds": 3.2383950740004366,
+      "stderr_tail": "WARNING:2026-09-20 00:07:32,254:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "float64",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 1.8684892380006204,
+      "compile_inverse_seconds": 0.4783949789998587,
+      "warm_forward_seconds_median": 0.14861954499792773,
+      "warm_inverse_seconds_median": 0.05535471199982567,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 148586496,
+      "peak_rss_bytes_after_forward_compile": 319774720,
+      "peak_rss_bytes_after_inverse_compile": 326025216,
+      "peak_rss_bytes_after_warm": 332578816,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 522240,
+      "forward_coefficient_relative_max": 9.397075380771203e-16,
+      "inverse_spatial_relative_max": 6.168786165065377e-16,
+      "round_trip_relative_max": 1.7418317953658426e-14,
+      "status": "complete",
+      "worker_wall_seconds": 5.3020938170011505,
+      "stderr_tail": "WARNING:2026-09-20 00:07:35,506:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 1.8530972659973486,
+      "compile_inverse_seconds": 0.5035773370000243,
+      "warm_forward_seconds_median": 0.11713057500310242,
+      "warm_inverse_seconds_median": 0.0574462360018515,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 149598208,
+      "peak_rss_bytes_after_forward_compile": 318705664,
+      "peak_rss_bytes_after_inverse_compile": 324374528,
+      "peak_rss_bytes_after_warm": 331190272,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 528384,
+      "coefficient_nbytes": 522240,
+      "forward_coefficient_relative_max": 9.730550464270231e-16,
+      "inverse_spatial_relative_max": 6.101543631643707e-16,
+      "round_trip_relative_max": 1.2889007985983298e-14,
+      "status": "complete",
+      "worker_wall_seconds": 5.065016800999729,
+      "stderr_tail": "WARNING:2026-09-20 00:07:40,786:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float64",
+      "effective_input_dtype": "complex128",
+      "effective_coefficient_dtype": "complex128",
+      "jax_enable_x64": true,
+      "compile_forward_seconds": 1.8109626489967923,
+      "compile_inverse_seconds": 0.47322675400209846,
+      "warm_forward_seconds_median": 0.12311370400129817,
+      "warm_inverse_seconds_median": 0.055371053000271786,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 149495808,
+      "peak_rss_bytes_after_forward_compile": 320409600,
+      "peak_rss_bytes_after_inverse_compile": 325189632,
+      "peak_rss_bytes_after_warm": 332529664,
+      "device_memory_before_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "field_nbytes": 528384,
+      "coefficient_nbytes": 522240,
+      "forward_coefficient_relative_max": 9.755611978172053e-16,
+      "inverse_spatial_relative_max": 6.255793396917859e-16,
+      "round_trip_relative_max": 1.3288310363648975e-14,
+      "status": "complete",
+      "worker_wall_seconds": 5.082623500999034,
+      "stderr_tail": "WARNING:2026-09-20 00:07:45,882:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    }
+  ]
+}

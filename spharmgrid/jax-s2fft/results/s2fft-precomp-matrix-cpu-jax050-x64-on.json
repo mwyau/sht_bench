@@ -1,0 +1,5032 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.5.0",
+      "jaxlib": "0.5.0",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": true,
+    "backend": "cpu",
+    "devices": [
+      {
+        "platform": "cpu",
+        "device_kind": "cpu",
+        "id": 0,
+        "type": "Device",
+        "repr": "CpuDevice(id=0)"
+      }
+    ],
+    "primary_device": "TFRT_CPU_0",
+    "precompute_api": "s2fft.recursions.price_mcewen.generate_precomputes_jax",
+    "precompute_memory": "O(L^2)",
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "timing": "trace uses jitted_function.trace; lower uses traced.lower; compile uses lowered.compile; warm is median of blocking calls",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 60.0,
+    "paths": {
+      "none": "ordinary S2FFT JAX transform with precomps=None",
+      "precomps": "ordinary S2FFT JAX transform with external O(L^2) precomps"
+    }
+  },
+  "results": [
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        8,
+        15
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14183398699969985,
+        "lower_seconds": 0.12921519099836587,
+        "compile_seconds": 0.18989503699776833,
+        "first_execution_seconds": 0.0005725299997720867,
+        "warm_seconds_median": 0.00013045399828115478
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07988874500006204,
+        "lower_seconds": 0.0971511850002571,
+        "compile_seconds": 0.16248189700127114,
+        "first_execution_seconds": 0.000419584997871425,
+        "warm_seconds_median": 8.697200246388093e-05
+      },
+      "forward_coefficient_relative_max": 7.43821815766228e-16,
+      "inverse_spatial_relative_max": 1.5518029157681093e-16,
+      "round_trip_relative_max": 2.6217903049652667e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.388312004000909,
+      "stderr_tail": "WARNING:2026-09-20 00:25:34,053:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        8,
+        15
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14258795799833024,
+        "lower_seconds": 0.12913132400353788,
+        "compile_seconds": 0.19217476099947817,
+        "first_execution_seconds": 0.0006237259985937271,
+        "warm_seconds_median": 0.00018590800027595833
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08041155200044159,
+        "lower_seconds": 0.09486627200021758,
+        "compile_seconds": 0.1590673320024507,
+        "first_execution_seconds": 0.00044667500333162025,
+        "warm_seconds_median": 0.00011460400128271431
+      },
+      "forward_coefficient_relative_max": 5.678223006892436e-16,
+      "inverse_spatial_relative_max": 2.237925834706918e-16,
+      "round_trip_relative_max": 1.9739470024300685e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.377146876999177,
+      "stderr_tail": "WARNING:2026-09-20 00:25:35,440:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        8,
+        15
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14217440400170744,
+        "lower_seconds": 0.13179795000178274,
+        "compile_seconds": 0.18107861200041953,
+        "first_execution_seconds": 0.0005547469991142862,
+        "warm_seconds_median": 0.00013032300194026902
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08171444899926428,
+        "lower_seconds": 0.09789701900081127,
+        "compile_seconds": 0.15742782700181124,
+        "first_execution_seconds": 0.0005729920012527145,
+        "warm_seconds_median": 0.0001247729996975977
+      },
+      "forward_coefficient_relative_max": 5.560314551011608e-16,
+      "inverse_spatial_relative_max": 2.502077147503813e-16,
+      "round_trip_relative_max": 1.9015786321028976e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.3650858130022243,
+      "stderr_tail": "WARNING:2026-09-20 00:25:36,815:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        9,
+        16
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.21272426599898608,
+        "lower_seconds": 0.12747737199970288,
+        "compile_seconds": 0.19578538199857576,
+        "first_execution_seconds": 0.0005863759979547467,
+        "warm_seconds_median": 0.00011013599942089058
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10689369200190413,
+        "lower_seconds": 0.10065107899936265,
+        "compile_seconds": 0.15800962399953278,
+        "first_execution_seconds": 0.0004500520008150488,
+        "warm_seconds_median": 0.00011409400030970573
+      },
+      "forward_coefficient_relative_max": 1.8313726568789625e-16,
+      "inverse_spatial_relative_max": 1.5492152125263877e-16,
+      "round_trip_relative_max": 6.178035662764522e-16,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 1.5492152125263877e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5324308349991043,
+      "stderr_tail": "WARNING:2026-09-20 00:25:38,193:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        9,
+        16
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.21883429100125795,
+        "lower_seconds": 0.12903945200014277,
+        "compile_seconds": 0.20347927900002105,
+        "first_execution_seconds": 0.0007295440009329468,
+        "warm_seconds_median": 0.0001723629975458607
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10914325799967628,
+        "lower_seconds": 0.1047721150025609,
+        "compile_seconds": 0.16498222299924237,
+        "first_execution_seconds": 0.000548305000847904,
+        "warm_seconds_median": 0.00014589300189982168
+      },
+      "forward_coefficient_relative_max": 1.1822950964009714e-16,
+      "inverse_spatial_relative_max": 2.0902613561509314e-16,
+      "round_trip_relative_max": 4.1185856184687786e-16,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.1336033823761667e-16,
+      "interior_relative_max": 2.0902613561509314e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.586699541996495,
+      "stderr_tail": "WARNING:2026-09-20 00:25:39,750:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        9,
+        16
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.2136202219990082,
+        "lower_seconds": 0.12657423299970105,
+        "compile_seconds": 0.20753037399845198,
+        "first_execution_seconds": 0.000542052999662701,
+        "warm_seconds_median": 0.0001129810007114429
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.1046735109994188,
+        "lower_seconds": 0.10127429400017718,
+        "compile_seconds": 0.16043213500233833,
+        "first_execution_seconds": 0.0003548339991539251,
+        "warm_seconds_median": 8.538999827578664e-05
+      },
+      "forward_coefficient_relative_max": 1.1822950964009714e-16,
+      "inverse_spatial_relative_max": 2.267206764752334e-16,
+      "round_trip_relative_max": 3.083734594798436e-16,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.133603382376167e-16,
+      "interior_relative_max": 2.267206764752334e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5325991999998223,
+      "stderr_tail": "WARNING:2026-09-20 00:25:41,299:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.1451225870005146,
+        "lower_seconds": 0.13142641599915805,
+        "compile_seconds": 0.18783928300035768,
+        "first_execution_seconds": 0.0009421819995623082,
+        "warm_seconds_median": 0.0003820450001512654
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08211774400115246,
+        "lower_seconds": 0.09560041399890906,
+        "compile_seconds": 0.15545525799825555,
+        "first_execution_seconds": 0.0005710980003641453,
+        "warm_seconds_median": 0.0002642639992700424
+      },
+      "forward_coefficient_relative_max": 5.577902622279647e-16,
+      "inverse_spatial_relative_max": 3.0840776604199574e-16,
+      "round_trip_relative_max": 2.0046504792729722e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.3764793379996263,
+      "stderr_tail": "WARNING:2026-09-20 00:25:42,840:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14527811799780466,
+        "lower_seconds": 0.1304981110006338,
+        "compile_seconds": 0.20543387399811763,
+        "first_execution_seconds": 0.0007646999983990099,
+        "warm_seconds_median": 0.0002826290001394227
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07996461699804058,
+        "lower_seconds": 0.09511386399753974,
+        "compile_seconds": 0.14918617500006803,
+        "first_execution_seconds": 0.0004961779995937832,
+        "warm_seconds_median": 0.0001981409986910876
+      },
+      "forward_coefficient_relative_max": 7.136967246947888e-16,
+      "inverse_spatial_relative_max": 2.0979809876857112e-16,
+      "round_trip_relative_max": 2.561265300659218e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.3822029110015137,
+      "stderr_tail": "WARNING:2026-09-20 00:25:44,216:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.146112868002092,
+        "lower_seconds": 0.13157846999820322,
+        "compile_seconds": 0.2058461550004722,
+        "first_execution_seconds": 0.0007664829972782172,
+        "warm_seconds_median": 0.0002530940000724513
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.0797650739987148,
+        "lower_seconds": 0.09618511699954979,
+        "compile_seconds": 0.15045906600062153,
+        "first_execution_seconds": 0.0005958649999229237,
+        "warm_seconds_median": 0.0002492359999450855
+      },
+      "forward_coefficient_relative_max": 7.136967246947888e-16,
+      "inverse_spatial_relative_max": 2.0979809876857112e-16,
+      "round_trip_relative_max": 2.561265300659218e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.4259602439997252,
+      "stderr_tail": "WARNING:2026-09-20 00:25:45,622:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.2568297789985081,
+        "lower_seconds": 0.14005314699898008,
+        "compile_seconds": 0.20229912200011313,
+        "first_execution_seconds": 0.0007056790018395986,
+        "warm_seconds_median": 0.0003005819999088999
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10669572199913091,
+        "lower_seconds": 0.10276367900223704,
+        "compile_seconds": 0.15978041600101278,
+        "first_execution_seconds": 0.0005051640000601765,
+        "warm_seconds_median": 0.0001955560001078993
+      },
+      "forward_coefficient_relative_max": 2.1905143306003286e-16,
+      "inverse_spatial_relative_max": 3.08999434056885e-16,
+      "round_trip_relative_max": 1.6989598072602434e-15,
+      "north_pole_relative_max": 2.1434366999239095e-33,
+      "south_pole_relative_max": 7.722544578455652e-17,
+      "interior_relative_max": 3.08999434056885e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5908503739992739,
+      "stderr_tail": "WARNING:2026-09-20 00:25:47,031:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.2584546580001188,
+        "lower_seconds": 0.13794963300097152,
+        "compile_seconds": 0.20616134400188457,
+        "first_execution_seconds": 0.0005712879974453244,
+        "warm_seconds_median": 0.0002316940008313395
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10568331900140038,
+        "lower_seconds": 0.1055087620006816,
+        "compile_seconds": 0.15688485099963145,
+        "first_execution_seconds": 0.0004655110024032183,
+        "warm_seconds_median": 0.00016046000018832274
+      },
+      "forward_coefficient_relative_max": 3.691715255270154e-16,
+      "inverse_spatial_relative_max": 3.9761118682116576e-16,
+      "round_trip_relative_max": 8.98098567429417e-16,
+      "north_pole_relative_max": 1.0846906060581764e-32,
+      "south_pole_relative_max": 2.1693812121163528e-32,
+      "interior_relative_max": 3.9761118682116576e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5913499879970914,
+      "stderr_tail": "WARNING:2026-09-20 00:25:48,621:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.2512483930004237,
+        "lower_seconds": 0.1334793450005236,
+        "compile_seconds": 0.22270560099786962,
+        "first_execution_seconds": 0.0010335029983252753,
+        "warm_seconds_median": 0.0004332799981057178
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10586069999772008,
+        "lower_seconds": 0.10076295800172375,
+        "compile_seconds": 0.15966761399977258,
+        "first_execution_seconds": 0.0007590400018671062,
+        "warm_seconds_median": 0.00031082100031198934
+      },
+      "forward_coefficient_relative_max": 3.4521087362982935e-16,
+      "inverse_spatial_relative_max": 3.9156351595676034e-16,
+      "round_trip_relative_max": 9.879325792984465e-16,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.0923219370812572e-16,
+      "interior_relative_max": 3.9156351595676034e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.599658184000873,
+      "stderr_tail": "WARNING:2026-09-20 00:25:50,211:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        32,
+        63
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14932021599815926,
+        "lower_seconds": 0.13580586500029312,
+        "compile_seconds": 0.21177990999785834,
+        "first_execution_seconds": 0.0016461880004499108,
+        "warm_seconds_median": 0.0011020809979527257
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07565974799945252,
+        "lower_seconds": 0.09472610900047584,
+        "compile_seconds": 0.147955885000556,
+        "first_execution_seconds": 0.0014167389999784064,
+        "warm_seconds_median": 0.0010814630004460923
+      },
+      "forward_coefficient_relative_max": 1.790124366082682e-15,
+      "inverse_spatial_relative_max": 3.8594752206279094e-16,
+      "round_trip_relative_max": 1.3572142128797576e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.4091768100006448,
+      "stderr_tail": "WARNING:2026-09-20 00:25:51,825:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        32,
+        63
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.1485781080009474,
+        "lower_seconds": 0.13499422800305183,
+        "compile_seconds": 0.20133531899773516,
+        "first_execution_seconds": 0.0016449260001536459,
+        "warm_seconds_median": 0.0010909999982686713
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07573785400018096,
+        "lower_seconds": 0.09563698299825774,
+        "compile_seconds": 0.14929981799650704,
+        "first_execution_seconds": 0.0014669939992018044,
+        "warm_seconds_median": 0.0011855269985971972
+      },
+      "forward_coefficient_relative_max": 1.2175831598871262e-15,
+      "inverse_spatial_relative_max": 4.101804147177361e-16,
+      "round_trip_relative_max": 9.131611561893946e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.4048619210007018,
+      "stderr_tail": "WARNING:2026-09-20 00:25:53,233:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        32,
+        63
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.14937836500030244,
+        "lower_seconds": 0.1353533689980395,
+        "compile_seconds": 0.20928876199832303,
+        "first_execution_seconds": 0.001592987999174511,
+        "warm_seconds_median": 0.0010967410016746726
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07581954699708149,
+        "lower_seconds": 0.09558127899799729,
+        "compile_seconds": 0.14846305299943197,
+        "first_execution_seconds": 0.0014987829999881797,
+        "warm_seconds_median": 0.0011434080006438307
+      },
+      "forward_coefficient_relative_max": 1.2079707647062602e-15,
+      "inverse_spatial_relative_max": 3.947484089631477e-16,
+      "round_trip_relative_max": 9.318921544318843e-15,
+      "status": "complete",
+      "worker_wall_seconds": 1.4187471559998812,
+      "stderr_tail": "WARNING:2026-09-20 00:25:54,655:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        33,
+        64
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.3453966120032419,
+        "lower_seconds": 0.1560119690002466,
+        "compile_seconds": 0.25616206099948613,
+        "first_execution_seconds": 0.004325799000071129,
+        "warm_seconds_median": 0.0023951790026330855
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10322224699848448,
+        "lower_seconds": 0.10111640900140628,
+        "compile_seconds": 0.15755781899861176,
+        "first_execution_seconds": 0.002341358998819487,
+        "warm_seconds_median": 0.0016169539994734805
+      },
+      "forward_coefficient_relative_max": 4.246049373585589e-16,
+      "inverse_spatial_relative_max": 3.0866153548426706e-16,
+      "round_trip_relative_max": 4.624576295838809e-15,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 3.0866153548426706e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.782609878002404,
+      "stderr_tail": "WARNING:2026-09-20 00:25:56,066:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        33,
+        64
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.3432065169981797,
+        "lower_seconds": 0.15871518399944762,
+        "compile_seconds": 0.24525189999985741,
+        "first_execution_seconds": 0.0036848909985565115,
+        "warm_seconds_median": 0.0024114689986163285
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.1055564720008988,
+        "lower_seconds": 0.10147715299899573,
+        "compile_seconds": 0.16080212599990773,
+        "first_execution_seconds": 0.00188922300003469,
+        "warm_seconds_median": 0.0013770250006928109
+      },
+      "forward_coefficient_relative_max": 6.482673818691713e-16,
+      "inverse_spatial_relative_max": 3.976111868211667e-16,
+      "round_trip_relative_max": 2.1135794402087693e-15,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 3.976111868211667e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.7749559259973466,
+      "stderr_tail": "WARNING:2026-09-20 00:25:57,849:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        33,
+        64
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.354850619998615,
+        "lower_seconds": 0.1673133609983779,
+        "compile_seconds": 0.2721756559985806,
+        "first_execution_seconds": 0.002378697998210555,
+        "warm_seconds_median": 0.0017249659977096599
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10728571499930695,
+        "lower_seconds": 0.10299047299849917,
+        "compile_seconds": 0.16045510700132581,
+        "first_execution_seconds": 0.00197428100000252,
+        "warm_seconds_median": 0.0014458940022450406
+      },
+      "forward_coefficient_relative_max": 6.429318478620171e-16,
+      "inverse_spatial_relative_max": 3.5563425693859895e-16,
+      "round_trip_relative_max": 1.961470795673815e-15,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.221253052313973e-16,
+      "interior_relative_max": 3.5563425693859895e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.8257147309996071,
+      "stderr_tail": "WARNING:2026-09-20 00:25:59,627:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.16330249199745595,
+        "lower_seconds": 0.14293072800137452,
+        "compile_seconds": 0.24030803500136244,
+        "first_execution_seconds": 0.00975750500219874,
+        "warm_seconds_median": 0.00700414699895191
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08254719599790405,
+        "lower_seconds": 0.09681107899814378,
+        "compile_seconds": 0.1510149250025279,
+        "first_execution_seconds": 0.010999128000548808,
+        "warm_seconds_median": 0.006995772000664147
+      },
+      "forward_coefficient_relative_max": 2.2886739103030838e-15,
+      "inverse_spatial_relative_max": 1.1123145677468757e-15,
+      "round_trip_relative_max": 7.322505183653838e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.6115549599999213,
+      "stderr_tail": "WARNING:2026-09-20 00:26:01,498:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.16079624600024545,
+        "lower_seconds": 0.14185233200259972,
+        "compile_seconds": 0.24011976300243987,
+        "first_execution_seconds": 0.00782989200160955,
+        "warm_seconds_median": 0.006971857001190074
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07642454700180679,
+        "lower_seconds": 0.09675074500046321,
+        "compile_seconds": 0.15376027899765177,
+        "first_execution_seconds": 0.009357888000522507,
+        "warm_seconds_median": 0.006454700000176672
+      },
+      "forward_coefficient_relative_max": 2.1365480911084524e-15,
+      "inverse_spatial_relative_max": 8.430431137882052e-16,
+      "round_trip_relative_max": 5.260769285265231e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.6018498920020647,
+      "stderr_tail": "WARNING:2026-09-20 00:26:03,115:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.15977651899811462,
+        "lower_seconds": 0.1414742249980918,
+        "compile_seconds": 0.24894405400118558,
+        "first_execution_seconds": 0.007662799001991516,
+        "warm_seconds_median": 0.006527695997647243
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.0766123779976624,
+        "lower_seconds": 0.09600185500312364,
+        "compile_seconds": 0.15540203800264862,
+        "first_execution_seconds": 0.008305731000291416,
+        "warm_seconds_median": 0.0064531870011705905
+      },
+      "forward_coefficient_relative_max": 2.1300666503043367e-15,
+      "inverse_spatial_relative_max": 8.316501155817691e-16,
+      "round_trip_relative_max": 5.272751292956154e-14,
+      "status": "complete",
+      "worker_wall_seconds": 1.6119175980020373,
+      "stderr_tail": "WARNING:2026-09-20 00:26:04,713:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.5134605269995518,
+        "lower_seconds": 0.19998173899875837,
+        "compile_seconds": 0.3269961539990618,
+        "first_execution_seconds": 0.019613155000115512,
+        "warm_seconds_median": 0.013521222997951554
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.12787201900209766,
+        "lower_seconds": 0.10266652800055454,
+        "compile_seconds": 0.16189195399783785,
+        "first_execution_seconds": 0.013419733000773704,
+        "warm_seconds_median": 0.006949795002583414
+      },
+      "forward_coefficient_relative_max": 4.506959714138507e-16,
+      "inverse_spatial_relative_max": 4.630421994855222e-16,
+      "round_trip_relative_max": 3.3142798430588696e-15,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 3.0830508638924985e-16,
+      "interior_relative_max": 4.630421994855222e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.2865591299996595,
+      "stderr_tail": "WARNING:2026-09-20 00:26:06,355:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.512824448000174,
+        "lower_seconds": 0.19540688400229556,
+        "compile_seconds": 0.3234650319973298,
+        "first_execution_seconds": 0.014706660997035215,
+        "warm_seconds_median": 0.014237833998777205
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.14047286200002418,
+        "lower_seconds": 0.10686599000109709,
+        "compile_seconds": 0.16361120900182868,
+        "first_execution_seconds": 0.007248493999213679,
+        "warm_seconds_median": 0.006626562000747072
+      },
+      "forward_coefficient_relative_max": 4.725808174251495e-16,
+      "inverse_spatial_relative_max": 5.942596548239877e-16,
+      "round_trip_relative_max": 7.925402539542975e-15,
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 5.942596548239877e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.297115067998675,
+      "stderr_tail": "WARNING:2026-09-20 00:26:08,644:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "none",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.0,
+      "precompute_inverse_seconds": 0.0,
+      "precompute_total_seconds": 0.0,
+      "forward_timing": {
+        "trace_seconds": 0.5257201620006526,
+        "lower_seconds": 0.19851847300014924,
+        "compile_seconds": 0.32254023299901746,
+        "first_execution_seconds": 0.021694356997613795,
+        "warm_seconds_median": 0.014041766997252125
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.12828414999967208,
+        "lower_seconds": 0.10247257399896625,
+        "compile_seconds": 0.1579138460001559,
+        "first_execution_seconds": 0.0095340980005858,
+        "warm_seconds_median": 0.006646699002885725
+      },
+      "forward_coefficient_relative_max": 4.815778470154082e-16,
+      "inverse_spatial_relative_max": 4.890886441340477e-16,
+      "round_trip_relative_max": 8.304133263207056e-15,
+      "north_pole_relative_max": 2.16927998785132e-32,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 4.890886441340477e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.3009511410018604,
+      "stderr_tail": "WARNING:2026-09-20 00:26:10,956:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        8,
+        15
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.1546451039976091,
+      "precompute_inverse_seconds": 0.1089348589994188,
+      "precompute_total_seconds": 0.2635799629970279,
+      "forward_timing": {
+        "trace_seconds": 0.11184216499896138,
+        "lower_seconds": 0.07153086600010283,
+        "compile_seconds": 0.12423579000096652,
+        "first_execution_seconds": 0.0008230189996538684,
+        "warm_seconds_median": 0.00015629299741704017
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06518413899902953,
+        "lower_seconds": 0.06680985900311498,
+        "compile_seconds": 0.09662432999903103,
+        "first_execution_seconds": 0.00037473999691428617,
+        "warm_seconds_median": 9.144100113189779e-05
+      },
+      "forward_coefficient_relative_max": 7.43821815766228e-16,
+      "inverse_spatial_relative_max": 1.5518029157681093e-16,
+      "round_trip_relative_max": 2.6217903049652667e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3121704460027104,
+      "stderr_tail": "WARNING:2026-09-20 00:26:13,165:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        8,
+        15
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.15369934400223428,
+      "precompute_inverse_seconds": 0.10766347100070561,
+      "precompute_total_seconds": 0.2613628150029399,
+      "forward_timing": {
+        "trace_seconds": 0.10698984199916595,
+        "lower_seconds": 0.051573799002653686,
+        "compile_seconds": 0.08492789799856837,
+        "first_execution_seconds": 0.00122240600103396,
+        "warm_seconds_median": 0.0002004449997912161
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.055681259000266436,
+        "lower_seconds": 0.041974018000473734,
+        "compile_seconds": 0.06196625099983066,
+        "first_execution_seconds": 0.00045196499922894873,
+        "warm_seconds_median": 8.502900163875893e-05
+      },
+      "forward_coefficient_relative_max": 7.242475574565905e-16,
+      "inverse_spatial_relative_max": 1.5422287667029646e-16,
+      "round_trip_relative_max": 2.313343150054447e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.1565734329997213,
+      "stderr_tail": "WARNING:2026-09-20 00:26:14,484:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        8,
+        15
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15871260900166817,
+      "precompute_inverse_seconds": 0.1080216010013828,
+      "precompute_total_seconds": 0.266734210003051,
+      "forward_timing": {
+        "trace_seconds": 0.12755036799717345,
+        "lower_seconds": 0.07044618899817578,
+        "compile_seconds": 0.1282175759988604,
+        "first_execution_seconds": 0.0007381800023722462,
+        "warm_seconds_median": 0.0001825319995987229
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06483509600002435,
+        "lower_seconds": 0.0645757220008818,
+        "compile_seconds": 0.10161952999987989,
+        "first_execution_seconds": 0.0008233200023823883,
+        "warm_seconds_median": 0.00021003300207667053
+      },
+      "forward_coefficient_relative_max": 5.678223006892436e-16,
+      "inverse_spatial_relative_max": 2.237925834706918e-16,
+      "round_trip_relative_max": 1.9739470024300685e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.343023067998729,
+      "stderr_tail": "WARNING:2026-09-20 00:26:15,617:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        8,
+        15
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15286425299927942,
+      "precompute_inverse_seconds": 0.10720538500027033,
+      "precompute_total_seconds": 0.26006963799954974,
+      "forward_timing": {
+        "trace_seconds": 0.12106242699883296,
+        "lower_seconds": 0.07079600300130551,
+        "compile_seconds": 0.11035141799948178,
+        "first_execution_seconds": 0.0008841730013955384,
+        "warm_seconds_median": 0.0001992329998756759
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07255288700253004,
+        "lower_seconds": 0.06636911500027054,
+        "compile_seconds": 0.10650860199893941,
+        "first_execution_seconds": 0.0008899339991330635,
+        "warm_seconds_median": 0.0001912379993882496
+      },
+      "forward_coefficient_relative_max": 5.560314551011608e-16,
+      "inverse_spatial_relative_max": 2.502077147503813e-16,
+      "round_trip_relative_max": 1.9015786321028976e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            8,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3648,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3252062820029096,
+      "stderr_tail": "WARNING:2026-09-20 00:26:16,961:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        9,
+        16
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14280783899812377,
+      "precompute_inverse_seconds": 0.12354126100035501,
+      "precompute_total_seconds": 0.2663490999984788,
+      "forward_timing": {
+        "trace_seconds": 0.16676583799926448,
+        "lower_seconds": 0.09099196700117318,
+        "compile_seconds": 0.1344888429994171,
+        "first_execution_seconds": 0.00034821100052795373,
+        "warm_seconds_median": 4.8140002036234364e-05
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07862864900016575,
+        "lower_seconds": 0.07268324200049392,
+        "compile_seconds": 0.11687182999958168,
+        "first_execution_seconds": 0.0005597570016107056,
+        "warm_seconds_median": 0.0001409739998052828
+      },
+      "forward_coefficient_relative_max": 1.8313726568789625e-16,
+      "inverse_spatial_relative_max": 1.5492152125263877e-16,
+      "round_trip_relative_max": 6.178035662764522e-16,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            15,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 4992,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3840,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 1.5492152125263877e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.4943457389999821,
+      "stderr_tail": "WARNING:2026-09-20 00:26:18,318:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        9,
+        16
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.14825334099805332,
+      "precompute_inverse_seconds": 0.11865671800114796,
+      "precompute_total_seconds": 0.2669100589992013,
+      "forward_timing": {
+        "trace_seconds": 0.16058936799890944,
+        "lower_seconds": 0.07082962599815801,
+        "compile_seconds": 0.11186931599877425,
+        "first_execution_seconds": 0.0008138119992509019,
+        "warm_seconds_median": 0.00010625800132402219
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07070386999839684,
+        "lower_seconds": 0.04906706100155134,
+        "compile_seconds": 0.06965668199700303,
+        "first_execution_seconds": 0.00037376899854280055,
+        "warm_seconds_median": 7.161400208133273e-05
+      },
+      "forward_coefficient_relative_max": 1.8313726568789625e-16,
+      "inverse_spatial_relative_max": 1.5445089156911306e-16,
+      "round_trip_relative_max": 6.178035662764522e-16,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            15,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 4992,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3840,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 1.5445089156911306e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.3262243060016772,
+      "stderr_tail": "WARNING:2026-09-20 00:26:19,819:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        9,
+        16
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14200779300153954,
+      "precompute_inverse_seconds": 0.12163685000268742,
+      "precompute_total_seconds": 0.26364464300422696,
+      "forward_timing": {
+        "trace_seconds": 0.1781960619991878,
+        "lower_seconds": 0.08818403699842747,
+        "compile_seconds": 0.1397452009987319,
+        "first_execution_seconds": 0.0010846879995369818,
+        "warm_seconds_median": 0.0002051129995379597
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.09393143399938708,
+        "lower_seconds": 0.07132961000024807,
+        "compile_seconds": 0.11821621499984758,
+        "first_execution_seconds": 0.000961097000981681,
+        "warm_seconds_median": 0.00017468700025347061
+      },
+      "forward_coefficient_relative_max": 1.1822950964009714e-16,
+      "inverse_spatial_relative_max": 2.0902613561509314e-16,
+      "round_trip_relative_max": 4.1185856184687786e-16,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            15,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 4992,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3840,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.1336033823761667e-16,
+      "interior_relative_max": 2.0902613561509314e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5137204769998789,
+      "stderr_tail": "WARNING:2026-09-20 00:26:21,113:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 8,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        9,
+        16
+      ],
+      "coefficient_shape": [
+        8,
+        15
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14293250199989416,
+      "precompute_inverse_seconds": 0.11268572200060589,
+      "precompute_total_seconds": 0.25561822400050005,
+      "forward_timing": {
+        "trace_seconds": 0.17111382900111494,
+        "lower_seconds": 0.09307806799915852,
+        "compile_seconds": 0.13933276999887312,
+        "first_execution_seconds": 0.0011174899991601706,
+        "warm_seconds_median": 0.0002590550029708538
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.09005171899843845,
+        "lower_seconds": 0.07216383999912068,
+        "compile_seconds": 0.114224449996982,
+        "first_execution_seconds": 0.0011430070007918403,
+        "warm_seconds_median": 0.0002200519993493799
+      },
+      "forward_coefficient_relative_max": 1.1822950964009714e-16,
+      "inverse_spatial_relative_max": 2.267206764752334e-16,
+      "round_trip_relative_max": 3.083734594798436e-16,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            15,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 4992,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            9,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            8
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 3840,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.133603382376167e-16,
+      "interior_relative_max": 2.267206764752334e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5022328569975798,
+      "stderr_tail": "WARNING:2026-09-20 00:26:22,633:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15530045800187509,
+      "precompute_inverse_seconds": 0.11001355599728413,
+      "precompute_total_seconds": 0.2653140139991592,
+      "forward_timing": {
+        "trace_seconds": 0.12284165299934102,
+        "lower_seconds": 0.07371437999972841,
+        "compile_seconds": 0.12126185899978736,
+        "first_execution_seconds": 0.0008062669985520188,
+        "warm_seconds_median": 0.0002677610027603805
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.0628106910007773,
+        "lower_seconds": 0.06633548099853215,
+        "compile_seconds": 0.10271146200102521,
+        "first_execution_seconds": 0.0006618679981329478,
+        "warm_seconds_median": 0.00028543399821501225
+      },
+      "forward_coefficient_relative_max": 5.577902622279647e-16,
+      "inverse_spatial_relative_max": 3.0840776604199574e-16,
+      "round_trip_relative_max": 2.0046504792729722e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3241524309996748,
+      "stderr_tail": "WARNING:2026-09-20 00:26:24,147:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.1598679290000291,
+      "precompute_inverse_seconds": 0.11616031000085059,
+      "precompute_total_seconds": 0.2760282390008797,
+      "forward_timing": {
+        "trace_seconds": 0.10380994500155794,
+        "lower_seconds": 0.05381463900266681,
+        "compile_seconds": 0.10494785300033982,
+        "first_execution_seconds": 0.0012656559993047267,
+        "warm_seconds_median": 0.00036404100319487043
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.04747443300220766,
+        "lower_seconds": 0.042730091998237185,
+        "compile_seconds": 0.06366594000064651,
+        "first_execution_seconds": 0.0003604640005505644,
+        "warm_seconds_median": 0.00010821300020324998
+      },
+      "forward_coefficient_relative_max": 5.577902622279647e-16,
+      "inverse_spatial_relative_max": 3.0840776604199574e-16,
+      "round_trip_relative_max": 2.0817524207834713e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.1354677669987723,
+      "stderr_tail": "WARNING:2026-09-20 00:26:25,460:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15344032999928459,
+      "precompute_inverse_seconds": 0.112347240003146,
+      "precompute_total_seconds": 0.2657875700024306,
+      "forward_timing": {
+        "trace_seconds": 0.11828056500235107,
+        "lower_seconds": 0.08375655800045934,
+        "compile_seconds": 0.11911955300092814,
+        "first_execution_seconds": 0.00043811900104628876,
+        "warm_seconds_median": 0.00012993300333619118
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06183608900028048,
+        "lower_seconds": 0.07658152099975268,
+        "compile_seconds": 0.1005304630016326,
+        "first_execution_seconds": 0.00044116400022176094,
+        "warm_seconds_median": 0.0001666410025791265
+      },
+      "forward_coefficient_relative_max": 7.136967246947888e-16,
+      "inverse_spatial_relative_max": 2.0979809876857112e-16,
+      "round_trip_relative_max": 2.561265300659218e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3236009909996937,
+      "stderr_tail": "WARNING:2026-09-20 00:26:26,597:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        16,
+        31
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15391514799921424,
+      "precompute_inverse_seconds": 0.108649895999406,
+      "precompute_total_seconds": 0.26256504399862024,
+      "forward_timing": {
+        "trace_seconds": 0.1241938620005385,
+        "lower_seconds": 0.07259057799819857,
+        "compile_seconds": 0.13152037199688493,
+        "first_execution_seconds": 0.0011094540022895671,
+        "warm_seconds_median": 0.00044269800127949566
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06402511199848959,
+        "lower_seconds": 0.06634202400164213,
+        "compile_seconds": 0.1037788969988469,
+        "first_execution_seconds": 0.0015510400007769931,
+        "warm_seconds_median": 0.0007258379991981201
+      },
+      "forward_coefficient_relative_max": 7.136967246947888e-16,
+      "inverse_spatial_relative_max": 2.0979809876857112e-16,
+      "round_trip_relative_max": 2.561265300659218e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            16,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            16,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14464,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3530997099987871,
+      "stderr_tail": "WARNING:2026-09-20 00:26:27,947:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14743361799992272,
+      "precompute_inverse_seconds": 0.11715372799881152,
+      "precompute_total_seconds": 0.26458734599873424,
+      "forward_timing": {
+        "trace_seconds": 0.2068923309998354,
+        "lower_seconds": 0.10009334600181319,
+        "compile_seconds": 0.1417606299983163,
+        "first_execution_seconds": 0.0007229219991131686,
+        "warm_seconds_median": 0.0003036880007130094
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.0838354250008706,
+        "lower_seconds": 0.07391199899939238,
+        "compile_seconds": 0.11163751300045988,
+        "first_execution_seconds": 0.0006397560027835425,
+        "warm_seconds_median": 0.0002523119983379729
+      },
+      "forward_coefficient_relative_max": 2.1905143306003286e-16,
+      "inverse_spatial_relative_max": 3.08999434056885e-16,
+      "round_trip_relative_max": 1.6989598072602434e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 2.1434366999239095e-33,
+      "south_pole_relative_max": 7.722544578455652e-17,
+      "interior_relative_max": 3.08999434056885e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5538420709999627,
+      "stderr_tail": "WARNING:2026-09-20 00:26:29,305:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.1481217549990106,
+      "precompute_inverse_seconds": 0.11732389499957208,
+      "precompute_total_seconds": 0.26544564999858267,
+      "forward_timing": {
+        "trace_seconds": 0.2018959979977808,
+        "lower_seconds": 0.08082699000078719,
+        "compile_seconds": 0.1137522569988505,
+        "first_execution_seconds": 0.0005225870008871425,
+        "warm_seconds_median": 0.00015060100122354925
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06283036699824152,
+        "lower_seconds": 0.048791446002724115,
+        "compile_seconds": 0.07428047800203785,
+        "first_execution_seconds": 0.0003399260021978989,
+        "warm_seconds_median": 0.00011059600001317449
+      },
+      "forward_coefficient_relative_max": 2.1905143306003286e-16,
+      "inverse_spatial_relative_max": 3.0890178313822607e-16,
+      "round_trip_relative_max": 1.6989598072602434e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 7.722544578455652e-17,
+      "interior_relative_max": 3.0890178313822607e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.34959612899911,
+      "stderr_tail": "WARNING:2026-09-20 00:26:30,835:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14934766800070065,
+      "precompute_inverse_seconds": 0.11575511199771427,
+      "precompute_total_seconds": 0.2651027799984149,
+      "forward_timing": {
+        "trace_seconds": 0.20259927299775882,
+        "lower_seconds": 0.10238963000301737,
+        "compile_seconds": 0.15798578999965684,
+        "first_execution_seconds": 0.0010594410014164168,
+        "warm_seconds_median": 0.00044241800060262904
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08430513299754239,
+        "lower_seconds": 0.07231246800074587,
+        "compile_seconds": 0.10843594500329345,
+        "first_execution_seconds": 0.0006685209991701413,
+        "warm_seconds_median": 0.0002737020004133228
+      },
+      "forward_coefficient_relative_max": 3.691715255270154e-16,
+      "inverse_spatial_relative_max": 3.9761118682116576e-16,
+      "round_trip_relative_max": 8.98098567429417e-16,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 1.0846906060581764e-32,
+      "south_pole_relative_max": 2.1693812121163528e-32,
+      "interior_relative_max": 3.9761118682116576e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5744144510026672,
+      "stderr_tail": "WARNING:2026-09-20 00:26:32,220:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        17,
+        32
+      ],
+      "coefficient_shape": [
+        16,
+        31
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14541878099771566,
+      "precompute_inverse_seconds": 0.11925381400214974,
+      "precompute_total_seconds": 0.2646725949998654,
+      "forward_timing": {
+        "trace_seconds": 0.22388503500042134,
+        "lower_seconds": 0.10010882499773288,
+        "compile_seconds": 0.14690067099945736,
+        "first_execution_seconds": 0.0010127440000360366,
+        "warm_seconds_median": 0.0004510830003709998
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08791344000201207,
+        "lower_seconds": 0.07153502399887657,
+        "compile_seconds": 0.10810016799950972,
+        "first_execution_seconds": 0.0005659990019921679,
+        "warm_seconds_median": 0.00024587000007159077
+      },
+      "forward_coefficient_relative_max": 3.4521087362982935e-16,
+      "inverse_spatial_relative_max": 3.9156351595676034e-16,
+      "round_trip_relative_max": 9.879325792984465e-16,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            31,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 20224,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            17,
+            16
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ],
+          [
+            17,
+            16
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 14848,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.0923219370812572e-16,
+      "interior_relative_max": 3.9156351595676034e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.5548140389983018,
+      "stderr_tail": "WARNING:2026-09-20 00:26:33,767:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        32,
+        63
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.16732956200212357,
+      "precompute_inverse_seconds": 0.11106310799732455,
+      "precompute_total_seconds": 0.2783926699994481,
+      "forward_timing": {
+        "trace_seconds": 0.11954887600222719,
+        "lower_seconds": 0.08138328999848454,
+        "compile_seconds": 0.14538463699864224,
+        "first_execution_seconds": 0.0020811409995076247,
+        "warm_seconds_median": 0.0012750739988405257
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06017155599693069,
+        "lower_seconds": 0.07088917600049172,
+        "compile_seconds": 0.09898899100153358,
+        "first_execution_seconds": 0.0013863619969924912,
+        "warm_seconds_median": 0.0012378250030451454
+      },
+      "forward_coefficient_relative_max": 1.790124366082682e-15,
+      "inverse_spatial_relative_max": 3.8594752206279094e-16,
+      "round_trip_relative_max": 1.3572142128797576e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3877232539998658,
+      "stderr_tail": "WARNING:2026-09-20 00:26:35,338:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        32,
+        63
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.15856524300033925,
+      "precompute_inverse_seconds": 0.11063157100215903,
+      "precompute_total_seconds": 0.2691968140024983,
+      "forward_timing": {
+        "trace_seconds": 0.10191417099849787,
+        "lower_seconds": 0.05801006399997277,
+        "compile_seconds": 0.11050741000144626,
+        "first_execution_seconds": 0.0016833270019560587,
+        "warm_seconds_median": 0.0010108000024047215
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.043753925998316845,
+        "lower_seconds": 0.04305402700265404,
+        "compile_seconds": 0.06369402199925389,
+        "first_execution_seconds": 0.0008207650025724433,
+        "warm_seconds_median": 0.0004921199979435187
+      },
+      "forward_coefficient_relative_max": 1.805199097586536e-15,
+      "inverse_spatial_relative_max": 3.0845750894614395e-16,
+      "round_trip_relative_max": 1.326367288468419e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.151461613997526,
+      "stderr_tail": "WARNING:2026-09-20 00:26:36,722:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        32,
+        63
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15684315299949958,
+      "precompute_inverse_seconds": 0.11134454499915591,
+      "precompute_total_seconds": 0.2681876979986555,
+      "forward_timing": {
+        "trace_seconds": 0.11866583500159322,
+        "lower_seconds": 0.07661953199931304,
+        "compile_seconds": 0.13754840399997192,
+        "first_execution_seconds": 0.00176334700154257,
+        "warm_seconds_median": 0.001195215001644101
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.05756240600021556,
+        "lower_seconds": 0.06648832700011553,
+        "compile_seconds": 0.12210716000117827,
+        "first_execution_seconds": 0.0025926169982994907,
+        "warm_seconds_median": 0.00148756099952152
+      },
+      "forward_coefficient_relative_max": 1.2175831598871262e-15,
+      "inverse_spatial_relative_max": 4.101804147177361e-16,
+      "round_trip_relative_max": 9.131611561893946e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3892538849977427,
+      "stderr_tail": "WARNING:2026-09-20 00:26:37,890:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        32,
+        63
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15720946799774538,
+      "precompute_inverse_seconds": 0.10993194399998174,
+      "precompute_total_seconds": 0.2671414119977271,
+      "forward_timing": {
+        "trace_seconds": 0.11296748000313528,
+        "lower_seconds": 0.07716203699965263,
+        "compile_seconds": 0.13422390699997777,
+        "first_execution_seconds": 0.0012095620004402008,
+        "warm_seconds_median": 0.0008327470022777561
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.059738797001045896,
+        "lower_seconds": 0.06932023300032597,
+        "compile_seconds": 0.10188029799974174,
+        "first_execution_seconds": 0.0012098120023438241,
+        "warm_seconds_median": 0.0008538660003978293
+      },
+      "forward_coefficient_relative_max": 1.2079707647062602e-15,
+      "inverse_spatial_relative_max": 3.947484089631477e-16,
+      "round_trip_relative_max": 9.318921544318843e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            32,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 57600,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3382079939983669,
+      "stderr_tail": "WARNING:2026-09-20 00:26:39,273:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        33,
+        64
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14683324599900516,
+      "precompute_inverse_seconds": 0.11933028700150317,
+      "precompute_total_seconds": 0.2661635330005083,
+      "forward_timing": {
+        "trace_seconds": 0.31413760999930673,
+        "lower_seconds": 0.12945322599989595,
+        "compile_seconds": 0.1816750559992215,
+        "first_execution_seconds": 0.005885064998437883,
+        "warm_seconds_median": 0.003033691999007715
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08481212200058508,
+        "lower_seconds": 0.07991172800029744,
+        "compile_seconds": 0.11221503200067673,
+        "first_execution_seconds": 0.002364361000218196,
+        "warm_seconds_median": 0.0017414559988537803
+      },
+      "forward_coefficient_relative_max": 4.246049373585589e-16,
+      "inverse_spatial_relative_max": 3.0866153548426706e-16,
+      "round_trip_relative_max": 4.624576295838809e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            63,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 81408,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 58368,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 3.0866153548426706e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.7922925540005963,
+      "stderr_tail": "WARNING:2026-09-20 00:26:40,650:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        33,
+        64
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.14688505199956126,
+      "precompute_inverse_seconds": 0.11549426499914262,
+      "precompute_total_seconds": 0.26237931699870387,
+      "forward_timing": {
+        "trace_seconds": 0.27384800299842027,
+        "lower_seconds": 0.10207603299932089,
+        "compile_seconds": 0.15702544400119223,
+        "first_execution_seconds": 0.002758427999651758,
+        "warm_seconds_median": 0.0017756000015651807
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.06328065899651847,
+        "lower_seconds": 0.04853720000028261,
+        "compile_seconds": 0.07409209600155009,
+        "first_execution_seconds": 0.000740444000257412,
+        "warm_seconds_median": 0.0005002950019843411
+      },
+      "forward_coefficient_relative_max": 4.246049373585589e-16,
+      "inverse_spatial_relative_max": 3.083050863892539e-16,
+      "round_trip_relative_max": 4.624576295838809e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            63,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 81408,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 58368,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 3.083050863892539e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.497286197001813,
+      "stderr_tail": "WARNING:2026-09-20 00:26:42,407:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        33,
+        64
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14505679400099325,
+      "precompute_inverse_seconds": 0.11277011999845854,
+      "precompute_total_seconds": 0.2578269139994518,
+      "forward_timing": {
+        "trace_seconds": 0.2851092900018557,
+        "lower_seconds": 0.12132770199968945,
+        "compile_seconds": 0.18638963299963507,
+        "first_execution_seconds": 0.0028946919992449693,
+        "warm_seconds_median": 0.002004828998906305
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.07896490799976164,
+        "lower_seconds": 0.07426004900116823,
+        "compile_seconds": 0.11885491799694137,
+        "first_execution_seconds": 0.00430554100239533,
+        "warm_seconds_median": 0.002097601998684695
+      },
+      "forward_coefficient_relative_max": 6.482673818691713e-16,
+      "inverse_spatial_relative_max": 3.976111868211667e-16,
+      "round_trip_relative_max": 2.1135794402087693e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            63,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 81408,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 58368,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 3.976111868211667e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.7113957430010487,
+      "stderr_tail": "WARNING:2026-09-20 00:26:43,909:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        33,
+        64
+      ],
+      "coefficient_shape": [
+        32,
+        63
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14572297000268009,
+      "precompute_inverse_seconds": 0.11384433900093427,
+      "precompute_total_seconds": 0.25956730900361435,
+      "forward_timing": {
+        "trace_seconds": 0.2804581529999268,
+        "lower_seconds": 0.12182898000173736,
+        "compile_seconds": 0.1845624460002,
+        "first_execution_seconds": 0.003707171999849379,
+        "warm_seconds_median": 0.00255896499947994
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08020903400029056,
+        "lower_seconds": 0.07353757899909397,
+        "compile_seconds": 0.10900303599919425,
+        "first_execution_seconds": 0.0013894080002501141,
+        "warm_seconds_median": 0.0010582489994703792
+      },
+      "forward_coefficient_relative_max": 6.429318478620171e-16,
+      "inverse_spatial_relative_max": 3.5563425693859895e-16,
+      "round_trip_relative_max": 1.961470795673815e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            63,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 81408,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            33,
+            32
+          ],
+          [
+            63,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ],
+          [
+            33,
+            32
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 58368,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 1.221253052313973e-16,
+      "interior_relative_max": 3.5563425693859895e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.6873391389999597,
+      "stderr_tail": "WARNING:2026-09-20 00:26:45,625:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.16190166199885425,
+      "precompute_inverse_seconds": 0.11281627700009267,
+      "precompute_total_seconds": 0.2747179389989469,
+      "forward_timing": {
+        "trace_seconds": 0.1250698689982528,
+        "lower_seconds": 0.08326310499978717,
+        "compile_seconds": 0.17980000999887125,
+        "first_execution_seconds": 0.006611251999856904,
+        "warm_seconds_median": 0.006005589999404037
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.05774453699996229,
+        "lower_seconds": 0.06724290800048038,
+        "compile_seconds": 0.10575190699819359,
+        "first_execution_seconds": 0.013790177003102144,
+        "warm_seconds_median": 0.005897838000237243
+      },
+      "forward_coefficient_relative_max": 2.2886739103030838e-15,
+      "inverse_spatial_relative_max": 1.1123145677468757e-15,
+      "round_trip_relative_max": 7.322505183653838e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.5598799520012108,
+      "stderr_tail": "WARNING:2026-09-20 00:26:47,368:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.15698829499888234,
+      "precompute_inverse_seconds": 0.11330351799915661,
+      "precompute_total_seconds": 0.27029181299803895,
+      "forward_timing": {
+        "trace_seconds": 0.11506325799928163,
+        "lower_seconds": 0.06403396799942129,
+        "compile_seconds": 0.15267832499739598,
+        "first_execution_seconds": 0.00367907899999409,
+        "warm_seconds_median": 0.0035968760021205526
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.038351193001290085,
+        "lower_seconds": 0.04336258400144288,
+        "compile_seconds": 0.06447370000023511,
+        "first_execution_seconds": 0.0034311260023969226,
+        "warm_seconds_median": 0.0030759920009586494
+      },
+      "forward_coefficient_relative_max": 2.282617214543102e-15,
+      "inverse_spatial_relative_max": 1.0791036357020283e-15,
+      "round_trip_relative_max": 7.322488956549478e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.3004830919999222,
+      "stderr_tail": "WARNING:2026-09-20 00:26:48,911:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.159043608000502,
+      "precompute_inverse_seconds": 0.11202364500059048,
+      "precompute_total_seconds": 0.27106725300109247,
+      "forward_timing": {
+        "trace_seconds": 0.13651259700054652,
+        "lower_seconds": 0.0848171010002261,
+        "compile_seconds": 0.18014826199942036,
+        "first_execution_seconds": 0.0066565369997988455,
+        "warm_seconds_median": 0.005913418001000537
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.05885474299793714,
+        "lower_seconds": 0.0673804449979798,
+        "compile_seconds": 0.1043748920019425,
+        "first_execution_seconds": 0.011337359999743057,
+        "warm_seconds_median": 0.006021619999955874
+      },
+      "forward_coefficient_relative_max": 2.1365480911084524e-15,
+      "inverse_spatial_relative_max": 8.430431137882052e-16,
+      "round_trip_relative_max": 5.260769285265231e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.5942096860017045,
+      "stderr_tail": "WARNING:2026-09-20 00:26:50,268:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        64,
+        127
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15851958799976273,
+      "precompute_inverse_seconds": 0.114517848000105,
+      "precompute_total_seconds": 0.27303743599986774,
+      "forward_timing": {
+        "trace_seconds": 0.14175022099880152,
+        "lower_seconds": 0.08288295400052448,
+        "compile_seconds": 0.18415168800129322,
+        "first_execution_seconds": 0.006502248998003779,
+        "warm_seconds_median": 0.005882620000193128
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.05621140000221203,
+        "lower_seconds": 0.06668417300170404,
+        "compile_seconds": 0.1056894100001955,
+        "first_execution_seconds": 0.013604839998151874,
+        "warm_seconds_median": 0.006691672999295406
+      },
+      "forward_coefficient_relative_max": 2.1300666503043367e-15,
+      "inverse_spatial_relative_max": 8.316501155817691e-16,
+      "round_trip_relative_max": 5.272751292956154e-14,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            64,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 229888,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "status": "complete",
+      "worker_wall_seconds": 1.5787353199993959,
+      "stderr_tail": "WARNING:2026-09-20 00:26:51,831:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.15127200499773608,
+      "precompute_inverse_seconds": 0.1206776870021713,
+      "precompute_total_seconds": 0.2719496919999074,
+      "forward_timing": {
+        "trace_seconds": 0.45508830600010697,
+        "lower_seconds": 0.16373592200034182,
+        "compile_seconds": 0.25859342699914123,
+        "first_execution_seconds": 0.021496625999134267,
+        "warm_seconds_median": 0.012746454998705303
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10407452999788802,
+        "lower_seconds": 0.0738769739982672,
+        "compile_seconds": 0.11787474599987036,
+        "first_execution_seconds": 0.01615473799756728,
+        "warm_seconds_median": 0.006135592997452477
+      },
+      "forward_coefficient_relative_max": 4.506959714138507e-16,
+      "inverse_spatial_relative_max": 4.630421994855222e-16,
+      "round_trip_relative_max": 3.3142798430588696e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 3.0830508638924985e-16,
+      "interior_relative_max": 4.630421994855222e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.2655561969986593,
+      "stderr_tail": "WARNING:2026-09-20 00:26:53,463:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "path": "precomps",
+      "reality": true,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "float64",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "float64",
+      "precompute_forward_seconds": 0.14903907000189065,
+      "precompute_inverse_seconds": 0.11522187499940628,
+      "precompute_total_seconds": 0.26426094500129693,
+      "forward_timing": {
+        "trace_seconds": 0.43084636599814985,
+        "lower_seconds": 0.1430639379977947,
+        "compile_seconds": 0.23538338700018357,
+        "first_execution_seconds": 0.016978568000922678,
+        "warm_seconds_median": 0.0068058959986956324
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.08553907099849312,
+        "lower_seconds": 0.04972866800017073,
+        "compile_seconds": 0.08019978699667263,
+        "first_execution_seconds": 0.009963721000531223,
+        "warm_seconds_median": 0.004576838000502903
+      },
+      "forward_coefficient_relative_max": 4.506959714138507e-16,
+      "inverse_spatial_relative_max": 4.624576295838748e-16,
+      "round_trip_relative_max": 3.314279678684436e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 3.0830508638924985e-16,
+      "interior_relative_max": 4.624576295838748e-16,
+      "status": "complete",
+      "worker_wall_seconds": 1.969163566998759,
+      "stderr_tail": "WARNING:2026-09-20 00:26:55,685:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14495830699888756,
+      "precompute_inverse_seconds": 0.11946926400196389,
+      "precompute_total_seconds": 0.26442757100085146,
+      "forward_timing": {
+        "trace_seconds": 0.4411319809987617,
+        "lower_seconds": 0.1617761839988816,
+        "compile_seconds": 0.2628025449994311,
+        "first_execution_seconds": 0.0235649040005228,
+        "warm_seconds_median": 0.013031378999585286
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10262665999835008,
+        "lower_seconds": 0.07330803700097022,
+        "compile_seconds": 0.11099408500012942,
+        "first_execution_seconds": 0.01179347300057998,
+        "warm_seconds_median": 0.0064846450004552025
+      },
+      "forward_coefficient_relative_max": 4.725808174251495e-16,
+      "inverse_spatial_relative_max": 5.942596548239877e-16,
+      "round_trip_relative_max": 7.925402539542975e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 0.0,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 5.942596548239877e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.197217258002638,
+      "stderr_tail": "WARNING:2026-09-20 00:26:57,676:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "path": "precomps",
+      "reality": false,
+      "field_shape": [
+        65,
+        128
+      ],
+      "coefficient_shape": [
+        64,
+        127
+      ],
+      "field_dtype": "complex128",
+      "coefficient_dtype": "complex128",
+      "forward_output_dtype": "complex128",
+      "inverse_output_dtype": "complex128",
+      "precompute_forward_seconds": 0.14910039399910602,
+      "precompute_inverse_seconds": 0.11858799000037834,
+      "precompute_total_seconds": 0.26768838399948436,
+      "forward_timing": {
+        "trace_seconds": 0.4499769380017824,
+        "lower_seconds": 0.16588821400000597,
+        "compile_seconds": 0.2573963309987448,
+        "first_execution_seconds": 0.022871338998811552,
+        "warm_seconds_median": 0.012660881999181584
+      },
+      "inverse_timing": {
+        "trace_seconds": 0.10442540800067945,
+        "lower_seconds": 0.07449355399876367,
+        "compile_seconds": 0.1209540529998776,
+        "first_execution_seconds": 0.018020937000983395,
+        "warm_seconds_median": 0.007000000998232281
+      },
+      "forward_coefficient_relative_max": 4.815778470154082e-16,
+      "inverse_spatial_relative_max": 4.890886441340477e-16,
+      "round_trip_relative_max": 8.304133263207056e-15,
+      "forward_precomps": {
+        "shapes": [
+          [
+            2,
+            127,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 326656,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "inverse_precomps": {
+        "shapes": [
+          [
+            2,
+            65,
+            64
+          ],
+          [
+            127,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ],
+          [
+            65,
+            64
+          ]
+        ],
+        "dtypes": [
+          "float64",
+          "float64",
+          "float64",
+          "float64",
+          "int64"
+        ],
+        "nbytes": 231424,
+        "devices": [
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0",
+          "TFRT_CPU_0"
+        ]
+      },
+      "north_pole_relative_max": 2.16927998785132e-32,
+      "south_pole_relative_max": 0.0,
+      "interior_relative_max": 4.890886441340477e-16,
+      "status": "complete",
+      "worker_wall_seconds": 2.276113437001186,
+      "stderr_tail": "WARNING:2026-09-20 00:26:59,917:jax._src.xla_bridge:987: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.\n"
+    }
+  ]
+}

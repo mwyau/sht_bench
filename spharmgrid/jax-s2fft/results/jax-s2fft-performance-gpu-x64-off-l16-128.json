@@ -1,0 +1,1482 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.10.2",
+      "jaxlib": "0.10.2",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6"
+    },
+    "jax_enable_x64": false,
+    "backend": "gpu",
+    "devices": [
+      {
+        "platform": "gpu",
+        "device_kind": "NVIDIA GeForce RTX 5070",
+        "id": 0,
+        "type": "Device",
+        "repr": "CudaDevice(id=0)"
+      }
+    ],
+    "timing": "median of warmed compiled calls; each call blocks until ready",
+    "memory": "Linux process peak RSS from resource.getrusage; cumulative within each worker process; JAX device memory_stats when available",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 20.0,
+    "reference": "s2fft.forward_numpy/inverse_numpy float64",
+    "error": "maximum absolute error divided by maximum absolute reference value",
+    "primary_device": "cuda:0",
+    "transform_path": "historical ordinary S2FFT JAX with precomps=None; not the production path"
+  },
+  "results": [
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.14812014400013,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.13518379800007,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.126924724001583,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.6481006579997484,
+      "compile_inverse_seconds": 0.48824863499976345,
+      "warm_forward_seconds_median": 0.0008076409976638388,
+      "warm_inverse_seconds_median": 0.0006277399988903198,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 956915712,
+      "peak_rss_bytes_after_forward_compile": 1062154240,
+      "peak_rss_bytes_after_inverse_compile": 1099673600,
+      "peak_rss_bytes_after_warm": 1099935744,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 6400,
+          "peak_bytes_in_use": 10496,
+          "largest_alloc_size": 4096,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 14,
+          "bytes_in_use": 6400,
+          "peak_bytes_in_use": 77312,
+          "largest_alloc_size": 66816,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 34,
+          "bytes_in_use": 6400,
+          "peak_bytes_in_use": 77312,
+          "largest_alloc_size": 66816,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 69,
+          "bytes_in_use": 6400,
+          "peak_bytes_in_use": 81408,
+          "largest_alloc_size": 66816,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 2176,
+      "coefficient_nbytes": 3968,
+      "forward_coefficient_relative_max": 0.04675196064076838,
+      "inverse_spatial_relative_max": 0.08694813667418846,
+      "round_trip_relative_max": 0.09552956595102696,
+      "status": "complete",
+      "worker_wall_seconds": 2.4135679810024158,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.6286568069990608,
+      "compile_inverse_seconds": 0.47408900799928233,
+      "warm_forward_seconds_median": 0.0008048259987845086,
+      "warm_inverse_seconds_median": 0.0006159370022942312,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 960282624,
+      "peak_rss_bytes_after_forward_compile": 1069395968,
+      "peak_rss_bytes_after_inverse_compile": 1101901824,
+      "peak_rss_bytes_after_warm": 1102426112,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 12800,
+          "largest_alloc_size": 4352,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 79872,
+          "largest_alloc_size": 67072,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 79872,
+          "largest_alloc_size": 67072,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 83968,
+          "largest_alloc_size": 67072,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 3968,
+      "forward_coefficient_relative_max": 7.227537462494444e-07,
+      "inverse_spatial_relative_max": 5.207086458874792e-07,
+      "round_trip_relative_max": 1.852149760631074e-06,
+      "status": "complete",
+      "worker_wall_seconds": 2.2437462620000588,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 16,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.6416969510028139,
+      "compile_inverse_seconds": 0.5058682389972091,
+      "warm_forward_seconds_median": 0.0008151549991453066,
+      "warm_inverse_seconds_median": 0.0006256260021473281,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 960262144,
+      "peak_rss_bytes_after_forward_compile": 1067159552,
+      "peak_rss_bytes_after_inverse_compile": 1104121856,
+      "peak_rss_bytes_after_warm": 1104646144,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 12800,
+          "largest_alloc_size": 4352,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 79872,
+          "largest_alloc_size": 67072,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 79872,
+          "largest_alloc_size": 67072,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 8448,
+          "peak_bytes_in_use": 83968,
+          "largest_alloc_size": 67072,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 4352,
+      "coefficient_nbytes": 3968,
+      "forward_coefficient_relative_max": 7.241840747582979e-07,
+      "inverse_spatial_relative_max": 5.103370590288924e-07,
+      "round_trip_relative_max": 1.848132888254459e-06,
+      "status": "complete",
+      "worker_wall_seconds": 2.3210674980000476,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.6806821379977919,
+      "compile_inverse_seconds": 0.44429279700125335,
+      "warm_forward_seconds_median": 0.0012782529993273783,
+      "warm_inverse_seconds_median": 0.001220923997607315,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 942514176,
+      "peak_rss_bytes_after_forward_compile": 1060503552,
+      "peak_rss_bytes_after_inverse_compile": 1096155136,
+      "peak_rss_bytes_after_warm": 1096679424,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 4,
+          "bytes_in_use": 24320,
+          "peak_bytes_in_use": 40448,
+          "largest_alloc_size": 16128,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 14,
+          "bytes_in_use": 24320,
+          "peak_bytes_in_use": 33579776,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 34,
+          "bytes_in_use": 24320,
+          "peak_bytes_in_use": 33579776,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 69,
+          "bytes_in_use": 24320,
+          "peak_bytes_in_use": 33579776,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 8064,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 2.7521599737994022e-06,
+      "inverse_spatial_relative_max": 3.4694846208603795e-07,
+      "round_trip_relative_max": 2.2875582384002e-05,
+      "status": "complete",
+      "worker_wall_seconds": 2.2122457300029055,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.7000994600020931,
+      "compile_inverse_seconds": 0.4563690340000903,
+      "warm_forward_seconds_median": 0.001330581999354763,
+      "warm_inverse_seconds_median": 0.0011859780024678912,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 940179456,
+      "peak_rss_bytes_after_forward_compile": 1058701312,
+      "peak_rss_bytes_after_inverse_compile": 1092775936,
+      "peak_rss_bytes_after_warm": 1093562368,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 4,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 48384,
+          "largest_alloc_size": 16128,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 14,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 33587712,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 34,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 33587712,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 69,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 33587712,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 16128,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 4.935373744401947e-06,
+      "inverse_spatial_relative_max": 4.2643412057210596e-07,
+      "round_trip_relative_max": 3.0751632609401255e-05,
+      "status": "complete",
+      "worker_wall_seconds": 2.3161024969995196,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.7082091199990828,
+      "compile_inverse_seconds": 0.45287096399988513,
+      "warm_forward_seconds_median": 0.0013217550003901124,
+      "warm_inverse_seconds_median": 0.0012068069991073571,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 940781568,
+      "peak_rss_bytes_after_forward_compile": 1061363712,
+      "peak_rss_bytes_after_inverse_compile": 1097031680,
+      "peak_rss_bytes_after_warm": 1097555968,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 4,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 48384,
+          "largest_alloc_size": 16128,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 14,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 33587712,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 34,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 33587712,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 69,
+          "bytes_in_use": 32256,
+          "peak_bytes_in_use": 33587712,
+          "largest_alloc_size": 16777472,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 16128,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 4.91077063306607e-06,
+      "inverse_spatial_relative_max": 4.5087082396366375e-07,
+      "round_trip_relative_max": 3.080870242841342e-05,
+      "status": "complete",
+      "worker_wall_seconds": 2.2998752320017957,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.8101468890017713,
+      "compile_inverse_seconds": 0.48887982000087504,
+      "warm_forward_seconds_median": 0.0012393689976306632,
+      "warm_inverse_seconds_median": 0.0012169059991720133,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 959741952,
+      "peak_rss_bytes_after_forward_compile": 1073364992,
+      "peak_rss_bytes_after_inverse_compile": 1104297984,
+      "peak_rss_bytes_after_warm": 1105084416,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 24576,
+          "peak_bytes_in_use": 40704,
+          "largest_alloc_size": 16128,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 14,
+          "bytes_in_use": 24576,
+          "peak_bytes_in_use": 300800,
+          "largest_alloc_size": 260096,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 34,
+          "bytes_in_use": 24576,
+          "peak_bytes_in_use": 300800,
+          "largest_alloc_size": 260096,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 69,
+          "bytes_in_use": 24576,
+          "peak_bytes_in_use": 316928,
+          "largest_alloc_size": 260096,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 8448,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 0.023370439529269774,
+      "inverse_spatial_relative_max": 0.08678019220382238,
+      "round_trip_relative_max": 0.08678026797841397,
+      "status": "complete",
+      "worker_wall_seconds": 2.559021755998401,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.781299805999879,
+      "compile_inverse_seconds": 0.5014741409977432,
+      "warm_forward_seconds_median": 0.0012058549982612021,
+      "warm_inverse_seconds_median": 0.0011917289994016755,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 961667072,
+      "peak_rss_bytes_after_forward_compile": 1080791040,
+      "peak_rss_bytes_after_inverse_compile": 1111232512,
+      "peak_rss_bytes_after_warm": 1111494656,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 49920,
+          "largest_alloc_size": 16896,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 279808,
+          "largest_alloc_size": 229888,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 279808,
+          "largest_alloc_size": 229888,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 295936,
+          "largest_alloc_size": 229888,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 16896,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 2.34419932126442e-06,
+      "inverse_spatial_relative_max": 4.66935548018133e-07,
+      "round_trip_relative_max": 1.9685711092359894e-05,
+      "status": "complete",
+      "worker_wall_seconds": 2.474063727000612,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 32,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.719742558998405,
+      "compile_inverse_seconds": 0.45524218900027336,
+      "warm_forward_seconds_median": 0.0012061359993822407,
+      "warm_inverse_seconds_median": 0.0012081300010322593,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 961024000,
+      "peak_rss_bytes_after_forward_compile": 1077825536,
+      "peak_rss_bytes_after_inverse_compile": 1109549056,
+      "peak_rss_bytes_after_warm": 1109811200,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 49920,
+          "largest_alloc_size": 16896,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 279808,
+          "largest_alloc_size": 229888,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 279808,
+          "largest_alloc_size": 229888,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 33024,
+          "peak_bytes_in_use": 295936,
+          "largest_alloc_size": 229888,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 16896,
+      "coefficient_nbytes": 16128,
+      "forward_coefficient_relative_max": 2.355842769558333e-06,
+      "inverse_spatial_relative_max": 4.986023352777398e-07,
+      "round_trip_relative_max": 1.9662920525117316e-05,
+      "status": "complete",
+      "worker_wall_seconds": 2.3638383199977397,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.12617731100181,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.11494331600261,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.125869577997946,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.9051865410001483,
+      "compile_inverse_seconds": 0.4374749599992356,
+      "warm_forward_seconds_median": 0.0023599470005137846,
+      "warm_inverse_seconds_median": 0.0023674910007684957,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 962457600,
+      "peak_rss_bytes_after_forward_compile": 1092784128,
+      "peak_rss_bytes_after_inverse_compile": 1114296320,
+      "peak_rss_bytes_after_warm": 1115082752,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 98304,
+          "peak_bytes_in_use": 163328,
+          "largest_alloc_size": 65024,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 21,
+          "bytes_in_use": 98304,
+          "peak_bytes_in_use": 17007104,
+          "largest_alloc_size": 16810496,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 41,
+          "bytes_in_use": 98304,
+          "peak_bytes_in_use": 17007104,
+          "largest_alloc_size": 16810496,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 76,
+          "bytes_in_use": 98304,
+          "peak_bytes_in_use": 17007104,
+          "largest_alloc_size": 16810496,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 33280,
+      "coefficient_nbytes": 65024,
+      "forward_coefficient_relative_max": 0.011689510002609507,
+      "inverse_spatial_relative_max": 0.08678020452217598,
+      "round_trip_relative_max": 0.08678027008809162,
+      "status": "complete",
+      "worker_wall_seconds": 2.55184592599835,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.9505016280018026,
+      "compile_inverse_seconds": 0.4568933640002797,
+      "warm_forward_seconds_median": 0.002398939999693539,
+      "warm_inverse_seconds_median": 0.0024388949968852103,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 962965504,
+      "peak_rss_bytes_after_forward_compile": 1092431872,
+      "peak_rss_bytes_after_inverse_compile": 1114976256,
+      "peak_rss_bytes_after_warm": 1115500544,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 198144,
+          "largest_alloc_size": 66560,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 1089024,
+          "largest_alloc_size": 890880,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 1089024,
+          "largest_alloc_size": 890880,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 1154048,
+          "largest_alloc_size": 890880,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 65024,
+      "forward_coefficient_relative_max": 8.701501318131097e-06,
+      "inverse_spatial_relative_max": 4.6449629891360474e-07,
+      "round_trip_relative_max": 0.0003633217139892483,
+      "status": "complete",
+      "worker_wall_seconds": 2.624189715999819,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 64,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 0.9102714389991888,
+      "compile_inverse_seconds": 0.453626032001921,
+      "warm_forward_seconds_median": 0.0023938800004543737,
+      "warm_inverse_seconds_median": 0.0024355280002055224,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 961916928,
+      "peak_rss_bytes_after_forward_compile": 1089687552,
+      "peak_rss_bytes_after_inverse_compile": 1113018368,
+      "peak_rss_bytes_after_warm": 1113280512,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 198144,
+          "largest_alloc_size": 66560,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 1091840,
+          "largest_alloc_size": 893696,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 1091840,
+          "largest_alloc_size": 893696,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 131584,
+          "peak_bytes_in_use": 1156864,
+          "largest_alloc_size": 893696,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 66560,
+      "coefficient_nbytes": 65024,
+      "forward_coefficient_relative_max": 8.70414931196521e-06,
+      "inverse_spatial_relative_max": 5.396568104807549e-07,
+      "round_trip_relative_max": 0.0003634051721725445,
+      "status": "complete",
+      "worker_wall_seconds": 2.585187855998811,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.131305596998573,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.119700740000553,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "gl",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "status": "timeout",
+      "timeout_seconds": 20.0,
+      "worker_wall_seconds": 20.13634792599987,
+      "stdout_tail": "",
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 0,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "float32",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.4841071629998623,
+      "compile_inverse_seconds": 0.46047963599994546,
+      "warm_forward_seconds_median": 0.004664649000915233,
+      "warm_inverse_seconds_median": 0.004590459997416474,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 964124672,
+      "peak_rss_bytes_after_forward_compile": 1142177792,
+      "peak_rss_bytes_after_inverse_compile": 1157120000,
+      "peak_rss_bytes_after_warm": 1157120000,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 393216,
+          "peak_bytes_in_use": 654336,
+          "largest_alloc_size": 261120,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 21,
+          "bytes_in_use": 393216,
+          "peak_bytes_in_use": 17695744,
+          "largest_alloc_size": 16909312,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 41,
+          "bytes_in_use": 393216,
+          "peak_bytes_in_use": 17695744,
+          "largest_alloc_size": 16909312,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 76,
+          "bytes_in_use": 393216,
+          "peak_bytes_in_use": 17695744,
+          "largest_alloc_size": 16909312,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 132096,
+      "coefficient_nbytes": 261120,
+      "forward_coefficient_relative_max": 0.005850467874815361,
+      "inverse_spatial_relative_max": 0.08677562406377369,
+      "round_trip_relative_max": 0.08677566015447069,
+      "status": "complete",
+      "worker_wall_seconds": 3.599852544000896,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": 1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.4631768759973056,
+      "compile_inverse_seconds": 0.4578411060028884,
+      "warm_forward_seconds_median": 0.004575891998683801,
+      "warm_inverse_seconds_median": 0.0046260070012067445,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 964591616,
+      "peak_rss_bytes_after_forward_compile": 1138466816,
+      "peak_rss_bytes_after_inverse_compile": 1153146880,
+      "peak_rss_bytes_after_warm": 1153146880,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 789504,
+          "largest_alloc_size": 264192,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 4335360,
+          "largest_alloc_size": 3545856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 4335360,
+          "largest_alloc_size": 3545856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 4596480,
+          "largest_alloc_size": 3545856,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 261120,
+      "forward_coefficient_relative_max": 2.1022698248604918e-05,
+      "inverse_spatial_relative_max": 6.39982022827525e-07,
+      "round_trip_relative_max": 0.0003092536276099684,
+      "status": "complete",
+      "worker_wall_seconds": 3.6002690870009246,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    },
+    {
+      "bandlimit": 128,
+      "sampling": "mwss",
+      "spin": -1,
+      "requested_dtype": "float32",
+      "effective_input_dtype": "complex64",
+      "effective_coefficient_dtype": "complex64",
+      "jax_enable_x64": false,
+      "compile_forward_seconds": 1.4424931430003198,
+      "compile_inverse_seconds": 0.4579238410005928,
+      "warm_forward_seconds_median": 0.004590579999785405,
+      "warm_inverse_seconds_median": 0.004632217998732813,
+      "warm_repetitions": 7,
+      "peak_rss_bytes_before_case": 963551232,
+      "peak_rss_bytes_after_forward_compile": 1137442816,
+      "peak_rss_bytes_after_inverse_compile": 1152909312,
+      "peak_rss_bytes_after_warm": 1152909312,
+      "device_memory_before_case": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 6,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 789504,
+          "largest_alloc_size": 264192,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_forward_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 20,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 4340736,
+          "largest_alloc_size": 3551232,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_inverse_compile": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 40,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 4340736,
+          "largest_alloc_size": 3551232,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "device_memory_after_warm": [
+        {
+          "device": "cuda:0",
+          "available": true,
+          "num_allocs": 75,
+          "bytes_in_use": 525312,
+          "peak_bytes_in_use": 4601856,
+          "largest_alloc_size": 3551232,
+          "bytes_limit": 9326034944,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 9326034944,
+          "peak_pool_bytes": 9326034944
+        }
+      ],
+      "field_nbytes": 264192,
+      "coefficient_nbytes": 261120,
+      "forward_coefficient_relative_max": 2.1018035030657284e-05,
+      "inverse_spatial_relative_max": 6.571804022375038e-07,
+      "round_trip_relative_max": 0.0003091490421299471,
+      "status": "complete",
+      "worker_wall_seconds": 3.5284644109997316,
+      "stderr_tail": "JAX is not using 64-bit precision. This will dramatically affect numerical precision at even moderate L.\n"
+    }
+  ]
+}

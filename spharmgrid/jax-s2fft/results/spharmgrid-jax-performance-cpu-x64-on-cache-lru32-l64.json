@@ -1,0 +1,428 @@
+{
+  "metadata": {
+    "python": "3.11.15",
+    "platform": "Linux-7.0.14-17-pve-x86_64-with-glibc2.43",
+    "packages": {
+      "jax": "0.5.0",
+      "jaxlib": "0.5.0",
+      "s2fft": "1.4.0",
+      "numpy": "2.4.6",
+      "spharmgrid": "0.3.0.dev0"
+    },
+    "jax_enable_x64": true,
+    "backend": "cpu",
+    "devices": [
+      {
+        "platform": "cpu",
+        "device_kind": "cpu",
+        "id": 0,
+        "type": "Device",
+        "repr": "CpuDevice(id=0)"
+      }
+    ],
+    "primary_device": "TFRT_CPU_0",
+    "transform_path": "spharmgrid private adapter with S2FFT O(L^2) precomputes",
+    "direct_comparison": "operation-level timings are compared with direct S2FFT in the study method; the stored operation matrix records spharmgrid timing",
+    "memory": "Linux process peak RSS; JAX device memory_stats when available; array byte counts are explicit",
+    "case_execution": "one subprocess per case",
+    "case_timeout_seconds": 120.0
+  },
+  "results": [
+    {
+      "operation": "filter",
+      "bandlimit": 64,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 130048,
+      "output_nbytes": 130048,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 0.6974025659947074,
+      "precompute_nbytes": 459776,
+      "host_to_device_seconds": 0.00021210199338383973,
+      "device_to_host_seconds": 1.2693999451585114e-05,
+      "trace_seconds": 0.2439038590018754,
+      "lower_seconds": 0.11677968400181271,
+      "compile_seconds": 0.21581251099996734,
+      "first_execution_seconds": 0.007340352000028361,
+      "warm_seconds_median": 0.00656979699851945,
+      "warm_seconds_per_frame": 0.003284898499259725,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.014427185000386089,
+          "lower_seconds": 0.04683714600105304,
+          "compile_seconds": 0.14990651099651586,
+          "first_execution_seconds": 0.003700847999425605,
+          "warm_seconds_median": 0.0033175989956362173
+        },
+        "inverse": {
+          "trace_seconds": 0.008987599998363294,
+          "lower_seconds": 0.027288363002298865,
+          "compile_seconds": 0.06495848699705675,
+          "first_execution_seconds": 0.004456086004211102,
+          "warm_seconds_median": 0.0037102849964867346
+        },
+        "warm_seconds_total": 0.007027883992122952
+      },
+      "operation_to_direct_warm_ratio": 0.9348186461078558,
+      "peak_rss_bytes": 380178432,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.2345045859983657
+    },
+    {
+      "operation": "filter",
+      "bandlimit": 64,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 133120,
+      "output_nbytes": 133120,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 0.7941300759994192,
+      "precompute_nbytes": 558080,
+      "host_to_device_seconds": 0.0001767069989000447,
+      "device_to_host_seconds": 1.4416997146327049e-05,
+      "trace_seconds": 0.6152220520016272,
+      "lower_seconds": 0.20627271899866173,
+      "compile_seconds": 0.31700643499789294,
+      "first_execution_seconds": 0.011644225996860769,
+      "warm_seconds_median": 0.010911801000474952,
+      "warm_seconds_per_frame": 0.005455900500237476,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.02587196300009964,
+          "lower_seconds": 0.1167505209959927,
+          "compile_seconds": 0.2330508080049185,
+          "first_execution_seconds": 0.013912202994106337,
+          "warm_seconds_median": 0.007295620001968928
+        },
+        "inverse": {
+          "trace_seconds": 0.008806114004983101,
+          "lower_seconds": 0.03288872599659953,
+          "compile_seconds": 0.07869168800243642,
+          "first_execution_seconds": 0.006098594996728934,
+          "warm_seconds_median": 0.004923911001242232
+        },
+        "warm_seconds_total": 0.01221953100321116
+      },
+      "operation_to_direct_warm_ratio": 0.8929803441398405,
+      "peak_rss_bytes": 414961664,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.1917563160022837
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 64,
+      "grid": "gl_to_cc",
+      "source_grid": "gl",
+      "target_grid": "cc",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 130048,
+      "output_nbytes": 133120,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 0.7612182779994328,
+      "precompute_nbytes": 461312,
+      "host_to_device_seconds": 0.0001866450038505718,
+      "device_to_host_seconds": 1.2231997970957309e-05,
+      "trace_seconds": 0.2735206610013847,
+      "lower_seconds": 0.12651098999776877,
+      "compile_seconds": 0.24546736299816985,
+      "first_execution_seconds": 0.007757763996778522,
+      "warm_seconds_median": 0.006923961998836603,
+      "warm_seconds_per_frame": 0.0034619809994183015,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.014553859997249674,
+          "lower_seconds": 0.04859998699976131,
+          "compile_seconds": 0.14553086399973836,
+          "first_execution_seconds": 0.003714191996550653,
+          "warm_seconds_median": 0.0033234899965464137
+        },
+        "inverse": {
+          "trace_seconds": 0.008701441001903731,
+          "lower_seconds": 0.03299064499879023,
+          "compile_seconds": 0.08211838900024304,
+          "first_execution_seconds": 0.007105166994733736,
+          "warm_seconds_median": 0.004531074002443347
+        },
+        "warm_seconds_total": 0.007854563998989761
+      },
+      "operation_to_direct_warm_ratio": 0.8815208584113835,
+      "peak_rss_bytes": 395698176,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 2.413066839995736
+    },
+    {
+      "operation": "regrid",
+      "bandlimit": 64,
+      "grid": "cc_to_gl",
+      "source_grid": "cc",
+      "target_grid": "gl",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 133120,
+      "output_nbytes": 130048,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 0.8104900779944728,
+      "precompute_nbytes": 556544,
+      "host_to_device_seconds": 0.00018449200433678925,
+      "device_to_host_seconds": 3.2099000236485153e-05,
+      "trace_seconds": 0.5934017269973992,
+      "lower_seconds": 0.19561772299493896,
+      "compile_seconds": 0.31201409800269175,
+      "first_execution_seconds": 0.011574657997698523,
+      "warm_seconds_median": 0.01101081399974646,
+      "warm_seconds_per_frame": 0.00550540699987323,
+      "direct_transform_baseline": {
+        "forward": {
+          "trace_seconds": 0.02580338500411017,
+          "lower_seconds": 0.11559408999892185,
+          "compile_seconds": 0.24015488299482968,
+          "first_execution_seconds": 0.014766783999220934,
+          "warm_seconds_median": 0.007798910999554209
+        },
+        "inverse": {
+          "trace_seconds": 0.009811103998799808,
+          "lower_seconds": 0.026604398000927176,
+          "compile_seconds": 0.0662044920027256,
+          "first_execution_seconds": 0.00547527099843137,
+          "warm_seconds_median": 0.004940511003951542
+        },
+        "warm_seconds_total": 0.012739422003505751
+      },
+      "operation_to_direct_warm_ratio": 0.8643103271652672,
+      "peak_rss_bytes": 415596544,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.131905309994181
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 64,
+      "grid": "gl",
+      "source_grid": "gl",
+      "target_grid": "gl",
+      "source_shape": [
+        64,
+        127
+      ],
+      "target_shape": [
+        64,
+        127
+      ],
+      "batch_size": 2,
+      "input_nbytes": 260096,
+      "output_nbytes": 260096,
+      "output_shapes": [
+        [
+          2,
+          64,
+          127
+        ],
+        [
+          2,
+          64,
+          127
+        ]
+      ],
+      "precompute_setup_seconds": 0.6912118299951544,
+      "precompute_nbytes": 689664,
+      "host_to_device_seconds": 0.0002751689971773885,
+      "device_to_host_seconds": 2.0047002180945128e-05,
+      "trace_seconds": 0.2945989739964716,
+      "lower_seconds": 0.1474133170049754,
+      "compile_seconds": 0.3858318380007404,
+      "first_execution_seconds": 0.018985170005180407,
+      "warm_seconds_median": 0.01754506499855779,
+      "warm_seconds_per_frame": 0.008772532499278896,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.009877196003799327,
+          "lower_seconds": 0.05793079199793283,
+          "compile_seconds": 0.19495408500370104,
+          "first_execution_seconds": 0.0077033540001139045,
+          "warm_seconds_median": 0.007078257003740873
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.0010734969982877374,
+          "lower_seconds": 0.056391293997876346,
+          "compile_seconds": 0.192323867995583,
+          "first_execution_seconds": 0.007123321003746241,
+          "warm_seconds_median": 0.006567082004039548
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.03302457699464867,
+          "lower_seconds": 0.028582517996255774,
+          "compile_seconds": 0.07030273500276962,
+          "first_execution_seconds": 0.00409823300287826,
+          "warm_seconds_median": 0.0033486960019217804
+        },
+        "warm_seconds_total": 0.016994035009702202
+      },
+      "operation_to_direct_warm_ratio": 1.0324249060650397,
+      "peak_rss_bytes": 424636416,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 3.090375554995262
+    },
+    {
+      "operation": "kinematics",
+      "bandlimit": 64,
+      "grid": "cc",
+      "source_grid": "cc",
+      "target_grid": "cc",
+      "source_shape": [
+        65,
+        128
+      ],
+      "target_shape": [
+        65,
+        128
+      ],
+      "batch_size": 2,
+      "input_nbytes": 266240,
+      "output_nbytes": 266240,
+      "output_shapes": [
+        [
+          2,
+          65,
+          128
+        ],
+        [
+          2,
+          65,
+          128
+        ]
+      ],
+      "precompute_setup_seconds": 0.8963387990006595,
+      "precompute_nbytes": 884736,
+      "host_to_device_seconds": 0.0004886140013695695,
+      "device_to_host_seconds": 3.746899892576039e-05,
+      "trace_seconds": 0.8356044390020543,
+      "lower_seconds": 0.27333306500077015,
+      "compile_seconds": 0.8535188270034268,
+      "first_execution_seconds": 0.03500306799833197,
+      "warm_seconds_median": 0.0345469640014926,
+      "warm_seconds_per_frame": 0.0172734820007463,
+      "direct_transform_baseline": {
+        "spin_plus_forward": {
+          "trace_seconds": 0.021129437001945917,
+          "lower_seconds": 0.19569923399831168,
+          "compile_seconds": 0.2785433559984085,
+          "first_execution_seconds": 0.016062360999058,
+          "warm_seconds_median": 0.014334763996885158
+        },
+        "spin_minus_forward": {
+          "trace_seconds": 0.005189662006159779,
+          "lower_seconds": 0.12643789499998093,
+          "compile_seconds": 0.28596723199734697,
+          "first_execution_seconds": 0.014438866994169075,
+          "warm_seconds_median": 0.014228107997041661
+        },
+        "scalar_inverse": {
+          "trace_seconds": 0.04312184100126615,
+          "lower_seconds": 0.03536734299996169,
+          "compile_seconds": 0.07995127799949842,
+          "first_execution_seconds": 0.004207265003060456,
+          "warm_seconds_median": 0.0036597220023395494
+        },
+        "warm_seconds_total": 0.03222259399626637
+      },
+      "operation_to_direct_warm_ratio": 1.0721347885739911,
+      "peak_rss_bytes": 462032896,
+      "device_memory_after_case": [
+        {
+          "device": "TFRT_CPU_0",
+          "available": false
+        }
+      ],
+      "status": "complete",
+      "worker_wall_seconds": 5.08988839200174
+    }
+  ]
+}
