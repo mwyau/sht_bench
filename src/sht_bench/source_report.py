@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter,defaultdict
 import csv
+from itertools import chain
 import json
 from pathlib import Path
 import statistics
@@ -23,35 +24,83 @@ def matched_key(r):
 
 
 def csv_file(path,rows):
-    if not rows: return
+    rows=iter(rows)
+    first=next(rows,None)
+    if first is None:return
     with path.open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(rows[0]))
+        writer=csv.DictWriter(f,fieldnames=list(first))
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows(chain((first,),rows))
+
+
+def collect_for_report(directory,output,*,cell_paths=None):
+    """Stream full accuracy/outcome exports and retain only valid plot fields."""
+    fields=('id','backend','source_sha','build_mode','workload','threads_requested','round',
+            'median_s','p10_s','p90_s','setup_s','setup_policy','native_setup_s','setup_components_s',
+            'native_api','native_conventions','first_call_policy','planning_policy','threads_effective',
+            'thread_control','operation_prepare_s','operation_prepare_policy','first_requested_operation_s',
+            'first_synthesis_s','first_analysis_s','peak_rss_bytes')
+    stages=('synthesis','full_grid_synthesis','common_reference_analysis','coefficient_recovery','map_roundtrip')
+    valid=[]
+    hashes=set()
+    builds=set()
+    counts=Counter()
+    recorded=0
+    provenance_path=None
+    with (output/'accuracy.json').open('w') as accuracy, (output/'outcomes.csv').open('w',newline='') as outcomes:
+        accuracy.write('[\n')
+        first_metric=True
+        writer=None
+        paths=sorted((directory/'cells').glob('*.json')) if cell_paths is None else cell_paths
+        for path in paths:
+            r=json.loads(path.read_text())
+            recorded+=1
+            counts[r['status']]+=1
+            hashes.add(r.get('harness_sha256'))
+            builds.add(r.get('build_manifest_sha256'))
+            if provenance_path is None and r.get('build_manifest'):
+                provenance_path=Path(r['build_manifest'])
+            outcome=dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],
+                         **r['workload'],threads=r['threads_requested'],round=r['round'],status=r['status'],
+                         reason=r.get('reason',''),raw_cell=f"cells/{r['id']}.json")
+            if writer is None:
+                writer=csv.DictWriter(outcomes,fieldnames=list(outcome))
+                writer.writeheader()
+            writer.writerow(outcome)
+            maximum_error=0.0
+            for fixture in r.get('validation',{}).get('fixtures',[]):
+                for stage in stages:
+                    if stage not in fixture:continue
+                    metric=dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],
+                                **r['workload'],threads=r['threads_requested'],round=r['round'],
+                                fixture=fixture['name'],stage=stage,passed=fixture['passed'],**fixture[stage])
+                    if not first_metric:accuracy.write(',\n')
+                    json.dump(metric,accuracy,allow_nan=False)
+                    first_metric=False
+                    if stage!='synthesis' and r['status']=='timed_successfully':
+                        maximum_error=max(maximum_error,fixture[stage]['relative_l2'])
+            if r['status']=='timed_successfully':
+                compact={key:r[key] for key in fields if key in r}
+                compact['maximum_validation_relative_l2']=maximum_error
+                valid.append(compact)
+        accuracy.write('\n]\n')
+    return valid,counts,recorded,hashes,builds,provenance_path
 
 
 def report(directory,output,*,plots=True):
     from .source_audit import audit
-    evidence = audit(directory)
+    cell_paths=sorted((directory/'cells').glob('*.json'))
+    evidence = audit(directory,cell_paths=cell_paths)
     output.mkdir(parents=True,exist_ok=True)
     (output/'evidence-audit.json').write_text(json.dumps(evidence,indent=2)+'\n')
     if not evidence['evidence_consistent']:
         raise ValueError('source timing evidence is inconsistent; see evidence-audit.json')
-    rows=[json.loads(p.read_text()) for p in sorted((directory/'cells').glob('*.json'))]
-    if rows:
-        provenance_path=Path(rows[0]['build_manifest'])
+    valid,counts,recorded,hashes,builds,provenance_path=collect_for_report(directory,output,cell_paths=cell_paths)
+    if provenance_path is not None:
         (output/'build-provenance.json').write_bytes(provenance_path.read_bytes())
-    hashes={r.get('harness_sha256') for r in rows}
-    builds={r.get('build_manifest_sha256') for r in rows}
     if len(hashes)>1 or len(builds)>1:
         raise ValueError('report directory mixes benchmark implementations or build manifests')
     output.mkdir(parents=True,exist_ok=True)
-    counts=Counter(r['status'] for r in rows)
-    outcomes=[dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],
-                   **r['workload'],threads=r['threads_requested'],round=r['round'],status=r['status'],
-                   reason=r.get('reason',''),raw_cell=f"cells/{r['id']}.json") for r in rows]
-    csv_file(output/'outcomes.csv',outcomes)
-    valid=[r for r in rows if r['status']=='timed_successfully']
     index={(r['backend'],matched_key(r)):r for r in valid}
     comparisons=[]
     for r in valid:
@@ -87,7 +136,7 @@ def report(directory,output,*,plots=True):
             scaling.append(dict(backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],**r['workload'],threads=r['threads_requested'],
                                 round=r['round'],parallel_speedup=speedup,parallel_efficiency=speedup/r['threads_requested']))
     csv_file(output/'thread-scaling.csv',scaling)
-    flat=[dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],**r['workload'],
+    flat=(dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],**r['workload'],
                threads=r['threads_requested'],round=r['round'],median_ms=1000*r['median_s'],p10_ms=1000*r['p10_s'],p90_ms=1000*r['p90_s'],
                setup_ms=1000*r['setup_s'],setup_policy=r['setup_policy'],
                native_setup_ms=1000*r['native_setup_s'] if r.get('native_setup_s') is not None else '',
@@ -96,17 +145,8 @@ def report(directory,output,*,plots=True):
                planning_policy=r['planning_policy'],threads_effective=r.get('threads_effective'),thread_control=r['thread_control'],
                operation_prepare_ms=1000*r['operation_prepare_s'],operation_prepare_policy=r.get('operation_prepare_policy',''),
                first_requested_operation_ms=1000*r['first_requested_operation_s'] if r.get('first_requested_operation_s') is not None else '',
-               first_synthesis_ms=1000*r['first_synthesis_s'],first_analysis_ms=1000*r['first_analysis_s'],peak_rss_bytes=r['peak_rss_bytes']) for r in valid]
+               first_synthesis_ms=1000*r['first_synthesis_s'],first_analysis_ms=1000*r['first_analysis_s'],peak_rss_bytes=r['peak_rss_bytes']) for r in valid)
     csv_file(output/'timings.csv',flat)
-    accuracy=[]
-    for r in rows:
-        for f in r.get('validation',{}).get('fixtures',[]):
-            for stage in ('synthesis','full_grid_synthesis','common_reference_analysis','coefficient_recovery','map_roundtrip'):
-                if stage not in f: continue
-                accuracy.append(dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],**r['workload'],threads=r['threads_requested'],round=r['round'],
-                                     fixture=f['name'],stage=stage,passed=f['passed'],**f[stage]))
-    # Failed shape mismatches can add fields; retain every metric in JSON.
-    (output/'accuracy.json').write_text(json.dumps(accuracy,indent=2)+'\n')
     figures=[]
     if valid and plots:
         import matplotlib
@@ -177,8 +217,7 @@ def report(directory,output,*,plots=True):
                     xs=[];ys=[]
                     for degree in degrees:
                         case=[r for r in subset if r['workload']['lmax']==degree]
-                        metrics=[f[stage]['relative_l2'] for r in case for f in r['validation']['fixtures']
-                                 for stage in ('full_grid_synthesis','common_reference_analysis','coefficient_recovery','map_roundtrip') if stage in f]
+                        metrics=[r['maximum_validation_relative_l2'] for r in case]
                         xs.append(statistics.median(1000*r['median_s'] for r in case))
                         ys.append(max(max(metrics,default=0),1e-18))
                     label=f"{backend} {subset[0]['build_mode']} {revision_label(subset[0]['source_sha'])}"
@@ -191,13 +230,13 @@ def report(directory,output,*,plots=True):
     expected=evidence['expected_cells']
     pending=evidence['missing_cells']
     manifest={'status_counts':dict(counts),'expected_cells':expected,'pending_cells':pending,
-              'raw_cells':len(rows),'timed_cells':len(valid),'matched_pairs':len(comparisons),'figures':figures,
+              'raw_cells':recorded,'timed_cells':len(valid),'matched_pairs':len(comparisons),'figures':figures,
               'harness_sha256':next(iter(hashes),None),'build_manifest_sha256':next(iter(builds),None),
               'coverage_complete':evidence['coverage_complete'],'evidence_consistent':evidence['evidence_consistent'],
               'source_directory':str(directory.resolve()),'plots_requested':plots,
               'command':f'uv run --extra plot python -m sht_bench.source_report {directory} --output {output}'+('' if plots else ' --tables-only')}
     (output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-    lines=['# Source benchmark results','',f'{len(rows)} recorded outcomes of {expected}; {pending} pending. {len(valid)} timed after numerical validation.','',
+    lines=['# Source benchmark results','',f'{recorded} recorded outcomes of {expected}; {pending} pending. {len(valid)} timed after numerical validation.','',
            'Measurements are provisional on a shared host. Ratios pair the same grid, bandwidth, precision, allocation, operation, thread request, and process round.','',
            '| Outcome | Cells |','| --- | ---: |',*[f'| {k} | {v} |' for k,v in sorted(counts.items())],'',
            '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records RustSHT/DUCC and SHTns/DUCC ratios and absolute latency excess in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','']

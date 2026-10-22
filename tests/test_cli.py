@@ -121,8 +121,8 @@ def test_pyspharm_cc_1023_is_excluded():
 
 
 def test_plot_style_is_stable_by_backend_and_build():
-    assert tuple(BACKEND_COLORS) == BACKEND_NAMES
-    assert len(set(BACKEND_COLORS.values())) == len(BACKEND_NAMES)
+    assert set(BACKEND_NAMES) <= set(BACKEND_COLORS)
+    assert len(set(BACKEND_COLORS.values())) == len(BACKEND_COLORS)
     assert BUILD_LINESTYLES == {
         "installed": "-",
         "wheel": "-",

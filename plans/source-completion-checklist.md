@@ -4,7 +4,7 @@ The original attachment defines the scope. The user's later instruction selects 
 
 | Requirement | Evidence required | Current evidence or next action |
 | --- | --- | --- |
-| Local branch, no main modification or remote writes | Git history and local command record | `refactor/source-matrix-rustsht`, initial main `0d5462232c24ad926cc5a2e8bf653b131c93445f`, milestone `c38164e`; no push/PR commands |
+| Local branch, no main modification or remote writes | Git history and local command record | `refactor/source-matrix-rustsht`, initial main `0d5462232c24ad926cc5a2e8bf653b131c93445f`, milestones `c38164e` and `3b77961`; no push/PR commands |
 | Immutable intended sources | Lock plus clean origin/ref/SHA checks | `results/source-20261022/main/sources.lock.json`; RustSHT ref `main` |
 | Genuine native Git builds and published Spherepack wheel | Build logs, import checks, binary hashes/linkage | `results/source-20261022/main/build-manifest.json`, `build-*.log`; preserve the smoke manifest digest |
 | Effective build flags and native dependency settings | Generated compiler/linker rules, configure logs, Cargo inputs | Collect a compiler metadata annex; new build script archives these automatically |
@@ -24,8 +24,8 @@ The original attachment defines the scope. The user's later instruction selects 
 | Timing robustness | Three interleaved process rounds, 30 raw batches or documented long-call policy, p10/median/p90/dispersion | Original smoke completed: 7,296 outcomes, 3,684 timed, 372 numerical failures, 3,228 unsupported, 12 execution failures; full sweep pending |
 | Locked representative reproduction | Rebuild using recorded SHAs, compare provenance, independently validate and time representative cases | Pending after smoke/full execution schedule |
 | Reports and figures | Provenance, capability/accuracy ledgers, scalar/spin/grid/precision/thread/setup/memory plots, matched ratios and ms differences | Audited smoke tables exported: 1,734 matched process pairs, 578 paired summaries; figure rendering and full-sweep report pending |
-| Full unit suite and FFT runtime | Full pytest output plus relevant source/backend/FFT checks | Updated focused suite: 40 passed/2 skipped; isolated DUCC FFT: 8 passed plus strict r2c/c2c float32/float64 CLI smoke; full suite 73 passed/11 skipped/13 external Torch API failures; compatible Torch full suite pending |
-| No invalid timing comparison | Numerical/timing evidence audit before plotting | Original smoke audit passed: 7,296 expected/recorded, no missing/unexpected cells or evidence issues; audit adversarial tests pass |
+| Full unit suite and FFT runtime | Full pytest output plus relevant source/backend/FFT checks | Streaming/source/CLI suite: 47 passed; isolated DUCC FFT: 8 passed plus strict r2c/c2c float32/float64 CLI smoke; full compatible-source suite: 89 passed/11 skipped/13 existing external Torch API failures, detailed in compatible-torch-validation.json |
+| No invalid timing comparison | Numerical/timing evidence audit before plotting | Original smoke audit passed: 7,296 expected/recorded, no missing/unexpected cells or evidence issues; audit adversarial tests pass. Streaming exports match every CSV row and all 135,876 accuracy entries; fixed-snapshot and compact collector tests pass |
 | Final local commits and concise findings | Committed implementation/tests/docs and measured paired data | Milestone committed; later changes and final measured findings pending |
 
 Do not treat native numerical failures or missing native APIs as adapter correctness without inspecting their evidence. Do not convert an execution failure to an unsupported capability until the native constraint is established.

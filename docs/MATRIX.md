@@ -260,6 +260,9 @@ gates. Missing, duplicate, unexpected or inconsistent cells prevent a complete
 passing audit. The report command writes `evidence-audit.json` and rejects
 inconsistent evidence before generating comparisons. Partial reports identify
 the exact number of pending cells. Coverage refers to the stored run plan.
+Audit and export share one file snapshot. Accuracy and outcome records are
+streamed to disk; plot processing retains compact successful-case metadata
+instead of every raw fixture payload.
 
 Report facets distinguish longitude parity and origin as well as grid, spin,
 precision, order, allocation and batch size. Error-versus-latency points identify

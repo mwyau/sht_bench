@@ -191,11 +191,11 @@ def check_timing(row, config, build):
     return problems
 
 
-def audit(directory, *, build_manifest=None):
+def audit(directory, *, build_manifest=None, cell_paths=None):
     config = json.loads((directory/'run-config.json').read_text())
     plan = json.loads((directory/'workload-plan.json').read_text())
     expected = set(expected_cases(plan))
-    rows = []
+    recorded = 0
     issues = []
     try:
         planned = {json.dumps(w,sort_keys=True) for w in plan['workloads']}
@@ -209,7 +209,32 @@ def audit(directory, *, build_manifest=None):
     present = set()
     counts = Counter()
     manifest_path = build_manifest
-    for path in sorted((directory/'cells').glob('*.json')):
+    paths = sorted((directory/'cells').glob('*.json')) if cell_paths is None else cell_paths
+    if manifest_path is None:
+        for path in paths:
+            try:
+                candidate = json.loads(path.read_text()).get('build_manifest')
+                if candidate:
+                    manifest_path = Path(candidate)
+                    break
+            except (OSError,ValueError,TypeError,AttributeError):
+                continue
+    build = None
+    if manifest_path is None:
+        issues.append({'problem':'no build manifest supplied or referenced by cells'})
+    else:
+        try:
+            manifest_path = Path(manifest_path)
+            if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != config['build_manifest_sha256']:
+                issues.append({'problem':'referenced build manifest digest changed'})
+            build = json.loads(manifest_path.read_text())
+            if not isinstance(build.get('builds'),dict):
+                raise ValueError('build manifest lacks a backend mapping')
+        except (OSError,ValueError,AttributeError) as exc:
+            build = None
+            issues.append({'problem':f'build manifest cannot be read: {exc}'})
+    # Validate one raw cell at a time; full fixture payloads need not stay in RAM.
+    for path in paths:
         try:
             row = json.loads(path.read_text())
             key = case_key(row['backend'], row['workload'], row['threads_requested'], row['round'])
@@ -231,37 +256,23 @@ def audit(directory, *, build_manifest=None):
                 issues.append({'file':path.name, 'problem':'unknown cell status'})
             if row.get('status') in ('unsupported','unavailable','build_failed','execution_failed','resource_limited') and not row.get('reason'):
                 issues.append({'file':path.name, 'problem':'outcome lacks an explicit reason'})
-            if manifest_path is None and row.get('build_manifest'):
-                manifest_path = Path(row['build_manifest'])
             counts[row.get('status', 'missing_status')] += 1
-            rows.append((path.name, row))
-        except (ValueError, TypeError, KeyError) as exc:
+            recorded += 1
+            if build is not None:
+                backend = build['builds'].get(row['backend'], {})
+                sha = backend.get('sha', backend.get('requirement', 'unavailable'))
+                if row.get('source_sha') != sha or row.get('build_mode') != backend.get('build_kind'):
+                    issues.append({'file':path.name, 'problem':'source revision or build mode differs from manifest'})
+                if row.get('status') == 'timed_successfully':
+                    try:
+                        for problem in check_timing(row, config, build):
+                            issues.append({'file':path.name, 'problem':problem})
+                    except (ValueError, TypeError, KeyError) as exc:
+                        issues.append({'file':path.name, 'problem':f'incomplete timing evidence: {exc}'})
+        except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
             issues.append({'file':path.name, 'problem':f'malformed cell: {exc}'})
-    build = None
-    if manifest_path is None:
-        issues.append({'problem':'no build manifest supplied or referenced by cells'})
-    else:
-        try:
-            manifest_path = Path(manifest_path)
-            if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != config['build_manifest_sha256']:
-                issues.append({'problem':'referenced build manifest digest changed'})
-            build = json.loads(manifest_path.read_text())
-        except (OSError, ValueError) as exc:
-            issues.append({'problem':f'build manifest cannot be read: {exc}'})
-    if build is not None:
-        for filename, row in rows:
-            backend = build['builds'].get(row['backend'], {})
-            sha = backend.get('sha', backend.get('requirement', 'unavailable'))
-            if row.get('source_sha') != sha or row.get('build_mode') != backend.get('build_kind'):
-                issues.append({'file':filename, 'problem':'source revision or build mode differs from manifest'})
-            if row.get('status') == 'timed_successfully':
-                try:
-                    for problem in check_timing(row, config, build):
-                        issues.append({'file':filename, 'problem':problem})
-                except (ValueError, TypeError, KeyError) as exc:
-                    issues.append({'file':filename, 'problem':f'incomplete timing evidence: {exc}'})
     missing = expected-present
-    return {'schema':1, 'expected_cells':len(expected), 'recorded_cells':len(rows),
+    return {'schema':1, 'expected_cells':len(expected), 'recorded_cells':recorded,
             'missing_cells':len(missing), 'unexpected_cells':len(present-expected),
             'status_counts':dict(sorted(counts.items())), 'evidence_issues':issues,
             'coverage_complete':not missing and not (present-expected),

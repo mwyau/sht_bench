@@ -73,7 +73,7 @@ def test_source_report_exports_outcomes_timings_pairs_and_provenance(monkeypatch
     run, _, build = _report_run(tmp_path)
     evidence = {"evidence_consistent": True, "expected_cells": 2, "missing_cells": 0,
                 "coverage_complete": True, "status_counts": {"timed_successfully": 2}}
-    monkeypatch.setattr(source_audit, "audit", lambda directory: evidence)
+    monkeypatch.setattr(source_audit, "audit", lambda directory, **kwargs: evidence)
     output = tmp_path / "tables"
     manifest = source_report.report(run, output, plots=False)
 
@@ -103,6 +103,44 @@ def test_source_report_exports_outcomes_timings_pairs_and_provenance(monkeypatch
     assert (output / "build-provenance.json").read_text() == json.dumps(build, indent=2) + "\n"
     assert manifest["plots_requested"] is False
     assert manifest["command"].endswith("--tables-only")
+
+
+def test_report_streams_compact_rows_and_reuses_audited_file_snapshot(monkeypatch, tmp_path):
+    run, rows, _ = _report_run(tmp_path)
+    output = tmp_path / "tables"
+    snapshot = sorted((run / "cells").glob("*.json"))
+    evidence = {"evidence_consistent": True, "expected_cells": 2, "missing_cells": 0,
+                "coverage_complete": True, "status_counts": {"timed_successfully": 2}}
+
+    def audit_and_add_late_file(directory, *, cell_paths):
+        assert len(cell_paths) == 2
+        late = dict(rows[0], id="late-cell")
+        (directory / "cells" / "late-cell.json").write_text(json.dumps(late))
+        return evidence
+
+    monkeypatch.setattr(source_audit, "audit", audit_and_add_late_file)
+    manifest = source_report.report(run, output, plots=False)
+    outcomes = list(csv.DictReader((output / "outcomes.csv").open()))
+    compact_output = tmp_path / "compact"
+    compact_output.mkdir()
+    compact, counts, recorded, _, _, _ = source_report.collect_for_report(
+        run, compact_output, cell_paths=snapshot
+    )
+
+    assert manifest["raw_cells"] == recorded == 2
+    assert len(outcomes) == 2
+    assert counts["timed_successfully"] == 2
+    assert len(compact) == 2
+    assert compact[0]["maximum_validation_relative_l2"] == 1e-15
+    assert compact[0].keys() == {
+        "id", "backend", "source_sha", "build_mode", "workload", "threads_requested", "round",
+        "median_s", "p10_s", "p90_s", "setup_s", "setup_policy", "native_setup_s",
+        "setup_components_s", "native_api", "native_conventions", "first_call_policy",
+        "planning_policy", "threads_effective", "thread_control", "operation_prepare_s",
+        "operation_prepare_policy", "first_requested_operation_s", "first_synthesis_s",
+        "first_analysis_s", "peak_rss_bytes", "maximum_validation_relative_l2",
+    }
+    assert not {"validation", "samples_s", "environment", "traceback"} & compact[0].keys()
 
 
 def test_report_uses_fixed_backend_colors_and_separate_build_styles():
