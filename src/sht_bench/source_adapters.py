@@ -1,0 +1,274 @@
+"""Adapters for explicit source-matrix workloads.
+
+Canonical coefficients are orthonormal, include the Condon–Shortley phase,
+use complex positive orders with real-field factor two, and are packed by m.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass, asdict
+import importlib
+import numpy as np
+
+
+class Unsupported(ValueError):
+    pass
+
+
+@dataclass(frozen=True)
+class Workload:
+    grid: str
+    nlat: int
+    nlon: int
+    lmax: int
+    mmax: int
+    spin: int = 0
+    precision: str = 'float64'
+    allocation: str = 'allocating'
+    batch: int = 1
+    phi0: float = 0.0
+    operation: str = 'synthesis'
+    geometry_group: str = 'minimum'
+
+    def __post_init__(self):
+        if self.grid not in ('GL', 'CC', 'F1'):
+            raise ValueError('unknown grid')
+        if not 1 <= self.lmax or not 0 <= self.mmax <= self.lmax:
+            raise ValueError('invalid inclusive degree/order')
+        if self.nlat < self.lmax + (2 if self.grid == 'CC' else 1):
+            raise ValueError('latitude count below exact analysis bound')
+        if self.nlon <= 2 * self.mmax:
+            raise ValueError('longitude count aliases positive orders')
+        if self.spin not in (0, 1) or self.precision not in ('float32', 'float64'):
+            raise ValueError('invalid spin/precision')
+        if self.batch < 1 or self.allocation not in ('allocating', 'preallocated'):
+            raise ValueError('invalid batch/allocation')
+
+    @property
+    def size(self):
+        return sum(self.lmax - m + 1 for m in range(self.mmax + 1))
+
+    @property
+    def components(self):
+        return 1 if self.spin == 0 else 2
+
+    @property
+    def cdtype(self):
+        return np.complex64 if self.precision == 'float32' else np.complex128
+
+    def record(self):
+        return asdict(self)
+
+
+def indices(w):
+    return [(l, m) for m in range(w.mmax + 1) for l in range(m, w.lmax + 1)]
+
+
+def _fixtures(w):
+    rng = np.random.default_rng(20261022 + w.lmax)
+    a = (rng.normal(size=(w.components, w.size)) + 1j*rng.normal(size=(w.components, w.size))) / (w.lmax+1)
+    a[:, :w.lmax+1] = a[:, :w.lmax+1].real
+    if w.spin:
+        a[:, 0] = 0
+    yield 'random-triangular', a.astype(w.cdtype)
+    modes = {(max(1, w.spin), 0), (1, min(1,w.mmax)), (w.lmax, 0), (w.lmax, w.mmax)}
+    ix = indices(w)
+    for l, m in sorted(modes):
+        for component in range(w.components):
+            for part in ('real', 'imag') if m else ('real',):
+                a = np.zeros((w.components,w.size), dtype=w.cdtype)
+                a[component, ix.index((l,m))] = 1 if part == 'real' else 1j
+                yield f'mode-{l}-{m}-{component}-{part}', a
+    if not w.spin:
+        a = np.zeros((1,w.size), dtype=w.cdtype)
+        a[0,0] = 1
+        yield 'Y00', a
+
+
+def fixtures(w):
+    for name,a in _fixtures(w):
+        if w.batch>1:
+            a=np.stack([a*np.array((i+1)/w.batch,dtype=w.precision) for i in range(w.batch)])
+        yield name,a
+
+
+def capability(backend, w):
+    if backend not in ('ducc','rustsht','shtns','pyspharm'):
+        return 'unknown backend'
+    if w.batch != 1 and backend!='pyspharm':
+        return 'selected reusable-plan / 2d API has no native batch dimension'
+    if backend == 'pyspharm' and w.grid == 'F1':
+        return 'no native F1 path'
+    if backend in ('shtns','pyspharm') and w.phi0:
+        return 'native longitude-origin control unavailable'
+    if backend == 'pyspharm':
+        if w.precision != 'float32': return 'Spherepack published API uses float32/complex64'
+        if w.mmax != w.lmax: return 'public API has full triangular truncation only'
+        if w.allocation != 'allocating': return 'no public output-buffer API'
+        if w.operation not in ('analysis','synthesis','gradient','deriv1'): return 'no native requested operation'
+    if backend == 'shtns':
+        if w.precision != 'float64': return 'Python API uses float64/complex128'
+        if w.operation not in ('analysis','synthesis','gradient','deriv1'): return 'no selected native adjoint API'
+        if w.nlat < 32: return 'SHTns SIMD grid requires at least 32 latitude nodes'
+    if backend == 'rustsht' and w.precision != 'float64':
+        if w.allocation == 'preallocated': return 'ShtPlan32 exposes no output-buffer methods'
+        if w.operation not in ('analysis','synthesis','deriv1'): return 'ShtPlan32 lacks the requested operation'
+    if w.operation not in ('analysis','synthesis','adjoint_analysis','adjoint_synthesis','gradient','deriv1'):
+        return 'unknown operation'
+    if w.operation in ('gradient','deriv1') and w.spin != 0:
+        return 'derivative input must be scalar'
+    if w.allocation == 'preallocated' and w.operation not in ('analysis','synthesis'):
+        return 'requested operation has no output-buffer adapter'
+    return None
+
+
+class Adapter:
+    def __init__(self, backend, w, threads):
+        reason = capability(backend,w)
+        if reason: raise Unsupported(reason)
+        self.backend, self.w, self.threads = backend,w,threads
+        self.effective_threads = None
+        self.thread_control = 'not queryable'
+        self.module = importlib.import_module({'ducc':'ducc0','rustsht':'rustsht','shtns':'shtns','pyspharm':'spharm'}[backend])
+        self.encode = lambda a: np.ascontiguousarray(a)
+        self.decode = lambda a: np.asarray(a)
+        if backend == 'rustsht':
+            plan_type = self.module.ShtPlan
+            if w.precision == 'float32':
+                if not hasattr(self.module._rustsht,'ShtPlan32'):
+                    raise Unsupported('selected RustSHT revision does not expose ShtPlan32')
+                plan_type = self.module._rustsht.ShtPlan32
+            self.plan = plan_type(w.grid,w.nlat,w.nlon,w.lmax,w.mmax,spin=w.spin,phi0=w.phi0)
+            self.thread_control = 'Rayon global pool; RAYON_NUM_THREADS set before import; effective count not exposed'
+        elif backend == 'ducc':
+            self.thread_control = 'explicit per-call nthreads; effective worker count not exposed'
+        elif backend == 'shtns':
+            s = self.module
+            self.plan = s.sht(w.lmax,w.mmax,mres=1,norm=s.sht_orthonormal,nthreads=threads)
+            flag={'GL':s.sht_gauss,'CC':s.sht_reg_poles,'F1':s.sht_reg_fast}[w.grid]
+            self.plan.set_grid(nlat=w.nlat,nphi=w.nlon,flags=flag|s.SHT_PHI_CONTIGUOUS,polar_opt=0.0)
+            if (self.plan.nlat,self.plan.nphi) != (w.nlat,w.nlon):
+                raise Unsupported('SHTns changed requested grid')
+            theta = np.arccos(self.plan.cos_theta)
+            from .source_validation import nodes
+            if not np.allclose(theta,nodes(w),rtol=0,atol=1e-12):
+                raise Unsupported('SHTns latitude nodes differ from requested geometry')
+            if w.spin:
+                degrees = np.array([l for l,m in indices(w)])
+                scale = np.sqrt(degrees*(degrees+1))
+                scale[0] = 1
+                self.factor = np.stack((-1/scale,1/scale))
+                self.encode = lambda a: np.ascontiguousarray(a*self.factor)
+                self.decode = lambda a: np.asarray(a)/self.factor
+        elif backend == 'pyspharm':
+            self.plan = self.module.Spharmt(w.nlon,w.nlat,rsphere=1.0,gridtype='gaussian' if w.grid=='GL' else 'regular',legfunc='stored')
+            # Spherepack uses no CS phase and Y00=1/sqrt(2).
+            self.factor = np.array([(-1)**m / np.sqrt(2*np.pi) for l,m in indices(w)],dtype=np.float32)
+            self.encode = lambda a: np.ascontiguousarray(a[0]*self.factor)
+            self.decode = lambda a: np.asarray(a)[None,:]/self.factor
+            if w.spin:
+                scale = np.array([np.sqrt(l*(l+1)) if l else 1 for l,m in indices(w)],dtype=np.float32)
+                self.factor *= scale
+                self.encode = lambda a: np.ascontiguousarray(a*self.factor)
+                self.decode = lambda a: np.asarray(a)/self.factor
+            if w.batch>1:
+                if w.spin:
+                    self.encode=lambda a: np.ascontiguousarray(np.moveaxis(a,0,-1)*self.factor[None,:,None])
+                    self.decode=lambda a: np.moveaxis(np.asarray(a),-1,0)/self.factor[None,None,:]
+                else:
+                    self.encode=lambda a: np.ascontiguousarray(a[:,0,:].T*self.factor[:,None])
+                    self.decode=lambda a: np.asarray(a).T[:,None,:]/self.factor[None,None,:]
+        if w.spin and backend in ('ducc','rustsht'):
+            self.encode = lambda a: np.ascontiguousarray(-a)
+            self.decode = lambda a: -np.asarray(a)
+
+    def synthesis(self,a,out=None):
+        w = self.w
+        if self.backend == 'ducc':
+            return self.module.sht.synthesis_2d(alm=a,spin=w.spin,lmax=w.lmax,mmax=w.mmax,geometry=w.grid,ntheta=w.nlat,nphi=w.nlon,phi0=w.phi0,nthreads=self.threads,**({'map':out} if out is not None else {}))
+        if self.backend == 'rustsht':
+            if out is None: return self.plan.synthesis(a)
+            self.plan.synthesis_into(a,out)
+            return out
+        if self.backend == 'shtns':
+            if out is not None:
+                if w.spin: self.plan.SHsphtor_to_spat(a[0],a[1],out[0],out[1])
+                else: self.plan.SH_to_spat(a[0],out[0])
+                return out
+            return np.asarray(self.plan.synth(*a)) if w.spin else self.plan.synth(a[0])[None,:,:]
+        if w.spin:
+            u,v = self.plan.getuv(a[1],a[0])
+            result=np.stack((-v,u))
+            return np.moveaxis(result,-1,0) if w.batch>1 else result
+        result=self.plan.spectogrd(a)
+        return np.moveaxis(result,-1,0)[:,None,:,:] if w.batch>1 else result[None,:,:]
+
+    def analysis(self,m,out=None):
+        w = self.w
+        if self.backend == 'ducc':
+            return self.module.sht.analysis_2d(map=m,spin=w.spin,lmax=w.lmax,mmax=w.mmax,geometry=w.grid,phi0=w.phi0,nthreads=self.threads,**({'alm':out} if out is not None else {}))
+        if self.backend == 'rustsht':
+            if out is None: return self.plan.analysis(m)
+            self.plan.analysis_into(m,out)
+            return out
+        if self.backend == 'shtns':
+            if out is not None:
+                if w.spin: self.plan.spat_to_SHsphtor(m[0],m[1],out[0],out[1])
+                else: self.plan.spat_to_SH(m[0],out[0])
+                return out
+            return np.asarray(self.plan.analys(*m)) if w.spin else self.plan.analys(m[0])[None,:]
+        if w.spin:
+            u,v=(np.moveaxis(m[:,1],0,-1),-np.moveaxis(m[:,0],0,-1)) if w.batch>1 else (m[1],-m[0])
+            vrt,div = self.plan.getvrtdivspec(u,v,ntrunc=w.lmax)
+            return np.stack((div,vrt))
+        field=np.moveaxis(m[:,0],0,-1) if w.batch>1 else m[0]
+        return self.plan.grdtospec(field,ntrunc=w.lmax)
+
+    def operation(self,a,m,out=None):
+        op = self.w.operation
+        if self.backend=='pyspharm':
+            if op in ('gradient','deriv1'):
+                scale=np.array([np.sqrt(l*(l+1)) if l else 1 for l,order in indices(self.w)],dtype=np.float32)
+                coeff=np.ascontiguousarray(-a/scale if op=='gradient' else -a)
+                return lambda: self.plan.getgrad(coeff)
+            if self.w.spin:
+                if op=='synthesis': return lambda: self.plan.getuv(a[1],a[0])
+                u,v=(np.moveaxis(m[:,1],0,-1),-np.moveaxis(m[:,0],0,-1)) if self.w.batch>1 else (m[1],-m[0])
+                u,v=np.ascontiguousarray(u),np.ascontiguousarray(v)
+                return lambda: self.plan.getvrtdivspec(u,v,ntrunc=self.w.lmax)
+            if op=='synthesis': return lambda: self.plan.spectogrd(a)
+            field=np.ascontiguousarray(np.moveaxis(m[:,0],0,-1) if self.w.batch>1 else m[0])
+            return lambda: self.plan.grdtospec(field,ntrunc=self.w.lmax)
+        if self.backend == 'shtns' and out is None and op in ('analysis','synthesis'):
+            if op=='synthesis': return lambda: self.plan.synth(*a)
+            return lambda: self.plan.analys(*m)
+        if op == 'analysis': return lambda: self.analysis(m,out)
+        if op == 'synthesis': return lambda: self.synthesis(a,out)
+        if self.backend == 'shtns':
+            scale = np.array([np.sqrt(l*(l+1)) if l else 1 for l,m in indices(self.w)])
+            coeff = np.ascontiguousarray(-a[0]/scale if op=='gradient' else -a[0])
+            coeff[0] = 0
+            return lambda: self.plan.synth_grad(coeff)
+        if self.backend == 'rustsht':
+            plan=self.plan
+            if op=='gradient':
+                w=self.w
+                plan=self.module.ShtPlan(w.grid,w.nlat,w.nlon,w.lmax,w.mmax,spin=1,phi0=w.phi0)
+            fn = getattr(plan,{'gradient':'synthesis_gradient','deriv1':'synthesis_deriv1'}.get(op,op))
+            if op in ('gradient','deriv1'):
+                coeff = np.ascontiguousarray(-a)
+                return lambda: fn(coeff)
+            return lambda: fn(m if op == 'adjoint_synthesis' else a)
+        w = self.w
+        if op in ('gradient','deriv1'):
+            coeff = np.ascontiguousarray(-a)
+            return lambda: self.module.sht.synthesis_2d(alm=coeff,spin=1,lmax=w.lmax,mmax=w.mmax,geometry=w.grid,ntheta=w.nlat,nphi=w.nlon,phi0=w.phi0,nthreads=self.threads,mode='GRAD_ONLY' if op=='gradient' else 'DERIV1')
+        kwargs = dict(spin=w.spin,lmax=w.lmax,mmax=w.mmax,geometry=w.grid,phi0=w.phi0,nthreads=self.threads)
+        if op == 'adjoint_synthesis':
+            return lambda: self.module.sht.adjoint_synthesis_2d(map=m,**kwargs)
+        return lambda: self.module.sht.adjoint_analysis_2d(alm=a,ntheta=w.nlat,nphi=w.nlon,**kwargs)
+
+    def canonical_operation_output(self,result):
+        if self.backend=='pyspharm' and self.w.operation in ('gradient','deriv1'):
+            u,v=result
+            return np.stack((-v,u))
+        return np.asarray(result)

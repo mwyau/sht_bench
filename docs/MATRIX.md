@@ -163,3 +163,65 @@ Backend color is fixed across all figures. Wheel and installed builds use solid 
 ## Interpretation
 
 The matrix measures the configured transform calls across the selected software and hardware conditions. Precision, coefficient conventions, setup model, build configuration, and effective thread control differ between implementations and should be reported with timing comparisons.
+
+## Numerically gated Git source comparison
+
+`sht-bench source-matrix` runs the Git-source environments described in
+[BUILD.md](../BUILD.md#git-source-matrix). The workload records include explicit
+latitude/longitude dimensions, inclusive degree and order, spin, precision,
+operation, allocation, longitude origin and geometry group. Default degree
+candidates cover 1 through 1279; atmospheric GL and common regular CC geometries
+are additional named groups. Minimum analysis grids use `L+1` GL/F1 latitudes
+or `L+2` CC latitudes and `2L+1` longitudes. Full and quarter orders are separate.
+
+Before transform timing, each worker checks independent normalized
+associated-Legendre synthesis on the complete random-field grid and at sampled
+coordinates for low-degree real and
+imaginary harmonics, high-degree zonal and sectoral modes, random spectra,
+full coefficient recovery, and synthesis–analysis map round trips. Canonical
+coefficients are orthonormal complex positive orders with the Condon–Shortley
+phase. Spin-1 E is the negative normalized scalar gradient, and B is its
+90-degree rotation in the colatitude/eastward frame. Adapters convert native
+phase, scaling and signs outside timing. The relative L2 and scaled-error
+limits are `2e-10` for float64 and `5e-5` for float32; maximum absolute errors
+are also retained. Every failed gate excludes that cell from comparative timing.
+
+Allocating and output-buffer calls are distinct workloads. Constructor/grid
+setup, first calls and validation occur before warm transform timing. Calibrated
+batches target 20 ms by default, with 30 raw samples and three independent
+process rounds. Backend order reverses between rounds. Worker affinity uses
+one allowed logical CPU per physical core, ordered by L3 domain. Effective
+thread counts remain unknown when the native API cannot query them. Process
+peak RSS includes setup, validation and buffers and is recorded separately
+from warm latency. Results on the shared host carry a provisional label.
+
+Use `--secondary` for additional adjoint, derivative, longitude-origin and batch
+requests. Native capability exclusions have explicit records. `--resume` checks
+workload identity, source SHA, build-manifest digest and harness digest; it does
+not silently reuse measurements from changed code. Workers verify imported
+module paths and the controller verifies binary hashes. A worker timeout is
+recorded as `resource_limited`.
+
+`python -m sht_bench.source_report DIRECTORY --output REPORT` regenerates
+precision-separated scalar/vector figures, setup/RSS figures, thread scaling,
+accuracy records, and matched RustSHT/DUCC and SHTns/DUCC ratios with absolute
+latency differences. Only numerically validated timing cells enter these
+comparisons. Backend colors are fixed. Each matched pair shares the exact
+workload, requested thread count and independent process round.
+
+Timed analysis uses the same independent reference field, cast to the selected
+precision, for every backend on a given grid. Its coefficient recovery is a
+separate validity check. Independent full fields are cached by workload,
+coefficient bytes and harness digest, with file checksums verified on reuse.
+
+SHTns uses `sht_reg_fast` for Fejer-1 midpoint nodes and `sht_reg_poles` for
+endpoint-including CC nodes; the adapter checks the actual latitude nodes.
+Additional F1 quadrature grids use `nlat=2L+2`. The GL `extended` group uses
+`nlat=L+2` to identify the extra latitude required by Spherepack's tested vector
+path; it is distinct from the `nlat=L+1` minimum group and atmospheric grids.
+Spherepack vector transforms use unit radius, convert E/B to divergence/vorticity
+by multiplication with `sqrt(l(l+1))` and the scalar normalization factor,
+and convert eastward/northward velocity to colatitude/eastward components.
+Its rank-three field API measures native batches. RustSHT float32 workloads
+use the native `rustsht._rustsht.ShtPlan32` class when exposed by the selected
+revision; unsupported output buffers and operations have explicit outcomes.

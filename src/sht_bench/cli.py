@@ -879,8 +879,11 @@ def run_matrix(args: argparse.Namespace) -> int:
                     continue
                 if output.exists():
                     data = json.loads(output.read_text())
+                    provenance_path = Path(__file__).resolve().parents[2] / "results" / f"{build}-provenance.json"
+                    packages = json.loads(provenance_path.read_text()).get("packages", {}) if build != "installed" and provenance_path.exists() else {}
                     for record in data:
                         record["build_mode"] = build
+                        record.update(packages.get(record["backend"], {}))
                     _write_results(data, output)
                     updated_result_files.append(output)
 
@@ -981,6 +984,9 @@ def _add_common_run_arguments(parser: argparse.ArgumentParser, *, matrix: bool) 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="sht-bench")
     subparsers = parser.add_subparsers(dest="command", required=True)
+    subparsers.add_parser(
+        "source-matrix", help="run numerically gated Git source workloads (use source-matrix --help)"
+    )
 
     run = subparsers.add_parser(
         "run", help="run scalar SHT benchmarks in the current environment"
@@ -1143,8 +1149,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Iterable[str] | None = None) -> int:
+    values = list(argv) if argv is not None else sys.argv[1:]
+    if values[:1] == ["source-matrix"]:
+        from .source_runner import main as source_main
+        return source_main(values[1:])
     parser = build_parser()
-    args = parser.parse_args(argv)
+    args = parser.parse_args(values)
     if hasattr(args, "warmup"):
         if args.warmup < 0 or args.repeat < 1 or args.min_time <= 0:
             parser.error("warmup/repeat/min-time values are invalid")

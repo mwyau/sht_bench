@@ -7,6 +7,11 @@ The project exposes two independent executables:
 - `sht-bench` — spherical harmonic transform backend benchmarks.
 - `fft-bench` — DUCC one-dimensional FFT precision and scaling benchmarks.
 
+The Git source comparison uses `sht-bench source-matrix` with DUCC, SHTns,
+RustSHT `main`, and a separate pyspharm-syl 1.2.1 wheel environment.
+See [the Git build commands](BUILD.md#git-source-matrix) and
+[the numerical and timing method](docs/MATRIX.md#numerically-gated-git-source-comparison).
+
 The FFT experiment includes a runtime characterization of NumPy `longdouble`. It is kept separate from the SHT benchmark because DUCC's Python SHT API exposes `float32`/`float64`, while its genuine long-double Python FFT path requires the pybind11 binding. See [docs/FFT.md](docs/FFT.md) for the focused FFT usage notes.
 
 The default comparison includes DUCC, SHTns, and Spherepack/pyspharm where their grid interfaces are compatible. Native SHTOOLS/pyshtools remains available for compact GLQ experiments but is not part of the default atmospheric full-Gaussian-grid comparison.

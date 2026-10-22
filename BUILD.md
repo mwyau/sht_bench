@@ -6,14 +6,15 @@ SHT timing depends on both the transform implementation and the binary used to e
 
 | Backend | Binary-package environment | Source-build environment |
 | --- | --- | --- |
-| DUCC | PyPI `ducc0==0.41.0` wheel when available for the platform | PyPI `ducc0==0.41.0` source distribution |
-| SHTns | PyPI `shtns==3.7.5` source distribution | same `shtns==3.7.5` source distribution |
+| DUCC | PyPI `ducc0==0.41.0` wheel when available for the platform | Git `mreineck/ducc`, ref `ducc0`, resolved SHA recorded |
+| SHTns | Git `schaeffn/shtns`, ref `master`, resolved SHA recorded | same Git source policy |
 | pyshtools / SHTOOLS | PyPI `pyshtools==4.14.1` wheel when available for the platform | PyPI `pyshtools==4.14.1` source distribution |
 | pyspharm-syl / Spherepack | PyPI `pyspharm-syl==1.2.1` wheel when available for the platform | not benchmarked |
 
 The binary-package environment requires an actual compatible wheel for backends designated as wheel builds. Before installation, the runner asks `uv` to resolve the pinned package with `--only-binary` in dry-run mode. If the current operating system, architecture, and Python version have no compatible wheel, that backend is recorded under `unavailable_wheels` and omitted from the wheel benchmark. It is not silently compiled from source.
 
-SHTns 3.7.5 has no PyPI wheel, so both benchmark environments compile the same source distribution. Plotting therefore shows one SHTns source series rather than treating the two environments as a wheel-versus-source comparison.
+SHTns has no PyPI wheel, so both benchmark environments compile a Git checkout.
+Each invocation records the resolved SHA. Plotting shows one SHTns source series.
 
 `pyspharm-syl` is benchmarked from its published wheel only. The source-build environment contains DUCC, SHTns, and pyshtools/SHTOOLS on platforms where those backends are selected.
 
@@ -164,3 +165,50 @@ count. It is manual-only because the measurements are performance-sensitive.
 Before upload, it stages only the generated `README.md` and PNG figures;
 JSON, logs, environments, wheels, extensions, and other working files remain
 outside the uploaded artifact.
+
+## Git source matrix
+
+The Git source workflow uses separate environments for DUCC, SHTns, RustSHT,
+and the pyspharm-syl wheel. Its source refs are DUCC `ducc0`, SHTns `master`,
+and RustSHT `main`. Each build records the resolved 40-character Git SHA.
+The `matrix` workflow also acquires DUCC/SHTns Git sources, while retaining
+release-wheel and optional SHTOOLS comparisons. Use the following commands for
+the four-implementation comparison with numerical gates:
+
+```bash
+uv sync
+uv run python scripts/build_sources.py --output results/source-run
+uv run sht-bench source-matrix \
+  --build-manifest results/source-run/build-manifest.json \
+  --output results/source-run/smoke --smoke \
+  --degrees 16,64,127 --threads 1 --rounds 3 --repeat 30
+uv run --extra plot python -m sht_bench.source_report \
+  results/source-run/smoke --output results/source-run/smoke-report
+```
+
+`build_sources.py` defaults to Python 3.13. Native packages are installed from
+Git checkout paths through their current build systems, including RustSHT's
+root Maturin release build. The compiler environment preserves caller settings;
+defaults select GCC/G++/gfortran, `DUCC0_OPTIMIZATION=native`, and
+`RUSTFLAGS='-C target-cpu=native'`. SHTns's Git build configures its FFTW/OpenMP
+support; build logs, native linkage and FFTW pkg-config information record the
+observed configuration. pyspharm-syl 1.2.1 uses `--only-binary` in its own
+environment. Missing wheels and build failures have explicit outcomes.
+
+Per-backend `--ducc-ref`, `--shtns-ref`, and `--rustsht-ref` override the refs.
+To rebuild recorded sources into a new output directory:
+
+```bash
+uv run python scripts/build_sources.py --mode locked \
+  --lock results/source-run/sources.lock.json \
+  --output results/source-reproduction
+```
+
+Locked acquisition checks origin, ref overrides, clean tracked sources and
+resolved SHAs. It reproduces source revisions; compiler and dependency versions
+must also be compared using the two build manifests. It does not by itself
+promise bitwise binary reproducibility. Checkouts in `.sources/`, isolated
+environments, logs, native binaries and generated measurements are untracked.
+`build-manifest.json` records compiler versions, flags, source origin/ref/SHA,
+Python and NumPy versions, verified import locations, binary SHA256 hashes,
+linked libraries, dependency freezes and available CPU/FFTW configuration.

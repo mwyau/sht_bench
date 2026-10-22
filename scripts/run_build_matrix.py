@@ -8,6 +8,7 @@ import platform
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Iterable
 
@@ -30,10 +31,10 @@ PROVENANCE = {
             "build_source": f"ducc0=={VERSIONS['ducc']}",
         },
         "shtns": {
-            "build_kind": "pypi-sdist",
-            "build_source": f"shtns=={VERSIONS['shtns']}",
+            "build_kind": "git-source",
+            "build_source": "https://gricad-gitlab.univ-grenoble-alpes.fr/schaeffn/shtns.git@master",
             "build_note": (
-                "SHTns 3.7.5 has no PyPI wheel; it is compiled locally in both "
+                "SHTns is compiled from its Git checkout in both "
                 "benchmark environments."
             ),
         },
@@ -48,16 +49,15 @@ PROVENANCE = {
     },
     "source": {
         "ducc": {
-            "build_kind": "pypi-sdist",
-            "build_source": f"ducc0=={VERSIONS['ducc']}",
+            "build_kind": "git-source",
+            "build_source": "https://github.com/mreineck/ducc.git@ducc0",
             "build_note": "DUCC source builds use the package's local build configuration.",
         },
         "shtns": {
-            "build_kind": "pypi-sdist",
-            "build_source": f"shtns=={VERSIONS['shtns']}",
+            "build_kind": "git-source",
+            "build_source": "https://gricad-gitlab.univ-grenoble-alpes.fr/schaeffn/shtns.git@master",
             "build_note": (
-                "Same release artifact as in the wheel-labelled environment because "
-                "SHTns publishes no wheel."
+                "Same Git source policy in both environments; resolved SHA is recorded."
             ),
         },
         "pyshtools": {
@@ -112,6 +112,8 @@ def uv_install(
     no_build_isolation: bool = False,
 ) -> None:
     command = ["uv", "pip", "install", "--python", str(python)]
+    if Path(requirement).is_dir():
+        command.extend(["--reinstall", "--no-cache"])
     if no_build_isolation:
         command.append("--no-build-isolation")
     if binary is not None:
@@ -201,6 +203,19 @@ def create_environment(
     failures: dict[str, str] = {}
     unavailable: dict[str, str] = {}
 
+    native_paths = {}
+    required_native = set(selected_backends) & ({"ducc", "shtns"} if mode == "source" else {"shtns"})
+    if required_native:
+        from sht_bench.sources import checkout
+        source_root = ROOT / ".sources" / "matrix"
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        source_lock = ROOT / ".builds" / f"matrix-{stamp}.lock.json"
+        acquired = checkout(source_root, source_lock)
+        for name in required_native:
+            entry = acquired["sources"][name]
+            native_paths[name] = str(source_root / name)
+            PROVENANCE[mode][name].update(build_source=entry["origin"],build_sha=entry["sha"],build_ref=entry["ref"],source_lock=str(source_lock))
+
     # Install the harness without pulling the compiled comparison backends.
     run(
         ["uv", "pip", "install", "--python", str(python), "-e", ".[plot]"],
@@ -233,27 +248,24 @@ def create_environment(
                 python, requirement, binary="only", env=build_env
             )
 
-        # SHTns publishes no wheel. It is compiled from its sdist in the
+        # SHTns publishes no wheel. It is compiled from Git in the
         # wheel-labelled environment and plotted as a source series.
         if "shtns" in selected_backends:
             installs["shtns"] = lambda: uv_install(
                 python,
-                f"shtns=={VERSIONS['shtns']}",
-                binary="no",
+                native_paths["shtns"],
                 env=build_env,
             )
     else:
         source_installs: dict[str, Callable[[], None]] = {
             "ducc": lambda: uv_install(
                 python,
-                f"ducc0=={VERSIONS['ducc']}",
-                binary="no",
+                native_paths.get("ducc", ""),
                 env=build_env,
             ),
             "shtns": lambda: uv_install(
                 python,
-                f"shtns=={VERSIONS['shtns']}",
-                binary="no",
+                native_paths.get("shtns", ""),
                 env=build_env,
             ),
             "pyshtools": lambda: uv_install(
