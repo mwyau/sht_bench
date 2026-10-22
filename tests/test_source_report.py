@@ -11,6 +11,38 @@ from sht_bench.colors import BACKEND_COLORS
 from sht_bench.source_adapters import Workload
 
 
+def test_figure_gallery_small_and_empty_reports(tmp_path):
+    stale=tmp_path/'figures-0001.md'
+    stale.write_text('old generated page')
+    assert source_report.figure_gallery(tmp_path,[])==([],[])
+    assert not stale.exists()
+    figures=[f'case-{i}.png' for i in range(48)]
+    lines,pages=source_report.figure_gallery(tmp_path,figures)
+    assert pages==[]
+    assert len(lines)==48
+    assert all(f'[![{name}]({name})]({name})' in line for name,line in zip(figures,lines))
+    assert not list(tmp_path.glob('figures-*.md'))
+
+
+def test_figure_gallery_pages_retain_every_figure_and_navigation(tmp_path):
+    figures=[f'case-{i}.png' for i in range(97)]
+    index,pages=source_report.figure_gallery(tmp_path,figures)
+    assert pages==['figures-0001.md','figures-0002.md','figures-0003.md']
+    contents=[(tmp_path/page).read_text() for page in pages]
+    assert [text.count('[![') for text in contents]==[48,48,1]
+    for name in figures:
+        assert sum(text.count(f'[![{name}]({name})]({name})') for text in contents)==1
+    assert all('[Results index](README.md)' in text for text in contents)
+    assert '[Previous]' not in contents[0]
+    assert '[Next](figures-0002.md)' in contents[0]
+    assert '[Previous](figures-0001.md)' in contents[1]
+    assert '[Next](figures-0003.md)' in contents[1]
+    assert '[Next]' not in contents[2]
+    assert all(any(f']({page})' in line for line in index) for page in pages)
+    source_report.figure_gallery(tmp_path,figures[:48])
+    assert not list(tmp_path.glob('figures-*.md'))
+
+
 def _metrics():
     return {"relative_l2": 1e-15, "max_absolute": 1e-15, "scaled_error": 1e-15}
 

@@ -19,6 +19,29 @@ def revision_label(value):
     return value[:10] if len(value)==40 and all(c in '0123456789abcdef' for c in value) else value
 
 
+def figure_gallery(output, figures):
+    """Bound the number of embedded figures per Markdown page."""
+    pages=[f'figures-{i+1:04d}.md' for i in range((len(figures)+47)//48)] if len(figures)>48 else []
+    expected_pages=set(pages)
+    for stale in output.glob('figures-*.md'):
+        if stale.name not in expected_pages:
+            stale.unlink()
+    if len(figures)<=48:
+        return [f'[![{name}]({name})]({name})\n' for name in figures],[]
+    index=['## Figures','',f'{len(figures)} figures; each page contains at most 48 previews.','']
+    for i,page in enumerate(pages):
+        first=i*48
+        selected=figures[first:first+48]
+        navigation=['[Results index](README.md)']
+        if i:navigation.append(f'[Previous]({pages[i-1]})')
+        if i+1<len(pages):navigation.append(f'[Next]({pages[i+1]})')
+        lines=[f'# Figures {first+1}–{first+len(selected)}','', ' | '.join(navigation),'']
+        lines.extend(f'[![{name}]({name})]({name})\n' for name in selected)
+        (output/page).write_text('\n'.join(lines)+'\n')
+        index.append(f'- [Figures {first+1}–{first+len(selected)}]({page})')
+    return index,pages
+
+
 def matched_key(r):
     return (json.dumps(r['workload'],sort_keys=True),r['threads_requested'],r['round'])
 
@@ -245,10 +268,12 @@ def report(directory,output,*,plots=True):
                 ax.set(xlabel='Warm native call (ms)',ylabel='Maximum relative L2 validation error',title=f'{title}, q{q}\nAnnotations give degree L; zero errors displayed at 1e-18')
                 ax.set_xscale('log');ax.set_yscale('log');ax.legend(fontsize=7);ax.grid(alpha=.2);fig.tight_layout()
                 name=f'{base}-q{q}-error-vs-latency.png';fig.savefig(output/name,dpi=150);plt.close(fig);figures.append(name)
+    gallery_lines,gallery_pages=figure_gallery(output,figures)
     expected=evidence['expected_cells']
     pending=evidence['missing_cells']
     manifest={'status_counts':dict(counts),'expected_cells':expected,'pending_cells':pending,
               'raw_cells':recorded,'timed_cells':len(valid),'matched_pairs':len(comparisons),'figures':figures,
+              'figure_pages':gallery_pages,
               'harness_sha256':next(iter(hashes),None),'build_manifest_sha256':next(iter(builds),None),
               'coverage_complete':evidence['coverage_complete'],'evidence_consistent':evidence['evidence_consistent'],
               'source_directory':str(directory.resolve()),'plots_requested':plots,
@@ -259,8 +284,7 @@ def report(directory,output,*,plots=True):
            '| Outcome | Cells |','| --- | ---: |',*[f'| {k} | {v} |' for k,v in sorted(counts.items())],'',
            '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records RustSHT/DUCC and SHTns/DUCC ratios and absolute latency excess in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','',
            'For secondary workloads, accuracy entries distinguish base A/S gates from requested derivative synthesis and adjoint identity checks. Adjoint scaled residuals are separate from relative L2 synthesis errors.','']
-    for name in figures:
-        lines.append(f'[![{name}]({name})]({name})\n')
+    lines.extend(gallery_lines)
     (output/'README.md').write_text('\n'.join(lines)+'\n')
     return manifest
 
