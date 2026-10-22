@@ -74,11 +74,29 @@ def collect_for_report(directory,output,*,cell_paths=None):
                     metric=dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],
                                 **r['workload'],threads=r['threads_requested'],round=r['round'],
                                 fixture=fixture['name'],stage=stage,passed=fixture['passed'],**fixture[stage])
+                    if r['workload']['operation'] not in ('analysis','synthesis'):
+                        metric['validation_scope']='base_analysis_synthesis'
                     if not first_metric:accuracy.write(',\n')
                     json.dump(metric,accuracy,allow_nan=False)
                     first_metric=False
-                    if stage!='synthesis' and r['status']=='timed_successfully':
+                    if r['status']=='timed_successfully':
                         maximum_error=max(maximum_error,fixture[stage]['relative_l2'])
+            operation=r.get('operation_validation',{})
+            if operation:
+                identity=dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],
+                              **r['workload'],threads=r['threads_requested'],round=r['round'],
+                              fixture='random-triangular',passed=operation['passed'],validation_scope='requested_operation',
+                              tolerance=operation['tolerance'])
+                if 'independent_synthesis' in operation:
+                    metric=dict(**identity,stage='requested_derivative_synthesis',**operation['independent_synthesis'])
+                    if r['status']=='timed_successfully':
+                        maximum_error=max(maximum_error,operation['independent_synthesis']['relative_l2'])
+                else:
+                    metric=dict(**identity,stage='requested_adjoint_identity',
+                                **{key:operation[key] for key in ('adjoint_lhs','adjoint_rhs','scaled_residual')})
+                if not first_metric:accuracy.write(',\n')
+                json.dump(metric,accuracy,allow_nan=False)
+                first_metric=False
             if r['status']=='timed_successfully':
                 compact={key:r[key] for key in fields if key in r}
                 compact['maximum_validation_relative_l2']=maximum_error
@@ -239,7 +257,8 @@ def report(directory,output,*,plots=True):
     lines=['# Source benchmark results','',f'{recorded} recorded outcomes of {expected}; {pending} pending. {len(valid)} timed after numerical validation.','',
            'Measurements are provisional on a shared host. Ratios pair the same grid, bandwidth, precision, allocation, operation, thread request, and process round.','',
            '| Outcome | Cells |','| --- | ---: |',*[f'| {k} | {v} |' for k,v in sorted(counts.items())],'',
-           '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records RustSHT/DUCC and SHTns/DUCC ratios and absolute latency excess in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','']
+           '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records RustSHT/DUCC and SHTns/DUCC ratios and absolute latency excess in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','',
+           'For secondary workloads, accuracy entries distinguish base A/S gates from requested derivative synthesis and adjoint identity checks. Adjoint scaled residuals are separate from relative L2 synthesis errors.','']
     for name in figures:
         lines.append(f'[![{name}]({name})]({name})\n')
     (output/'README.md').write_text('\n'.join(lines)+'\n')

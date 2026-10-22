@@ -143,6 +143,98 @@ def test_report_streams_compact_rows_and_reuses_audited_file_snapshot(monkeypatc
     assert not {"validation", "samples_s", "environment", "traceback"} & compact[0].keys()
 
 
+def test_source_report_exports_requested_derivative_and_adjoint_validation(tmp_path):
+    run = tmp_path / "run"
+    cells = run / "cells"
+    cells.mkdir(parents=True)
+    output = tmp_path / "tables"
+    output.mkdir()
+    build_manifest = tmp_path / "build-manifest.json"
+    build_manifest.write_text("{}\n")
+    build_hash = hashlib.sha256(build_manifest.read_bytes()).hexdigest()
+
+    cases = (
+        ("gradient-valid", "gradient", "timed_successfully", {
+            "passed": True,
+            "tolerance": 2e-10,
+            "independent_synthesis": {
+                "relative_l2": 2e-12, "max_absolute": 3e-12, "scaled_error": 4e-12,
+            },
+        }),
+        ("gradient-failed", "gradient", "numerical_validation_failed", {
+            "passed": False,
+            "tolerance": 2e-10,
+            "independent_synthesis": {
+                "relative_l2": 3e-5, "max_absolute": 2e-5, "scaled_error": 1e-5,
+            },
+        }),
+        ("adjoint-valid", "adjoint_analysis", "timed_successfully", {
+            "passed": True, "tolerance": 2e-10,
+            "adjoint_lhs": 1.25, "adjoint_rhs": 1.25 + 1e-12,
+            "scaled_residual": 4e-13,
+        }),
+        ("adjoint-failed", "adjoint_synthesis", "numerical_validation_failed", {
+            "passed": False, "tolerance": 2e-10,
+            "adjoint_lhs": 1.0, "adjoint_rhs": 1.5, "scaled_residual": 1/3,
+        }),
+    )
+    for index, (cell_id, operation, status, operation_validation) in enumerate(cases):
+        workload = Workload(
+            "GL", 8, 12, 1, 1, operation=operation,
+        ).record()
+        workload["lmax"] = 1
+        fixture = {
+            "name": "random-triangular", "passed": True, "dtype_passed": True,
+            "synthesis": {**_metrics(), "relative_l2": 1e-15},
+            "full_grid_synthesis": {**_metrics(), "relative_l2": 8e-15},
+            "common_reference_analysis": {**_metrics(), "relative_l2": 4e-15},
+            "coefficient_recovery": {**_metrics(), "relative_l2": 2e-15},
+            "map_roundtrip": {**_metrics(), "relative_l2": 6e-15},
+        }
+        row = {
+            "id": cell_id, "backend": "rustsht", "source_sha": "rustsht-main-sha",
+            "build_mode": "git-source", "workload": workload,
+            "threads_requested": 1, "round": index % 3, "status": status,
+            "build_manifest": str(build_manifest), "build_manifest_sha256": build_hash,
+            "harness_sha256": "test-harness-sha", "validation": {"fixtures": [fixture]},
+            "operation_validation": operation_validation,
+            "median_s": 1e-4, "p10_s": 9e-5, "p90_s": 1.1e-4,
+            "setup_s": 1e-3, "setup_policy": "setup", "planning_policy": "native plan",
+            "operation_prepare_s": 1e-5, "first_synthesis_s": 1e-4,
+            "first_analysis_s": 1e-4, "peak_rss_bytes": 1_000_000,
+        }
+        (cells / f"{cell_id}.json").write_text(json.dumps(row) + "\n")
+
+    compact, counts, recorded, _, _, _ = source_report.collect_for_report(run, output)
+    accuracy = json.loads((output / "accuracy.json").read_text())
+    outcomes = {row["id"]: row for row in csv.DictReader((output / "outcomes.csv").open())}
+    requested = {row["id"]: row for row in accuracy if row["validation_scope"] == "requested_operation"}
+    base = [row for row in accuracy if row.get("validation_scope") == "base_analysis_synthesis"]
+    compact_by_id = {row["id"]: row for row in compact}
+
+    assert recorded == 4
+    assert counts == {"timed_successfully": 2, "numerical_validation_failed": 2}
+    assert len(base) == 4 * 5
+    assert all(row["stage"] != "requested_adjoint_identity" for row in base)
+    assert requested["gradient-valid"]["stage"] == "requested_derivative_synthesis"
+    assert requested["gradient-valid"]["passed"] is True
+    assert requested["gradient-valid"]["relative_l2"] == 2e-12
+    assert requested["gradient-failed"]["stage"] == "requested_derivative_synthesis"
+    assert requested["gradient-failed"]["passed"] is False
+    assert requested["gradient-failed"]["relative_l2"] == 3e-5
+    assert requested["adjoint-valid"]["stage"] == "requested_adjoint_identity"
+    assert requested["adjoint-valid"]["passed"] is True
+    assert requested["adjoint-valid"]["scaled_residual"] == 4e-13
+    assert "relative_l2" not in requested["adjoint-valid"]
+    assert requested["adjoint-failed"]["stage"] == "requested_adjoint_identity"
+    assert requested["adjoint-failed"]["passed"] is False
+    assert requested["adjoint-failed"]["scaled_residual"] == 1/3
+    assert compact_by_id["gradient-valid"]["maximum_validation_relative_l2"] == 2e-12
+    assert compact_by_id["adjoint-valid"]["maximum_validation_relative_l2"] == 8e-15
+    assert outcomes["gradient-failed"]["status"] == "numerical_validation_failed"
+    assert outcomes["adjoint-failed"]["status"] == "numerical_validation_failed"
+
+
 def test_report_uses_fixed_backend_colors_and_separate_build_styles():
     assert source_report.COLORS == {name: BACKEND_COLORS[name] for name in ("ducc", "shtns", "rustsht", "pyspharm")}
     assert source_report.LINE_STYLES == {"git-source": "--", "published-wheel": "-"}

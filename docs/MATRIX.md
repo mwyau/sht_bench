@@ -263,6 +263,12 @@ the exact number of pending cells. Coverage refers to the stored run plan.
 Audit and export share one file snapshot. Accuracy and outcome records are
 streamed to disk; plot processing retains compact successful-case metadata
 instead of every raw fixture payload.
+For secondary workloads, accuracy records distinguish base A/S fixtures from
+the requested derivative synthesis or adjoint identity. Derivative checks use
+the independent harmonic reference at sampled grid nodes; adjoint checks retain
+both inner products and their scaled residual. Error-versus-latency plots use
+the maximum relative L2 across base fixtures and requested derivative checks;
+adjoint identity residuals remain separate quantities in the accuracy records.
 
 Report facets distinguish longitude parity and origin as well as grid, spin,
 precision, order, allocation and batch size. Error-versus-latency points identify
