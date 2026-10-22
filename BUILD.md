@@ -216,6 +216,7 @@ linked libraries, dependency freezes and available CPU/FFTW configuration.
 
 Native build logs use verbose package-build output. Generated DUCC CMake/Ninja
 rules, SHTns configure logs and Makefile flags, and RustSHT Cargo lock/profile
-inputs and available release fingerprints are archived under `build-metadata/`
-with SHA256 hashes. These files describe effective build settings in addition
-to the caller's compiler environment.
+inputs and available RustSHT and Pulp release fingerprints are archived under
+`build-metadata/` with SHA256 hashes. These files describe effective build
+settings in addition to the caller's compiler environment. Dependency feature
+flags and host CPU capabilities are recorded separately.

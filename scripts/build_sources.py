@@ -21,7 +21,9 @@ def collect_build_files(source: Path, backend: str, output: Path) -> list[dict]:
         'shtns': ('Makefile', 'config.log', 'config.status', 'sht_config.h'),
         'rustsht': ('Cargo.lock', 'Cargo.toml', 'python/Cargo.toml',
                     'target/release/.fingerprint/rustsht*/lib-*.json',
-                    'python/target/release/.fingerprint/rustsht*/lib-*.json'),
+                    'python/target/release/.fingerprint/rustsht*/lib-*.json',
+                    'target/release/.fingerprint/pulp-*/lib-pulp.json',
+                    'python/target/release/.fingerprint/pulp-*/lib-pulp.json'),
     }
     artifacts = []
     for pattern in patterns.get(backend, ()):
