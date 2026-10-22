@@ -14,6 +14,32 @@ from sht_bench.sources import checkout, git
 MODULES = {'ducc': 'ducc0', 'shtns': 'shtns', 'rustsht': 'rustsht', 'pyspharm': 'spharm'}
 
 
+def collect_build_files(source: Path, backend: str, output: Path) -> list[dict]:
+    """Archive generated compiler/linker rules and Cargo dependency/profile inputs."""
+    patterns = {
+        'ducc': ('build/*/CMakeCache.txt', 'build/*/build.ninja', 'build/*/compile_commands.json'),
+        'shtns': ('Makefile', 'config.log', 'config.status', 'sht_config.h'),
+        'rustsht': ('Cargo.lock', 'Cargo.toml', 'python/Cargo.toml',
+                    'target/release/.fingerprint/rustsht*/lib-*.json',
+                    'python/target/release/.fingerprint/rustsht*/lib-*.json'),
+    }
+    artifacts = []
+    for pattern in patterns.get(backend, ()):
+        for path in sorted(source.glob(pattern)):
+            if not path.is_file():
+                continue
+            relative = path.relative_to(source)
+            destination = output / 'build-metadata' / backend / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            data = path.read_bytes()
+            if destination.exists() and destination.read_bytes() != data:
+                raise ValueError(f'compiler metadata already exists with different contents: {destination}')
+            destination.write_bytes(data)
+            artifacts.append({'source_path':str(path), 'file':str(destination.resolve()),
+                              'sha256':hashlib.sha256(data).hexdigest()})
+    return artifacts
+
+
 def run(command, *, env, log):
     log.write('+ ' + ' '.join(map(str, command)) + '\n')
     log.flush()
@@ -44,7 +70,7 @@ def main(argv=None):
     env.setdefault('RUSTFLAGS', '-C target-cpu=native')
     env.setdefault('DUCC0_OPTIMIZATION', 'native')
     manifest = {'schema': 1, 'sources': sources, 'builds': {}, 'compiler_environment': {
-        k: env.get(k) for k in ('CC', 'CXX', 'FC', 'CFLAGS', 'CXXFLAGS', 'FFLAGS', 'LDFLAGS', 'RUSTFLAGS', 'DUCC0_OPTIMIZATION')},
+        k: env.get(k) for k in ('CC', 'CXX', 'FC', 'CFLAGS', 'CXXFLAGS', 'FFLAGS', 'LDFLAGS', 'RUSTFLAGS', 'DUCC0_OPTIMIZATION', 'CMAKE_ARGS', 'CARGO_BUILD_TARGET')},
         'compilers': {}}
     for name, command in [('cpu', ['lscpu']), ('fftw_version', ['pkg-config', '--modversion', 'fftw3']),
                           ('fftw_flags', ['pkg-config', '--cflags', '--libs', 'fftw3'])]:
@@ -78,7 +104,9 @@ def main(argv=None):
                         raise ValueError('source changed after acquisition')
                     build.update(sources['sources'][backend])
                     build['build_kind'] = 'git-source'
-                    run(['uv', 'pip', 'install', '--python', python, '--no-cache', str(path)], env=env, log=log)
+                    command = ['uv', 'pip', 'install', '--verbose', '--python', python, '--no-cache', str(path)]
+                    build['build_command'] = list(map(str,command))
+                    run(command, env=env, log=log)
                 # Run outside the checkout with no PYTHONPATH. Hash imported extensions and inspect linkage.
                 probe = '''import importlib,json,hashlib,pathlib,sys,subprocess,importlib.metadata as md,io,contextlib
 banner=io.StringIO()
@@ -87,7 +115,7 @@ with contextlib.redirect_stdout(banner):
 p=pathlib.Path(m.__file__).resolve()
 dist=md.distribution(sys.argv[2])
 files=[pathlib.Path(dist.locate_file(f)).resolve() for f in dist.files if str(f).endswith(('.so','.pyd'))]
-print(json.dumps({'import_banner':banner.getvalue(),'module_path':str(p),'python':sys.version,'numpy':md.version('numpy'),'binaries':[{'path':str(f),'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),'ldd':subprocess.run(['ldd',str(f)],capture_output=True,text=True).stdout} for f in files],'direct_url':[(d.metadata['Name'],d.read_text('direct_url.json')) for d in md.distributions() if d.read_text('direct_url.json')]}))'''
+print(json.dumps({'import_banner':banner.getvalue(),'module_path':str(p),'python':sys.version,'numpy':md.version('numpy'),'distribution_name':dist.metadata['Name'],'distribution_version':dist.version,'wheel_metadata':dist.read_text('WHEEL'),'installer':dist.read_text('INSTALLER'),'binaries':[{'path':str(f),'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),'ldd':subprocess.run(['ldd',str(f)],capture_output=True,text=True).stdout} for f in files],'direct_url':[(d.metadata['Name'],d.read_text('direct_url.json')) for d in md.distributions() if d.read_text('direct_url.json')]}))'''
                 probe_env = env.copy()
                 probe_env.pop('PYTHONPATH', None)
                 distribution = {'ducc':'ducc0','shtns':'shtns','rustsht':'rustsht','pyspharm':'pyspharm-syl'}[backend]
@@ -105,6 +133,7 @@ print(json.dumps({'import_banner':banner.getvalue(),'module_path':str(p),'python
                 if backend != 'pyspharm':
                     build['tracked_source_changes_after_build'] = git(path, 'diff', '--stat', 'HEAD')
                     build['submodules'] = git(path, 'submodule', 'status', '--recursive')
+                    build['compiler_metadata_files'] = collect_build_files(path,backend,args.output)
                     if build['tracked_source_changes_after_build']:
                         raise ValueError('build modified tracked upstream sources')
             except (subprocess.SubprocessError, OSError, ValueError) as exc:

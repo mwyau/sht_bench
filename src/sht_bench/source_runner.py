@@ -5,6 +5,7 @@ import argparse
 from dataclasses import replace
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import resource
@@ -12,7 +13,7 @@ import subprocess
 import sys
 import time
 
-from .source_adapters import Workload, Adapter, Unsupported, capability, fixtures
+from .source_adapters import Workload, Adapter, Unsupported, capability, fixtures, PLANNING_POLICIES
 from .source_validation import validate,validate_operation,reference_map
 
 DEGREES = [1,4,16,31,32,42,63,64,65,85,127,128,159,255,256,319,511,639,720,1023,1279]
@@ -73,8 +74,10 @@ def write_json(path,data):
 
 
 def harness_hash():
-    from bench_common import timing
-    paths = [Path(__file__),Path(__file__).with_name('source_adapters.py'),Path(__file__).with_name('source_validation.py'),Path(timing.__file__)]
+    from bench_common import timing,environment
+    paths = [Path(__file__),*[Path(__file__).with_name(name) for name in
+             ('source_adapters.py','source_validation.py','source_batch.py','source_resources.py','grids.py')],
+             Path(timing.__file__),Path(environment.__file__)]
     return hashlib.sha256(b''.join(p.read_bytes() for p in paths)).hexdigest()
 
 
@@ -109,6 +112,8 @@ def worker(args):
         t = time.perf_counter()
         importlib.import_module({'ducc':'ducc0','rustsht':'rustsht','shtns':'shtns','pyspharm':'spharm'}[task['backend']])
         result['module_import_s'] = time.perf_counter()-t
+        from .source_resources import apply_address_space_limit
+        result['allocation_limit'] = apply_address_space_limit(task.get('resource_preflight',{}).get('memory_budget_bytes'))
         result['rss_before_setup_bytes'] = resident_bytes()
         t = time.perf_counter()
         adapter = Adapter(task['backend'],w,q)
@@ -117,18 +122,31 @@ def worker(args):
         result['setup_s'] = time.perf_counter()-t
         result['rss_after_setup_bytes'] = resident_bytes()
         result['persistent_state_note'] = 'resident process delta after constructor/grid setup; native plan allocation is not separately queryable'
-        result['setup_policy'] = 'constructor/grid/plan combined; public reusable-plan API does not expose separate planning timing'
+        result['setup_policy'] = adapter.setup_policy
+        result['setup_components_s'] = adapter.setup_components_s
+        result['native_setup_s'] = adapter.native_setup_s
+        result['native_api'] = adapter.native_api
+        result['native_conventions'] = adapter.native_conventions
+        if w.batch>1 and task['backend']=='ducc':
+            result['batch_validation_policy'] = 'native batched synthesis; independent per-field analysis_2d calls only for validation, outside timing'
         result['threads_effective'] = adapter.effective_threads
         result['thread_control'] = adapter.thread_control
         result['import_path'] = adapter.module.__file__
         a = next(fixtures(w))[1]
         native = adapter.encode(a)
+        first_synthesis = adapter.operation(native,None,operation='synthesis')
         t = time.perf_counter()
-        m = np.asarray(adapter.synthesis(native))
+        first_map = first_synthesis()
         result['first_synthesis_s'] = time.perf_counter()-t
+        m = adapter.canonical_synthesis_output(first_map)
+        first_analysis = adapter.operation(native,m,operation='analysis')
         t = time.perf_counter()
-        adapter.analysis(m)
+        first_analysis()
         result['first_analysis_s'] = time.perf_counter()-t
+        result['first_call_policy'] = 'native allocating A/S calls; argument preparation and canonical output conversion outside timing'
+        if w.batch>1 and task['backend']=='ducc':
+            result['first_call_policy'] += '; first_analysis_s is a validation-only loop of individual analysis_2d calls, not native batch analysis'
+        del first_map,first_synthesis,first_analysis
         result['validation'] = validate(adapter)
         if result['validation']['status'] != 'supported_and_validated':
             result['status'] = 'numerical_validation_failed'
@@ -140,7 +158,7 @@ def worker(args):
             t = time.perf_counter()
             fn = adapter.operation(native,m,output)
             result['operation_prepare_s'] = time.perf_counter()-t
-            result['operation_prepare_policy'] = 'native input/output preparation; Rust gradient additionally constructs a spin-1 plan outside timing'
+            result['operation_prepare_policy'] = 'native input/output preparation; Rust gradient constructs a spin-1 plan and removes the mathematically zero constant-gradient coefficient outside timing'
             if w.operation not in ('analysis','synthesis'):
                 t = time.perf_counter()
                 fn()
@@ -171,7 +189,7 @@ def worker(args):
     except Unsupported as exc:
         result.update(status='unsupported',reason=str(exc))
     except MemoryError as exc:
-        result.update(status='resource_limited',reason=str(exc))
+        result.update(status='resource_limited',reason=str(exc) or 'worker allocation failed (MemoryError); see recorded memory observation and address-space limit')
     except (Exception,) as exc:
         import traceback
         result.update(status='execution_failed',reason=str(exc),traceback=traceback.format_exc())
@@ -196,6 +214,7 @@ def main(argv=None):
     parser.add_argument('--repeat',type=int,default=30)
     parser.add_argument('--min-time',type=float,default=.02)
     parser.add_argument('--timeout',type=float,default=600)
+    parser.add_argument('--memory-limit-gib',type=float,help='cap additional worker virtual allocations; automatic observed available memory is also recorded and bounds this cap')
     parser.add_argument('--smoke',action='store_true')
     parser.add_argument('--resume',action='store_true')
     parser.add_argument('--secondary',action='store_true')
@@ -204,7 +223,23 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.task: return worker(args)
     if not args.output or not args.build_manifest: parser.error('--output and --build-manifest required')
-    if args.rounds<1 or args.repeat<1 or args.min_time<=0: parser.error('positive rounds/repeat/min-time required')
+    if args.rounds<1 or args.repeat<1 or not math.isfinite(args.min_time) or args.min_time<=0 or not math.isfinite(args.timeout) or args.timeout<=0:
+        parser.error('positive rounds/repeat and finite positive min-time/timeout required')
+    if args.memory_limit_gib is not None and (not math.isfinite(args.memory_limit_gib) or args.memory_limit_gib<=0):
+        parser.error('--memory-limit-gib must be finite and positive')
+    if args.memory_limit_gib is not None and not 1/2**30 <= args.memory_limit_gib <= sys.maxsize/2**30:
+        parser.error('--memory-limit-gib must represent between one byte and the platform address-space bound')
+    memory_limit_bytes = None if args.memory_limit_gib is None else int(args.memory_limit_gib*2**30)
+    try:
+        requested_degrees = [int(value) for value in args.degrees.split(',')]
+        requested_threads = [int(value) for value in args.threads.split(',')]
+    except ValueError:
+        parser.error('degrees and threads must be comma-separated integers')
+    if any(value<1 for value in requested_degrees+requested_threads) or len(set(requested_degrees))!=len(requested_degrees) or len(set(requested_threads))!=len(requested_threads):
+        parser.error('degrees and threads must contain unique positive integers')
+    requested_backends = args.backends.split(',')
+    if len(set(requested_backends))!=len(requested_backends) or set(requested_backends)-set(PLANNING_POLICIES):
+        parser.error('backends must contain unique supported names')
     if args.output.exists() and any(args.output.iterdir()) and not args.resume:
         parser.error('output exists; choose a new directory or --resume')
     args.output.mkdir(parents=True,exist_ok=True)
@@ -216,12 +251,12 @@ def main(argv=None):
     run_config = {'build_manifest_sha256':build_hash,'harness_sha256':code_hash,
                   'degrees':args.degrees,'threads':args.threads,'backends':args.backends,
                   'rounds':args.rounds,'repeat':args.repeat,'min_time':args.min_time,
-                  'timeout':args.timeout,'smoke':args.smoke,'secondary':args.secondary}
+                  'timeout':args.timeout,'smoke':args.smoke,'secondary':args.secondary,'memory_limit_bytes':memory_limit_bytes}
     config_path = args.output/'run-config.json'
     if config_path.exists() and json.loads(config_path.read_text()) != run_config:
         raise ValueError('incompatible resume configuration or changed build/harness')
     write_json(config_path,run_config)
-    # A host-wide advisory lock serializes benchmark controllers across outputs.
+    # A repository-wide advisory lock serializes benchmark controllers across outputs.
     import fcntl
     lock_path = Path('.builds/benchmark.lock')
     lock_path.parent.mkdir(exist_ok=True)
@@ -243,7 +278,9 @@ def main(argv=None):
     if args.secondary:
         configs += [replace(w,operation=op) for w in list(configs) for op in ('adjoint_analysis','adjoint_synthesis','gradient','deriv1') if w.spin==0 or op.startswith('adjoint')]
         configs += [replace(w,batch=4) for w in list(configs) if w.operation in ('analysis','synthesis')]
-        configs += [replace(w,phi0=.37,nlon=w.nlon+1) for w in list(configs) if w.batch==1 and w.operation=='synthesis']
+        configs += [replace(w,phi0=origin,nlon=w.nlon+delta) for w in list(configs)
+                    if w.batch==1 and w.operation=='synthesis'
+                    for delta,origin in ((1,0.0),(0,.37),(1,.37))]
     write_json(args.output/'workload-plan.json',{'workloads':[w.record() for w in configs],
                'backends':backends,'threads':qs,'rounds':args.rounds,
                'operation_expansion':'synthesis entries expand to analysis and synthesis; every entry expands to allocating and preallocated'})
@@ -265,8 +302,8 @@ def main(argv=None):
                             task = dict(id=key,backend=backend,workload=w.record(),threads_requested=q,round=round_index,
                                         source_sha=sha,build_mode=b.get('build_kind'),build_manifest=str(args.build_manifest.resolve()),
                                         build_manifest_sha256=build_hash,harness_sha256=code_hash,expected_import_path=b.get('module_path'),
-                                        repeat=args.repeat,min_time=args.min_time,coefficient_layout='m-major packed; orthonormal; CS phase',
-                                        planning_policy='reusable plan outside timing; DUCC public 2d call',allocation_policy=allocation)
+                                        repeat=args.repeat,min_time=args.min_time,coefficient_layout='canonical m-major packed; orthonormal; CS phase; real-field positive-order factor two',
+                                        planning_policy=PLANNING_POLICIES[backend],allocation_policy=allocation)
                             ledger.append({'id':key,'file':str(path.relative_to(args.output))})
                             if args.resume and path.exists():
                                 previous=json.loads(path.read_text())
@@ -282,6 +319,12 @@ def main(argv=None):
                                 continue
                             if b['status'] != 'built':
                                 write_json(path,{**task,'status':b['status'],'reason':b.get('error','backend unavailable')})
+                                continue
+                            from .source_resources import preflight
+                            admission = preflight(backend,w,limit_bytes=memory_limit_bytes)
+                            task['resource_preflight'] = admission
+                            if admission['resource_limited']:
+                                write_json(path,{**task,'status':'resource_limited','reason':admission['reason']})
                                 continue
                             taskfile = args.output/'task.json'
                             write_json(taskfile,task)

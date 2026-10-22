@@ -21,7 +21,15 @@ def git(path: Path, *args: str) -> str:
 def checkout(root: Path, lock: Path, mode: str = "latest", refs: dict | None = None) -> dict:
     """Fetch selected refs or reproduce a lock; reject dirty or foreign checkouts."""
     refs = refs or {}
+    if mode not in ('latest','locked'):
+        raise ValueError('mode must be latest or locked')
+    if mode=='latest' and lock.exists():
+        raise ValueError('source lock already exists; use locked mode or a new lock path')
+    if set(refs)-set(SOURCES):
+        raise ValueError('unknown backend ref override')
     previous = json.loads(lock.read_text()) if mode == "locked" else None
+    if previous is not None and (previous.get('schema')!=1 or set(previous.get('sources',{}))!=set(SOURCES)):
+        raise ValueError('incompatible source lock schema or backend set')
     result = {"schema": 1, "sources": {}}
     root.mkdir(parents=True, exist_ok=True)
     for name, (origin, default_ref) in SOURCES.items():
@@ -39,7 +47,7 @@ def checkout(root: Path, lock: Path, mode: str = "latest", refs: dict | None = N
             subprocess.run(["git", "clone", origin, str(path)], check=True)
         if git(path, "remote", "get-url", "origin") != origin:
             raise ValueError(f"{name}: unexpected checkout origin")
-        if not created and git(path, "status", "--porcelain", "--untracked-files=no"):
+        if not created and git(path, "status", "--porcelain", "--untracked-files=no", "--ignore-submodules=none"):
             raise ValueError(f"{name}: modified source checkout")
         target = entry["sha"] if entry else ref
         subprocess.run(["git", "-C", str(path), "fetch", "origin", target], check=True)
@@ -48,6 +56,8 @@ def checkout(root: Path, lock: Path, mode: str = "latest", refs: dict | None = N
             raise ValueError(f"{name}: locked SHA mismatch")
         subprocess.run(["git", "-C", str(path), "checkout", "--detach", sha], check=True)
         subprocess.run(["git", "-C", str(path), "submodule", "update", "--init", "--recursive"], check=True)
+        if git(path, "status", "--porcelain", "--untracked-files=no", "--ignore-submodules=none"):
+            raise ValueError(f"{name}: modified source or submodule after checkout")
         result["sources"][name] = {"origin": origin, "ref": ref, "sha": sha}
     if previous and result != previous:
         raise ValueError("source lock changed")

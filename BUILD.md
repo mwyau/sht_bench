@@ -95,7 +95,7 @@ sudo apt-get install build-essential gfortran libfftw3-dev
 
 Build runs store package source and revision information together with available compiler-related environment variables. Environment provenance records the operating system, machine architecture, requested backend set, unavailable wheels, and build failures. Matrix timing records contain `build_mode`, which keeps binary-package and source-build measurements separate during plotting.
 
-The recorded build metadata do not yet include compiler version strings, linked FFT/BLAS/LAPACK libraries, CPU instruction-set selection, or the complete compiler and linker command lines. These omissions should be considered when comparing source-build results across systems.
+The historical matrix metadata omit compiler version strings, linked FFT/BLAS/LAPACK libraries, CPU instruction-set selection, and complete compiler/linker command lines. The Git source workflow described below records compiler versions, native linkage, CPU configuration, and available generated build rules separately.
 
 ## Direct torch-harmonics comparison environment
 
@@ -210,5 +210,12 @@ must also be compared using the two build manifests. It does not by itself
 promise bitwise binary reproducibility. Checkouts in `.sources/`, isolated
 environments, logs, native binaries and generated measurements are untracked.
 `build-manifest.json` records compiler versions, flags, source origin/ref/SHA,
-Python and NumPy versions, verified import locations, binary SHA256 hashes,
+Python and NumPy versions, installed distribution versions, wheel tags and
+installer metadata, verified import locations, binary SHA256 hashes,
 linked libraries, dependency freezes and available CPU/FFTW configuration.
+
+Native build logs use verbose package-build output. Generated DUCC CMake/Ninja
+rules, SHTns configure logs and Makefile flags, and RustSHT Cargo lock/profile
+inputs and available release fingerprints are archived under `build-metadata/`
+with SHA256 hashes. These files describe effective build settings in addition
+to the caller's compiler environment.

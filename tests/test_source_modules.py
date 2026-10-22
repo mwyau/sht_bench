@@ -194,6 +194,37 @@ def test_workload_and_backend_capability_reasons_are_explicit():
         Adapter("pyspharm", replace(scalar, precision="float64"), 1)
 
 
+def test_rust_gradient_zeros_constant_mode_in_private_copy(monkeypatch):
+    from sht_bench import source_adapters
+
+    calls = []
+
+    class FakePlan:
+        def __init__(self, grid, nlat, nlon, lmax, mmax, *, spin, phi0):
+            self.spin = spin
+
+        def synthesis_gradient(self, coeff):
+            calls.append((self.spin, coeff.copy()))
+            if coeff[0, 0] != 0:
+                raise ValueError("spin-1 coefficient cannot contain the scalar constant mode")
+            return coeff.copy()
+
+    fake_module = types.SimpleNamespace(ShtPlan=FakePlan)
+    monkeypatch.setattr(source_adapters.importlib, "import_module", lambda name: fake_module)
+    w = Workload("GL", 5, 7, 2, 2, operation="gradient")
+    adapter = Adapter("rustsht", w, 1)
+    coefficients = np.ones((1, w.size), dtype=np.complex128)
+    coefficients[0, 0] = 2.5
+    original = coefficients.copy()
+    result = adapter.operation(coefficients, np.zeros((1, w.nlat, w.nlon)), operation="gradient")()
+
+    assert calls[0][0] == 1
+    np.testing.assert_array_equal(calls[0][1][:, 0], 0)
+    np.testing.assert_array_equal(calls[0][1][:, 1:], -original[:, 1:])
+    np.testing.assert_array_equal(result, calls[0][1])
+    np.testing.assert_array_equal(coefficients, original)
+
+
 def _git(path: Path, *args):
     return subprocess.run(["git", "-C", str(path), *args], check=True, text=True, capture_output=True).stdout.strip()
 
@@ -240,6 +271,12 @@ def test_worker_keeps_setup_validation_and_first_calls_out_of_timing(tmp_path, m
             self.module = types.SimpleNamespace(__file__="/tmp/source-backend.py")
             self.effective_threads = None
             self.thread_control = "test adapter"
+            self.setup_policy = "test setup policy"
+            self.setup_components_s = {"native_constructor": 0.001}
+            self.native_setup_s = 0.001
+            self.native_api = "test native API"
+            self.native_conventions = {"conversion": "identity"}
+            self.planning_policy = "test planning policy"
 
         def encode(self, a):
             return a
@@ -252,7 +289,14 @@ def test_worker_keeps_setup_validation_and_first_calls_out_of_timing(tmp_path, m
             events.append("first_analysis")
             return np.zeros((1, self.w.size), dtype=np.complex128)
 
-        def operation(self, a, m, out):
+        def canonical_synthesis_output(self, result):
+            return np.asarray(result)
+
+        def operation(self, a, m, out=None, *, operation=None):
+            events.append("operation_prepare")
+            selected = operation or self.w.operation
+            if selected == "analysis":
+                return lambda: self.analysis(m)
             return lambda: self.synthesis(a)
 
     monkeypatch.setattr(source_runner, "Adapter", TimedAdapter)

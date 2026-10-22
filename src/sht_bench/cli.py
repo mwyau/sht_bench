@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING, Any, Iterable
 
 from bench_common.environment import collect_environment
 from bench_common.timing import measure
+from .colors import BACKEND_COLORS
 
 from .grids import (
     ATMOSPHERIC_GL_GRIDS,
@@ -54,12 +55,6 @@ UNSUPPORTED_BENCHMARK_CASES = {
 }
 CELL_RESULT_RE = re.compile(r"^(installed|wheel|source)-(gl|cc)-t\d+\.json$")
 
-BACKEND_COLORS = {
-    "ducc": "#1f77b4",
-    "shtns": "#ff7f0e",
-    "pyshtools": "#2ca02c",
-    "pyspharm": "#d62728",
-}
 BUILD_LINESTYLES = {
     "installed": "-",
     "wheel": "-",

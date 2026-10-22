@@ -7,7 +7,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass, asdict
 import importlib
+import time
 import numpy as np
+
+PLANNING_POLICIES = {
+    'rustsht':'reusable ShtPlan constructed outside timing; one-plan workspace serialized; Rayon intra-transform pool',
+    'ducc':'public DUCC transform call includes any API-internal setup/planning; no external reusable plan is exposed',
+    'shtns':'reusable SHTns state constructed/configured outside transform timing',
+    'pyspharm':'Spharmt legfunc=stored state constructed outside transform timing',
+}
 
 
 class Unsupported(ValueError):
@@ -94,13 +102,14 @@ def fixtures(w):
 def capability(backend, w):
     if backend not in ('ducc','rustsht','shtns','pyspharm'):
         return 'unknown backend'
-    if w.batch != 1 and backend!='pyspharm':
+    if w.batch != 1 and backend!='pyspharm' and not (backend=='ducc' and w.operation=='synthesis'):
         return 'selected reusable-plan / 2d API has no native batch dimension'
     if backend == 'pyspharm' and w.grid == 'F1':
         return 'no native F1 path'
     if backend in ('shtns','pyspharm') and w.phi0:
         return 'native longitude-origin control unavailable'
     if backend == 'pyspharm':
+        if w.nlat < 3 or w.nlon < 4: return 'Spherepack Spharmt requires nlat>=3 and nlon>=4'
         if w.precision != 'float32': return 'Spherepack published API uses float32/complex64'
         if w.mmax != w.lmax: return 'public API has full triangular truncation only'
         if w.allocation != 'allocating': return 'no public output-buffer API'
@@ -128,6 +137,10 @@ class Adapter:
         self.backend, self.w, self.threads = backend,w,threads
         self.effective_threads = None
         self.thread_control = 'not queryable'
+        self.setup_components_s = {}
+        self.native_setup_s = None
+        self.native_api = None
+        self.planning_policy = PLANNING_POLICIES[backend]
         self.module = importlib.import_module({'ducc':'ducc0','rustsht':'rustsht','shtns':'shtns','pyspharm':'spharm'}[backend])
         self.encode = lambda a: np.ascontiguousarray(a)
         self.decode = lambda a: np.asarray(a)
@@ -137,21 +150,45 @@ class Adapter:
                 if not hasattr(self.module._rustsht,'ShtPlan32'):
                     raise Unsupported('selected RustSHT revision does not expose ShtPlan32')
                 plan_type = self.module._rustsht.ShtPlan32
+            started = time.perf_counter()
             self.plan = plan_type(w.grid,w.nlat,w.nlon,w.lmax,w.mmax,spin=w.spin,phi0=w.phi0)
+            self.setup_components_s['native_constructor_grid_plan'] = time.perf_counter()-started
+            self.native_setup_s = self.setup_components_s['native_constructor_grid_plan']
+            self.setup_policy = 'public ShtPlan constructor includes grid and plan; no finer public split; lazy workspace may appear in first-call measurements'
+            self.native_api = plan_type.__name__
             self.thread_control = 'Rayon global pool; RAYON_NUM_THREADS set before import; effective count not exposed'
         elif backend == 'ducc':
+            self.setup_policy = 'no reusable public 2d plan; adapter metadata preparation measured separately'
+            self.native_api = 'ducc0.sht.*_2d'
+            if w.batch>1:
+                from .source_batch import DuccBatchSynthesis
+                started = time.perf_counter()
+                self.batch_plan = DuccBatchSynthesis(self.module,w,threads)
+                self.setup_components_s['batch_ring_coordinate_metadata'] = time.perf_counter()-started
+                self.native_api = 'ducc0.sht.synthesis native batch on explicit rings'
             self.thread_control = 'explicit per-call nthreads; effective worker count not exposed'
         elif backend == 'shtns':
             s = self.module
+            started = time.perf_counter()
             self.plan = s.sht(w.lmax,w.mmax,mres=1,norm=s.sht_orthonormal,nthreads=threads)
+            self.setup_components_s['native_constructor'] = time.perf_counter()-started
             flag={'GL':s.sht_gauss,'CC':s.sht_reg_poles,'F1':s.sht_reg_fast}[w.grid]
+            started = time.perf_counter()
             self.plan.set_grid(nlat=w.nlat,nphi=w.nlon,flags=flag|s.SHT_PHI_CONTIGUOUS,polar_opt=0.0)
+            self.setup_components_s['native_grid_precomputation'] = time.perf_counter()-started
+            self.native_setup_s = self.setup_components_s['native_constructor']+self.setup_components_s['native_grid_precomputation']
+            self.setup_policy = 'public sht constructor and set_grid/precomputation separately measured; independent coordinate checks excluded from native setup'
+            self.native_api = 'shtns.sht'
+            self.thread_control = 'explicit constructor nthreads; OMP_NUM_THREADS set before import; effective worker count not exposed'
+            started = time.perf_counter()
             if (self.plan.nlat,self.plan.nphi) != (w.nlat,w.nlon):
                 raise Unsupported('SHTns changed requested grid')
             theta = np.arccos(self.plan.cos_theta)
             from .source_validation import nodes
             if not np.allclose(theta,nodes(w),rtol=0,atol=1e-12):
                 raise Unsupported('SHTns latitude nodes differ from requested geometry')
+            self.setup_components_s['independent_coordinate_validation'] = time.perf_counter()-started
+            started = time.perf_counter()
             if w.spin:
                 degrees = np.array([l for l,m in indices(w)])
                 scale = np.sqrt(degrees*(degrees+1))
@@ -159,8 +196,16 @@ class Adapter:
                 self.factor = np.stack((-1/scale,1/scale))
                 self.encode = lambda a: np.ascontiguousarray(a*self.factor)
                 self.decode = lambda a: np.asarray(a)/self.factor
+            self.setup_components_s['coefficient_convention_preparation'] = time.perf_counter()-started
         elif backend == 'pyspharm':
+            started = time.perf_counter()
             self.plan = self.module.Spharmt(w.nlon,w.nlat,rsphere=1.0,gridtype='gaussian' if w.grid=='GL' else 'regular',legfunc='stored')
+            self.setup_components_s['native_constructor_grid_precomputation'] = time.perf_counter()-started
+            self.native_setup_s = self.setup_components_s['native_constructor_grid_precomputation']
+            self.setup_policy = 'public Spharmt constructor includes scalar/vector stored Legendre precomputation; no finer public split'
+            self.native_api = 'spharm.Spharmt'
+            self.thread_control = 'published Spherepack API has no thread-count argument/query; OMP_NUM_THREADS requested before import; native linkage recorded in build manifest'
+            started = time.perf_counter()
             # Spherepack uses no CS phase and Y00=1/sqrt(2).
             self.factor = np.array([(-1)**m / np.sqrt(2*np.pi) for l,m in indices(w)],dtype=np.float32)
             self.encode = lambda a: np.ascontiguousarray(a[0]*self.factor)
@@ -177,13 +222,22 @@ class Adapter:
                 else:
                     self.encode=lambda a: np.ascontiguousarray(a[:,0,:].T*self.factor[:,None])
                     self.decode=lambda a: np.asarray(a).T[:,None,:]/self.factor[None,None,:]
+            self.setup_components_s['coefficient_convention_preparation'] = time.perf_counter()-started
         if w.spin and backend in ('ducc','rustsht'):
             self.encode = lambda a: np.ascontiguousarray(-a)
             self.decode = lambda a: -np.asarray(a)
+        self.native_conventions = {
+            'canonical':'m-major packed complex positive orders; orthonormal; Condon–Shortley phase; real-field positive-order factor two; spin E is negative normalized scalar gradient',
+            'conversion':'identity for scalar; negate canonical E/B for native spin' if backend in ('ducc','rustsht') else
+                         ('scalar identity; spin S=-E/sqrt(l(l+1)), T=B/sqrt(l(l+1))' if backend=='shtns' else
+                          'scalar a_native=(-1)^m*a/sqrt(2*pi); spin additionally multiplies sqrt(l(l+1)) to divergence/vorticity, calls getuv(vorticity,divergence), maps (u,v) to (-v,u)'),
+            'conversion_timing':'coefficients, input component conversion and output buffers prepared outside transform timing; canonical output conversion is excluded from native first-call and warm timing',
+        }
 
     def synthesis(self,a,out=None):
         w = self.w
         if self.backend == 'ducc':
+            if w.batch>1:return self.batch_plan.synthesis(a,out)
             return self.module.sht.synthesis_2d(alm=a,spin=w.spin,lmax=w.lmax,mmax=w.mmax,geometry=w.grid,ntheta=w.nlat,nphi=w.nlon,phi0=w.phi0,nthreads=self.threads,**({'map':out} if out is not None else {}))
         if self.backend == 'rustsht':
             if out is None: return self.plan.synthesis(a)
@@ -205,6 +259,9 @@ class Adapter:
     def analysis(self,m,out=None):
         w = self.w
         if self.backend == 'ducc':
+            if w.batch>1:
+                if out is not None:raise Unsupported('native batched analysis output-buffer API unavailable')
+                return self.batch_plan.analysis_for_validation(m)
             return self.module.sht.analysis_2d(map=m,spin=w.spin,lmax=w.lmax,mmax=w.mmax,geometry=w.grid,phi0=w.phi0,nthreads=self.threads,**({'alm':out} if out is not None else {}))
         if self.backend == 'rustsht':
             if out is None: return self.plan.analysis(m)
@@ -223,8 +280,67 @@ class Adapter:
         field=np.moveaxis(m[:,0],0,-1) if w.batch>1 else m[0]
         return self.plan.grdtospec(field,ntrunc=w.lmax)
 
-    def operation(self,a,m,out=None):
-        op = self.w.operation
+    def canonical_synthesis_output(self,result):
+        """Convert a native allocating synthesis result outside native-call timing."""
+        w = self.w
+        if self.backend=='ducc' and w.batch>1:
+            return result.reshape(w.batch,w.components,w.nlat,w.nlon)
+        if self.backend=='shtns':
+            return np.asarray(result) if w.spin else result[None,:,:]
+        if self.backend=='pyspharm':
+            if w.spin:
+                u,v = result
+                result = np.stack((-v,u))
+                return np.moveaxis(result,-1,0) if w.batch>1 else result
+            return np.moveaxis(result,-1,0)[:,None,:,:] if w.batch>1 else result[None,:,:]
+        return np.asarray(result)
+
+    def operation(self,a,m,out=None,*,operation=None):
+        op = self.w.operation if operation is None else operation
+        if op in ('analysis','synthesis') and self.backend=='ducc':
+            w = self.w
+            if w.batch>1:
+                if op=='analysis':
+                    # Only a labelled first-call diagnostic / numerical gate.
+                    return lambda: self.batch_plan.analysis_for_validation(m)
+                native_fn = self.module.sht.synthesis
+                kwargs = dict(alm=a,spin=w.spin,lmax=w.lmax,mmax=w.mmax,nthreads=self.threads,**self.batch_plan.rings)
+                if out is None:return lambda: native_fn(**kwargs)
+                kwargs['map'] = out.reshape(w.batch,w.components,-1)
+            else:
+                kwargs = dict(spin=w.spin,lmax=w.lmax,mmax=w.mmax,geometry=w.grid,phi0=w.phi0,nthreads=self.threads)
+                if op=='synthesis':
+                    native_fn = self.module.sht.synthesis_2d
+                    kwargs.update(alm=a,ntheta=w.nlat,nphi=w.nlon)
+                    if out is not None:kwargs['map']=out
+                else:
+                    native_fn = self.module.sht.analysis_2d
+                    kwargs['map'] = m
+                    if out is not None:kwargs['alm']=out
+                if out is None:return lambda: native_fn(**kwargs)
+            def into():
+                native_fn(**kwargs)
+                return out
+            return into
+        if op in ('analysis','synthesis') and self.backend=='rustsht':
+            data = m if op=='analysis' else a
+            native_fn = getattr(self.plan,op if out is None else op+'_into')
+            if out is None:return lambda: native_fn(data)
+            def into():
+                native_fn(data,out)
+                return out
+            return into
+        if op in ('analysis','synthesis') and self.backend=='shtns' and out is not None:
+            if op=='synthesis':
+                native_fn = self.plan.SHsphtor_to_spat if self.w.spin else self.plan.SH_to_spat
+                args = (a[0],a[1],out[0],out[1]) if self.w.spin else (a[0],out[0])
+            else:
+                native_fn = self.plan.spat_to_SHsphtor if self.w.spin else self.plan.spat_to_SH
+                args = (m[0],m[1],out[0],out[1]) if self.w.spin else (m[0],out[0])
+            def into():
+                native_fn(*args)
+                return out
+            return into
         if self.backend=='pyspharm':
             if op in ('gradient','deriv1'):
                 scale=np.array([np.sqrt(l*(l+1)) if l else 1 for l,order in indices(self.w)],dtype=np.float32)
@@ -256,6 +372,10 @@ class Adapter:
             fn = getattr(plan,{'gradient':'synthesis_gradient','deriv1':'synthesis_deriv1'}.get(op,op))
             if op in ('gradient','deriv1'):
                 coeff = np.ascontiguousarray(-a)
+                if op=='gradient':
+                    # A scalar constant has zero gradient; spin-1 coefficients
+                    # cannot contain an l=0 mode. Preserve the caller's input.
+                    coeff[...,0] = 0
                 return lambda: fn(coeff)
             return lambda: fn(m if op == 'adjoint_synthesis' else a)
         w = self.w

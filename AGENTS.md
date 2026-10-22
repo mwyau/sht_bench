@@ -15,6 +15,22 @@
 
 ## Remaining methodological work
 
+The original smoke session 6632 completed with exit 0 and 7,296 recorded outcomes; its independent audit reported no missing cells or evidence issues. After byte-equal comparison against `.builds/harness-next/base/`, the staged adapter, runner and validation changes were applied to `src/sht_bench/`. Delegate tests and native probes of this updated harness to the existing Luna agent before starting a new sweep. The user prioritizes SHTns/DUCC/RustSHT testing and comparisons: preserve Spherepack failures, avoid repeated failing-grid retries and further deep Spherepack debugging.
+
+The Git source workflow's completion evidence is tracked in
+`plans/source-completion-checklist.md`. Active process handles and exact
+execution commands are in `results/source-20261022/main/execution-status.md`.
+Keep the running smoke's adapter, reference and timer files unchanged until its
+process is terminal; a status file alone does not prove process state.
+
+Before the full sweep, validate the applied source-method changes: independent
+longitude parity/origin controls; native DUCC batched synthesis with explicit
+unsupported batched analysis; separation of native constructor/grid setup from
+coordinate verification; cached independent GL nodes; backend-specific planning
+policies; and observed-memory preflight for stored Spherepack plans. Preserve
+the frozen smoke and its build-manifest digest. The single Luna validator owns
+execution, tests and result verification; the parent owns adapter/runner changes.
+
 - **Numerical validation:** generate a common real band-limited spectral field for each `lmax`, convert it to each backend's coefficient layout, normalization, and Condon–Shortley phase convention, compare synthesis against a common reference field, and measure synthesis–analysis round-trip error. Record relative L2 error, maximum absolute error, and a bounded relative-error metric with precision-appropriate tolerances.
 - **CPU and thread controls:** record process affinity, physical core count, simultaneous multithreading status, effective backend thread count when queryable, CPU instruction-set features, and relevant power-management state. Distinguish physical-core scaling from simultaneous-multithreading scaling.
 - **Native build metadata:** record compiler executable and version, compiler/linker flags, selected CPU microarchitecture or instruction set, SHTns FFTW version/configuration, and linked FFT, BLAS, and LAPACK libraries where applicable.

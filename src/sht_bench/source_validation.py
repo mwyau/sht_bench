@@ -1,16 +1,50 @@
 """Independent normalized-Legendre reference and numerical validity gates."""
 from __future__ import annotations
 
+from functools import lru_cache
 import numpy as np
 from .source_adapters import fixtures
 
 
 def nodes(w):
-    if w.grid == 'GL':
-        return np.arccos(np.polynomial.legendre.leggauss(w.nlat)[0][::-1])
-    if w.grid == 'CC':
-        return np.linspace(0,np.pi,w.nlat)
-    return (np.arange(w.nlat)+0.5)*np.pi/w.nlat
+    return _nodes(w.grid,w.nlat)
+
+
+@lru_cache(maxsize=128)
+def _nodes(grid,nlat):
+    """Reuse identical independent coordinates; never replace the quadrature rule."""
+    import hashlib
+    import os
+    from pathlib import Path
+    root = os.environ.get('SHT_BENCH_REFERENCE_CACHE')
+    path = Path(root)/f'coordinates-numpy{np.__version__}-{grid}-{nlat}.npy' if root else None
+    digest_path = path.with_suffix('.sha256') if path else None
+    if path and path.exists() and digest_path.exists():
+        if hashlib.sha256(path.read_bytes()).hexdigest()!=digest_path.read_text().strip():
+            raise ValueError('independent coordinate cache checksum mismatch')
+        result = np.load(path,allow_pickle=False)
+        if result.shape!=(nlat,) or result.dtype!=np.float64 or not np.all(np.isfinite(result)):
+            raise ValueError('independent coordinate cache shape/dtype mismatch')
+    else:
+        if grid == 'GL':
+            result = np.arccos(np.polynomial.legendre.leggauss(nlat)[0][::-1])
+        elif grid == 'CC':
+            result = np.linspace(0,np.pi,nlat)
+        elif grid == 'F1':
+            result = (np.arange(nlat)+0.5)*np.pi/nlat
+        else:
+            raise ValueError('unknown independent coordinate geometry')
+        if path:
+            path.parent.mkdir(parents=True,exist_ok=True)
+            temporary = path.with_suffix(f'.{os.getpid()}.tmp')
+            with temporary.open('wb') as stream:
+                np.save(stream,result,allow_pickle=False)
+            temporary.replace(path)
+            temporary_digest = digest_path.with_suffix(f'.{os.getpid()}.tmp')
+            temporary_digest.write_text(hashlib.sha256(path.read_bytes()).hexdigest()+'\n')
+            temporary_digest.replace(digest_path)
+    result.setflags(write=False)
+    return result
 
 
 def reference_points(w,a,theta,phi):
@@ -94,6 +128,7 @@ def validate(adapter):
     phi = w.phi0+2*np.pi*cols/w.nlon
     report = {'status':'supported_and_validated','tolerance':tol,
               'reference':'independent normalized associated-Legendre recurrence at sampled grid nodes',
+              'coordinates':'independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum',
               'reference_points':len(rows),'fixtures':[]}
     for name,a in fixtures(w):
         native = adapter.encode(a)
@@ -209,6 +244,7 @@ def reference_map(w,a):
     root = os.environ.get('SHT_BENCH_REFERENCE_CACHE')
     if not root: return _reference_map(w,a)
     description = {k:getattr(w,k) for k in ('grid','nlat','nlon','lmax','mmax','spin','precision','phi0')}
+    description['numpy_version'] = np.__version__
     key = hashlib.sha256(json.dumps(description,sort_keys=True).encode()+a.tobytes()).hexdigest()
     directory = Path(root)
     directory.mkdir(parents=True,exist_ok=True)

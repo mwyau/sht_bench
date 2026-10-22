@@ -195,8 +195,10 @@ thread counts remain unknown when the native API cannot query them. Process
 peak RSS includes setup, validation and buffers and is recorded separately
 from warm latency. Results on the shared host carry a provisional label.
 
-Use `--secondary` for additional adjoint, derivative, longitude-origin and batch
-requests. Native capability exclusions have explicit records. `--resume` checks
+Use `--secondary` for the base matrix plus adjoint, derivative, batch and
+independent longitude parity/origin requests. Each baseline grid has both
+longitude parities at origins 0 and 0.37 radians. Native capability exclusions
+have explicit records. `--resume` checks
 workload identity, source SHA, build-manifest digest and harness digest; it does
 not silently reuse measurements from changed code. Workers verify imported
 module paths and the controller verifies binary hashes. A worker timeout is
@@ -208,20 +210,63 @@ accuracy records, and matched RustSHT/DUCC and SHTns/DUCC ratios with absolute
 latency differences. Only numerically validated timing cells enter these
 comparisons. Backend colors are fixed. Each matched pair shares the exact
 workload, requested thread count and independent process round.
+`--tables-only` exports the audited outcome, accuracy, timing and comparison
+tables without rendering figures; the default report also renders figures.
 
 Timed analysis uses the same independent reference field, cast to the selected
 precision, for every backend on a given grid. Its coefficient recovery is a
 separate validity check. Independent full fields are cached by workload,
-coefficient bytes and harness digest, with file checksums verified on reuse.
+coefficient bytes, NumPy version and harness digest, with file checksums verified
+on reuse. Independent coordinates are also cached without changing their rules
+or float64 values.
 
 SHTns uses `sht_reg_fast` for Fejer-1 midpoint nodes and `sht_reg_poles` for
 endpoint-including CC nodes; the adapter checks the actual latitude nodes.
-Additional F1 quadrature grids use `nlat=2L+2`. The GL `extended` group uses
-`nlat=L+2` to identify the extra latitude required by Spherepack's tested vector
-path; it is distinct from the `nlat=L+1` minimum group and atmospheric grids.
+Additional F1 and CC quadrature grids use `nlat=max(32,2L+2)`. The GL `extended`
+group uses `nlat=L+2`; it is distinct from the `nlat=L+1` minimum group and
+atmospheric grids, with its own numerical outcomes.
 Spherepack vector transforms use unit radius, convert E/B to divergence/vorticity
 by multiplication with `sqrt(l(l+1))` and the scalar normalization factor,
 and convert eastward/northward velocity to colatitude/eastward components.
 Its rank-three field API measures native batches. RustSHT float32 workloads
 use the native `rustsht._rustsht.ShtPlan32` class when exposed by the selected
 revision; unsupported output buffers and operations have explicit outcomes.
+DUCC batch synthesis uses the native explicit-ring API. Its per-field
+`analysis_2d` calls are used only for validation and a labelled first-call
+diagnostic; they are not a native batched-analysis benchmark.
+
+Native A/S call arguments and output conversions are prepared outside first-call
+and warm timing. `native_setup_s` measures exposed constructor/grid/precomputation
+calls for RustSHT, SHTns and Spherepack. SHTns constructor and `set_grid` times are
+separate from independent node verification. DUCC exposes no reusable 2d plan;
+its internal API setup remains in call latency, and external native setup is
+unavailable rather than zero. A separate operation-preparation measurement
+includes RustSHT's additional gradient plan.
+
+Workers record observed available memory and finite cgroup limits. Stored
+Spherepack plans whose persistent arrays alone exceed that budget are marked
+`resource_limited` before allocation. `--memory-limit-gib` can impose a smaller
+budget. When a budget is available, the worker bounds additional virtual address
+space relative to its post-import baseline; this limit is distinct from measured
+peak RSS.
+
+`python -m sht_bench.source_audit DIRECTORY --output AUDIT.json --require-complete`
+checks exact expanded workload/process identities against `workload-plan.json`
+and independently requires configured minimum/standard geometries and secondary
+experiment dimensions.
+It recomputes numerical acceptance from stored fixture metrics and raw-sample
+statistics, and checks source/build identity, affinity and secondary/output-buffer
+gates. Missing, duplicate, unexpected or inconsistent cells prevent a complete
+passing audit. The report command writes `evidence-audit.json` and rejects
+inconsistent evidence before generating comparisons. Partial reports identify
+the exact number of pending cells. Coverage refers to the stored run plan.
+
+Report facets distinguish longitude parity and origin as well as grid, spin,
+precision, order, allocation and batch size. Error-versus-latency points identify
+`lmax` by annotation and use one requested thread count per panel. Source and
+legacy figures share the same fixed backend palette. `paired-summary.csv`
+aggregates matched process pairs, while `thread-scaling.csv` records speedup
+relative to the same backend/workload/process round at q1 and efficiency per
+requested physical-core thread. `setup_s` includes adapter initialization and
+coordinate checks; its plot is labelled accordingly. Peak RSS includes
+validation and buffers, as recorded in each cell's memory policy.
