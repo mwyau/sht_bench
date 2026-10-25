@@ -11,12 +11,19 @@ import statistics
 from .colors import BACKEND_COLORS
 
 COLORS={name:BACKEND_COLORS[name] for name in ('ducc','shtns','rustsht','pyspharm')}
-LINE_STYLES={'git-source':'--','published-wheel':'-'}
-MARKERS={'git-source':'s','published-wheel':'o'}
+LINE_STYLES={'local-git-source-snapshot':'--','git-source':'--','conda-forge':'-.'}
+MARKERS={'local-git-source-snapshot':'s','git-source':'s','conda-forge':'D'}
 
 
 def revision_label(value):
     return value[:10] if len(value)==40 and all(c in '0123456789abcdef' for c in value) else value
+
+
+def _series_label(backend, mode, sha, pyspharm_package):
+    if backend=='pyspharm' and mode=='conda-forge' and pyspharm_package:
+        return (f"pyspharm conda-forge {pyspharm_package.get('version')}"
+                f"-{pyspharm_package.get('build_string')}")
+    return f'{backend} {mode} {revision_label(sha)}'
 
 
 def figure_gallery(output, figures):
@@ -44,6 +51,28 @@ def figure_gallery(output, figures):
 
 def matched_key(r):
     return (json.dumps(r['workload'],sort_keys=True),r['threads_requested'],r['round'])
+
+
+def matched_comparisons(valid):
+    """Return backend/DUCC comparisons only for identical validated worksets."""
+    index={(r['backend'],matched_key(r)):r for r in valid}
+    comparisons=[]
+    for r in valid:
+        if r['backend'] not in ('rustsht','shtns','pyspharm'):
+            continue
+        reference=index.get(('ducc',matched_key(r)))
+        if reference is None:
+            continue
+        comparisons.append(dict(
+            backend=r['backend'],reference='ducc',source_sha=r['source_sha'],
+            reference_sha=reference['source_sha'],build_mode=r['build_mode'],
+            reference_build_mode=reference['build_mode'],**r['workload'],
+            threads=r['threads_requested'],round=r['round'],
+            latency_ms=1000*r['median_s'],reference_ms=1000*reference['median_s'],
+            ratio=r['median_s']/reference['median_s'],
+            excess_ms=1000*(r['median_s']-reference['median_s']),
+        ))
+    return comparisons
 
 
 def csv_file(path,rows):
@@ -139,20 +168,16 @@ def report(directory,output,*,plots=True):
     valid,counts,recorded,hashes,builds,provenance_path=collect_for_report(directory,output,cell_paths=cell_paths)
     if provenance_path is not None:
         (output/'build-provenance.json').write_bytes(provenance_path.read_bytes())
+        build_manifest=json.loads(provenance_path.read_text())
+        pyspharm_package=build_manifest.get('builds',{}).get('pyspharm',{}).get('resolved_conda_package',{})
+    else:
+        pyspharm_package={}
+    psh_caption=(f"conda-forge pyspharm {pyspharm_package.get('version')}"
+                 f"-{pyspharm_package.get('build_string')}") if pyspharm_package else ''
     if len(hashes)>1 or len(builds)>1:
         raise ValueError('report directory mixes benchmark implementations or build manifests')
     output.mkdir(parents=True,exist_ok=True)
-    index={(r['backend'],matched_key(r)):r for r in valid}
-    comparisons=[]
-    for r in valid:
-        if r['backend'] not in ('rustsht','shtns'): continue
-        reference=index.get(('ducc',matched_key(r)))
-        if reference is None: continue
-        comparisons.append(dict(backend=r['backend'],reference='ducc',source_sha=r['source_sha'],reference_sha=reference['source_sha'],
-                                build_mode=r['build_mode'],reference_build_mode=reference['build_mode'],
-                                **r['workload'],threads=r['threads_requested'],round=r['round'],
-                                latency_ms=1000*r['median_s'],reference_ms=1000*reference['median_s'],
-                                ratio=r['median_s']/reference['median_s'],excess_ms=1000*(r['median_s']-reference['median_s'])))
+    comparisons=matched_comparisons(valid)
     csv_file(output/'matched-ratios.csv',comparisons)
     paired=defaultdict(list)
     for row in comparisons:
@@ -227,7 +252,7 @@ def report(directory,output,*,plots=True):
                             ls=sorted({r['workload']['lmax'] for r in subset})
                             ys=[statistics.median(r[quantity]*scale for r in subset if r['workload']['lmax']==l) for l in ls]
                             mode=subset[0]['build_mode']
-                            ax.plot(ls,ys,marker='o',linestyle=LINE_STYLES.get(mode,':'),color=COLORS[backend],label=f'{backend} {mode} {revision_label(sha)}')
+                            ax.plot(ls,ys,marker='o',linestyle=LINE_STYLES.get(mode,':'),color=COLORS[backend],label=_series_label(backend,mode,sha,pyspharm_package))
                     ax.set(xlabel='Inclusive degree L',ylabel=label,title=f'{title}, q{q}')
                     ax.set_xscale('log');ax.set_yscale('log');ax.legend(fontsize=7);ax.grid(alpha=.2)
                     fig.tight_layout()
@@ -244,7 +269,7 @@ def report(directory,output,*,plots=True):
                     qs=sorted({r['threads_requested'] for r in subset})
                     ys=[statistics.median(r['median_s']*1000 for r in subset if r['threads_requested']==q) for q in qs]
                     mode=subset[0]['build_mode']
-                    label=f"{backend} {mode} {revision_label(subset[0]['source_sha'])}"
+                    label=_series_label(backend,mode,subset[0]['source_sha'],pyspharm_package)
                     ax.plot(qs,ys,marker='o',linestyle=LINE_STYLES.get(mode,':'),color=COLORS[backend],label=label)
                 ax.set(xlabel='Requested physical-core threads',ylabel='Warm transform (ms)',title=f'{base}, L{l}')
                 ax.set_xscale('log',base=2);ax.set_yscale('log');ax.legend(fontsize=7);ax.grid(alpha=.2);fig.tight_layout()
@@ -261,7 +286,7 @@ def report(directory,output,*,plots=True):
                         metrics=[r['maximum_validation_relative_l2'] for r in case]
                         xs.append(statistics.median(1000*r['median_s'] for r in case))
                         ys.append(max(max(metrics,default=0),1e-18))
-                    label=f"{backend} {subset[0]['build_mode']} {revision_label(subset[0]['source_sha'])}"
+                    label=_series_label(backend,subset[0]['build_mode'],subset[0]['source_sha'],pyspharm_package)
                     ax.scatter(xs,ys,s=16,marker=MARKERS.get(subset[0]['build_mode'],'^'),color=COLORS[backend],label=label)
                     for degree,x,y in zip(degrees,xs,ys):
                         ax.annotate(str(degree),(x,y),fontsize=6,xytext=(3,3),textcoords='offset points')
@@ -281,8 +306,9 @@ def report(directory,output,*,plots=True):
     (output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     lines=['# Source benchmark results','',f'{recorded} recorded outcomes of {expected}; {pending} pending. {len(valid)} timed after numerical validation.','',
            'Measurements are provisional on a shared host. Ratios pair the same grid, bandwidth, precision, allocation, operation, thread request, and process round.','',
+           *( [f"The Spherepack series uses {psh_caption}; its timing environment, package hash, native extension, and linked libraries are in `build-provenance.json`.",""] if psh_caption else [] ),
            '| Outcome | Cells |','| --- | ---: |',*[f'| {k} | {v} |' for k,v in sorted(counts.items())],'',
-           '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records RustSHT/DUCC and SHTns/DUCC ratios and absolute latency excess in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','',
+           '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records RustSHT/DUCC, SHTns/DUCC, and pyspharm/DUCC ratios where complete workload and precision matches exist, with absolute latency excess in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','',
            'For secondary workloads, accuracy entries distinguish base A/S gates from requested derivative synthesis and adjoint identity checks. Adjoint scaled residuals are separate from relative L2 synthesis errors.','']
     lines.extend(gallery_lines)
     (output/'README.md').write_text('\n'.join(lines)+'\n')

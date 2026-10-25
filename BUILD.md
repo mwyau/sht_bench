@@ -1,6 +1,6 @@
 # Build configuration
 
-SHT timing depends on both the transform implementation and the binary used to execute it. `sht_bench` therefore separates binary-package and locally compiled environments and records the package source associated with each result.
+SHT timing depends on both the transform implementation and the binary used to execute it. `sht_bench` therefore separates uv-managed package/source builds from the conda-forge Spherepack build and records the package source associated with each result.
 
 ## Package versions
 
@@ -9,14 +9,26 @@ SHT timing depends on both the transform implementation and the binary used to e
 | DUCC | PyPI `ducc0==0.41.0` wheel when available for the platform | Git `mreineck/ducc`, ref `ducc0`, resolved SHA recorded |
 | SHTns | Git `schaeffn/shtns`, ref `master`, resolved SHA recorded | same Git source policy |
 | pyshtools / SHTOOLS | PyPI `pyshtools==4.14.1` wheel when available for the platform | PyPI `pyshtools==4.14.1` source distribution |
-| pyspharm-syl / Spherepack | PyPI `pyspharm-syl==1.2.1` wheel when available for the platform | not benchmarked |
+| pyspharm / Spherepack | conda-forge `pyspharm=1.0.9`, in its own conda environment | not a Git source build |
 
 The binary-package environment requires an actual compatible wheel for backends designated as wheel builds. Before installation, the runner asks `uv` to resolve the pinned package with `--only-binary` in dry-run mode. If the current operating system, architecture, and Python version have no compatible wheel, that backend is recorded under `unavailable_wheels` and omitted from the wheel benchmark. It is not silently compiled from source.
 
-SHTns has no PyPI wheel, so both benchmark environments compile a Git checkout.
+SHTns has no PyPI wheel, so both uv benchmark environments compile a Git checkout.
 Each invocation records the resolved SHA. Plotting shows one SHTns source series.
 
-`pyspharm-syl` is benchmarked from its published wheel only. The source-build environment contains DUCC, SHTns, and pyshtools/SHTOOLS on platforms where those backends are selected.
+Spherepack is imported as `spharm` from a separate conda-forge environment. The
+Linux x86-64 comparison environment uses Python 3.13.15, NumPy 2.5.4, and
+`pyspharm 1.0.9` build `np2py313h854c110_1017`. The environment specification
+is [environments/pyspharm-conda-forge-linux-64.yml](environments/pyspharm-conda-forge-linux-64.yml);
+the resolved artifact URL, package hash, native extension hash, linked
+libraries, and full conda exports are recorded with each build. The solver
+resolves the latest compatible package build for other host platforms.
+`pyspharm` remains float32/complex64 and serial. Conda provenance is recorded
+as `conda-forge`, with a distinct plot line style; it is not classified as a
+PyPI wheel or Git source build.
+The current numerical, performance, and capability results are in the
+[pyspharm conda-forge report](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md),
+with compact timing and validation data under `docs/data/`.
 
 ## Architecture-specific backend selection
 
@@ -42,10 +54,10 @@ If the platform has no compatible DUCC wheel, the wheel environment records that
 The `matrix` command accepts:
 
 ```text
-installed  use packages in the active environment
-wheel      create the binary-package environment
+installed  use active packages for uv-managed backends; create/select the conda-forge pyspharm environment
+wheel      create the binary-package environment for uv-managed backends
 source     create the source-build environment
-both       run wheel and source environments
+both       run wheel and source environments, plus the separate pyspharm environment
 ```
 
 For example:
@@ -75,7 +87,9 @@ python scripts/run_build_matrix.py \
 
 `--setup-only` creates an isolated environment and writes its provenance without running a transform benchmark. The matrix command uses this mode internally so environment creation does not depend on any single backend being available.
 
-The isolated environments are `.venv-bench-source` and `.venv-bench-wheel`.
+The isolated environments are `.venv-bench-source`, `.venv-bench-wheel`, and
+`.conda-bench-pyspharm`. The conda environment is never installed into the
+active uv or base conda environment.
 
 ## Source compilers
 
@@ -93,7 +107,7 @@ sudo apt-get install build-essential gfortran libfftw3-dev
 
 ## Recorded build information
 
-Build runs store package source and revision information together with available compiler-related environment variables. Environment provenance records the operating system, machine architecture, requested backend set, unavailable wheels, and build failures. Matrix timing records contain `build_mode`, which keeps binary-package and source-build measurements separate during plotting.
+Build runs store package source and revision information together with available compiler-related environment variables. Environment provenance records the operating system, machine architecture, requested backend set, unavailable packages, and build failures. Matrix timing records contain `build_mode`; `conda-forge` is kept separate from PyPI wheels and Git source builds during plotting.
 
 The historical matrix metadata omit compiler version strings, linked FFT/BLAS/LAPACK libraries, CPU instruction-set selection, and complete compiler/linker command lines. The Git source workflow described below records compiler versions, native linkage, CPU configuration, and available generated build rules separately.
 
@@ -168,9 +182,11 @@ outside the uploaded artifact.
 
 ## Git source matrix
 
-The Git source workflow uses separate environments for DUCC, SHTns, RustSHT,
-and the pyspharm-syl wheel. Its source refs are DUCC `ducc0`, SHTns `master`,
-and RustSHT `main`. Each build records the resolved 40-character Git SHA.
+The Git source workflow uses separate environments for DUCC, SHTns, and
+RustSHT, plus a separate conda-forge environment for pyspharm. Its source refs
+are DUCC `ducc0`, SHTns `master`, and RustSHT `main`. Each Git build records
+the resolved 40-character SHA; the conda build records the resolved package
+version and build string.
 The `matrix` workflow also acquires DUCC/SHTns Git sources, while retaining
 release-wheel and optional SHTOOLS comparisons. Use the following commands for
 the four-implementation comparison with numerical gates:
@@ -186,14 +202,18 @@ uv run --extra plot python -m sht_bench.source_report \
   results/source-run/smoke --output results/source-run/smoke-report
 ```
 
-`build_sources.py` defaults to Python 3.13. Native packages are installed from
-Git checkout paths through their current build systems, including RustSHT's
-root Maturin release build. The compiler environment preserves caller settings;
+`build_sources.py` defaults to Python 3.13 for uv-managed source packages.
+Native packages are installed from Git checkout paths through their current
+build systems, including RustSHT's root Maturin release build. The pyspharm
+environment is created from conda-forge with Python 3.13.15 and NumPy 2.5.4.
+The compiler environment preserves caller settings;
 defaults select GCC/G++/gfortran, `DUCC0_OPTIMIZATION=native`, and
 `RUSTFLAGS='-C target-cpu=native'`. SHTns's Git build configures its FFTW/OpenMP
 support; build logs, native linkage and FFTW pkg-config information record the
-observed configuration. pyspharm-syl 1.2.1 uses `--only-binary` in its own
-environment. Missing wheels and build failures have explicit outcomes.
+observed configuration. Conda package metadata, explicit package URLs and
+hashes, the `spharm` import path, the `_spherepack` extension, runtime
+precision, NumPy ABI, and dynamic linkage are recorded for pyspharm. Missing
+packages and build failures have explicit outcomes.
 
 Per-backend `--ducc-ref`, `--shtns-ref`, and `--rustsht-ref` override the refs.
 To rebuild recorded sources into a new output directory:
@@ -211,8 +231,9 @@ promise bitwise binary reproducibility. Checkouts in `.sources/`, isolated
 environments, logs, native binaries and generated measurements are untracked.
 `build-manifest.json` records compiler versions, flags, source origin/ref/SHA,
 Python and NumPy versions, installed distribution versions, wheel tags and
-installer metadata, verified import locations, binary SHA256 hashes,
-linked libraries, dependency freezes and available CPU/FFTW configuration.
+installer metadata where applicable, verified import locations, binary
+SHA256 hashes, linked libraries, dependency freezes, conda package metadata,
+and available CPU/FFTW configuration.
 
 Native build logs use verbose package-build output. Generated DUCC CMake/Ninja
 rules, SHTns configure logs and Makefile flags, and RustSHT Cargo lock/profile
@@ -220,3 +241,61 @@ inputs and available RustSHT and Pulp release fingerprints are archived under
 `build-metadata/` with SHA256 hashes. These files describe effective build
 settings in addition to the caller's compiler environment. Dependency feature
 flags and host CPU capabilities are recorded separately.
+
+## CC/GL source resolution sweep
+
+The focused resolution sweep is a separate experiment from the historical
+`source-matrix` CLI. It builds each Git implementation in its own `uv`
+environment from the local sibling checkouts, snapshots the selected commit
+without modifying those checkouts, and creates a separate conda-forge
+environment for pyspharm. RustSHT defaults to its local `main` ref. The pyspharm-cpp source
+uses its recorded `third_party/ducc` Git submodule; the installed backend is
+reported as DUCC-derived because it uses DUCC algorithms behind the
+PySpharm-compatible `spharm_cpp.Spharmt` API. Its extension is built with the
+checkout's scikit-build-core, CMake, and nanobind configuration and the
+multiarch CMake profile. The build manifest records both the standalone DUCC
+SHA and the nested DUCC submodule SHA.
+
+The versioned profile contains seven endpoint-inclusive CC grids from
+73×144/L36 through 721×1440/L360, and seven GL grids with `nlat=2*N`,
+`nlon=4*N`, and `N=32,45,64,90,128,180,320`. Exact north-to-south latitude
+and colatitude coordinate arrays are saved with the plan. Full and half order
+means `mmax=L` and `mmax=L//2`, with unchanged `lmax=L`. pyspharm-cpp and
+pyspharm expose only triangular truncation, so their half-order cells are
+recorded unsupported; no coefficients are zeroed to simulate reduced order.
+The conda-forge pyspharm matrix is float32/complex64 and serial. SHTns is
+float64 only. GL spin-1 minimum-latitude cells require one additional latitude
+row for the highest-degree modes to remain numerically observable. The
+GL32×33/L16 Spherepack constructor failure is retained as a specific
+unsupported workload. CC L1023 is resource-limited on this host: stored plan
+arrays alone require 51,514,507,440 bytes, which does not leave the required
+2x memory headroom.
+
+Run the plan before building. The plan prints the exact API-supported and
+unsupported outcome counts, and `--smoke` restricts it to CC 2.5° and GL N32:
+
+```bash
+uv run --extra plot python scripts/run_source_resolution_sweep.py --plan-only
+uv run --extra plot python scripts/run_source_resolution_sweep.py \
+  --output results/source-resolution-20261025 --build
+uv run --extra plot python scripts/run_source_resolution_sweep.py \
+  --output results/source-resolution-20261025 --resume
+uv run --extra plot python scripts/run_source_resolution_sweep.py \
+  --output results/source-resolution-20261025 --replot
+```
+
+The build command accepts `--ducc-source`, `--shtns-source`,
+`--rustsht-source`, and `--pyspharm-cpp-source` path overrides, plus ref
+overrides. Run outputs are never replaced. Resume checks the build-manifest,
+profile, runner, harness, and workload identities. Every supported numerical
+gate runs in a fresh process before its timing cells; thread-count cells also
+run in fresh processes with affinity and backend thread controls set before
+pool initialization. A gate is shared only by cells with the same backend
+revision, geometry, `lmax`, `mmax`, precision, spin, and thread count. Raw
+timing samples remain in per-cell JSON files under the ignored result
+directory. Audited CSV summaries and plots can be recreated with `--replot`.
+
+Backend timing comparisons require identical grid dimensions, `lmax`, `mmax`,
+precision, spin, operation, and requested thread count. CC and GL results are
+shown in separate facets; GL N320 is not presented as an identical workload
+to CC 0.25°.

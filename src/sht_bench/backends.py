@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from importlib import import_module
 from importlib.metadata import PackageNotFoundError, version
+from pathlib import Path
+import sys
 from typing import Callable
 
 import numpy as np
@@ -35,6 +37,8 @@ class PreparedCase:
     analysis: Transform
     synthesis: Transform
     notes: str = ""
+    build_mode: str = "installed"
+    build_identity: dict | None = None
 
 
 def nalm(lmax: int) -> int:
@@ -247,7 +251,12 @@ def prepare_pyshtools(lmax: int, threads: int, seed: int, grid: str = "gl") -> P
 
 def prepare_pyspharm(lmax: int, threads: int, seed: int, grid: str = "gl") -> PreparedCase:
     _require_grid("pyspharm", grid)
+    from .conda_environment import verify_import_path, verify_pyspharm_environment
+
+    prefix = Path(sys.prefix)
+    identity = verify_pyspharm_environment(prefix)
     spharm = import_module("spharm")
+    verify_import_path(prefix, spharm.__file__)
     rng = np.random.default_rng(seed)
     nlat, nlon = grid_shape(lmax, grid)
 
@@ -271,7 +280,7 @@ def prepare_pyspharm(lmax: int, threads: int, seed: int, grid: str = "gl") -> Pr
 
     return PreparedCase(
         backend="pyspharm",
-        backend_version=_package_version("pyspharm-syl"),
+        backend_version=str(identity["version"]),
         grid=grid,
         lmax=lmax,
         nlat=nlat,
@@ -283,9 +292,12 @@ def prepare_pyspharm(lmax: int, threads: int, seed: int, grid: str = "gl") -> Pr
         analysis=analysis,
         synthesis=synthesis,
         notes=(
-            f"pyspharm-syl/Spherepack {gridtype} grid with stored Legendre functions; "
+            f"conda-forge pyspharm {identity['version']} build {identity['build_string']}; "
+            f"Spherepack {gridtype} grid with stored Legendre functions; "
             "float32/complex64 API; no explicit thread control"
         ),
+        build_mode="conda-forge",
+        build_identity=identity,
     )
 
 

@@ -1,0 +1,14 @@
+{
+  "build_manifest_sha256": "d6fe72d153a3357828f7ca52d865ee08de462d11e0e915f2e4e05092ca14286b",
+  "harness_sha256": "b0ef7551bd462f6da1f3232e7b8eec12f31a8c91ecaa47669930b2555d486d0e",
+  "degrees": "16,64,127",
+  "threads": "1",
+  "backends": "ducc,shtns,rustsht,pyspharm",
+  "rounds": 3,
+  "repeat": 30,
+  "min_time": 0.02,
+  "timeout": 600.0,
+  "smoke": true,
+  "secondary": false,
+  "memory_limit_bytes": null
+}

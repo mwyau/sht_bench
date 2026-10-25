@@ -7,7 +7,7 @@ The `matrix` command evaluates combinations of build mode, transform implementat
 The matrix varies:
 
 - build mode: `installed`, `wheel`, `source`, or `both`;
-- backend: DUCC, SHTns, pyshtools/SHTOOLS, and pyspharm-syl/Spherepack;
+- backend: DUCC, SHTns, pyshtools/SHTOOLS, and conda-forge pyspharm/Spherepack;
 - grid: Gauss–Legendre (`gl`) and regular/Clenshaw–Curtis (`cc`), subject to backend support;
 - thread count;
 - spectral scale;
@@ -20,13 +20,21 @@ Grid support is:
 | DUCC | yes | yes | yes |
 | SHTns | yes | yes | yes |
 | pyshtools / SHTOOLS | no | yes | no |
-| pyspharm-syl / Spherepack | yes | yes | yes |
+| pyspharm / Spherepack | yes | yes | yes |
 
 Native SHTOOLS GLQ routines require `nlon = 2*nlat - 1`, whereas the default atmospheric Gaussian grids use an even `nlon = 4F`. SHTOOLS is therefore excluded from the default common-grid GL matrix rather than measured on a different grid under the same label.
 
-`pyspharm-syl` is benchmarked from the published wheel only. Source-build matrices contain DUCC, SHTns, and pyshtools/SHTOOLS; pyshtools contributes only when a requested GL case uses its compact native GLQ geometry.
+The `pyspharm` backend is installed from conda-forge in a separate conda environment. The host comparison uses Python 3.13.15, NumPy 2.5.4, and pyspharm 1.0.9 build `np2py313h854c110_1017`. `spharm` and `_spherepack` are checked against that prefix before benchmarking. The conda build is recorded as `conda-forge`; it is not installed through uv and is not labeled as a wheel. Source-build matrices contain DUCC, SHTns, and pyshtools/SHTOOLS; pyshtools contributes only when a requested GL case uses its compact native GLQ geometry.
 
-Wheel availability is evaluated on the current operating system, architecture, and Python version. A backend whose pinned wheel cannot be resolved is recorded as an exclusion and omitted from the wheel matrix rather than compiled from source. This allows the same command to run on x86_64 and arm64; for example, if the pinned DUCC release has no compatible arm64 wheel, only its source-build series is measured. Because plotting uses successful result records, unavailable wheel series are absent from the figures.
+The refreshed package's build identity, capability limits, validation results, matched q1 comparisons, and tracked machine-readable data are in the [pyspharm conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
+
+On this host, the existing uv matrix environments also use Python 3.13.15 and
+NumPy 2.5.3. The conda environment uses the same Python patch release and
+NumPy 2.5.4. The refreshed source-matrix control environment uses NumPy 2.5.4
+for all four implementations. These runs use Python 3.13, not 3.14; each
+result manifest records the resolved Python and NumPy versions.
+
+PyPI wheel availability is evaluated only for backends installed through uv. A backend whose pinned wheel cannot be resolved is recorded as an exclusion and omitted from the wheel matrix rather than compiled from source. This allows the same command to run on x86_64 and arm64; for example, if the pinned DUCC release has no compatible arm64 wheel, only its source-build series is measured. The conda-forge pyspharm environment uses the package solver for the host platform and records the resolved package build. Because plotting uses successful result records, unavailable package series are absent from the figures.
 
 Unsupported cases are skipped. Missing packages and other setup failures are reported; `--strict` returns a nonzero exit status for failures.
 
@@ -58,7 +66,8 @@ The full GL mappings and CC grid dimensions are listed in the root [README](../R
 
 ## Examples
 
-Compare binary-package and source-build environments across both default grid sweeps:
+Compare the uv binary-package and source-build environments with the separate
+conda-forge pyspharm environment across both default grid sweeps:
 
 ```bash
 uv run --extra plot sht-bench matrix \
@@ -158,7 +167,7 @@ The generated figures include:
 
 `plots/README.md` displays the figures as clickable thumbnails with analysis and synthesis side by side. Each thumbnail links to the corresponding full-resolution PNG.
 
-Backend color is fixed across all figures. Wheel and installed builds use solid lines; source builds use dashed lines. SHTns is source-built in both benchmark environments and is plotted once as a dashed source series, using the explicit source-run measurement when both are available. GL plots label the sampled x-axis points `F32`, `F48`, `F64`, `F80`, `F128`, `F160`, `F256`, `F320`, `F512`, and `F640`; CC plots label the sampled regular-grid resolutions explicitly. Both retain logarithmic x-axis spacing. Thread plots label the actual requested counts such as `1, 2, 4, 8, 16`. CC resolution runs from coarse to fine from left to right. Transform-time axes state that lower values are better. Median transform time is plotted by default.
+Backend color is fixed across all figures. Wheel and installed builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines. SHTns is source-built in both uv environments and is plotted once as a dashed source series, using the explicit source-run measurement when both are available. pyspharm figures identify the conda-forge version and build string in the legend and methodology. GL plots label the sampled x-axis points `F32`, `F48`, `F64`, `F80`, `F128`, `F160`, `F256`, `F320`, `F512`, and `F640`; CC plots label the sampled regular-grid resolutions explicitly. Both retain logarithmic x-axis spacing. Thread plots label the actual requested counts such as `1, 2, 4, 8, 16`. CC resolution runs from coarse to fine from left to right. Transform-time axes state that lower values are better. Median transform time is plotted by default.
 
 ## Interpretation
 

@@ -181,7 +181,7 @@ def test_error_metrics_and_tolerance_gate():
 def test_workload_and_backend_capability_reasons_are_explicit():
     scalar = workload()
     assert capability("ducc", scalar) is None
-    assert capability("pyspharm", replace(scalar, precision="float64")) == "Spherepack published API uses float32/complex64"
+    assert capability("pyspharm", replace(scalar, precision="float64")) == "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64"
     assert capability("pyspharm", replace(scalar, spin=1, precision="float32")) is None
     assert capability("shtns", replace(scalar, nlat=16)) == "SHTns SIMD grid requires at least 32 latitude nodes"
     assert capability("shtns", replace(scalar, grid="F1", nlat=32)) is None
@@ -192,6 +192,19 @@ def test_workload_and_backend_capability_reasons_are_explicit():
         Workload("GL", 4, 2, 1, 1)
     with pytest.raises(Unsupported, match="Spherepack"):
         Adapter("pyspharm", replace(scalar, precision="float64"), 1)
+
+
+def test_conda_pyspharm_capability_keeps_observed_edge_failures_explicit():
+    minimum_spin = Workload("GL", 9, 18, 8, 8, spin=1, precision="float32")
+    assert capability("pyspharm", minimum_spin) == (
+        "GL spin-1 validation requires nlat>=lmax+2; highest-degree modes "
+        "vanish at nlat=lmax+1"
+    )
+    overresolved_spin = replace(minimum_spin, nlat=10)
+    assert capability("pyspharm", overresolved_spin) is None
+
+    constructor_failure = Workload("GL", 32, 33, 16, 16, precision="float32")
+    assert "ierror=3" in capability("pyspharm", constructor_failure)
 
 
 def test_rust_gradient_zeros_constant_mode_in_private_copy(monkeypatch):
@@ -223,6 +236,148 @@ def test_rust_gradient_zeros_constant_mode_in_private_copy(monkeypatch):
     np.testing.assert_array_equal(calls[0][1][:, 1:], -original[:, 1:])
     np.testing.assert_array_equal(result, calls[0][1])
     np.testing.assert_array_equal(coefficients, original)
+
+
+@pytest.mark.parametrize("precision,real_dtype,complex_dtype", [
+    ("float32", np.float32, np.complex64),
+    ("float64", np.float64, np.complex128),
+])
+def test_pyspharm_cpp_constructor_layout_and_vector_conversion(monkeypatch, precision, real_dtype, complex_dtype):
+    from sht_bench import source_adapters
+
+    calls = {}
+
+    class FakeSpharmt:
+        def __init__(self, *args, **kwargs):
+            calls["constructor"] = (args, kwargs)
+
+        def getuv(self, vrt, div):
+            calls["getuv"] = (vrt.copy(), div.copy())
+            return np.ones((8, 12), dtype=real_dtype), np.full((8, 12), 2, dtype=real_dtype)
+
+        def getvrtdivspec(self, u, v, *, ntrunc):
+            calls["getvrtdivspec"] = (u.copy(), v.copy(), ntrunc)
+            vrt = np.arange(6, dtype=complex_dtype)
+            div = np.arange(6, dtype=complex_dtype) + 1j
+            return vrt, div
+
+    module = types.SimpleNamespace(Spharmt=FakeSpharmt)
+    monkeypatch.setattr(source_adapters.importlib, "import_module", lambda name: module)
+    w = Workload("GL", 8, 12, 2, 2, spin=1, precision=precision)
+    adapter = Adapter("pyspharm-cpp", w, 2)
+
+    args, kwargs = calls["constructor"]
+    assert args == (12, 8)
+    assert kwargs["gridtype"] == "gaussian"
+    assert kwargs["legfunc"] == "computed"
+    assert kwargs["dtype"] == np.dtype(precision)
+    assert adapter.native_api == "spharm_cpp.Spharmt"
+    assert "DUCC0_NUM_THREADS" in adapter.thread_control
+
+    canonical = np.ones((2, w.size), dtype=complex_dtype)
+    canonical[0, :w.lmax + 1] = 0
+    canonical[1, :w.lmax + 1] = 0
+    native = adapter.encode(canonical)
+    assert native.dtype == complex_dtype
+    expected_factor = np.array([
+        (-1) ** m * np.sqrt(l * (l + 1)) / np.sqrt(2 * np.pi) if l else 1 / np.sqrt(2 * np.pi)
+        for l, m in indices(w)
+    ], dtype=real_dtype)
+    np.testing.assert_allclose(native[0], canonical[0] * expected_factor)
+
+    synthesized = adapter.operation(native, None, operation="synthesis")()
+    canonical_map = adapter.canonical_synthesis_output(synthesized)
+    assert calls["getuv"][0].dtype == complex_dtype
+    np.testing.assert_array_equal(canonical_map[0], -2)
+    np.testing.assert_array_equal(canonical_map[1], 1)
+
+    maps = np.zeros((2, w.nlat, w.nlon), dtype=real_dtype)
+    maps[0] = 3
+    maps[1] = 5
+    analyzed = adapter.decode(adapter.analysis(maps))
+    u, v, truncation = calls["getvrtdivspec"]
+    np.testing.assert_array_equal(u, 5)
+    np.testing.assert_array_equal(v, -3)
+    assert truncation == w.lmax
+    assert analyzed.dtype == complex_dtype
+
+
+@pytest.mark.parametrize("precision,real_dtype,complex_dtype", [
+    ("float32", np.float32, np.complex64),
+    ("float64", np.float64, np.complex128),
+])
+def test_pyspharm_cpp_scalar_uses_native_one_dimensional_spectrum(monkeypatch, precision, real_dtype, complex_dtype):
+    from sht_bench import source_adapters
+
+    calls = {}
+
+    class FakeSpharmt:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def spectogrd(self, spectrum):
+            calls["synthesis_spectrum"] = spectrum.copy()
+            return np.zeros((8, 12), dtype=real_dtype)
+
+        def grdtospec(self, grid, ntrunc):
+            calls["analysis_grid"] = (grid.copy(), ntrunc)
+            return np.arange(6, dtype=complex_dtype)
+
+    monkeypatch.setattr(source_adapters.importlib, "import_module", lambda name: types.SimpleNamespace(Spharmt=FakeSpharmt))
+    w = Workload("GL", 8, 12, 2, 2, precision=precision)
+    adapter = Adapter("pyspharm-cpp", w, 1)
+    canonical = np.ones((1, w.size), dtype=complex_dtype)
+    native = adapter.encode(canonical)
+    assert native.shape == (w.size,)
+    assert native.dtype == complex_dtype
+
+    direct_map = adapter.operation(native, None, operation="synthesis")()
+    assert calls["synthesis_spectrum"].shape == (w.size,)
+    assert adapter.canonical_synthesis_output(direct_map).shape == (1, w.nlat, w.nlon)
+    assert adapter.synthesis(native).shape == (1, w.nlat, w.nlon)
+
+    maps = np.zeros((1, w.nlat, w.nlon), dtype=real_dtype)
+    recovered = adapter.decode(adapter.analysis(maps))
+    assert calls["analysis_grid"][1] == w.lmax
+    assert recovered.shape == (1, w.size)
+    assert recovered.dtype == complex_dtype
+
+
+def test_pyspharm_cpp_native_api_does_not_claim_half_order_support():
+    full = Workload("GL", 64, 128, 32, 32)
+    assert capability("pyspharm-cpp", full) is None
+    assert capability("pyspharm-cpp", replace(full, mmax=16)) == "public Spharmt API has full triangular truncation only"
+
+
+def test_resolution_worker_validation_certificate_is_bound_to_backend_build_and_threads(tmp_path):
+    from sht_bench.source_runner import load_validation_certificate, validation_identity
+
+    workload_record = Workload("GL", 8, 12, 2, 2, precision="float64").record()
+    task = {
+        "backend":"ducc","source_sha":"source-rev",
+        "build_manifest_sha256":"build-digest","harness_sha256":"harness-digest",
+        "threads_requested":2,"workload":workload_record,
+    }
+    identity = validation_identity(task)
+    path = tmp_path / "validation.json"
+    raw = json.dumps({"validation_identity":identity,"status":"validation_passed"},sort_keys=True).encode()
+    path.write_bytes(raw)
+    import hashlib
+    task.update(validation_certificate=str(path),validation_certificate_sha256=hashlib.sha256(raw).hexdigest())
+    assert load_validation_certificate(task)["status"] == "validation_passed"
+    task["threads_requested"] = 4
+    with pytest.raises(ValueError, match="another backend/build/workload/thread"):
+        load_validation_certificate(task)
+
+
+def test_json_writer_preserves_failed_metrics_as_null_and_creates_parent(tmp_path):
+    from sht_bench.source_runner import _json_safe, write_json
+
+    path = tmp_path / "nested" / "result.json"
+    safe = _json_safe({"error":float("inf"),"nested":[float("nan"),0.25]})
+    assert safe == {"error":None,"nested":[None,0.25]}
+    write_json(path,safe)
+    assert json.loads(path.read_text()) == safe
 
 
 def _git(path: Path, *args):

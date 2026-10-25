@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "date": "2026-10-25",
+  "backend": "pyspharm",
+  "build_mode": "conda-forge",
+  "package_version": "1.0.9",
+  "package_build": "np2py313h854c110_1017",
+  "package_sha256": "2f12e25a18c47c9a7545cb36a29cfecd553a42dde7df30b06af1d08def5986fc",
+  "python": "3.13.15",
+  "numpy": "2.5.4",
+  "source_q1_run": {
+    "build_manifest_sha256": "d6fe72d153a3357828f7ca52d865ee08de462d11e0e915f2e4e05092ca14286b",
+    "harness_sha256": "b0ef7551bd462f6da1f3232e7b8eec12f31a8c91ecaa47669930b2555d486d0e",
+    "degrees": "16,64,127",
+    "threads": "1",
+    "backends": "ducc,shtns,rustsht,pyspharm",
+    "rounds": 3,
+    "repeat": 30,
+    "min_time": 0.02,
+    "timeout": 600.0,
+    "smoke": true,
+    "secondary": false,
+    "memory_limit_bytes": null
+  },
+  "source_report_status_counts_all_backends": {
+    "timed_successfully": 3684,
+    "unsupported": 3258,
+    "numerical_validation_failed": 354
+  },
+  "source_report_expected_cells_all_backends": 7296,
+  "pyspharm_outcomes": {
+    "total": 1824,
+    "status_counts": {
+      "unsupported": 1698,
+      "timed_successfully": 126
+    },
+    "unsupported_reasons": {
+      "no public output-buffer API": 144,
+      "no native F1 path": 576,
+      "public API has full triangular truncation only": 288,
+      "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64": 576,
+      "Spherepack vhsgsi initialization returns ierror=3 for GL 32x33 at L16 in the conda-forge build": 96,
+      "GL spin-1 validation requires nlat>=lmax+2; highest-degree modes vanish at nlat=lmax+1": 18
+    }
+  },
+  "numerical_validation": {
+    "records": 4086,
+    "passed": 4086,
+    "failed": 0,
+    "float32_relative_l2_tolerance": 5e-05,
+    "stages": [
+      {
+        "stage": "coefficient_recovery",
+        "records": 1278,
+        "passed": 1278,
+        "failed": 0,
+        "max_relative_l2": 1.198748262459928e-05,
+        "max_absolute": 1.1206212548131589e-05,
+        "max_scaled_error": 4.170014899476199e-06
+      },
+      {
+        "stage": "common_reference_analysis",
+        "records": 126,
+        "passed": 126,
+        "failed": 0,
+        "max_relative_l2": 2.6571668763046035e-06,
+        "max_absolute": 3.2912240044424834e-07,
+        "max_scaled_error": 2.0955008767809435e-06
+      },
+      {
+        "stage": "full_grid_synthesis",
+        "records": 126,
+        "passed": 126,
+        "failed": 0,
+        "max_relative_l2": 2.5517079647063867e-06,
+        "max_absolute": 7.68899917602539e-06,
+        "max_scaled_error": 4.080175641123692e-06
+      },
+      {
+        "stage": "map_roundtrip",
+        "records": 1278,
+        "passed": 1278,
+        "failed": 0,
+        "max_relative_l2": 1.2007343476483325e-05,
+        "max_absolute": 2.849102020263672e-05,
+        "max_scaled_error": 5.60356178601681e-06
+      },
+      {
+        "stage": "synthesis",
+        "records": 1278,
+        "passed": 1278,
+        "failed": 0,
+        "max_relative_l2": 5.966358711484485e-06,
+        "max_absolute": 1.5528966506028752e-05,
+        "max_scaled_error": 3.1024757075240106e-06
+      }
+    ]
+  },
+  "matched_pyspharm_ducc_q1_pairs": {
+    "summary_rows": 42,
+    "process_pairs_per_row": [
+      3
+    ],
+    "median_ratio_distribution": {
+      "median": 0.6037415363719649,
+      "minimum": 0.21144609929134936,
+      "maximum": 33.99838219900439,
+      "rows_faster_than_ducc": 34
+    }
+  },
+  "active_legacy_matrix": {
+    "records": 180,
+    "grid_counts": {
+      "gl": 100,
+      "cc": 80
+    },
+    "operation_counts": {
+      "analysis": 90,
+      "synthesis": 90
+    },
+    "threads_requested": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "warmup": [
+      3
+    ],
+    "repeat": [
+      7
+    ],
+    "min_time_s": [
+      0.2
+    ]
+  }
+}

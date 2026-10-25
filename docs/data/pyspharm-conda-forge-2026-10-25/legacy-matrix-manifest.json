@@ -1,0 +1,73 @@
+{
+  "generated_utc": "2026-10-25T19:05:37.277894+00:00",
+  "build": "wheel",
+  "backends": [
+    "pyspharm"
+  ],
+  "grids": [
+    "gl",
+    "cc"
+  ],
+  "threads": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "lmax": {
+    "gl": [
+      42,
+      63,
+      85,
+      159,
+      255,
+      319,
+      511,
+      639,
+      1023,
+      1279
+    ],
+    "cc": [
+      36,
+      60,
+      72,
+      90,
+      120,
+      180,
+      360,
+      720
+    ]
+  },
+  "operations": [
+    "analysis",
+    "synthesis"
+  ],
+  "merge_existing": false,
+  "updated_result_files": [
+    "conda-forge-gl-t1.json",
+    "conda-forge-gl-t2.json",
+    "conda-forge-gl-t4.json",
+    "conda-forge-gl-t8.json",
+    "conda-forge-gl-t16.json",
+    "conda-forge-cc-t1.json",
+    "conda-forge-cc-t2.json",
+    "conda-forge-cc-t4.json",
+    "conda-forge-cc-t8.json",
+    "conda-forge-cc-t16.json"
+  ],
+  "result_files": [
+    "conda-forge-gl-t1.json",
+    "conda-forge-gl-t2.json",
+    "conda-forge-gl-t4.json",
+    "conda-forge-gl-t8.json",
+    "conda-forge-gl-t16.json",
+    "conda-forge-cc-t1.json",
+    "conda-forge-cc-t2.json",
+    "conda-forge-cc-t4.json",
+    "conda-forge-cc-t8.json",
+    "conda-forge-cc-t16.json"
+  ],
+  "excluded": [],
+  "failures": []
+}

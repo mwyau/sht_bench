@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import math
 from pathlib import Path
 
 from sht_bench import source_audit, source_report
@@ -53,8 +54,8 @@ def _report_run(root: Path):
     cells.mkdir(parents=True)
     build = {
         "builds": {
-            "ducc": {"status": "built", "sha": "ducc-source-sha", "build_kind": "git-source", "module_path": "/isolated/ducc.py"},
-            "rustsht": {"status": "built", "requirement": "rustsht==1.2.3", "build_kind": "published-wheel", "module_path": "/isolated/rustsht.py"},
+            "ducc": {"status": "built", "sha": "ducc-source-sha", "build_kind": "local-git-source-snapshot", "module_path": "/isolated/ducc.py"},
+            "rustsht": {"status": "built", "sha": "rustsht-source-sha", "build_kind": "local-git-source-snapshot", "module_path": "/isolated/rustsht.py"},
         }
     }
     manifest_path = run / "build-manifest.json"
@@ -67,8 +68,8 @@ def _report_run(root: Path):
                "map_roundtrip": _metrics()}
     rows = []
     for backend, source_sha, build_mode, import_path, median in (
-        ("ducc", "ducc-source-sha", "git-source", "/isolated/ducc.py", 0.01),
-        ("rustsht", "rustsht==1.2.3", "published-wheel", "/isolated/rustsht.py", 0.02),
+        ("ducc", "ducc-source-sha", "local-git-source-snapshot", "/isolated/ducc.py", 0.01),
+        ("rustsht", "rustsht-source-sha", "local-git-source-snapshot", "/isolated/rustsht.py", 0.02),
     ):
         row = {
             "id": f"{backend}-cell", "backend": backend, "source_sha": source_sha,
@@ -126,12 +127,12 @@ def test_source_report_exports_outcomes_timings_pairs_and_provenance(monkeypatch
     assert timings[1]["native_api"] == "native API"
     assert timings[1]["native_conventions"] == json.dumps({"conversion": "identity"}, sort_keys=True)
     assert timings[1]["setup_components_s"] == json.dumps({"native_constructor": 0.05}, sort_keys=True)
-    assert comparisons[0]["build_mode"] == "published-wheel"
-    assert comparisons[0]["reference_build_mode"] == "git-source"
+    assert comparisons[0]["build_mode"] == "local-git-source-snapshot"
+    assert comparisons[0]["reference_build_mode"] == "local-git-source-snapshot"
     assert paired[0]["process_pairs"] == "1"
-    assert scaling[1]["build_mode"] == "published-wheel"
+    assert scaling[1]["build_mode"] == "local-git-source-snapshot"
     assert accuracy[0]["round"] == 0
-    assert accuracy[0]["build_mode"] in {"git-source", "published-wheel"}
+    assert accuracy[0]["build_mode"] == "local-git-source-snapshot"
     assert (output / "build-provenance.json").read_text() == json.dumps(build, indent=2) + "\n"
     assert manifest["plots_requested"] is False
     assert manifest["command"].endswith("--tables-only")
@@ -269,9 +270,39 @@ def test_source_report_exports_requested_derivative_and_adjoint_validation(tmp_p
 
 def test_report_uses_fixed_backend_colors_and_separate_build_styles():
     assert source_report.COLORS == {name: BACKEND_COLORS[name] for name in ("ducc", "shtns", "rustsht", "pyspharm")}
-    assert source_report.LINE_STYLES == {"git-source": "--", "published-wheel": "-"}
-    assert source_report.MARKERS == {"git-source": "s", "published-wheel": "o"}
+    assert source_report.LINE_STYLES == {"local-git-source-snapshot": "--", "git-source": "--", "conda-forge": "-."}
+    assert source_report.MARKERS == {"local-git-source-snapshot": "s", "git-source": "s", "conda-forge": "D"}
+    assert source_report._series_label(
+        "pyspharm", "conda-forge", "artifact-hash",
+        {"version": "1.0.9", "build_string": "np2py313h854c110_1017"},
+    ) == "pyspharm conda-forge 1.0.9-np2py313h854c110_1017"
     sha = "abcdef0123456789abcdef0123456789abcdef01"
     assert source_report.revision_label(sha) == sha[:10]
     assert source_report.revision_label("rustsht==1.2.3") == "rustsht==1.2.3"
     assert source_report.revision_label("ABCDEF0123456789abcdef0123456789abcdef01") == "ABCDEF0123456789abcdef0123456789abcdef01"
+
+
+def test_matched_comparisons_include_pyspharm_only_on_exact_workload_identity():
+    workload = {
+        "grid": "GL", "nlat": 34, "nlon": 65, "lmax": 16, "mmax": 16,
+        "spin": 0, "precision": "float32", "operation": "synthesis",
+        "allocation": "allocating", "batch": 1, "phi0": 0.0,
+    }
+    reference = {
+        "backend": "ducc", "source_sha": "ducc-sha", "build_mode": "git-source",
+        "workload": workload, "threads_requested": 1, "round": 0, "median_s": 2e-4,
+    }
+    pyspharm = {
+        "backend": "pyspharm", "source_sha": "conda-artifact", "build_mode": "conda-forge",
+        "workload": workload, "threads_requested": 1, "round": 0, "median_s": 3e-4,
+    }
+    different_precision = {
+        **pyspharm, "workload": {**workload, "precision": "float64"},
+    }
+
+    rows = source_report.matched_comparisons([reference, pyspharm, different_precision])
+
+    assert len(rows) == 1
+    assert rows[0]["backend"] == "pyspharm"
+    assert rows[0]["build_mode"] == "conda-forge"
+    assert math.isclose(rows[0]["ratio"], 1.5, rel_tol=1e-12)

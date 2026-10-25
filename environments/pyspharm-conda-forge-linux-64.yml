@@ -1,0 +1,7 @@
+name: sht-bench-pyspharm
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13.15
+  - numpy=2.5.4
+  - pyspharm=1.0.9=np2py313h854c110_1017

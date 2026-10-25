@@ -13,7 +13,7 @@ import subprocess
 import sys
 import time
 
-from .source_adapters import Workload, Adapter, Unsupported, capability, fixtures, PLANNING_POLICIES
+from .source_adapters import Workload, Adapter, Unsupported, capability, fixtures, PLANNING_POLICIES, MODULES
 from .source_validation import validate,validate_operation,reference_map
 
 DEGREES = [1,4,16,31,32,42,63,64,65,85,127,128,159,255,256,319,511,639,720,1023,1279]
@@ -68,9 +68,21 @@ def identity(backend,w,q,round_index,sha):
 
 
 def write_json(path,data):
+    path.parent.mkdir(parents=True,exist_ok=True)
     temporary = path.with_suffix('.tmp')
     temporary.write_text(json.dumps(data,indent=2,allow_nan=False)+'\n')
     temporary.replace(path)
+
+
+def _json_safe(value):
+    """Replace nonfinite metric values before writing auditable JSON."""
+    if isinstance(value,float):
+        return value if math.isfinite(value) else None
+    if isinstance(value,dict):
+        return {key:_json_safe(item) for key,item in value.items()}
+    if isinstance(value,(list,tuple)):
+        return [_json_safe(item) for item in value]
+    return value
 
 
 def harness_hash():
@@ -86,6 +98,32 @@ def resident_bytes():
         return int(Path('/proc/self/statm').read_text().split()[1])*os.sysconf('SC_PAGE_SIZE')
     except (OSError,ValueError,IndexError):
         return None
+
+
+def validation_identity(task):
+    """Identity for a pre-timing gate shared by analysis/synthesis cells."""
+    w = task['workload']
+    workload = {key:w[key] for key in ('grid','nlat','nlon','lmax','mmax','spin','precision','batch','phi0')}
+    return {
+        'backend':task['backend'],
+        'source_sha':task['source_sha'],
+        'build_manifest_sha256':task['build_manifest_sha256'],
+        'harness_sha256':task['harness_sha256'],
+        'threads_requested':task['threads_requested'],
+        'workload':workload,
+    }
+
+
+def load_validation_certificate(task):
+    """Reject timing unless an exact backend/workload/thread gate passed first."""
+    path = Path(task['validation_certificate'])
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != task.get('validation_certificate_sha256'):
+        raise ValueError('validation certificate checksum changed')
+    certificate = json.loads(raw)
+    if certificate.get('validation_identity') != validation_identity(task):
+        raise ValueError('validation certificate belongs to another backend/build/workload/thread')
+    return certificate
 
 
 def worker(args):
@@ -110,7 +148,7 @@ def worker(args):
         result['environment']['measurement_label'] = 'provisional: shared host; power/frequency not controlled'
         import importlib
         t = time.perf_counter()
-        importlib.import_module({'ducc':'ducc0','rustsht':'rustsht','shtns':'shtns','pyspharm':'spharm'}[task['backend']])
+        importlib.import_module(MODULES[task['backend']])
         result['module_import_s'] = time.perf_counter()-t
         from .source_resources import apply_address_space_limit
         result['allocation_limit'] = apply_address_space_limit(task.get('resource_preflight',{}).get('memory_budget_bytes'))
@@ -132,58 +170,76 @@ def worker(args):
         result['threads_effective'] = adapter.effective_threads
         result['thread_control'] = adapter.thread_control
         result['import_path'] = adapter.module.__file__
-        a = next(fixtures(w))[1]
-        native = adapter.encode(a)
-        first_synthesis = adapter.operation(native,None,operation='synthesis')
-        t = time.perf_counter()
-        first_map = first_synthesis()
-        result['first_synthesis_s'] = time.perf_counter()-t
-        m = adapter.canonical_synthesis_output(first_map)
-        first_analysis = adapter.operation(native,m,operation='analysis')
-        t = time.perf_counter()
-        first_analysis()
-        result['first_analysis_s'] = time.perf_counter()-t
-        result['first_call_policy'] = 'native allocating A/S calls; argument preparation and canonical output conversion outside timing'
-        if w.batch>1 and task['backend']=='ducc':
-            result['first_call_policy'] += '; first_analysis_s is a validation-only loop of individual analysis_2d calls, not native batch analysis'
-        del first_map,first_synthesis,first_analysis
-        result['validation'] = validate(adapter)
-        if result['validation']['status'] != 'supported_and_validated':
-            result['status'] = 'numerical_validation_failed'
+        if task.get('validation_only'):
+            result['validation_identity'] = validation_identity(task)
+            result['validation'] = validate(adapter)
+            result['status'] = ('validation_passed' if result['validation']['status'] == 'supported_and_validated'
+                                else 'numerical_validation_failed')
+            result['peak_rss_bytes'] = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*(1 if sys.platform=='darwin' else 1024)
+            result['memory_policy'] = 'process peak RSS including setup and numerical validation'
+            write_json(args.result,_json_safe(result))
+            return 0 if result['status'] == 'validation_passed' else 1
+
+        certificate = load_validation_certificate(task) if task.get('validation_certificate') else None
+        if certificate is not None:
+            result['validation'] = certificate.get('validation')
+            result['validation_certificate_sha256'] = task['validation_certificate_sha256']
+        if certificate is not None and certificate.get('status') != 'validation_passed':
+            result.update(status='numerical_validation_failed', reason='matching pre-timing validation gate failed')
         else:
-            m = np.ascontiguousarray(reference_map(w,a),dtype=w.precision)
-            output = None
-            if w.allocation == 'preallocated':
-                output = np.empty_like(native if w.operation=='analysis' else m)
+            a = next(fixtures(w))[1]
+            native = adapter.encode(a)
+            first_synthesis = adapter.operation(native,None,operation='synthesis')
             t = time.perf_counter()
-            fn = adapter.operation(native,m,output)
-            result['operation_prepare_s'] = time.perf_counter()-t
-            result['operation_prepare_policy'] = 'native input/output preparation; Rust gradient constructs a spin-1 plan and removes the mathematically zero constant-gradient coefficient outside timing'
-            if w.operation not in ('analysis','synthesis'):
-                t = time.perf_counter()
-                fn()
-                result['first_requested_operation_s'] = time.perf_counter()-t
-            # Secondary operation gates are checked separately before timing.
-            if w.operation not in ('analysis','synthesis'):
-                result['operation_validation'] = validate_operation(adapter,a,m,fn)
-            if not result.get('operation_validation',{'passed':True})['passed']:
+            first_map = first_synthesis()
+            result['first_synthesis_s'] = time.perf_counter()-t
+            m = adapter.canonical_synthesis_output(first_map)
+            first_analysis = adapter.operation(native,m,operation='analysis')
+            t = time.perf_counter()
+            first_analysis()
+            result['first_analysis_s'] = time.perf_counter()-t
+            result['first_call_policy'] = 'native allocating A/S calls; argument preparation and canonical output conversion outside timing'
+            if w.batch>1 and task['backend']=='ducc':
+                result['first_call_policy'] += '; first_analysis_s is a validation-only loop of individual analysis_2d calls, not native batch analysis'
+            del first_map,first_synthesis,first_analysis
+            if certificate is None:
+                result['validation'] = validate(adapter)
+            if result['validation']['status'] != 'supported_and_validated':
                 result['status'] = 'numerical_validation_failed'
             else:
-                if output is not None:
-                    from .source_validation import errors,acceptable
-                    expected = adapter.analysis(m) if w.operation=='analysis' else adapter.synthesis(native)
-                    observed = fn()
-                    result['preallocated_validation'] = errors(observed,expected)
-                    if not acceptable(result['preallocated_validation'],result['validation']['tolerance']):
-                        result['status'] = 'numerical_validation_failed'
-                        write_json(args.result,result)
-                        return 1
-                iterations,samples = measure(fn,warmup=2,repeat=task['repeat'],min_time=task['min_time'])
-                result.update(status='timed_successfully',samples_s=samples,iterations=iterations,
-                              median_s=float(np.median(samples)),p10_s=float(np.percentile(samples,10)),
-                              p90_s=float(np.percentile(samples,90)),std_s=float(np.std(samples)),
-                              transforms_per_second=w.batch/float(np.median(samples)),
-                              grid_points_per_second=w.batch*w.nlat*w.nlon/float(np.median(samples)))
+                m = np.ascontiguousarray(reference_map(w,a),dtype=w.precision)
+                output = None
+                if w.allocation == 'preallocated':
+                    output = np.empty_like(native if w.operation=='analysis' else m)
+                t = time.perf_counter()
+                fn = adapter.operation(native,m,output)
+                result['operation_prepare_s'] = time.perf_counter()-t
+                result['operation_prepare_policy'] = 'native input/output preparation; coefficient conversion and fixture generation are outside transform timing'
+                if w.operation not in ('analysis','synthesis'):
+                    t = time.perf_counter()
+                    fn()
+                    result['first_requested_operation_s'] = time.perf_counter()-t
+                # Secondary operation gates are checked separately before timing.
+                if w.operation not in ('analysis','synthesis'):
+                    result['operation_validation'] = validate_operation(adapter,a,m,fn)
+                if not result.get('operation_validation',{'passed':True})['passed']:
+                    result['status'] = 'numerical_validation_failed'
+                else:
+                    if output is not None:
+                        from .source_validation import errors,acceptable
+                        expected = adapter.analysis(m) if w.operation=='analysis' else adapter.synthesis(native)
+                        observed = fn()
+                        result['preallocated_validation'] = errors(observed,expected)
+                        if not acceptable(result['preallocated_validation'],result['validation']['tolerance']):
+                            result['status'] = 'numerical_validation_failed'
+                            write_json(args.result,result)
+                            return 1
+                    iterations,samples = measure(fn,warmup=2,repeat=task['repeat'],min_time=task['min_time'])
+                    result.update(status='timed_successfully',samples_s=samples,iterations=iterations,
+                                  median_s=float(np.median(samples)),p10_s=float(np.percentile(samples,10)),
+                                  p90_s=float(np.percentile(samples,90)),std_s=float(np.std(samples)),
+                                  transforms_per_second=w.batch/float(np.median(samples)),
+                                  grid_points_per_second=w.batch*w.nlat*w.nlon/float(np.median(samples)))
         result['peak_rss_bytes'] = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*(1 if sys.platform=='darwin' else 1024)
         result['memory_policy'] = 'process peak RSS including setup, validation and transform buffers'
     except Unsupported as exc:
@@ -193,14 +249,8 @@ def worker(args):
     except (Exception,) as exc:
         import traceback
         result.update(status='execution_failed',reason=str(exc),traceback=traceback.format_exc())
-    # JSON has no infinity: failed metric values are explicitly null.
-    def finite(obj):
-        if isinstance(obj,float) and not np.isfinite(obj): return None
-        if isinstance(obj,dict): return {k:finite(v) for k,v in obj.items()}
-        if isinstance(obj,list): return [finite(v) for v in obj]
-        return obj
-    write_json(args.result,finite(result))
-    return 0 if result['status'] in ('unsupported','timed_successfully') else 1
+    write_json(args.result,_json_safe(result))
+    return 0 if result['status'] in ('unsupported','timed_successfully','validation_passed') else 1
 
 
 def main(argv=None):

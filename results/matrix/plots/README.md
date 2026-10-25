@@ -1,7 +1,10 @@
 # Benchmark plots
 
 Each thumbnail links to the full-size figure.
-Colors identify backends consistently across figures: DUCC is blue, SHTns orange, SHTOOLS/pyshtools green, and Spherepack/pyspharm red. Wheel and installed builds use solid lines; source builds use dashed lines. SHTns is source-built in both benchmark environments and is shown once as a dashed source series. Lower transform time is better.
+Colors identify backends consistently across figures: DUCC is blue, SHTns orange, SHTOOLS/pyshtools green, Spherepack/pyspharm red, and RustSHT purple. Installed builds and binary-wheel builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines. Lower transform time is better.
+SHTns is source-built in both benchmark environments and appears once as a source series.
+
+The pyspharm series uses conda-forge 1.0.9 build `np2py313h854c110_1017`, Python 3.13.15, and NumPy 2.5.4.
 
 ## Transform time versus spectral scale
 

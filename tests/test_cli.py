@@ -1,4 +1,6 @@
 import argparse
+import csv
+import json
 from types import SimpleNamespace
 
 import pytest
@@ -20,8 +22,17 @@ from sht_bench.cli import (
     _parse_torch_devices,
     _parse_threads,
     _plot_index,
+    _plot_lines,
     _plot_style,
+    _write_results,
+    _series_label,
     _prepare_plot_records,
+    _pyspharm_cc_memory_limit,
+    _build_conda_matrix_env,
+    _matrix_output_name,
+    _retain_current_pyspharm_results,
+    run_matrix,
+    CELL_RESULT_RE,
     build_parser,
 )
 from sht_bench.grids import ATMOSPHERIC_GL_GRIDS, HIGH_BANDWIDTH_CC_CASES, gl_grid_label
@@ -109,15 +120,64 @@ def test_explicit_lmax_overrides_grid_defaults():
     assert _matrix_lmax(args, "cc") == [36, 90]
 
 
+def test_legacy_matrix_selects_conda_environment_for_pyspharm(monkeypatch):
+    args = build_parser().parse_args(
+        ["matrix", "--build", "source", "--backend", "pyspharm"]
+    )
+    assert args.backend == ["pyspharm"]
+    assert args.build == "source"
+
+    commands = []
+    monkeypatch.setattr("sht_bench.cli._run_subprocess", lambda command, **_: commands.append(command))
+    python = _build_conda_matrix_env("3.13", reuse=False)
+    assert python.name == "python"
+    command = commands[0]
+    assert command[command.index("--build") + 1] == "wheel"
+    assert command[command.index("--backend") + 1] == "pyspharm"
+    assert "--setup-only" in command
+
+
+def test_pyspharm_only_legacy_matrix_does_not_create_or_replace_uv_environment(
+    tmp_path, monkeypatch
+):
+    args = build_parser().parse_args([
+        "matrix", "--build", "wheel", "--backend", "pyspharm",
+        "--grid", "gl", "--lmax", "42", "--threads", "1",
+        "--output", str(tmp_path / "matrix"),
+    ])
+    conda_python = tmp_path / "conda-env" / "bin" / "python"
+    monkeypatch.setattr("sht_bench.cli._build_matrix_env", lambda *a, **k: pytest.fail("uv env touched"))
+    monkeypatch.setattr("sht_bench.cli._build_conda_matrix_env", lambda *a, **k: conda_python)
+    monkeypatch.setattr("sht_bench.cli._backend_available", lambda *a, **k: True)
+    commands = []
+    monkeypatch.setattr("sht_bench.cli._run_subprocess", lambda command, **_: commands.append(command))
+
+    assert run_matrix(args) == 1
+    assert len(commands) == 1
+    assert commands[0][0] == str(conda_python)
+
+
+def test_matrix_replacement_removes_old_pyspharm_provenance_only():
+    records = [
+        {"backend": "ducc", "build_mode": "wheel"},
+        {"backend": "pyspharm", "build_mode": "wheel"},
+        {"backend": "pyspharm", "build_mode": "conda-forge"},
+    ]
+    assert _retain_current_pyspharm_results(records) == [records[0], records[2]]
+
+
 def test_native_pyshtools_atmospheric_gl_is_excluded():
     assert ("pyshtools", "gl", 42) in UNSUPPORTED_BENCHMARK_CASES
     assert ("pyshtools", "gl", 1279) in UNSUPPORTED_BENCHMARK_CASES
     assert ("pyshtools", "gl", 31) not in UNSUPPORTED_BENCHMARK_CASES
 
 
-def test_pyspharm_cc_1023_is_excluded():
-    assert ("pyspharm", "cc", 1023) in UNSUPPORTED_BENCHMARK_CASES
+def test_pyspharm_cc_1023_is_resource_limited_by_observed_memory_headroom():
+    assert ("pyspharm", "cc", 1023) not in UNSUPPORTED_BENCHMARK_CASES
     assert ("pyspharm", "cc", 720) not in UNSUPPORTED_BENCHMARK_CASES
+    assert "2x headroom" in _pyspharm_cc_memory_limit(1023, 70_930_000_000)
+    assert _pyspharm_cc_memory_limit(1023, 110_000_000_000) is None
+    assert _pyspharm_cc_memory_limit(720, 1) is None
 
 
 def test_plot_style_is_stable_by_backend_and_build():
@@ -127,7 +187,18 @@ def test_plot_style_is_stable_by_backend_and_build():
         "installed": "-",
         "wheel": "-",
         "source": "--",
+        "conda-forge": "-.",
     }
+    assert _plot_style({"backend": "pyspharm", "build_mode": "conda-forge"}) == {
+        "color": BACKEND_COLORS["pyspharm"],
+        "linestyle": "-.",
+    }
+    assert _series_label({
+        "backend": "pyspharm", "build_mode": "conda-forge", "backend_version": "1.0.9",
+        "build_string": "np2py313h854c110_1017",
+    }) == "pyspharm (conda-forge 1.0.9-np2py313h854c110_1017)"
+    assert _matrix_output_name("conda-forge", "cc", 1) == "conda-forge-cc-t1.json"
+    assert CELL_RESULT_RE.fullmatch("conda-forge-cc-t1.json")
 
     for backend, color in BACKEND_COLORS.items():
         assert _plot_style({"backend": backend, "build_mode": "wheel"}) == {
@@ -177,12 +248,44 @@ def test_plot_index_inlines_clickable_comparisons():
 
     assert "## Transform time versus spectral scale" in index
     assert "CC figures use regular-grid spacing in degrees" in index
-    assert "Wheel and installed builds use solid lines; source builds use dashed lines" in index
+    assert "Installed builds and binary-wheel builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines" in index
     assert "SHTns is source-built in both benchmark environments" in index
     assert "Lower transform time is better" in index
     assert "| Threads | Analysis | Synthesis |" in index
     assert "| Resolution | Analysis | Synthesis |" in index
     assert "2.5° (L=36)" in index
+
+    conda_index = _plot_index(
+        created,
+        grids=["cc"],
+        operations=["analysis", "synthesis"],
+        threads=[1],
+        lmax_values=[36],
+        pyspharm_environment=(
+            "The pyspharm series uses conda-forge 1.0.9 build `np2py313`, "
+            "Python 3.13.15, and NumPy 2.5.4."
+        ),
+    )
+    assert "conda-forge 1.0.9 build `np2py313`" in conda_index
+
+
+def test_matrix_csv_keeps_union_of_build_provenance_fields(tmp_path):
+    output = tmp_path / "matrix.json"
+    _write_results([
+        {"backend": "ducc", "build_mode": "wheel", "median_s": 0.1},
+        {
+            "backend": "pyspharm", "build_mode": "conda-forge", "median_s": 0.2,
+            "build_identity": {"version": "1.0.9", "build_string": "np2py313"},
+            "samples_s": [0.19, 0.2, 0.21],
+        },
+    ], output)
+
+    rows = list(csv.DictReader(output.with_suffix(".csv").open()))
+    assert json.loads(rows[1]["build_identity"]) == {
+        "build_string": "np2py313", "version": "1.0.9",
+    }
+    assert "samples_s" not in rows[1]
+    assert len(json.loads(output.read_text())) == 2
 
 
 def test_plot_index_labels_atmospheric_gl_cases():
@@ -199,3 +302,20 @@ def test_plot_index_labels_atmospheric_gl_cases():
     )
     assert "F32" in index
     assert "| Gaussian grid / truncation | Analysis |" in index
+
+
+def test_conda_forge_series_renders_a_chart_with_package_identity(tmp_path):
+    pytest.importorskip("matplotlib")
+    output = tmp_path / "pyspharm.png"
+    _plot_lines(
+        [{
+            "backend": "pyspharm", "build_mode": "conda-forge",
+            "backend_version": "1.0.9", "build_string": "np2py313h854c110_1017",
+            "grid": "gl", "operation": "analysis", "lmax": 42,
+            "threads_requested": 1, "median_s": 0.001,
+        }],
+        x_key="lmax", output=output, title="GL scalar analysis",
+        stat="median_s", dpi=72, group_keys=("backend", "build_mode"),
+    )
+    assert output.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+    assert output.stat().st_size > 1000

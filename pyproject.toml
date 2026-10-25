@@ -16,13 +16,11 @@ dependencies = [
 ducc = ["ducc0>=0.41.0"]
 shtns = ["shtns>=3.7.5"]
 pyshtools = ["pyshtools>=4.14.1"]
-pyspharm = ["pyspharm-syl>=1.2.1"]
 plot = ["matplotlib>=3.9"]
 all = [
     "ducc0>=0.41.0",
     "shtns>=3.7.5",
     "pyshtools>=4.14.1",
-    "pyspharm-syl>=1.2.1",
     "matplotlib>=3.9",
 ]
 

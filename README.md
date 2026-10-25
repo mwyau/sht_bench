@@ -8,7 +8,7 @@ The project exposes two independent executables:
 - `fft-bench` — DUCC one-dimensional FFT precision and scaling benchmarks.
 
 The Git source comparison uses `sht-bench source-matrix` with DUCC, SHTns,
-RustSHT `main`, and a separate pyspharm-syl 1.2.1 wheel environment.
+RustSHT `main`, and a separate conda-forge pyspharm environment.
 See [the Git build commands](BUILD.md#git-source-matrix) and
 [the numerical and timing method](docs/MATRIX.md#numerically-gated-git-source-comparison).
 
@@ -40,7 +40,7 @@ Forward one-dimensional DUCC FFT timings on GitHub-hosted runners. These panels 
 
 ### SHT
 
-Median transform time is shown in milliseconds; lower is better. Backend colors are fixed across figures. Wheel/installed builds use solid lines and source builds use dashed lines. SHTns is source-built and shown once as a dashed series.
+Median transform time is shown in milliseconds; lower is better. Backend colors are fixed across figures. Wheel/installed builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines. SHTns is source-built and shown once as a dashed series. pyspharm uses conda-forge `pyspharm 1.0.9`, build `np2py313h854c110_1017`, with Python 3.13.15 and NumPy 2.5.4 on this host. See the [pyspharm migration results and numerical checks](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 
 #### AMD64 — AMD Ryzen 9 5950X, 16 threads
 
@@ -172,6 +172,6 @@ uv run --extra plot sht-bench matrix \
 
 The benchmark uses triangular truncation with `mmax = lmax`. Backend construction, grid setup, and reusable precomputation occur before timing. Each transform is warmed up and repeatedly timed with `time.perf_counter_ns`; raw samples and summary statistics are retained. Thread-count cells run in separate Python processes so thread-related environment variables are set before numerical libraries are imported.
 
-DUCC and SHTns use double-precision spatial and spectral data. The public pyspharm interface uses `float32` spatial data and `complex64` coefficients, so its timings are a mixed-precision comparison. pyshtools and pyspharm do not expose the same explicit per-call thread control used by DUCC and SHTns. Passing tests or completing a timing run is not a cross-backend numerical validation of normalization, phase conventions, or transform accuracy.
+DUCC and SHTns use double-precision spatial and spectral data. The conda-forge pyspharm interface uses `float32` spatial data and `complex64` coefficients, so its timings are a mixed-precision comparison. pyshtools and pyspharm do not expose the same explicit per-call thread control used by DUCC and SHTns. Numerical comparisons require matching geometry, precision, conventions, and validation evidence.
 
 See [BUILD.md](BUILD.md) for package/build provenance and [docs/MATRIX.md](docs/MATRIX.md) for matrix dimensions, incremental reruns, output files, and plotting details.

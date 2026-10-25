@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "resolved_utc": "2026-10-25",
+  "platform": "linux-64",
+  "channel_policy": "conda-forge only, strict channel priority",
+  "solver_request": {
+    "python": "3.13.15",
+    "numpy": "2.5.4",
+    "pyspharm": "1.0.9"
+  },
+  "packages": {
+    "pyspharm": {
+      "version": "1.0.9",
+      "build_string": "np2py313h854c110_1017",
+      "build_number": 1017,
+      "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/pyspharm-1.0.9-np2py313h854c110_1017.conda",
+      "sha256": "2f12e25a18c47c9a7545cb36a29cfecd553a42dde7df30b06af1d08def5986fc",
+      "md5": "fbff7ab12db1afd3b45c3a20576955c2"
+    },
+    "python": {
+      "version": "3.13.15",
+      "build_string": "hf47f18c_103_cp313",
+      "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/python-3.13.15-hf47f18c_103_cp313.conda",
+      "sha256": "cc18ba39af0d591ac012c1334ac98aa59ec7be389719b4cd80cc0a58a53019de"
+    },
+    "numpy": {
+      "version": "2.5.4",
+      "build_string": "py313hb5f73ae_0",
+      "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/numpy-2.5.4-py313hb5f73ae_0.conda",
+      "sha256": "e8ffae51383b57192b018bdeeb95c84ec617aa1428656825b1d4a326b81410dd",
+      "numpy_c_abi": 33554432
+    }
+  },
+  "runtime": {
+    "python": "3.13.15",
+    "numpy": "2.5.4",
+    "spharm_import": "spharm",
+    "module_path_within_prefix": "lib/python3.13/site-packages/spharm/__init__.py",
+    "native_module": "_spherepack",
+    "native_extension_path_within_prefix": "lib/python3.13/site-packages/_spherepack.cpython-313-x86_64-linux-gnu.so",
+    "native_extension_sha256": "fd7e75f19c39e2663a789701f9e13a1e4c5fec48bcfd165ca3b47ddef88f7741",
+    "analysis_output_dtype": "complex64",
+    "synthesis_output_dtype": "float32",
+    "python_distributions_named_pyspharm": [
+      "pyspharm"
+    ],
+    "linked_libraries": [
+      "libm.so.6",
+      "libc.so.6",
+      "ld-linux-x86-64.so.2"
+    ],
+    "linked_numeric_libraries": []
+  },
+  "environment_exports": {
+    "specification": "pyspharm-conda-forge-linux-64.yml",
+    "full_solver_export": "pyspharm-conda-forge-linux-64.export.yml",
+    "explicit_artifact_list": "pyspharm-conda-forge-linux-64.explicit.txt",
+    "full_solver_export_sha256": "6ef51939e9201b8437e408000c08ce425455717f28ef6edda8c7de9f3d80cab1",
+    "explicit_artifact_list_sha256": "0f9a93e9764330c3d9cf309d077325a092b58fb164e64d71a7c551dc360e44d7"
+  }
+}

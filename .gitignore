@@ -1,5 +1,6 @@
 .venv/
 .venv-bench-*/
+.conda-bench-pyspharm/
 __pycache__/
 *.py[cod]
 .pytest_cache/

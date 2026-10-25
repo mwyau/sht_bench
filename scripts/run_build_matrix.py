@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import platform
@@ -13,6 +14,18 @@ from pathlib import Path
 from typing import Callable, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
+from sht_bench.conda_environment import (
+    CONDA_CHANNEL,
+    NUMPY_VERSION as PYSPHARM_NUMPY_VERSION,
+    PYTHON_VERSION as PYSPHARM_PYTHON_VERSION,
+    PYSPHARM_VERSION,
+    create_command as conda_create_command,
+    environment_python as conda_environment_python,
+    find_conda,
+    installed_environment_exports,
+    runtime_probe,
+    verify_pyspharm_environment,
+)
 
 BACKEND_NAMES = ("ducc", "shtns", "pyshtools", "pyspharm")
 ARM64_MACHINES = {"aarch64", "arm64"}
@@ -21,7 +34,7 @@ VERSIONS = {
     "ducc": "0.41.0",
     "shtns": "3.7.5",
     "pyshtools": "4.14.1",
-    "pyspharm": "1.2.1",
+    "pyspharm": PYSPHARM_VERSION,
 }
 
 PROVENANCE = {
@@ -42,10 +55,6 @@ PROVENANCE = {
             "build_kind": "pypi-wheel",
             "build_source": f"pyshtools=={VERSIONS['pyshtools']}",
         },
-        "pyspharm": {
-            "build_kind": "pypi-wheel",
-            "build_source": f"pyspharm-syl=={VERSIONS['pyspharm']}",
-        },
     },
     "source": {
         "ducc": {
@@ -63,6 +72,13 @@ PROVENANCE = {
         "pyshtools": {
             "build_kind": "pypi-sdist",
             "build_source": f"pyshtools=={VERSIONS['pyshtools']}",
+        },
+    },
+    "conda-forge": {
+        "pyspharm": {
+            "build_kind": "conda-forge",
+            "build_origin": CONDA_CHANNEL,
+            "build_source": f"conda-forge::pyspharm={VERSIONS['pyspharm']}",
         },
     },
 }
@@ -182,6 +198,64 @@ def _attempt_build(
             raise
 
 
+def prepare_pyspharm_environment(*, reuse: bool) -> tuple[Path, dict]:
+    """Create/select the dedicated conda-forge backend environment."""
+    conda = find_conda()
+    prefix = ROOT / ".conda-bench-pyspharm"
+    if prefix.exists() and reuse:
+        verify_pyspharm_environment(prefix)
+    else:
+        if prefix.exists():
+            run([conda, "env", "remove", "--yes", "--prefix", str(prefix)])
+        command = conda_create_command(
+            conda,
+            prefix,
+            python=PYSPHARM_PYTHON_VERSION,
+            numpy=PYSPHARM_NUMPY_VERSION,
+            pyspharm=PYSPHARM_VERSION,
+        )
+        run(command)
+    python = conda_environment_python(prefix)
+    run(
+        [
+            "uv",
+            "pip",
+            "install",
+            "--python",
+            str(python),
+            "-e",
+            ".[plot]",
+            "pytest",
+            "scipy",
+        ]
+    )
+    package = verify_pyspharm_environment(prefix)
+    runtime = runtime_probe(prefix)
+    identity = {
+        **package,
+        **runtime,
+        "build_kind": "conda-forge",
+        "build_origin": CONDA_CHANNEL,
+        "build_source": f"conda-forge::pyspharm={PYSPHARM_VERSION}",
+        "prefix": str(prefix.resolve()),
+        "python_executable": str(python.resolve()),
+        "python_version": PYSPHARM_PYTHON_VERSION,
+        "numpy_version": PYSPHARM_NUMPY_VERSION,
+    }
+    exports = installed_environment_exports(conda, prefix)
+    results = ROOT / "results"
+    results.mkdir(exist_ok=True)
+    explicit = results / "pyspharm-conda-forge-linux-64.explicit.txt"
+    environment = results / "pyspharm-conda-forge-environment.yml"
+    explicit.write_text(exports["explicit"])
+    environment.write_text(exports["environment"])
+    identity["explicit_export"] = str(explicit.resolve())
+    identity["explicit_export_sha256"] = hashlib.sha256(explicit.read_bytes()).hexdigest()
+    identity["environment_export"] = str(environment.resolve())
+    PROVENANCE["conda-forge"]["pyspharm"].update(identity)
+    return python, identity
+
+
 def create_environment(
     mode: str,
     python_spec: str,
@@ -189,22 +263,25 @@ def create_environment(
     *,
     backends: Iterable[str] | None = None,
     strict_builds: bool = False,
-) -> tuple[Path, dict[str, str], dict[str, str], dict[str, str]]:
+) -> tuple[Path | None, dict[str, str], dict[str, str], dict[str, str], Path | None]:
     selected_backends = tuple(backends or default_backends())
+    uv_backends = tuple(name for name in selected_backends if name != "pyspharm")
     env_dir = ROOT / f".venv-bench-{mode}"
-    if env_dir.exists() and not reuse:
-        shutil.rmtree(env_dir)
-
-    if not env_dir.exists():
-        run(["uv", "venv", "--python", python_spec, str(env_dir)])
-
-    python = venv_python(env_dir)
+    if uv_backends:
+        if env_dir.exists() and not reuse:
+            shutil.rmtree(env_dir)
+        if not env_dir.exists():
+            run(["uv", "venv", "--python", python_spec, str(env_dir)])
+        python: Path | None = venv_python(env_dir)
+    else:
+        python = None
     build_env = source_environment() if mode == "source" else os.environ.copy()
     failures: dict[str, str] = {}
     unavailable: dict[str, str] = {}
+    pyspharm_python: Path | None = None
 
     native_paths = {}
-    required_native = set(selected_backends) & ({"ducc", "shtns"} if mode == "source" else {"shtns"})
+    required_native = set(uv_backends) & ({"ducc", "shtns"} if mode == "source" else {"shtns"})
     if required_native:
         from sht_bench.sources import checkout
         source_root = ROOT / ".sources" / "matrix"
@@ -217,16 +294,16 @@ def create_environment(
             PROVENANCE[mode][name].update(build_source=entry["origin"],build_sha=entry["sha"],build_ref=entry["ref"],source_lock=str(source_lock))
 
     # Install the harness without pulling the compiled comparison backends.
-    run(
-        ["uv", "pip", "install", "--python", str(python), "-e", ".[plot]"],
-        env=build_env,
-    )
+    if python is not None:
+        run(
+            ["uv", "pip", "install", "--python", str(python), "-e", ".[plot]"],
+            env=build_env,
+        )
 
     if mode == "wheel":
         wheel_requirements = {
             "ducc": f"ducc0=={VERSIONS['ducc']}",
             "pyshtools": f"pyshtools=={VERSIONS['pyshtools']}",
-            "pyspharm": f"pyspharm-syl=={VERSIONS['pyspharm']}",
         }
         installs: dict[str, Callable[[], None]] = {}
         for backend, requirement in wheel_requirements.items():
@@ -281,6 +358,15 @@ def create_environment(
             if backend in selected_backends
         }
 
+    if "pyspharm" in selected_backends:
+        try:
+            pyspharm_python, _ = prepare_pyspharm_environment(reuse=reuse)
+        except (subprocess.CalledProcessError, OSError, ValueError) as exc:
+            unavailable["pyspharm"] = f"conda-forge environment unavailable: {exc}"
+            print(unavailable["pyspharm"], file=sys.stderr)
+            if strict_builds:
+                raise
+
     for backend, action in installs.items():
         _attempt_build(
             backend,
@@ -289,7 +375,7 @@ def create_environment(
             strict_builds=strict_builds,
         )
 
-    return python, build_env, failures, unavailable
+    return python, build_env, failures, unavailable, pyspharm_python
 
 
 def _write_csv(records: list[dict[str, object]], path: Path) -> None:
@@ -297,7 +383,7 @@ def _write_csv(records: list[dict[str, object]], path: Path) -> None:
         return
     fieldnames = [key for key in records[0] if key != "samples_s"]
     with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for record in records:
             writer.writerow({key: record.get(key) for key in fieldnames})
@@ -307,34 +393,36 @@ def annotate_results(output: Path, mode: str) -> None:
     records = json.loads(output.read_text())
     for record in records:
         backend = record["backend"]
-        record["build_mode"] = mode
-        record.update(PROVENANCE[mode][backend])
+        provenance_mode = "conda-forge" if backend == "pyspharm" else mode
+        record["build_mode"] = provenance_mode
+        record.update(PROVENANCE[provenance_mode][backend])
 
     output.write_text(json.dumps(records, indent=2) + "\n")
     _write_csv(records, output.with_suffix(".csv"))
 
 
 def write_environment_files(
-    python: Path,
+    python: Path | None,
     mode: str,
     env: dict[str, str],
     build_failures: dict[str, str],
-    unavailable_wheels: dict[str, str],
+    unavailable_packages: dict[str, str],
     backends: Iterable[str],
+    pyspharm_python: Path | None = None,
 ) -> None:
     results = ROOT / "results"
     results.mkdir(exist_ok=True)
 
-    completed = subprocess.run(
-        ["uv", "pip", "freeze", "--python", str(python)],
-        cwd=ROOT,
-        env=env,
-        check=True,
-        text=True,
-        capture_output=True,
-    )
-    (results / f"{mode}-environment.txt").write_text(completed.stdout)
-
+    if python is not None:
+        completed = subprocess.run(
+            ["uv", "pip", "freeze", "--python", str(python)],
+            cwd=ROOT,
+            env=env,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+        (results / f"{mode}-environment.txt").write_text(completed.stdout)
     compiler_env = {
         key: env.get(key)
         for key in (
@@ -349,61 +437,122 @@ def write_environment_files(
         if env.get(key)
     }
     selected_backends = tuple(backends)
+    uv_backends = tuple(name for name in selected_backends if name != "pyspharm")
     manifest = {
         "mode": mode,
         "platform": platform.system(),
         "machine": platform.machine(),
-        "python": str(python),
-        "requested_backends": list(selected_backends),
+        "python": str(python) if python is not None else None,
+        "requested_backends": list(uv_backends),
         "packages": {
             backend: PROVENANCE[mode][backend]
-            for backend in selected_backends
+            for backend in uv_backends
             if backend in PROVENANCE[mode]
         },
         "compiler_environment": compiler_env,
-        "unavailable_wheels": unavailable_wheels,
+        "unavailable_packages": unavailable_packages,
         "build_failures": build_failures,
     }
     (results / f"{mode}-provenance.json").write_text(
         json.dumps(manifest, indent=2) + "\n"
     )
+    if "pyspharm" in selected_backends:
+        conda_manifest = {
+            "mode": "conda-forge",
+            "platform": platform.system(),
+            "machine": platform.machine(),
+            "requested_backends": ["pyspharm"],
+            "python": str(pyspharm_python) if pyspharm_python else None,
+            "package": PROVENANCE["conda-forge"]["pyspharm"],
+            "unavailable": unavailable_packages.get("pyspharm"),
+        }
+        (results / "conda-forge-provenance.json").write_text(
+            json.dumps(conda_manifest, indent=2) + "\n"
+        )
 
 
 def run_benchmark(
-    python: Path,
+    python: Path | None,
     mode: str,
     bench_args: Iterable[str],
     build_env: dict[str, str],
     build_failures: dict[str, str],
-    unavailable_wheels: dict[str, str],
+    unavailable_packages: dict[str, str],
     backends: Iterable[str],
+    pyspharm_python: Path | None = None,
 ) -> None:
-    output = ROOT / "results" / f"{mode}.json"
-    command = [
-        str(python),
-        "-m",
-        "sht_bench.cli",
-        "run",
-        "--output",
-        str(output),
-        *bench_args,
-    ]
-    run(command, env=build_env)
-    annotate_results(output, mode)
+    results_dir = ROOT / "results"
+    results_dir.mkdir(exist_ok=True)
+    selected = tuple(backends)
+    uv_backends = tuple(name for name in selected if name != "pyspharm")
+    psh_backends = ("pyspharm",) if "pyspharm" in selected else ()
+
+    def run_group(interpreter: Path, names: tuple[str, ...], label: str) -> list[dict]:
+        if not names:
+            return []
+        intermediate = results_dir / f"{mode}-{label}.json"
+        command = [
+            str(interpreter),
+            "-m",
+            "sht_bench.cli",
+            "run",
+            "--output",
+            str(intermediate),
+        ]
+        forwarded = list(bench_args)
+        cleaned: list[str] = []
+        index = 0
+        while index < len(forwarded):
+            item = forwarded[index]
+            if item == "--backend":
+                index += 2
+                continue
+            if item.startswith("--backend="):
+                index += 1
+                continue
+            cleaned.append(item)
+            index += 1
+        command.extend(["--backend", ",".join(names), *cleaned])
+        run(command, env=build_env)
+        return json.loads(intermediate.read_text())
+
+    records = run_group(python, uv_backends, "uv") if python is not None else []
+    if psh_backends and pyspharm_python is not None:
+        records.extend(run_group(pyspharm_python, psh_backends, "conda-forge"))
+    elif psh_backends:
+        unavailable_packages["pyspharm"] = unavailable_packages.get(
+            "pyspharm", "dedicated conda-forge environment is unavailable"
+        )
+
+    for record in records:
+        backend = record["backend"]
+        record["build_mode"] = "conda-forge" if backend == "pyspharm" else mode
+        provenance_mode = "conda-forge" if backend == "pyspharm" else mode
+        record.update(PROVENANCE[provenance_mode].get(backend, {}))
+    if uv_backends and psh_backends:
+        output_stem = f"{mode}-and-conda-forge"
+    elif psh_backends:
+        output_stem = "conda-forge"
+    else:
+        output_stem = mode
+    output = results_dir / f"{output_stem}.json"
+    output.write_text(json.dumps(records, indent=2) + "\n")
+    _write_csv(records, output.with_suffix(".csv"))
     write_environment_files(
         python,
         mode,
         build_env,
         build_failures,
-        unavailable_wheels,
+        unavailable_packages,
         backends,
+        pyspharm_python,
     )
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Create isolated wheel/source environments and run the SHT benchmark."
+            "Create isolated uv and conda-forge environments and run the SHT benchmark."
         )
     )
     parser.add_argument(
@@ -471,11 +620,14 @@ def main(argv: list[str] | None = None) -> int:
 
     modes = ("wheel", "source") if args.build == "both" else (args.build,)
     for mode in modes:
-        python, build_env, build_failures, unavailable_wheels = create_environment(
+        mode_backends = backends
+        if args.build == "both" and mode == "source":
+            mode_backends = tuple(backend for backend in backends if backend != "pyspharm")
+        python, build_env, build_failures, unavailable_packages, pyspharm_python = create_environment(
             mode,
             args.python,
             args.reuse,
-            backends=backends,
+            backends=mode_backends,
             strict_builds=args.strict_builds,
         )
         if args.setup_only:
@@ -484,8 +636,9 @@ def main(argv: list[str] | None = None) -> int:
                 mode,
                 build_env,
                 build_failures,
-                unavailable_wheels,
-                backends,
+                unavailable_packages,
+                mode_backends,
+                pyspharm_python,
             )
             continue
         run_benchmark(
@@ -494,8 +647,9 @@ def main(argv: list[str] | None = None) -> int:
             bench_args,
             build_env,
             build_failures,
-            unavailable_wheels,
-            backends,
+            unavailable_packages,
+            mode_backends,
+            pyspharm_python,
         )
     return 0
 

@@ -49,16 +49,14 @@ UNSUPPORTED_BENCHMARK_CASES = {
         )
         for lmax in DEFAULT_GL_LMAX
     },
-    ("pyspharm", "cc", 1023): (
-        "pyspharm-syl 1.2.1 regular-grid setup fails at lmax=1023"
-    ),
 }
-CELL_RESULT_RE = re.compile(r"^(installed|wheel|source)-(gl|cc)-t\d+\.json$")
+CELL_RESULT_RE = re.compile(r"^(installed|wheel|source|conda-forge)-(gl|cc)-t\d+\.json$")
 
 BUILD_LINESTYLES = {
     "installed": "-",
     "wheel": "-",
     "source": "--",
+    "conda-forge": "-.",
 }
 _BACKEND_ORDER = {name: index for index, name in enumerate(BACKEND_NAMES)}
 _BUILD_ORDER = {name: index for index, name in enumerate(BUILD_LINESTYLES)}
@@ -199,6 +197,8 @@ def _record(
         **env,
         "backend": case.backend,
         "backend_version": case.backend_version,
+        "build_mode": case.build_mode,
+        "build_identity": case.build_identity,
         "operation": operation,
         "grid": case.grid,
         "grid_label": _grid_label(case.grid, case.lmax),
@@ -227,12 +227,19 @@ def _write_results(records: list[dict[str, Any]], output: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(records, indent=2) + "\n")
     csv_path = output.with_suffix(".csv")
-    fieldnames = [key for key in records[0] if key != "samples_s"] if records else []
+    fieldnames = list(dict.fromkeys(
+        key for record in records for key in record if key != "samples_s"
+    ))
     with csv_path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for record in records:
-            writer.writerow({key: record.get(key) for key in fieldnames})
+            writer.writerow({
+                key: json.dumps(record.get(key), sort_keys=True)
+                if isinstance(record.get(key), (dict, list))
+                else record.get(key)
+                for key in fieldnames
+            })
 
 
 def _print_result(record: dict[str, Any]) -> None:
@@ -242,6 +249,25 @@ def _print_result(record: dict[str, Any]) -> None:
         f"t={record['threads_requested']:2d} {record['nlat']}x{record['nlon']} "
         f"median={record['median_s'] * 1e3:10.3f} ms"
     )
+
+
+def _pyspharm_cc_memory_limit(lmax: int, available_bytes: int | None) -> str | None:
+    """Apply a two-times headroom check to the public stored Spherepack plan."""
+    if lmax != 1023 or available_bytes is None:
+        return None
+    from .source_resources import spherepack_stored_arrays
+    from .grids import grid_shape
+
+    nlat, nlon = grid_shape(lmax, "cc")
+    required = spherepack_stored_arrays(nlat, nlon, "CC")[
+        "persistent_lower_bound_bytes"
+    ]
+    if available_bytes < 2 * required:
+        return (
+            f"stored-plan arrays require at least {required} bytes and this host has "
+            f"{available_bytes} bytes available, below the 2x headroom threshold"
+        )
+    return None
 
 
 def run_benchmarks(args: argparse.Namespace) -> int:
@@ -269,6 +295,16 @@ def run_benchmarks(args: argparse.Namespace) -> int:
                         f"{backend}/{grid} L={lmax}: {UNSUPPORTED_BENCHMARK_CASES[case_key]}"
                     )
                     continue
+                if backend == "pyspharm" and grid == "cc" and lmax == 1023:
+                    from .source_resources import available_memory
+
+                    available = available_memory()["available_bytes"]
+                    memory_limit = _pyspharm_cc_memory_limit(lmax, available)
+                    if memory_limit is not None:
+                        skipped.append(
+                            f"pyspharm/cc L=1023: resource-limited; {memory_limit}"
+                        )
+                        continue
                 try:
                     case = prepare(lmax, threads, args.seed + lmax, grid)
                 except (ImportError, ModuleNotFoundError) as exc:
@@ -371,7 +407,12 @@ def _prepare_plot_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]
 def _series_label(record: dict[str, Any]) -> str:
     label = record["backend"]
     build = _effective_plot_build(record)
-    if build != "installed":
+    if build == "conda-forge" and record["backend"] == "pyspharm":
+        identity = record.get("build_identity") or record
+        version = identity.get("version", record.get("backend_version", "unknown"))
+        build_string = identity.get("build_string", "unresolved-build")
+        label += f" (conda-forge {version}-{build_string})"
+    elif build != "installed":
         label += f" ({build})"
     return label
 
@@ -411,7 +452,7 @@ def _is_atmospheric_gl_records(records: list[dict[str, Any]]) -> bool:
     for record in records:
         lmax = int(record["lmax"])
         case = ATMOSPHERIC_GL_GRIDS.get(lmax)
-        if case is None or (int(record["nlat"]), int(record["nlon"])) != case[:2]:
+        if case is None or (int(record.get("nlat", -1)), int(record.get("nlon", -1))) != case[:2]:
             return False
     return True
 
@@ -548,19 +589,23 @@ def _plot_index(
     operations: list[str],
     threads: list[int],
     lmax_values: list[int],
+    pyspharm_environment: str | None = None,
 ) -> str:
     available = set(created)
     lines = [
         "# Benchmark plots",
         "",
         "Each thumbnail links to the full-size figure.",
-        "Colors identify backends consistently across figures: DUCC is blue, SHTns orange, SHTOOLS/pyshtools green, and Spherepack/pyspharm red. Wheel and installed builds use solid lines; source builds use dashed lines. SHTns is source-built in both benchmark environments and is shown once as a dashed source series. Lower transform time is better.",
+        "Colors identify backends consistently across figures: DUCC is blue, SHTns orange, SHTOOLS/pyshtools green, Spherepack/pyspharm red, and RustSHT purple. Installed builds and binary-wheel builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines. Lower transform time is better.",
+        "SHTns is source-built in both benchmark environments and appears once as a source series.",
         "",
         "## Transform time versus spectral scale",
         "",
         "Each row fixes the requested thread count. Atmospheric GL figures use Gaussian-grid/spectral labels such as `N32/T42` and `N320/TL639`; CC figures use regular-grid spacing in degrees, from coarse to fine resolution.",
         "",
     ]
+    if pyspharm_environment:
+        lines[6:6] = [pyspharm_environment, ""]
 
     for grid in grids:
         rows: list[str] = []
@@ -729,6 +774,25 @@ def plot_all(args: argparse.Namespace) -> int:
         "plots": created,
     }
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    conda_pyspharm = next(
+        (
+            record
+            for record in records
+            if record.get("backend") == "pyspharm"
+            and record.get("build_mode") == "conda-forge"
+        ),
+        None,
+    )
+    pyspharm_environment = None
+    if conda_pyspharm is not None:
+        identity = conda_pyspharm.get("build_identity") or {}
+        version = identity.get("version", conda_pyspharm.get("backend_version", "unknown"))
+        build_string = identity.get("build_string", "unresolved-build")
+        pyspharm_environment = (
+            f"The pyspharm series uses conda-forge {version} build `{build_string}`, "
+            f"Python {conda_pyspharm.get('python_version', '3.13')}, "
+            f"and NumPy {conda_pyspharm.get('numpy_version', '2')}."
+        )
     (output / "README.md").write_text(
         _plot_index(
             created,
@@ -736,6 +800,7 @@ def plot_all(args: argparse.Namespace) -> int:
             operations=operations,
             threads=threads,
             lmax_values=lmax_values,
+            pyspharm_environment=pyspharm_environment,
         )
     )
     print(f"wrote {len(created)} plots under {output}")
@@ -763,7 +828,12 @@ def _backend_available(python: Path, backend: str) -> bool:
     return completed.returncode == 0
 
 
-def _build_matrix_env(mode: str, python_spec: str, reuse: bool) -> Path:
+def _build_matrix_env(
+    mode: str,
+    python_spec: str,
+    reuse: bool,
+    backends: list[str] | None = None,
+) -> Path:
     root = Path(__file__).resolve().parents[2]
     env_dir = root / f".venv-bench-{mode}"
     python = env_dir / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
@@ -779,10 +849,34 @@ def _build_matrix_env(mode: str, python_spec: str, reuse: bool) -> Path:
         python_spec,
         "--setup-only",
     ]
+    if backends is not None:
+        command.extend(["--backend", ",".join(backends)])
     if reuse:
         command.append("--reuse")
     _run_subprocess(command)
     return python
+
+
+def _build_conda_matrix_env(python_spec: str, reuse: bool) -> Path:
+    """Create/select the conda-forge interpreter used for pyspharm rows."""
+    root = Path(__file__).resolve().parents[2]
+    prefix = root / ".conda-bench-pyspharm"
+    script = root / "scripts" / "run_build_matrix.py"
+    command = [
+        sys.executable,
+        str(script),
+        "--build",
+        "wheel",
+        "--backend",
+        "pyspharm",
+        "--python",
+        python_spec,
+        "--setup-only",
+    ]
+    if reuse:
+        command.append("--reuse")
+    _run_subprocess(command)
+    return prefix / ("python.exe" if os.name == "nt" else "bin/python")
 
 
 def _matrix_lmax(args: argparse.Namespace, grid: str) -> list[int]:
@@ -799,6 +893,14 @@ def _existing_cell_results(output_dir: Path) -> list[Path]:
     )
 
 
+def _retain_current_pyspharm_results(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Keep other backends and only conda-forge pyspharm rows in active data."""
+    return [
+        record for record in records
+        if record.get("backend") != "pyspharm" or record.get("build_mode") == "conda-forge"
+    ]
+
+
 def run_matrix(args: argparse.Namespace) -> int:
     output_dir = args.output
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -810,77 +912,109 @@ def run_matrix(args: argparse.Namespace) -> int:
     )
     interpreters: dict[str, Path] = {"installed": Path(sys.executable)}
     for build in build_modes:
-        if build != "installed":
-            interpreters[build] = _build_matrix_env(build, args.python, args.reuse)
+        uv_backends = [backend for backend in args.backend if backend != "pyspharm"]
+        if build != "installed" and uv_backends:
+            interpreters[build] = _build_matrix_env(
+                build, args.python, args.reuse, uv_backends
+            )
+
+    pyspharm_python: Path | None = None
+    if "pyspharm" in args.backend:
+        pyspharm_python = _build_conda_matrix_env(args.python, args.reuse)
+
+    # Remove prior non-conda pyspharm rows from active cell files before merging.
+    # They are replaced by the separately identified conda-forge result files.
+    for path in _existing_cell_results(output_dir):
+        if path.name.startswith(("installed-", "wheel-")):
+            rows = json.loads(path.read_text())
+            cleaned = _retain_current_pyspharm_results(rows)
+            if len(cleaned) != len(rows):
+                _write_results(cleaned, path)
 
     updated_result_files: list[Path] = []
     failures: list[str] = []
     excluded: list[str] = []
+    pyspharm_added = False
     for build in build_modes:
-        python = interpreters[build]
-        selected_backends: list[str] = []
-        for backend in args.backend:
-            if build == "source" and backend == "pyspharm":
-                excluded.append("source/pyspharm: source build is not benchmarked")
-                continue
-            if build != "installed" and not _backend_available(python, backend):
-                excluded.append(
-                    f"{build}/{backend}: package unavailable in the isolated "
-                    f"environment on {platform.machine()}"
-                )
-                continue
-            selected_backends.append(backend)
-        if not selected_backends:
-            continue
+        groups = []
+        ordinary = [name for name in args.backend if name != "pyspharm"]
+        if ordinary:
+            groups.append((build, build, interpreters[build], ordinary))
+        if "pyspharm" in args.backend and not pyspharm_added:
+            if pyspharm_python is None:
+                excluded.append("conda-forge/pyspharm: dedicated environment unavailable")
+            else:
+                groups.append(("conda-forge", build, pyspharm_python, ["pyspharm"]))
+                pyspharm_added = True
 
-        for grid in args.grid:
-            grid_lmax = _matrix_lmax(args, grid)
-            for threads in args.threads:
-                output = output_dir / _matrix_output_name(build, grid, threads)
-                command = [
-                    str(python),
-                    "-m",
-                    "sht_bench.cli",
-                    "run",
-                    "--backend",
-                    ",".join(selected_backends),
-                    "--grid",
-                    grid,
-                    "--lmax",
-                    ",".join(map(str, grid_lmax)),
-                    "--threads",
-                    str(threads),
-                    "--operation",
-                    ",".join(args.operation),
-                    "--warmup",
-                    str(args.warmup),
-                    "--repeat",
-                    str(args.repeat),
-                    "--min-time",
-                    str(args.min_time),
-                    "--seed",
-                    str(args.seed),
-                    "--output",
-                    str(output),
-                ]
-                if args.strict:
-                    command.append("--strict")
-                try:
-                    _run_subprocess(command)
-                except subprocess.CalledProcessError as exc:
-                    failures.append(f"{build}/{grid}/t{threads}: exit {exc.returncode}")
-                    if args.strict:
-                        raise
+        for result_build, environment_mode, python, candidates in groups:
+            selected_backends: list[str] = []
+            for backend in candidates:
+                if environment_mode != "installed" and not _backend_available(python, backend):
+                    excluded.append(
+                        f"{result_build}/{backend}: package unavailable in the isolated "
+                        f"environment on {platform.machine()}"
+                    )
                     continue
-                if output.exists():
-                    data = json.loads(output.read_text())
-                    provenance_path = Path(__file__).resolve().parents[2] / "results" / f"{build}-provenance.json"
-                    packages = json.loads(provenance_path.read_text()).get("packages", {}) if build != "installed" and provenance_path.exists() else {}
-                    for record in data:
-                        record["build_mode"] = build
-                        record.update(packages.get(record["backend"], {}))
-                    _write_results(data, output)
-                    updated_result_files.append(output)
+                selected_backends.append(backend)
+            if not selected_backends:
+                continue
+
+            for grid in args.grid:
+                grid_lmax = _matrix_lmax(args, grid)
+                for threads in args.threads:
+                    output = output_dir / _matrix_output_name(result_build, grid, threads)
+                    command = [
+                        str(python),
+                        "-m",
+                        "sht_bench.cli",
+                        "run",
+                        "--backend",
+                        ",".join(selected_backends),
+                        "--grid",
+                        grid,
+                        "--lmax",
+                        ",".join(map(str, grid_lmax)),
+                        "--threads",
+                        str(threads),
+                        "--operation",
+                        ",".join(args.operation),
+                        "--warmup",
+                        str(args.warmup),
+                        "--repeat",
+                        str(args.repeat),
+                        "--min-time",
+                        str(args.min_time),
+                        "--seed",
+                        str(args.seed),
+                        "--output",
+                        str(output),
+                    ]
+                    if args.strict:
+                        command.append("--strict")
+                    try:
+                        _run_subprocess(command)
+                    except subprocess.CalledProcessError as exc:
+                        failures.append(f"{result_build}/{grid}/t{threads}: exit {exc.returncode}")
+                        if args.strict:
+                            raise
+                        continue
+                    if output.exists():
+                        data = json.loads(output.read_text())
+                        root = Path(__file__).resolve().parents[2]
+                        if result_build == "conda-forge":
+                            provenance_path = root / "results" / "conda-forge-provenance.json"
+                            provenance = json.loads(provenance_path.read_text()) if provenance_path.exists() else {}
+                            package = provenance.get("package", {})
+                            packages = {"pyspharm": package}
+                        else:
+                            provenance_path = root / "results" / f"{environment_mode}-provenance.json"
+                            packages = json.loads(provenance_path.read_text()).get("packages", {}) if provenance_path.exists() else {}
+                        for record in data:
+                            record["build_mode"] = result_build
+                            record.update(packages.get(record["backend"], {}))
+                        _write_results(data, output)
+                        updated_result_files.append(output)
 
     result_files = (
         _existing_cell_results(output_dir) if args.merge_existing else updated_result_files

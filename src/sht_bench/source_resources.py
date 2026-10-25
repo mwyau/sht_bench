@@ -41,7 +41,7 @@ def available_memory():
 
 
 def spherepack_stored_arrays(nlat, nlon, grid):
-    """Sizes of all four persistent float32 arrays in pyspharm-syl 1.2.1 Spharmt.
+    """Sizes of the four persistent float32 arrays allocated by Spharmt.
 
     The public constructor initializes scalar and vector tables for every plan.
     These are lower bounds: working arrays, fields and coefficient buffers are
@@ -62,7 +62,7 @@ def spherepack_stored_arrays(nlat, nlon, grid):
         synthesis = n1*n2*(2*nlat-n1+1)+nlon+15+2*nlat
         lengths = {'wshags':scalar,'wshsgs':scalar,'wvhags':analysis,'wvhsgs':synthesis}
     return {'array_lengths':lengths,'itemsize_bytes':4,'persistent_lower_bound_bytes':sum(lengths.values())*4,
-            'method':'pyspharm-syl 1.2.1 spharm.py Spharmt legfunc=stored array-length formulas'}
+            'method':'spharm.Spharmt legfunc=stored array-length formulas; checked against conda-forge pyspharm 1.0.9'}
 
 
 def preflight(backend, workload, *, limit_bytes=None):
@@ -76,6 +76,25 @@ def preflight(backend, workload, *, limit_bytes=None):
         if budget is not None and result['persistent_lower_bound_bytes']>budget:
             result['resource_limited'] = True
             result['reason'] = 'native stored-plan persistent arrays alone exceed observed available memory or explicit memory budget'
+    elif backend == 'pyspharm-cpp' and workload.grid in ('GL','CC'):
+        real_size = 4 if workload.precision == 'float32' else 8
+        complex_size = 2 * real_size
+        npix = workload.nlat * workload.nlon
+        ncoeff = workload.size
+        # Includes several full maps, packed inputs/results and a complex128
+        # independent reference spectrum. DUCC's internal recurrence workspace
+        # is private, so this is an admission floor rather than a peak estimate.
+        floor = (4 * workload.components * npix * real_size
+                 + 3 * workload.components * ncoeff * complex_size
+                 + workload.components * workload.nlat * (workload.nlon // 2 + 1) * 16)
+        result.update(
+            persistent_lower_bound_bytes=0,
+            estimated_working_floor_bytes=floor,
+            memory_estimate_method='four map buffers, three packed spectra, and independent complex128 reference spectrum; private DUCC workspace excluded',
+        )
+        if budget is not None and floor > budget:
+            result['resource_limited'] = True
+            result['reason'] = 'estimated public/reference transform buffers exceed observed available memory or explicit memory budget'
     return result
 
 
