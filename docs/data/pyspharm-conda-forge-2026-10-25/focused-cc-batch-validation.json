@@ -1,0 +1,2605 @@
+{
+  "cases": [
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 1,
+        "geometry_group": "cc-l16-odd-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 33,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 0
+      },
+      "longitude_parity": "odd",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            1,
+            18,
+            33
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            1,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            1,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 7.755610909043753e-08,
+              "relative_l2": 3.01647478066322e-07,
+              "scaled_error": 2.055607166812971e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 7.068241103524997e-08,
+              "relative_l2": 2.519980564199912e-07,
+              "scaled_error": 2.005895245281185e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 6.258487701416016e-07,
+              "relative_l2": 2.831083724965669e-07,
+              "scaled_error": 3.2929928123689077e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 5.364418029785156e-07,
+              "relative_l2": 2.899302120174636e-07,
+              "scaled_error": 2.6657544141443297e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 6.378501187787045e-07,
+              "relative_l2": 2.796605812975532e-07,
+              "scaled_error": 3.641752757323586e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.1358547636937146e-08,
+              "relative_l2": 1.344926047839114e-07,
+              "scaled_error": 5.1358547636937146e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.086162567138672e-07,
+              "relative_l2": 1.5520305821028558e-07,
+              "scaled_error": 1.4903083967551812e-07
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.693474187604906e-08,
+              "relative_l2": 6.120067567839751e-08,
+              "scaled_error": 2.5197538296698165e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.3454094016651652e-07,
+              "relative_l2": 2.970762599276021e-07,
+              "scaled_error": 1.3454092412798853e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 4.172325134277344e-07,
+              "relative_l2": 3.1925081581585885e-07,
+              "scaled_error": 2.2252105033241785e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.1212475325983462e-07,
+              "relative_l2": 1.0848302802366414e-07,
+              "scaled_error": 7.221720329742086e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.281516817807642e-08,
+              "relative_l2": 1.3392161404636942e-07,
+              "scaled_error": 5.2617238566199376e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.3454447732144464e-07,
+              "scaled_error": 1.2959866034975643e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.0419594931310172e-07,
+              "relative_l2": 1.0603413372308258e-07,
+              "scaled_error": 1.0610140834127991e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.8784190081742054e-08,
+              "relative_l2": 6.642369749444769e-08,
+              "scaled_error": 3.8784190081742054e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 8.780873497664131e-08,
+              "scaled_error": 5.415747433802236e-08
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 8.980411125847354e-08,
+              "relative_l2": 5.434445154056456e-08,
+              "scaled_error": 1.8472382406404463e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 7.178741725510918e-07,
+              "relative_l2": 8.121019510135142e-07,
+              "scaled_error": 2.3929133379886413e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 8.270144462585449e-07,
+              "relative_l2": 8.126288337730593e-07,
+              "scaled_error": 6.669144944961169e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.687639687684045e-07,
+              "relative_l2": 5.316464509348752e-07,
+              "scaled_error": 6.199414593005409e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 9.811117251956603e-08,
+              "relative_l2": 1.9254079156073736e-07,
+              "scaled_error": 9.811116082380424e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 4.76837158203125e-07,
+              "relative_l2": 2.18638467306412e-07,
+              "scaled_error": 2.2136697828053466e-07
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.6387324198194904e-07,
+              "relative_l2": 2.613908482587707e-07,
+              "scaled_error": 1.3545152589249608e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.646772649470222e-08,
+              "relative_l2": 1.332578171090255e-07,
+              "scaled_error": 5.646772649470222e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.660828660901758e-07,
+              "scaled_error": 1.4086195401730547e-07
+            },
+            "name": "Y00",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.4658845859383263e-08,
+              "relative_l2": 5.1964255586588514e-08,
+              "scaled_error": 1.732141792879977e-08
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    },
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 4,
+        "geometry_group": "cc-l16-odd-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 33,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 0
+      },
+      "longitude_parity": "odd",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            4,
+            1,
+            18,
+            33
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            1,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            1,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153,
+            4
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153,
+            4
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 7.755610909043753e-08,
+              "relative_l2": 3.091380436246866e-07,
+              "scaled_error": 2.3055951070449998e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 7.068241103524997e-08,
+              "relative_l2": 2.5329550987363575e-07,
+              "scaled_error": 2.005895245281185e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 6.258487701416016e-07,
+              "relative_l2": 2.836105537575035e-07,
+              "scaled_error": 3.2929928123689077e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 5.364418029785156e-07,
+              "relative_l2": 2.9351143841194226e-07,
+              "scaled_error": 2.6657544141443297e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 6.378501187787045e-07,
+              "relative_l2": 2.809935787270909e-07,
+              "scaled_error": 3.641752757323586e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.960464477539063e-08,
+              "relative_l2": 1.4060572665494956e-07,
+              "scaled_error": 5.1358547636937146e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.086162567138672e-07,
+              "relative_l2": 1.5647219139657967e-07,
+              "scaled_error": 1.4903083967551812e-07
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.142553422514794e-08,
+              "relative_l2": 7.597168610799674e-08,
+              "scaled_error": 3.4950581711085796e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.3454094016651652e-07,
+              "relative_l2": 3.016130850632476e-07,
+              "scaled_error": 1.3454092412798853e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 4.172325134277344e-07,
+              "relative_l2": 3.076399122231316e-07,
+              "scaled_error": 2.2252105033241785e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.1212475325983462e-07,
+              "relative_l2": 1.196364175502587e-07,
+              "scaled_error": 7.221720329742086e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1995470572401246e-07,
+              "relative_l2": 1.5883413266040722e-07,
+              "scaled_error": 5.2617238566199376e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.4442189273873941e-07,
+              "scaled_error": 1.2959866034975643e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.0419594931310172e-07,
+              "relative_l2": 1.085295294277924e-07,
+              "scaled_error": 1.0610140834127991e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.8784190081742054e-08,
+              "relative_l2": 6.747978923000378e-08,
+              "scaled_error": 3.8784190081742054e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 8.129406738089407e-08,
+              "scaled_error": 5.415747433802236e-08
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.2695772833026808e-07,
+              "relative_l2": 7.236095366548553e-08,
+              "scaled_error": 3.133769855496007e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 7.178741725510918e-07,
+              "relative_l2": 7.753436285027419e-07,
+              "scaled_error": 2.3929133379886413e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 8.270144462585449e-07,
+              "relative_l2": 7.656059910934516e-07,
+              "scaled_error": 6.669144944961169e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.687639687684045e-07,
+              "relative_l2": 5.236857547803559e-07,
+              "scaled_error": 6.199414593005409e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.3079228722290281e-07,
+              "relative_l2": 2.0950798659630672e-07,
+              "scaled_error": 9.811116082380424e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 4.76837158203125e-07,
+              "relative_l2": 2.2534754245847196e-07,
+              "scaled_error": 2.2136697828053466e-07
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.6387324198194904e-07,
+              "relative_l2": 2.583143025795264e-07,
+              "scaled_error": 1.432885611191606e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.5744364292266948e-07,
+              "scaled_error": 5.646772649470222e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.6356730349197414e-07,
+              "scaled_error": 1.4790503921765502e-07
+            },
+            "name": "Y00",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.8444714977583487e-08,
+              "relative_l2": 6.457779279202901e-08,
+              "scaled_error": 2.6153923092428608e-08
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    },
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 1,
+        "geometry_group": "cc-l16-odd-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 33,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 1
+      },
+      "longitude_parity": "odd",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            2,
+            18,
+            33
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.967560763205256e-07,
+              "relative_l2": 3.766273544545511e-07,
+              "scaled_error": 3.076994886627187e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 8.952815022666982e-08,
+              "relative_l2": 2.741794997069114e-07,
+              "scaled_error": 2.0826176864834302e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 5.960464477539062e-07,
+              "relative_l2": 3.305264696623384e-07,
+              "scaled_error": 3.288565001775825e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 6.258487701416016e-07,
+              "relative_l2": 3.455173779764818e-07,
+              "scaled_error": 3.2516427763826684e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 5.114811491568894e-07,
+              "relative_l2": 3.1919592568233807e-07,
+              "scaled_error": 2.6886874354424794e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.9317163587758482e-07,
+              "scaled_error": 4.86160800505786e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 2.336113884243667e-07,
+              "scaled_error": 1.8576760101577724e-07
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.850551431341954e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.9317163587758482e-07,
+              "scaled_error": 4.86160800505786e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 2.336113884243667e-07,
+              "scaled_error": 1.8576760101577724e-07
+            },
+            "name": "mode-1-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.850551431341954e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 4.770718931013107e-08,
+              "relative_l2": 1.5235626353608384e-07,
+              "scaled_error": 4.770718931013107e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 1.3808296243098738e-07,
+              "scaled_error": 1.7668735243661283e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0402036126213618e-07,
+              "scaled_error": 9.711613135034529e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1975369318406592e-07,
+              "relative_l2": 2.81886998337921e-07,
+              "scaled_error": 1.0398201237273468e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.980232238769531e-07,
+              "relative_l2": 2.3777506289164256e-07,
+              "scaled_error": 2.1959045501777364e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0462205228705204e-07,
+              "scaled_error": 9.711613133841238e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 4.770718931013107e-08,
+              "relative_l2": 1.5235626353608384e-07,
+              "scaled_error": 4.770718931013107e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 1.3808296243098738e-07,
+              "scaled_error": 1.7668735243661283e-07
+            },
+            "name": "mode-1-1-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0402036126213624e-07,
+              "scaled_error": 9.711613135034529e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1975369318406592e-07,
+              "relative_l2": 2.81886998337921e-07,
+              "scaled_error": 1.0398201237273468e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.980232238769531e-07,
+              "relative_l2": 2.3777506289164256e-07,
+              "scaled_error": 2.1959045501777364e-07
+            },
+            "name": "mode-1-1-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0462205228705203e-07,
+              "scaled_error": 9.711613133841238e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.629803635331832e-07,
+              "scaled_error": 5.602750619004837e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 2.1883668857556407e-07,
+              "scaled_error": 1.455575823860414e-07
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.8530512544089416e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.6298036353318317e-07,
+              "scaled_error": 5.602750619004837e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 2.1883668857556407e-07,
+              "scaled_error": 1.455575823860414e-07
+            },
+            "name": "mode-16-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.853051254408941e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.001214956086187e-07,
+              "relative_l2": 6.262427437962207e-07,
+              "scaled_error": 2.0004046674063034e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 9.5367431640625e-07,
+              "relative_l2": 5.932309617007897e-07,
+              "scaled_error": 2.937849787740353e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.479057821946355e-07,
+              "relative_l2": 4.061361306577662e-07,
+              "scaled_error": 2.2623646391991558e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.0753124115581159e-06,
+              "relative_l2": 1.1404737031778042e-06,
+              "scaled_error": 3.5843735657520495e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-06,
+              "relative_l2": 1.146488734142556e-06,
+              "scaled_error": 6.22839671349829e-07
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 8.003159946215477e-07,
+              "relative_l2": 7.344677528673841e-07,
+              "scaled_error": 6.624101983528847e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.001214956086187e-07,
+              "relative_l2": 6.262427437962207e-07,
+              "scaled_error": 2.0004046674063034e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 9.5367431640625e-07,
+              "relative_l2": 5.932309617007897e-07,
+              "scaled_error": 2.937849787740353e-07
+            },
+            "name": "mode-16-16-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.479057821946355e-07,
+              "relative_l2": 4.061361306577662e-07,
+              "scaled_error": 2.2623646391991558e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.0753124115581159e-06,
+              "relative_l2": 1.1404737031778042e-06,
+              "scaled_error": 3.5843735657520495e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-06,
+              "relative_l2": 1.146488734142556e-06,
+              "scaled_error": 6.22839671349829e-07
+            },
+            "name": "mode-16-16-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 8.003159946215477e-07,
+              "relative_l2": 7.344677528673841e-07,
+              "scaled_error": 6.624101983528847e-07
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    },
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 4,
+        "geometry_group": "cc-l16-odd-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 33,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 1
+      },
+      "longitude_parity": "odd",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            4,
+            2,
+            18,
+            33
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            2,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            2,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153,
+            4
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153,
+            4
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.967560763205256e-07,
+              "relative_l2": 3.787280756067388e-07,
+              "scaled_error": 3.330455461994485e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 8.952815022666982e-08,
+              "relative_l2": 2.770382809477027e-07,
+              "scaled_error": 2.0826176864834302e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 5.960464477539062e-07,
+              "relative_l2": 3.305580118253242e-07,
+              "scaled_error": 3.288565001775825e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 6.258487701416016e-07,
+              "relative_l2": 3.4504498170137937e-07,
+              "scaled_error": 3.2516427763826684e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 5.114811491568894e-07,
+              "relative_l2": 3.17952938572754e-07,
+              "scaled_error": 2.6886874354424794e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.9568773644351444e-07,
+              "scaled_error": 5.602750619004837e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 2.3486717609647508e-07,
+              "scaled_error": 1.8576760101577724e-07
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.413382414119376e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.956877364435145e-07,
+              "scaled_error": 5.602750619004837e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 2.3486717609647508e-07,
+              "scaled_error": 1.8576760101577724e-07
+            },
+            "name": "mode-1-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.413382414119376e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.970831296053802e-08,
+              "relative_l2": 1.6598507482229346e-07,
+              "scaled_error": 4.770718931013107e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.384185791015625e-07,
+              "relative_l2": 1.843268503929432e-07,
+              "scaled_error": 1.977321701936154e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0071345920514334e-07,
+              "scaled_error": 9.711613135034529e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1975369318406592e-07,
+              "relative_l2": 2.7652029503904864e-07,
+              "scaled_error": 1.0398201237273468e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.980232238769531e-07,
+              "relative_l2": 2.505681543179938e-07,
+              "scaled_error": 2.1959045501777364e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0276241773889198e-07,
+              "scaled_error": 9.711613133841238e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.970831296053802e-08,
+              "relative_l2": 1.6598507482229346e-07,
+              "scaled_error": 4.770718931013107e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.384185791015625e-07,
+              "relative_l2": 1.8432686272751311e-07,
+              "scaled_error": 1.977321701936154e-07
+            },
+            "name": "mode-1-1-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0071345920514334e-07,
+              "scaled_error": 9.711613135034529e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1975369318406592e-07,
+              "relative_l2": 2.7652029503904864e-07,
+              "scaled_error": 1.0398201237273468e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.980232238769531e-07,
+              "relative_l2": 2.5056813755076535e-07,
+              "scaled_error": 2.1959045501777364e-07
+            },
+            "name": "mode-1-1-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.676545199508666e-08,
+              "relative_l2": 1.0276241773889198e-07,
+              "scaled_error": 9.711613133841238e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.5430724072225724e-07,
+              "scaled_error": 5.602750619004837e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.9853329672256324e-07,
+              "scaled_error": 1.455575823860414e-07
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.510609068019964e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.5430724072225724e-07,
+              "scaled_error": 5.602750619004837e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.9853329672256324e-07,
+              "scaled_error": 1.455575823860414e-07
+            },
+            "name": "mode-16-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.5106090680199624e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.001214956086187e-07,
+              "relative_l2": 5.610066999704199e-07,
+              "scaled_error": 2.0004046674063034e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 9.5367431640625e-07,
+              "relative_l2": 5.581931403887394e-07,
+              "scaled_error": 2.937849787740353e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.479057821946355e-07,
+              "relative_l2": 3.900151720540915e-07,
+              "scaled_error": 2.2623646391991558e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.0753124115581159e-06,
+              "relative_l2": 1.0890995598779593e-06,
+              "scaled_error": 3.5843735657520495e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-06,
+              "relative_l2": 1.1091869369867512e-06,
+              "scaled_error": 6.22839671349829e-07
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 8.003159946215477e-07,
+              "relative_l2": 7.114855655811e-07,
+              "scaled_error": 6.624101983528847e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.001214956086187e-07,
+              "relative_l2": 5.6100669997042e-07,
+              "scaled_error": 2.0004046674063034e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 9.5367431640625e-07,
+              "relative_l2": 5.581931403887394e-07,
+              "scaled_error": 2.937849787740353e-07
+            },
+            "name": "mode-16-16-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.479057821946355e-07,
+              "relative_l2": 3.900151720540915e-07,
+              "scaled_error": 2.2623646391991558e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.0753124115581159e-06,
+              "relative_l2": 1.0890995598779595e-06,
+              "scaled_error": 3.5843735657520495e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-06,
+              "relative_l2": 1.1091869369867512e-06,
+              "scaled_error": 6.22839671349829e-07
+            },
+            "name": "mode-16-16-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 8.003159946215477e-07,
+              "relative_l2": 7.114855655810999e-07,
+              "scaled_error": 6.624101983528847e-07
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    },
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 1,
+        "geometry_group": "cc-l16-even-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 34,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 0
+      },
+      "longitude_parity": "even",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            1,
+            18,
+            34
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            1,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            1,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 9.996003313972324e-08,
+              "relative_l2": 4.121622487832671e-07,
+              "scaled_error": 2.6475426991325564e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 5.372690026206328e-08,
+              "relative_l2": 2.2031611360376361e-07,
+              "scaled_error": 1.2759397780612376e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 4.172325134277344e-07,
+              "relative_l2": 2.3596810055316787e-07,
+              "scaled_error": 2.1535148050886314e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 3.927427988799784e-07,
+              "scaled_error": 2.277755143144316e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.404882688602285e-07,
+              "relative_l2": 2.3724887771833507e-07,
+              "scaled_error": 1.8084348312549948e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 4.5522348557369696e-08,
+              "relative_l2": 7.43874959623522e-08,
+              "scaled_error": 4.5522348557369696e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 8.940696716308594e-08,
+              "relative_l2": 7.559424898950106e-08,
+              "scaled_error": 7.384331826273256e-08
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.693474187604906e-08,
+              "relative_l2": 6.120067567839751e-08,
+              "scaled_error": 2.5197538296698165e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 8.499286963115082e-08,
+              "relative_l2": 1.4568065571143384e-07,
+              "scaled_error": 8.499285949921242e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.384185791015625e-07,
+              "relative_l2": 1.625023072374279e-07,
+              "scaled_error": 1.7646920270619795e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 6.261918616967677e-08,
+              "relative_l2": 5.8198551213814525e-08,
+              "scaled_error": 3.520445591438872e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 8.274601270841231e-08,
+              "relative_l2": 1.2536116439223088e-07,
+              "scaled_error": 8.27460028443201e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 1.4495873890434513e-07,
+              "scaled_error": 1.2604566220912064e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.268009023977726e-08,
+              "relative_l2": 4.8897919361359134e-08,
+              "scaled_error": 2.850701175574224e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.910253099093097e-08,
+              "relative_l2": 5.550154917370592e-08,
+              "scaled_error": 3.910253099093097e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 7.585387598814367e-08,
+              "scaled_error": 2.4520920072001267e-08
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 8.980411125847354e-08,
+              "relative_l2": 5.434445154056456e-08,
+              "scaled_error": 1.8472382406404463e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 7.978843541422975e-08,
+              "relative_l2": 1.295641412296026e-07,
+              "scaled_error": 7.978842590270819e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.384185791015625e-07,
+              "relative_l2": 1.1911821357281183e-07,
+              "scaled_error": 1.3331829502965398e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.3038460844327915e-07,
+              "relative_l2": 1.3200835926086342e-07,
+              "scaled_error": 5.729149397448977e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 8.743127466459555e-08,
+              "relative_l2": 1.0376391754207289e-07,
+              "scaled_error": 8.743126424197666e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 9.463202175069051e-08,
+              "scaled_error": 5.139137523217338e-08
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 9.280673884948243e-08,
+              "relative_l2": 1.1593801996859805e-07,
+              "scaled_error": 5.511187488624036e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.319779651178578e-08,
+              "relative_l2": 5.933824395666953e-08,
+              "scaled_error": 3.319779651178578e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.9802322387695312e-08,
+              "relative_l2": 6.670743185440129e-08,
+              "scaled_error": 3.521549346484959e-08
+            },
+            "name": "Y00",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.4658845859383263e-08,
+              "relative_l2": 5.1964255586588514e-08,
+              "scaled_error": 1.732141792879977e-08
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    },
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 4,
+        "geometry_group": "cc-l16-even-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 34,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 0
+      },
+      "longitude_parity": "even",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            4,
+            1,
+            18,
+            34
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            1,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            1,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153,
+            4
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            153,
+            4
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 9.996003313972324e-08,
+              "relative_l2": 4.0487835981582316e-07,
+              "scaled_error": 2.6475426991325564e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 5.372690026206328e-08,
+              "relative_l2": 2.260718089104048e-07,
+              "scaled_error": 1.2759397780612376e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 4.172325134277344e-07,
+              "relative_l2": 2.35904647975737e-07,
+              "scaled_error": 2.1535148050886314e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 3.831914869199049e-07,
+              "scaled_error": 2.277755143144316e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.404882688602285e-07,
+              "relative_l2": 2.3648434277856178e-07,
+              "scaled_error": 1.8084348312549948e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.2390941732454338e-07,
+              "scaled_error": 5.602750974276205e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.0653606443174084e-07,
+              "scaled_error": 1.0171309259064875e-07
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.142553422514794e-08,
+              "relative_l2": 7.597168610799674e-08,
+              "scaled_error": 3.4950581711085796e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 8.499286963115082e-08,
+              "relative_l2": 1.5265164633679258e-07,
+              "scaled_error": 8.499285949921242e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.384185791015625e-07,
+              "relative_l2": 1.6027726701586973e-07,
+              "scaled_error": 1.7646920270619795e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 7.568612586661416e-08,
+              "relative_l2": 6.536727800162176e-08,
+              "scaled_error": 4.8345780116574264e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 8.274601270841231e-08,
+              "relative_l2": 1.2529555964013544e-07,
+              "scaled_error": 8.27460028443201e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.7881393432617188e-07,
+              "relative_l2": 1.3054715767883507e-07,
+              "scaled_error": 1.2604566220912064e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 8.749198132651514e-08,
+              "relative_l2": 5.9306483062171444e-08,
+              "scaled_error": 5.108232973023796e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.960464477539063e-08,
+              "relative_l2": 6.712565774587006e-08,
+              "scaled_error": 3.910253099093097e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 6.590406580371219e-08,
+              "scaled_error": 2.5978814173126557e-08
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.2695772833026808e-07,
+              "relative_l2": 7.236095366548553e-08,
+              "scaled_error": 3.133769855496007e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 7.978843541422975e-08,
+              "relative_l2": 1.2839642423059165e-07,
+              "scaled_error": 7.978842590270819e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 2.384185791015625e-07,
+              "relative_l2": 1.2039987894009363e-07,
+              "scaled_error": 1.3331829502965398e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.3038460844327915e-07,
+              "relative_l2": 1.2791123003268991e-07,
+              "scaled_error": 5.729149397448977e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 8.743127466459555e-08,
+              "relative_l2": 9.756161887818137e-08,
+              "scaled_error": 8.743126424197666e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 9.717562739014066e-08,
+              "scaled_error": 5.24754341502569e-08
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 9.702990211302165e-08,
+              "relative_l2": 1.170798106797721e-07,
+              "scaled_error": 5.511187488624036e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.960464477539063e-08,
+              "relative_l2": 7.647824423328012e-08,
+              "scaled_error": 3.319779651178578e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 4.470348358154297e-08,
+              "relative_l2": 7.427898404019304e-08,
+              "scaled_error": 6.338789002251792e-08
+            },
+            "name": "Y00",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 1.8444714977583487e-08,
+              "relative_l2": 6.457779279202901e-08,
+              "scaled_error": 2.6153923092428608e-08
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    },
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 1,
+        "geometry_group": "cc-l16-even-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 34,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 1
+      },
+      "longitude_parity": "even",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            2,
+            18,
+            34
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.0729628741046326e-07,
+              "relative_l2": 4.249873523010628e-07,
+              "scaled_error": 2.0191733012222545e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 6.869095869888042e-08,
+              "relative_l2": 2.7220371890520696e-07,
+              "scaled_error": 1.850682334358541e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 4.76837158203125e-07,
+              "relative_l2": 2.6078830692760764e-07,
+              "scaled_error": 1.8338732954933663e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 3.917909260116853e-07,
+              "scaled_error": 2.5080048348600633e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.243954113107961e-07,
+              "relative_l2": 2.746861006143694e-07,
+              "scaled_error": 1.884566710313598e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.536541974355714e-08,
+              "relative_l2": 1.3300020230539445e-07,
+              "scaled_error": 6.536541195139282e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 8.940696716308594e-08,
+              "relative_l2": 1.3928955051989589e-07,
+              "scaled_error": 9.288381201109058e-08
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.850551431341954e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.536541974355714e-08,
+              "relative_l2": 1.3300020230539445e-07,
+              "scaled_error": 6.536541195139282e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 8.940696716308594e-08,
+              "relative_l2": 1.392895505198959e-07,
+              "scaled_error": 9.288381201109058e-08
+            },
+            "name": "mode-1-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.850551431341954e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920948850274726e-07,
+              "relative_l2": 1.5676477364838912e-07,
+              "scaled_error": 5.522953472336667e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.0927263271098143e-07,
+              "scaled_error": 1.0764372029786825e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.409149478856733e-08,
+              "relative_l2": 6.249484043483436e-08,
+              "scaled_error": 3.086164743612437e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920973008727742e-07,
+              "relative_l2": 1.6607738385562257e-07,
+              "scaled_error": 5.25331742551316e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.3516144486773586e-07,
+              "scaled_error": 1.0645062696438665e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.409149478856733e-08,
+              "relative_l2": 6.390447859393135e-08,
+              "scaled_error": 3.086164743612437e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920948850274726e-07,
+              "relative_l2": 1.5676477364838912e-07,
+              "scaled_error": 5.522953472336667e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.0927263271098143e-07,
+              "scaled_error": 1.0764372029786825e-07
+            },
+            "name": "mode-1-1-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.409149478856733e-08,
+              "relative_l2": 6.249484043483435e-08,
+              "scaled_error": 3.086164743612437e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920973008727742e-07,
+              "relative_l2": 1.6607738385562257e-07,
+              "scaled_error": 5.25331742551316e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.3516144486773586e-07,
+              "scaled_error": 1.0645062696438665e-07
+            },
+            "name": "mode-1-1-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.409149478856733e-08,
+              "relative_l2": 6.390447859393136e-08,
+              "scaled_error": 3.086164743612437e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 9.337917816765184e-08,
+              "relative_l2": 1.53601776857997e-07,
+              "scaled_error": 9.337916703598768e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.2730751687388417e-07,
+              "scaled_error": 7.711457416098315e-08
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.8530512544089416e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 9.337917816765184e-08,
+              "relative_l2": 1.53601776857997e-07,
+              "scaled_error": 9.337916703598768e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.273075168738841e-07,
+              "scaled_error": 7.711457416098315e-08
+            },
+            "name": "mode-16-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.853051254408941e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.960640123703342e-07,
+              "relative_l2": 6.070937208627436e-07,
+              "scaled_error": 1.9868797254284202e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 5.550754764218942e-07,
+              "scaled_error": 2.220825898501742e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.290972177578567e-07,
+              "relative_l2": 3.528818097133927e-07,
+              "scaled_error": 1.3020745893204762e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.5775201467913575e-07,
+              "relative_l2": 3.8813893813960844e-07,
+              "scaled_error": 1.1925065260533114e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 5.960464477539062e-07,
+              "relative_l2": 3.751026988142522e-07,
+              "scaled_error": 1.8009573312866773e-07
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 5.073627582508067e-07,
+              "relative_l2": 3.758034067059088e-07,
+              "scaled_error": 1.5329999610704484e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.960640123703342e-07,
+              "relative_l2": 6.070937208627436e-07,
+              "scaled_error": 1.9868797254284202e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 5.550754764218942e-07,
+              "scaled_error": 2.220825898501742e-07
+            },
+            "name": "mode-16-16-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.290972177578567e-07,
+              "relative_l2": 3.528818097133927e-07,
+              "scaled_error": 1.3020745893204762e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.5775201467913575e-07,
+              "relative_l2": 3.8813893813960844e-07,
+              "scaled_error": 1.1925065260533114e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 5.960464477539062e-07,
+              "relative_l2": 3.751026988142522e-07,
+              "scaled_error": 1.8009573312866773e-07
+            },
+            "name": "mode-16-16-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 5.073627582508067e-07,
+              "relative_l2": 3.758034067059088e-07,
+              "scaled_error": 1.5329999610704484e-07
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    },
+    {
+      "adapter_api": "spharm.Spharmt",
+      "configuration": {
+        "allocation": "allocating",
+        "batch": 4,
+        "geometry_group": "cc-l16-even-longitude",
+        "grid": "CC",
+        "lmax": 16,
+        "mmax": 16,
+        "nlat": 18,
+        "nlon": 34,
+        "operation": "synthesis",
+        "phi0": 0.0,
+        "precision": "float32",
+        "spin": 1
+      },
+      "longitude_parity": "even",
+      "shape_dtype_evidence": {
+        "adapter_canonical_map": {
+          "dtype": "float32",
+          "shape": [
+            4,
+            2,
+            18,
+            34
+          ]
+        },
+        "canonical_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            2,
+            153
+          ]
+        },
+        "decoded_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            4,
+            2,
+            153
+          ]
+        },
+        "first_fixture": "random-triangular",
+        "native_analysis_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153,
+            4
+          ]
+        },
+        "native_coefficients": {
+          "dtype": "complex64",
+          "shape": [
+            2,
+            153,
+            4
+          ]
+        }
+      },
+      "status": "supported_and_validated",
+      "tolerance": 5e-05,
+      "validation": {
+        "coordinates": "independent NumPy leggauss (GL), endpoint linspace (CC), half-step linspace (F1); exact float64 coordinates cached with checksum",
+        "fixtures": [
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.0729628741046326e-07,
+              "relative_l2": 4.2441742931406333e-07,
+              "scaled_error": 2.035630586437631e-07
+            },
+            "common_reference_analysis": {
+              "max_absolute": 6.869095869888042e-08,
+              "relative_l2": 2.737611730309062e-07,
+              "scaled_error": 1.850682334358541e-07
+            },
+            "dtype_passed": true,
+            "full_grid_synthesis": {
+              "max_absolute": 4.76837158203125e-07,
+              "relative_l2": 2.629867998234555e-07,
+              "scaled_error": 1.8338732954933663e-07
+            },
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 3.8751156106212463e-07,
+              "scaled_error": 2.5080048348600633e-07
+            },
+            "name": "random-triangular",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.243954113107961e-07,
+              "relative_l2": 2.75143796628359e-07,
+              "scaled_error": 1.884566710313598e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.536541974355714e-08,
+              "relative_l2": 1.2541078758378313e-07,
+              "scaled_error": 6.536541195139282e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 8.940696716308594e-08,
+              "relative_l2": 1.7387351352359614e-07,
+              "scaled_error": 1.0612378830511608e-07
+            },
+            "name": "mode-1-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.413382414119376e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 6.536541974355714e-08,
+              "relative_l2": 1.2541078758378316e-07,
+              "scaled_error": 6.536541195139282e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 8.940696716308594e-08,
+              "relative_l2": 1.7387351352359614e-07,
+              "scaled_error": 1.0612378830511608e-07
+            },
+            "name": "mode-1-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.130959308483838e-08,
+              "relative_l2": 4.413382414119376e-08,
+              "scaled_error": 3.4965559285581207e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920948850274726e-07,
+              "relative_l2": 1.51033794255408e-07,
+              "scaled_error": 5.522953472336667e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.0491753863657154e-07,
+              "scaled_error": 1.0764372029786825e-07
+            },
+            "name": "mode-1-1-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.409149478856733e-08,
+              "relative_l2": 6.021615081543174e-08,
+              "scaled_error": 3.3732023102641737e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920973008727742e-07,
+              "relative_l2": 1.7523396990902227e-07,
+              "scaled_error": 5.25331742551316e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.6181489018339965e-07,
+              "scaled_error": 1.279405490243327e-07
+            },
+            "name": "mode-1-1-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.777096129782166e-08,
+              "relative_l2": 6.134207325772934e-08,
+              "scaled_error": 4.214464167314665e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920948850274726e-07,
+              "relative_l2": 1.51033794255408e-07,
+              "scaled_error": 5.522953472336667e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.0491753863657154e-07,
+              "scaled_error": 1.0764372029786825e-07
+            },
+            "name": "mode-1-1-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.409149478856733e-08,
+              "relative_l2": 6.021615081543174e-08,
+              "scaled_error": 3.3732023102641737e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 1.1920973008727742e-07,
+              "relative_l2": 1.7523396990902227e-07,
+              "scaled_error": 5.25331742551316e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.4901161193847656e-07,
+              "relative_l2": 1.6181489018339965e-07,
+              "scaled_error": 1.279405490243327e-07
+            },
+            "name": "mode-1-1-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.777096129782166e-08,
+              "relative_l2": 6.134207325772934e-08,
+              "scaled_error": 4.214464167314665e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 9.337917816765184e-08,
+              "relative_l2": 1.4698416436369448e-07,
+              "scaled_error": 9.337916703598768e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.2770899331130875e-07,
+              "scaled_error": 7.711457416098315e-08
+            },
+            "name": "mode-16-0-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.510609068019964e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 9.337917816765184e-08,
+              "relative_l2": 1.4698416436369445e-07,
+              "scaled_error": 9.337916703598768e-08
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 1.1920928955078125e-07,
+              "relative_l2": 1.2770899331130875e-07,
+              "scaled_error": 7.711457416098315e-08
+            },
+            "name": "mode-16-0-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 3.614364502135814e-08,
+              "relative_l2": 5.5106090680199624e-08,
+              "scaled_error": 2.95216533813223e-08
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.960640123703342e-07,
+              "relative_l2": 5.539496986626809e-07,
+              "scaled_error": 1.9868797254284202e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 5.24599319967839e-07,
+              "scaled_error": 2.220825898501742e-07
+            },
+            "name": "mode-16-16-0-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.290972177578567e-07,
+              "relative_l2": 3.3620285453446284e-07,
+              "scaled_error": 1.3020745893204762e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.5775201467913575e-07,
+              "relative_l2": 3.9641669856487143e-07,
+              "scaled_error": 1.1925065260533114e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 5.960464477539062e-07,
+              "relative_l2": 3.993533883371364e-07,
+              "scaled_error": 1.8009573312866773e-07
+            },
+            "name": "mode-16-16-0-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 5.073627582508067e-07,
+              "relative_l2": 3.550859037322675e-07,
+              "scaled_error": 1.5329999610704484e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 5.960640123703342e-07,
+              "relative_l2": 5.539496986626807e-07,
+              "scaled_error": 1.9868797254284202e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 7.152557373046875e-07,
+              "relative_l2": 5.24599319967839e-07,
+              "scaled_error": 2.220825898501742e-07
+            },
+            "name": "mode-16-16-1-real",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 4.290972177578567e-07,
+              "relative_l2": 3.3620285453446284e-07,
+              "scaled_error": 1.3020745893204762e-07
+            }
+          },
+          {
+            "coefficient_recovery": {
+              "max_absolute": 3.5775201467913575e-07,
+              "relative_l2": 3.964166985648714e-07,
+              "scaled_error": 1.1925065260533114e-07
+            },
+            "dtype_passed": true,
+            "map_roundtrip": {
+              "max_absolute": 5.960464477539062e-07,
+              "relative_l2": 3.993533883371364e-07,
+              "scaled_error": 1.8009573312866773e-07
+            },
+            "name": "mode-16-16-1-imag",
+            "passed": true,
+            "synthesis": {
+              "max_absolute": 5.073627582508067e-07,
+              "relative_l2": 3.5508590373226745e-07,
+              "scaled_error": 1.5329999610704484e-07
+            }
+          }
+        ],
+        "reference": "independent normalized associated-Legendre recurrence at sampled grid nodes",
+        "reference_points": 187,
+        "status": "supported_and_validated",
+        "tolerance": 5e-05
+      }
+    }
+  ],
+  "command": "PYTHONPATH=src OMP_NUM_THREADS=1 $PYSPHARM_ENV/bin/python - [inline probe; adapter + source_validation.validate; no benchmark runner/timer]",
+  "configurations": {
+    "allocation": "allocating",
+    "batches": [
+      1,
+      4
+    ],
+    "case_count_expected": 8,
+    "grid": "CC regular endpoint-including",
+    "lmax": 16,
+    "mmax": 16,
+    "nlat": 18,
+    "nlon_cases": {
+      "even": 34,
+      "odd": 33
+    },
+    "precision": "float32",
+    "spins": [
+      0,
+      1
+    ],
+    "threads": 1
+  },
+  "environment": {
+    "build_manifest": "results/pyspharm-conda-py314-20261025/build/build-manifest.json",
+    "build_manifest_sha256": "bbd19df2ad7160655e7fb1f9b7c43ab1cf2d9e2b0e97ee935b067b5280a102fb",
+    "numpy": "2.5.4",
+    "package_records": [
+      {
+        "build": "np2py314h2766e9b_1017",
+        "build_number": 1017,
+        "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+        "constrains": [],
+        "depends": [
+          "python",
+          "numpy >=2.5.3,<3.0a0",
+          "libgcc >=15",
+          "libgfortran5 >=15.3.0",
+          "libgfortran",
+          "__glibc >=2.17,<3.0.a0",
+          "numpy >=1.25,<3",
+          "python_abi 3.14.* *_cp314"
+        ],
+        "files": [
+          "etc/conda/test-files/pyspharm/1/conftest.py",
+          "etc/conda/test-files/pyspharm/1/tests/test_array_api.py",
+          "etc/conda/test-files/pyspharm/1/tests/test_hypothesis.py",
+          "etc/conda/test-files/pyspharm/1/tests/test_spharm.py",
+          "lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/INSTALLER",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/LICENSE.spherepack",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/METADATA",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/RECORD",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/REQUESTED",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/WHEEL",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/direct_url.json",
+          "lib/python3.14/site-packages/spharm/__init__.py",
+          "lib/python3.14/site-packages/spharm/__pycache__/__init__.cpython-314.pyc",
+          "lib/python3.14/site-packages/spharm/__pycache__/spharm.cpython-314.pyc",
+          "lib/python3.14/site-packages/spharm/spharm.py"
+        ],
+        "fn": "pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+        "license": "LicenseRef-spherepack",
+        "md5": "eeff4953b1dc383de80803b5bfa9f2dc",
+        "name": "pyspharm",
+        "paths_data": {
+          "paths": [
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/conftest.py",
+              "path_type": "hardlink",
+              "sha256": "dca6fef5d2a53b355be56d588d49fc67332141bffe6a7df6b49f50d27ee1e89c",
+              "sha256_in_prefix": "dca6fef5d2a53b355be56d588d49fc67332141bffe6a7df6b49f50d27ee1e89c",
+              "size_in_bytes": 564
+            },
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/tests/test_array_api.py",
+              "path_type": "hardlink",
+              "sha256": "5f3f665c3bbb913932205363195b59407bfe3ba7b9a135b28aaf11301fe27315",
+              "sha256_in_prefix": "5f3f665c3bbb913932205363195b59407bfe3ba7b9a135b28aaf11301fe27315",
+              "size_in_bytes": 560
+            },
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/tests/test_hypothesis.py",
+              "path_type": "hardlink",
+              "sha256": "1197c660276f71837bd237256747557582f45c3a922d32a6919559bedbf191e0",
+              "sha256_in_prefix": "1197c660276f71837bd237256747557582f45c3a922d32a6919559bedbf191e0",
+              "size_in_bytes": 3933
+            },
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/tests/test_spharm.py",
+              "path_type": "hardlink",
+              "sha256": "0bed41deb4e06404fb7a6710f0fe55d338cbec52d5cc04f2f64d3a33802e6326",
+              "sha256_in_prefix": "0bed41deb4e06404fb7a6710f0fe55d338cbec52d5cc04f2f64d3a33802e6326",
+              "size_in_bytes": 10885
+            },
+            {
+              "_path": "lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+              "path_type": "hardlink",
+              "sha256": "94b3c6d2fa5b7083beef10be8e2bb3a9389f463cb2540909ffb2cd03861f5310",
+              "sha256_in_prefix": "94b3c6d2fa5b7083beef10be8e2bb3a9389f463cb2540909ffb2cd03861f5310",
+              "size_in_bytes": 918544
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/INSTALLER",
+              "path_type": "hardlink",
+              "sha256": "bc33022edcb7639ff53355b4e91dade50a0bbf0299efeb6171d1ec0ba5029cfc",
+              "sha256_in_prefix": "bc33022edcb7639ff53355b4e91dade50a0bbf0299efeb6171d1ec0ba5029cfc",
+              "size_in_bytes": 6
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/LICENSE.spherepack",
+              "path_type": "hardlink",
+              "sha256": "b69ff82f0a6a04b2cdbdd97d92dc256458f11bcf66a2f4efc2f010b7fd199fbb",
+              "sha256_in_prefix": "b69ff82f0a6a04b2cdbdd97d92dc256458f11bcf66a2f4efc2f010b7fd199fbb",
+              "size_in_bytes": 1732
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/METADATA",
+              "path_type": "hardlink",
+              "sha256": "815a9a60a1efb92b482cd3f0f96c079311e6a1881132afde5552cd2f1f7be9bc",
+              "sha256_in_prefix": "815a9a60a1efb92b482cd3f0f96c079311e6a1881132afde5552cd2f1f7be9bc",
+              "size_in_bytes": 4617
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/RECORD",
+              "path_type": "hardlink",
+              "sha256": "9088c40f3ba894a0589e501d59cdd4cf976c71b609e29ad4e4cca5b67c074c8f",
+              "sha256_in_prefix": "9088c40f3ba894a0589e501d59cdd4cf976c71b609e29ad4e4cca5b67c074c8f",
+              "size_in_bytes": 932
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/REQUESTED",
+              "path_type": "hardlink",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "size_in_bytes": 0
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/WHEEL",
+              "path_type": "hardlink",
+              "sha256": "4a9ea657d1fb755fe6b15979f7fd174d9946c17337bcfad156d83cc81e268bbc",
+              "sha256_in_prefix": "4a9ea657d1fb755fe6b15979f7fd174d9946c17337bcfad156d83cc81e268bbc",
+              "size_in_bytes": 88
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/direct_url.json",
+              "path_type": "hardlink",
+              "sha256": "fd82f70ee90cac6cf4ee9e338b390e49b7e8006d7ed748e75923f14a70303f4a",
+              "sha256_in_prefix": "fd82f70ee90cac6cf4ee9e338b390e49b7e8006d7ed748e75923f14a70303f4a",
+              "size_in_bytes": 119
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/__init__.py",
+              "path_type": "hardlink",
+              "sha256": "7dea8c148edcfded6b97dbfc50ce31a7242911a8b84fa957e6918926b8f04d9b",
+              "sha256_in_prefix": "7dea8c148edcfded6b97dbfc50ce31a7242911a8b84fa957e6918926b8f04d9b",
+              "size_in_bytes": 82
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/__pycache__/__init__.cpython-314.pyc",
+              "path_type": "hardlink",
+              "sha256": "a34ead2ed5f3a03d319a019d06495ae5ff27246cc1391167eb47327a5d04a030",
+              "sha256_in_prefix": "a34ead2ed5f3a03d319a019d06495ae5ff27246cc1391167eb47327a5d04a030",
+              "size_in_bytes": 499
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/__pycache__/spharm.cpython-314.pyc",
+              "path_type": "hardlink",
+              "sha256": "faccdcd90c453f944cfda0eeb64f4506fb724be658031f4e3c47c17c40af8ffa",
+              "sha256_in_prefix": "faccdcd90c453f944cfda0eeb64f4506fb724be658031f4e3c47c17c40af8ffa",
+              "size_in_bytes": 51910
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/spharm.py",
+              "path_type": "hardlink",
+              "sha256": "da281dff7cb43315c283f5148ce2b4d2cbeacfc8992b8b205ad8636668186424",
+              "sha256_in_prefix": "da281dff7cb43315c283f5148ce2b4d2cbeacfc8992b8b205ad8636668186424",
+              "size_in_bytes": 42950
+            }
+          ],
+          "paths_version": 1
+        },
+        "requested_spec": "pyspharm=1.0.9",
+        "requested_specs": [
+          "pyspharm=1.0.9"
+        ],
+        "sha256": "1edea5872986bd960a9d42f234960e36fdfd8cf6a110c37daaa53baf20b94b00",
+        "size": 312827,
+        "subdir": "linux-64",
+        "timestamp": 1789575270539,
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+        "version": "1.0.9"
+      }
+    ],
+    "prefix": "$PYSPHARM_ENV",
+    "python": "3.14.9 | packaged by conda-forge | (main, Oct 22 2026, 10:21:21) [GCC 15.3.0]",
+    "python_executable": "$PYSPHARM_ENV/bin/python",
+    "spharm_module": "$PYSPHARM_ENV/lib/python3.14/site-packages/spharm/__init__.py",
+    "spherepack_extension": "$PYSPHARM_ENV/lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+    "thread_environment": {
+      "OMP_NUM_THREADS": "1"
+    }
+  },
+  "limitations": [
+    "Only float32/complex64 is exercised because this conda-forge pyspharm runtime exposes that precision.",
+    "This checks the adapter native batch layout at batch=4 and CC longitude parity at L=16; it does not establish performance or large-degree behavior.",
+    "Batch behavior is tested through the adapter backed by spharm.Spharmt; Spherepack does not expose a separate public batch API contract."
+  ],
+  "purpose": "focused non-timed numerical validation for conda-forge pyspharm batch and regular CC longitude parity",
+  "schema": 1,
+  "summary": {
+    "all_validated": true,
+    "case_count": 8,
+    "failed_fixture_count": 0,
+    "max_validation_metrics": {
+      "max_absolute": {
+        "context": {
+          "configuration": {
+            "allocation": "allocating",
+            "batch": 1,
+            "geometry_group": "cc-l16-odd-longitude",
+            "grid": "CC",
+            "lmax": 16,
+            "mmax": 16,
+            "nlat": 18,
+            "nlon": 33,
+            "operation": "synthesis",
+            "phi0": 0.0,
+            "precision": "float32",
+            "spin": 1
+          },
+          "fixture": "mode-16-16-0-imag",
+          "stage": "map_roundtrip"
+        },
+        "value": 1.1920928955078125e-06
+      },
+      "relative_l2": {
+        "context": {
+          "configuration": {
+            "allocation": "allocating",
+            "batch": 1,
+            "geometry_group": "cc-l16-odd-longitude",
+            "grid": "CC",
+            "lmax": 16,
+            "mmax": 16,
+            "nlat": 18,
+            "nlon": 33,
+            "operation": "synthesis",
+            "phi0": 0.0,
+            "precision": "float32",
+            "spin": 1
+          },
+          "fixture": "mode-16-16-0-imag",
+          "stage": "map_roundtrip"
+        },
+        "value": 1.146488734142556e-06
+      },
+      "scaled_error": {
+        "context": {
+          "configuration": {
+            "allocation": "allocating",
+            "batch": 1,
+            "geometry_group": "cc-l16-odd-longitude",
+            "grid": "CC",
+            "lmax": 16,
+            "mmax": 16,
+            "nlat": 18,
+            "nlon": 33,
+            "operation": "synthesis",
+            "phi0": 0.0,
+            "precision": "float32",
+            "spin": 0
+          },
+          "fixture": "mode-16-16-0-real",
+          "stage": "map_roundtrip"
+        },
+        "value": 6.669144944961169e-07
+      }
+    },
+    "status_counts": {
+      "supported_and_validated": 8
+    },
+    "validation_fixture_count": 84
+  },
+  "validation_method": "sht_bench.source_validation.validate; independent normalized associated-Legendre common reference and synthesis/analysis roundtrip; existing float32 tolerance 5e-5; no transform timings collected"
+}

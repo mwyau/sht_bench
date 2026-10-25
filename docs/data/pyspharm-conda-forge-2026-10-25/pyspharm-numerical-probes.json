@@ -1,0 +1,688 @@
+{
+  "note": "Validation calls only; no transform timings. CC-L1023 was preflight only; no adapter or native constructor was created.",
+  "probes": [
+    {
+      "label": "GL-min-spin1-L16",
+      "workload": {
+        "grid": "GL",
+        "nlat": 17,
+        "nlon": 33,
+        "lmax": 16,
+        "mmax": 16,
+        "spin": 1,
+        "precision": "float32",
+        "allocation": "allocating",
+        "batch": 1,
+        "phi0": 0.0,
+        "operation": "synthesis",
+        "geometry_group": "direct-minimum"
+      },
+      "capability_filter_bypassed": true,
+      "setup_status": "ok",
+      "setup_components_s": {
+        "native_constructor_grid_precomputation": 0.00013461499474942684
+      },
+      "validation_status": "numerical_validation_failed",
+      "tolerance": 5e-05,
+      "reference_points": 187,
+      "fixture_count": 13,
+      "failed_fixtures": [
+        {
+          "name": "random-triangular",
+          "synthesis": {
+            "relative_l2": 0.26915618321486423,
+            "max_absolute": 0.3444403345394198,
+            "scaled_error": 0.17503733990219916
+          },
+          "coefficient_recovery": {
+            "relative_l2": 0.2912699559439754,
+            "max_absolute": 0.20180189609527588,
+            "scaled_error": 0.4611136572108382
+          },
+          "map_roundtrip": {
+            "relative_l2": 3.196668877890015e-07,
+            "max_absolute": 6.556510925292969e-07,
+            "scaled_error": 3.2368770933491075e-07
+          },
+          "passed": false,
+          "dtype_passed": true,
+          "full_grid_synthesis": {
+            "relative_l2": 0.27330647493846005,
+            "max_absolute": 0.37247931957244873,
+            "scaled_error": 0.2251307108135806
+          },
+          "common_reference_analysis": {
+            "relative_l2": 0.29126995594391736,
+            "max_absolute": 0.20180189609527588,
+            "scaled_error": 0.4611136572108382
+          }
+        },
+        {
+          "name": "mode-16-0-0-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 0.885781994798829,
+            "scaled_error": 0.49999999757167085
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-16-0-1-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 0.885781994798829,
+            "scaled_error": 0.49999999757167085
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-16-16-0-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.1749292783612675,
+            "scaled_error": 0.5000000036499403
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-16-16-0-imag",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.176261583767734,
+            "scaled_error": 0.5000000084037716
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-16-16-1-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.1749292783612675,
+            "scaled_error": 0.5000000036499403
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-16-16-1-imag",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.176261583767734,
+            "scaled_error": 0.5000000084037716
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        }
+      ],
+      "maximum_residuals": {
+        "relative_l2": 1.0,
+        "max_absolute": 1.176261583767734,
+        "scaled_error": 0.5000000084037716
+      }
+    },
+    {
+      "label": "GL-min-spin1-L64",
+      "workload": {
+        "grid": "GL",
+        "nlat": 65,
+        "nlon": 129,
+        "lmax": 64,
+        "mmax": 64,
+        "spin": 1,
+        "precision": "float32",
+        "allocation": "allocating",
+        "batch": 1,
+        "phi0": 0.0,
+        "operation": "synthesis",
+        "geometry_group": "direct-minimum"
+      },
+      "capability_filter_bypassed": true,
+      "setup_status": "ok",
+      "setup_components_s": {
+        "native_constructor_grid_precomputation": 0.001981083070859313
+      },
+      "validation_status": "numerical_validation_failed",
+      "tolerance": 5e-05,
+      "reference_points": 187,
+      "fixture_count": 13,
+      "failed_fixtures": [
+        {
+          "name": "random-triangular",
+          "synthesis": {
+            "relative_l2": 0.12500562155266806,
+            "max_absolute": 0.1474435942382073,
+            "scaled_error": 0.08133852122960483
+          },
+          "coefficient_recovery": {
+            "relative_l2": 0.1258881194935239,
+            "max_absolute": 0.04248616099357605,
+            "scaled_error": 0.40853156998268053
+          },
+          "map_roundtrip": {
+            "relative_l2": 4.747915951797852e-06,
+            "max_absolute": 1.0848045349121094e-05,
+            "scaled_error": 3.492186137454074e-06
+          },
+          "passed": false,
+          "dtype_passed": true,
+          "full_grid_synthesis": {
+            "relative_l2": 0.12913471317568256,
+            "max_absolute": 0.20082616806030273,
+            "scaled_error": 0.08916623374275025
+          },
+          "common_reference_analysis": {
+            "relative_l2": 0.1258881194239632,
+            "max_absolute": 0.04248616099357605,
+            "scaled_error": 0.40853156998268053
+          }
+        },
+        {
+          "name": "mode-64-0-0-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.688245327303205,
+            "scaled_error": 0.5000000045646408
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-64-0-1-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.688245327303205,
+            "scaled_error": 0.5000000045646408
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-64-64-0-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.686803357062759,
+            "scaled_error": 0.5000000023937131
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-64-64-0-imag",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.6869284179847284,
+            "scaled_error": 0.5000000039314241
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-64-64-1-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.686803357062759,
+            "scaled_error": 0.5000000023937131
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-64-64-1-imag",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.6869284179847284,
+            "scaled_error": 0.5000000039314241
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        }
+      ],
+      "maximum_residuals": {
+        "relative_l2": 1.0,
+        "max_absolute": 1.688245327303205,
+        "scaled_error": 0.5000000045646408
+      }
+    },
+    {
+      "label": "GL-min-spin1-L127",
+      "workload": {
+        "grid": "GL",
+        "nlat": 128,
+        "nlon": 255,
+        "lmax": 127,
+        "mmax": 127,
+        "spin": 1,
+        "precision": "float32",
+        "allocation": "allocating",
+        "batch": 1,
+        "phi0": 0.0,
+        "operation": "synthesis",
+        "geometry_group": "direct-minimum"
+      },
+      "capability_filter_bypassed": true,
+      "setup_status": "ok",
+      "setup_components_s": {
+        "native_constructor_grid_precomputation": 0.014843977056443691
+      },
+      "validation_status": "numerical_validation_failed",
+      "tolerance": 5e-05,
+      "reference_points": 187,
+      "fixture_count": 13,
+      "failed_fixtures": [
+        {
+          "name": "random-triangular",
+          "synthesis": {
+            "relative_l2": 0.0755987123073053,
+            "max_absolute": 0.11632961943507464,
+            "scaled_error": 0.06568778741245862
+          },
+          "coefficient_recovery": {
+            "relative_l2": 0.0842621959798951,
+            "max_absolute": 0.022534269839525223,
+            "scaled_error": 0.3906154983572379
+          },
+          "map_roundtrip": {
+            "relative_l2": 4.3239187658010454e-07,
+            "max_absolute": 9.5367431640625e-07,
+            "scaled_error": 3.497681584572633e-07
+          },
+          "passed": false,
+          "dtype_passed": true,
+          "full_grid_synthesis": {
+            "relative_l2": 0.08873044559192945,
+            "max_absolute": 0.13852733373641968,
+            "scaled_error": 0.07797469766503443
+          },
+          "common_reference_analysis": {
+            "relative_l2": 0.08426219597932774,
+            "max_absolute": 0.022534269839525223,
+            "scaled_error": 0.3906154983572379
+          }
+        },
+        {
+          "name": "mode-127-0-0-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 2.356621957799045,
+            "scaled_error": 0.4999999975740626
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-127-0-1-real",
+          "synthesis": {
+            "relative_l2": 1.0,
+            "max_absolute": 2.356621957799045,
+            "scaled_error": 0.4999999975740626
+          },
+          "coefficient_recovery": {
+            "relative_l2": 1.0,
+            "max_absolute": 1.0,
+            "scaled_error": 0.5
+          },
+          "map_roundtrip": {
+            "relative_l2": 0.0,
+            "max_absolute": 0.0,
+            "scaled_error": 0.0
+          },
+          "passed": false,
+          "dtype_passed": true
+        }
+      ],
+      "maximum_residuals": {
+        "relative_l2": 1.0,
+        "max_absolute": 2.356621957799045,
+        "scaled_error": 0.5
+      }
+    },
+    {
+      "label": "GL-32x33-L16-s0",
+      "workload": {
+        "grid": "GL",
+        "nlat": 32,
+        "nlon": 33,
+        "lmax": 16,
+        "mmax": 16,
+        "spin": 0,
+        "precision": "float32",
+        "allocation": "allocating",
+        "batch": 1,
+        "phi0": 0.0,
+        "operation": "synthesis",
+        "geometry_group": "direct-edge"
+      },
+      "capability_filter_bypassed": true,
+      "setup_status": "error",
+      "setup_error": "ValueError: In return from call to vhsgsi in Spharmt.__init__ ierror =  3"
+    },
+    {
+      "label": "GL-32x33-L16-s1",
+      "workload": {
+        "grid": "GL",
+        "nlat": 32,
+        "nlon": 33,
+        "lmax": 16,
+        "mmax": 16,
+        "spin": 1,
+        "precision": "float32",
+        "allocation": "allocating",
+        "batch": 1,
+        "phi0": 0.0,
+        "operation": "synthesis",
+        "geometry_group": "direct-edge"
+      },
+      "capability_filter_bypassed": true,
+      "setup_status": "error",
+      "setup_error": "ValueError: In return from call to vhsgsi in Spharmt.__init__ ierror =  3"
+    },
+    {
+      "label": "CC-L63-s0",
+      "workload": {
+        "grid": "CC",
+        "nlat": 65,
+        "nlon": 127,
+        "lmax": 63,
+        "mmax": 63,
+        "spin": 0,
+        "precision": "float32",
+        "allocation": "allocating",
+        "batch": 1,
+        "phi0": 0.0,
+        "operation": "synthesis",
+        "geometry_group": "direct-high-mode"
+      },
+      "capability_filter_bypassed": true,
+      "setup_status": "ok",
+      "setup_components_s": {
+        "native_constructor_grid_precomputation": 0.0032265668269246817
+      },
+      "validation_status": "numerical_validation_failed",
+      "tolerance": 5e-05,
+      "reference_points": 187,
+      "fixture_count": 8,
+      "failed_fixtures": [
+        {
+          "name": "mode-63-63-0-imag",
+          "synthesis": {
+            "relative_l2": 4.660694789061924e-05,
+            "max_absolute": 0.00010603370624440167,
+            "scaled_error": 2.0872447240044694e-05
+          },
+          "coefficient_recovery": {
+            "relative_l2": 9.380130190060093e-05,
+            "max_absolute": 8.916854858398438e-05,
+            "scaled_error": 2.9721966106468533e-05
+          },
+          "map_roundtrip": {
+            "relative_l2": 9.386739919984527e-05,
+            "max_absolute": 0.000217437744140625,
+            "scaled_error": 4.279841169087421e-05
+          },
+          "passed": false,
+          "dtype_passed": true
+        }
+      ],
+      "maximum_residuals": {
+        "relative_l2": 9.386739919984527e-05,
+        "max_absolute": 0.000217437744140625,
+        "scaled_error": 4.279841169087421e-05
+      }
+    },
+    {
+      "label": "CC-L63-s1",
+      "workload": {
+        "grid": "CC",
+        "nlat": 65,
+        "nlon": 127,
+        "lmax": 63,
+        "mmax": 63,
+        "spin": 1,
+        "precision": "float32",
+        "allocation": "allocating",
+        "batch": 1,
+        "phi0": 0.0,
+        "operation": "synthesis",
+        "geometry_group": "direct-high-mode"
+      },
+      "capability_filter_bypassed": true,
+      "setup_status": "ok",
+      "setup_components_s": {
+        "native_constructor_grid_precomputation": 0.002330013085156679
+      },
+      "validation_status": "numerical_validation_failed",
+      "tolerance": 5e-05,
+      "reference_points": 187,
+      "fixture_count": 13,
+      "failed_fixtures": [
+        {
+          "name": "mode-63-63-0-real",
+          "synthesis": {
+            "relative_l2": 4.627679123410234e-05,
+            "max_absolute": 0.00010503734143618715,
+            "scaled_error": 2.0839767084234584e-05
+          },
+          "coefficient_recovery": {
+            "relative_l2": 9.24753262644897e-05,
+            "max_absolute": 8.7738037109375e-05,
+            "scaled_error": 2.924515706556637e-05
+          },
+          "map_roundtrip": {
+            "relative_l2": 9.242867209523118e-05,
+            "max_absolute": 0.00021326541900634766,
+            "scaled_error": 4.230903560183551e-05
+          },
+          "passed": false,
+          "dtype_passed": true
+        },
+        {
+          "name": "mode-63-63-1-real",
+          "synthesis": {
+            "relative_l2": 4.627679123410234e-05,
+            "max_absolute": 0.00010503734143618715,
+            "scaled_error": 2.0839767084234584e-05
+          },
+          "coefficient_recovery": {
+            "relative_l2": 9.24753262644897e-05,
+            "max_absolute": 8.7738037109375e-05,
+            "scaled_error": 2.924515706556637e-05
+          },
+          "map_roundtrip": {
+            "relative_l2": 9.242867209523118e-05,
+            "max_absolute": 0.00021326541900634766,
+            "scaled_error": 4.230903560183551e-05
+          },
+          "passed": false,
+          "dtype_passed": true
+        }
+      ],
+      "maximum_residuals": {
+        "relative_l2": 9.24753262644897e-05,
+        "max_absolute": 0.00021326541900634766,
+        "scaled_error": 4.230903560183551e-05
+      }
+    }
+  ],
+  "CC-L1023-preflight": {
+    "workload": {
+      "grid": "CC",
+      "nlat": 2047,
+      "nlon": 4092,
+      "lmax": 1023,
+      "mmax": 1023,
+      "spin": 1,
+      "precision": "float32",
+      "allocation": "allocating",
+      "batch": 1,
+      "operation": "synthesis",
+      "geometry_group": "resource-preflight-only"
+    },
+    "resource_preflight": {
+      "memory_observation": {
+        "host_available_bytes": 76402110464,
+        "cgroup_limits": [],
+        "available_bytes": 76402110464
+      },
+      "memory_budget_bytes": 76402110464,
+      "array_lengths": {
+        "wshaes": 2146439179,
+        "wshses": 2146439179,
+        "wvhaes": 4292874251,
+        "wvhses": 4292874251
+      },
+      "itemsize_bytes": 4,
+      "persistent_lower_bound_bytes": 51514507440,
+      "method": "spharm.Spharmt legfunc=stored array-length formulas; checked against conda-forge pyspharm 1.0.9",
+      "two_times_headroom_bytes": 103029014880,
+      "resource_limited": true,
+      "constructor_attempted": false
+    },
+    "conclusion": "The 2x headroom preflight blocks this CC L1023 case. Its stored-plan lower bound is 51.51 GB and twice that is 103.03 GB; the observed available memory at preflight was 76.41 GB. No adapter or native constructor was created."
+  },
+  "schema": 1,
+  "runtime": {
+    "package": "pyspharm",
+    "version": "1.0.9",
+    "build_string": "np2py314h2766e9b_1017",
+    "channel": "conda-forge",
+    "python": "3.14.9",
+    "numpy": "2.5.4",
+    "analysis_dtype": "complex64",
+    "synthesis_dtype": "float32",
+    "tolerance": 5e-05
+  }
+}
