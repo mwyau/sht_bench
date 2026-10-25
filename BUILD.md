@@ -249,9 +249,9 @@ The focused resolution sweep is a separate experiment from the existing
 environment from the local sibling checkouts, snapshots the selected commit
 without modifying those checkouts, and installs PyPI `pyspharm-syl` as a
 verified binary wheel. All five sweep environments are pinned to Python
-3.13.15 and NumPy 2.5.3. The [pyspharm-syl 1.2.1 release](https://pypi.org/project/pyspharm-syl/1.2.1/)
-supplies a CPython 3.13 wheel, not a CPython 3.14 wheel, so this comparison
-uses Python 3.13 for every backend. RustSHT defaults to the captured local `HEAD`. The
+3.13.15 and NumPy 2.5.3. The `pyspharm-syl` release currently supplies a
+CPython 3.13 wheel, not a CPython 3.14 wheel, so this comparison uses Python
+3.13 for every backend. RustSHT defaults to the captured local `HEAD`. The
 pyspharm-cpp source uses its recorded `third_party/ducc` Git submodule; the installed backend is
 reported as DUCC-derived because it uses DUCC algorithms behind the
 PySpharm-compatible `spharm_cpp.Spharmt` API. Its extension is built with the

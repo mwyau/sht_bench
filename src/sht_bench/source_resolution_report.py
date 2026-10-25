@@ -128,6 +128,7 @@ def _audit(output: Path, plan: dict, build_hash: str, harness_hash: str) -> tupl
             if not cert_path or not cert_hash or not Path(cert_path).is_file():
                 issues.append(f'{path.name}: pre-timing validation certificate is missing')
             else:
+                import hashlib
                 if hashlib.sha256(Path(cert_path).read_bytes()).hexdigest() != cert_hash:
                     issues.append(f'{path.name}: pre-timing validation checksum mismatch')
                 else:
