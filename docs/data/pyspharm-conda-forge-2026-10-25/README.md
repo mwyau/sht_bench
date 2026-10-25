@@ -15,6 +15,9 @@ path, and linked libraries are recorded in
 - `source-q1-accuracy.csv` records every numerical validation stage for the
   source q1 run. `source-q1-summary.json` includes cell counts, tolerances,
   validation maxima, and run/build manifest hashes.
+- `cc-l63-precision-probes.json` records standalone highest-mode diagnostics:
+  four minimum/quadrature scalar/vector configurations fail float32 recovery
+  or round-trip tolerance, while the two regular-grid controls pass.
 - `source-resolution-summary.json` records the audited limited resolution
   smoke and its setup, first-call, accuracy, and matched timing summaries.
 

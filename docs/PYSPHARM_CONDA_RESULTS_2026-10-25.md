@@ -87,13 +87,14 @@ All 4,086 recorded pyspharm validation-stage records passed. The largest
 relative L2 error was `1.20e-5`, below the unchanged float32 acceptance
 threshold of `5e-5`. The run checked independent synthesis, coefficient
 recovery, and map round trips. Analytical scalar and spin-1 mode probes,
-batching, supported GL and CC geometries, and odd/even longitude lengths also
-passed on the resolved build.
+batching, supported GL and CC geometries, and odd/even longitude lengths
+passed for the tested fixtures.
 
 | Case | Current evidence and handling |
 | --- | --- |
 | GL minimum spin-1 (`nlat=L+1`) | The highest-degree modes are not observable on this grid. The 18 q1 outcomes are unsupported; spin-1 runs use at least `nlat=L+2`, where validation passes. |
 | GL 32×33, L16 | The conda build still reports `vhsgsi ierror=3` during initialization. The affected source-matrix variants are recorded as unsupported; they are not retried or timed. |
+| CC L63 highest-mode precision probes | The minimum and quadrature scalar/vector probes fail coefficient recovery and map round-trip checks for highest-degree modes; maximum relative L2 is `9.40e-5`, above the unchanged `5e-5` tolerance. The two regular-grid controls pass. These are standalone diagnostics, not timed q1 cells; see the [machine-readable probe summary](data/pyspharm-conda-forge-2026-10-25/cc-l63-precision-probes.json). |
 | CC L1023 | The package-specific exclusion was removed. A dynamic preflight estimates at least 51.5 GB for stored plan arrays; with about 70.9 GB available, the host is below the 2× headroom threshold, so this case was not attempted. |
 | Other unsupported dimensions | The public API is float32/complex64, full-triangular only, has no native F1 path, and exposes no output-buffer API. These exclusions are recorded per outcome. |
 

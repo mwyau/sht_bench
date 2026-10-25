@@ -244,7 +244,9 @@ The 18 GL-minimum spin-1 outcomes at `nlat=L+1` are unsupported because the
 highest-degree modes are unobservable there. A direct probe also confirms
 `vhsgsi ierror=3` for GL 32×33 at L16 on the conda build; affected workload
 variants are marked unsupported without retry. The current acceptance
-criteria were not changed.
+criteria were not changed. Separate standalone CC L63 precision probes do
+fail the unchanged float32 tolerance on highest-degree modes; those
+non-timed diagnostics are recorded in the [current pyspharm results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 
 ## Source and build provenance
 
