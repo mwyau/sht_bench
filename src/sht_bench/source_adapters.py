@@ -15,17 +15,14 @@ PLANNING_POLICIES = {
     'ducc':'public DUCC transform call includes any API-internal setup/planning; no external reusable plan is exposed',
     'shtns':'reusable SHTns state constructed/configured outside transform timing',
     'pyspharm':'conda-forge pyspharm Spharmt legfunc=stored state constructed outside transform timing',
-    'pyspharm-syl':'PyPI pyspharm-syl wheel Spharmt legfunc=stored state constructed outside transform timing',
     'pyspharm-cpp':'native pyspharm-cpp Spharmt legfunc=computed state constructed outside transform timing',
 }
 
 MODULES = {
     'ducc':'ducc0', 'rustsht':'rustsht', 'shtns':'shtns',
-    'pyspharm':'spharm', 'pyspharm-syl':'spharm', 'pyspharm-cpp':'spharm_cpp',
+    'pyspharm':'spharm', 'pyspharm-cpp':'spharm_cpp',
 }
 PYSPHARM_BACKENDS = ('pyspharm',)
-PYSPHARM_SYL_BACKENDS = ('pyspharm-syl',)
-SPHARM_BACKENDS = (*PYSPHARM_BACKENDS, *PYSPHARM_SYL_BACKENDS)
 
 
 class Unsupported(ValueError):
@@ -112,23 +109,21 @@ def fixtures(w):
 def capability(backend, w):
     if backend not in MODULES:
         return 'unknown backend'
-    if w.batch != 1 and backend not in SPHARM_BACKENDS and backend != 'pyspharm-cpp' and not (backend=='ducc' and w.operation=='synthesis'):
+    if w.batch != 1 and backend not in PYSPHARM_BACKENDS and backend != 'pyspharm-cpp' and not (backend=='ducc' and w.operation=='synthesis'):
         return 'selected reusable-plan / 2d API has no native batch dimension'
-    if backend in (*SPHARM_BACKENDS, 'pyspharm-cpp') and w.grid == 'F1':
+    if backend in (*PYSPHARM_BACKENDS, 'pyspharm-cpp') and w.grid == 'F1':
         return 'no native F1 path'
-    if backend in ('shtns', *SPHARM_BACKENDS, 'pyspharm-cpp') and w.phi0:
+    if backend in ('shtns', *PYSPHARM_BACKENDS, 'pyspharm-cpp') and w.phi0:
         return 'native longitude-origin control unavailable'
     if backend == 'pyspharm' and w.grid == 'GL' and w.lmax == 16 and w.nlat == 32 and w.nlon == 33:
         return 'Spherepack vhsgsi initialization returns ierror=3 for GL 32x33 at L16 in the conda-forge build'
-    if backend in SPHARM_BACKENDS:
+    if backend in PYSPHARM_BACKENDS:
         if w.nlat < 3 or w.nlon < 4: return 'Spherepack Spharmt requires nlat>=3 and nlon>=4'
-        if w.precision != 'float32':
-            origin = 'conda-forge pyspharm 1.0.9' if backend == 'pyspharm' else 'PyPI pyspharm-syl 1.2.1'
-            return f'{origin} (Spherepack) runtime uses float32/complex64'
+        if w.precision != 'float32': return 'conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64'
         if w.mmax != w.lmax: return 'public API has full triangular truncation only'
         if w.allocation != 'allocating': return 'no public output-buffer API'
         if w.operation not in ('analysis','synthesis','gradient','deriv1'): return 'no native requested operation'
-        if backend == 'pyspharm' and w.grid == 'GL' and w.spin == 1 and w.nlat <= w.lmax + 1:
+        if w.grid == 'GL' and w.spin == 1 and w.nlat <= w.lmax + 1:
             return 'GL spin-1 validation requires nlat>=lmax+2; highest-degree modes vanish at nlat=lmax+1'
     if backend == 'pyspharm-cpp':
         if w.nlat < 3 or w.nlon < 4: return 'pyspharm-cpp Spharmt requires nlat>=3 and nlon>=4'
@@ -218,14 +213,14 @@ class Adapter:
                 self.encode = lambda a: np.ascontiguousarray(a*self.factor)
                 self.decode = lambda a: np.asarray(a)/self.factor
             self.setup_components_s['coefficient_convention_preparation'] = time.perf_counter()-started
-        elif backend in SPHARM_BACKENDS:
+        elif backend in PYSPHARM_BACKENDS:
             started = time.perf_counter()
             self.plan = self.module.Spharmt(w.nlon,w.nlat,rsphere=1.0,gridtype='gaussian' if w.grid=='GL' else 'regular',legfunc='stored')
             self.setup_components_s['native_constructor_grid_precomputation'] = time.perf_counter()-started
             self.native_setup_s = self.setup_components_s['native_constructor_grid_precomputation']
             self.setup_policy = 'public Spharmt constructor includes scalar/vector stored Legendre precomputation; no finer public split'
             self.native_api = 'spharm.Spharmt'
-            self.thread_control = ('Spherepack API has no thread-count argument/query; OMP_NUM_THREADS requested before import; native linkage recorded in build manifest')
+            self.thread_control = 'Spherepack API has no thread-count argument/query; OMP_NUM_THREADS requested before import; native linkage recorded in build manifest'
             started = time.perf_counter()
             # Spherepack uses no CS phase and Y00=1/sqrt(2).
             self.factor = np.array([(-1)**m / np.sqrt(2*np.pi) for l,m in indices(w)],dtype=np.float32)
@@ -337,7 +332,7 @@ class Adapter:
             return result.reshape(w.batch,w.components,w.nlat,w.nlon)
         if self.backend=='shtns':
             return np.asarray(result) if w.spin else result[None,:,:]
-        if self.backend in (*SPHARM_BACKENDS, 'pyspharm-cpp'):
+        if self.backend in (*PYSPHARM_BACKENDS, 'pyspharm-cpp'):
             if w.spin:
                 u,v = result
                 result = np.stack((-v,u))
@@ -391,7 +386,7 @@ class Adapter:
                 native_fn(*args)
                 return out
             return into
-        if self.backend in (*SPHARM_BACKENDS, 'pyspharm-cpp'):
+        if self.backend in (*PYSPHARM_BACKENDS, 'pyspharm-cpp'):
             if op in ('gradient','deriv1'):
                 scale=np.array([np.sqrt(l*(l+1)) if l else 1 for l,order in indices(self.w)],dtype=np.float32)
                 coeff=np.ascontiguousarray(-a/scale if op=='gradient' else -a)
@@ -438,7 +433,7 @@ class Adapter:
         return lambda: self.module.sht.adjoint_analysis_2d(alm=a,ntheta=w.nlat,nphi=w.nlon,**kwargs)
 
     def canonical_operation_output(self,result):
-        if self.backend in SPHARM_BACKENDS and self.w.operation in ('gradient','deriv1'):
+        if self.backend in PYSPHARM_BACKENDS and self.w.operation in ('gradient','deriv1'):
             u,v=result
             return np.stack((-v,u))
         return np.asarray(result)

@@ -36,10 +36,6 @@ def test_preflight_marks_only_plan_over_budget_as_resource_limited(monkeypatch):
     assert limited["persistent_lower_bound_bytes"] == 5408
     assert limited["resource_limited"] is False
 
-    syl_limited = source_resources.preflight("pyspharm-syl", small)
-    assert syl_limited["persistent_lower_bound_bytes"] == 5408
-    assert syl_limited["resource_limited"] is False
-
     constrained = source_resources.preflight("pyspharm", small, limit_bytes=100)
     assert constrained["memory_budget_bytes"] == 100
     assert constrained["resource_limited"] is True

@@ -2,10 +2,9 @@
 """Build, run, audit, and replot the reproducible CC/GL source sweep.
 
 The sweep uses local DUCC, SHTns, RustSHT, and pyspharm-cpp Git sources, plus
-the compatible PyPI pyspharm-syl binary wheel. Each backend has an isolated
-Python 3.13.15 / NumPy 2.5.3 environment. Numerical gates run in a separate
-process before matching timing cells; raw batches remain in one JSON file per
-process cell.
+a separate conda-forge pyspharm environment. Numerical gates run in a separate
+process before any matching timing cells. Raw timing batches remain in one
+JSON file per process cell.
 """
 from __future__ import annotations
 
@@ -23,15 +22,17 @@ import sys
 import tarfile
 import tempfile
 from typing import Any
-from urllib.request import urlopen
-
-from packaging.tags import sys_tags
-from packaging.utils import parse_wheel_filename
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 
 from sht_bench.source_adapters import MODULES, PLANNING_POLICIES, Workload, capability  # noqa: E402
+from sht_bench.conda_environment import (  # noqa: E402
+    CONDA_CHANNEL, NUMPY_VERSION, PYTHON_VERSION, PYSPHARM_VERSION,
+    create_command as conda_create_command, environment_python as conda_python,
+    find_conda, installed_environment_exports, verify_import_path,
+    verify_pyspharm_environment,
+)
 from sht_bench.source_resolution import (  # noqa: E402
     BACKENDS, BACKEND_PRECISIONS, PROFILE_SCHEMA, PRECISIONS, THREADS,
     case_reference, planned_cells, plan_counts, resolution_cases,
@@ -41,14 +42,11 @@ from sht_bench.source_runner import (  # noqa: E402
 )
 from sht_bench.source_resources import preflight  # noqa: E402
 
-SCHEMA = 'sht_bench.source_resolution_sweep.v2'
-PYTHON_VERSION = '3.13.15'
-NUMPY_VERSION = '2.5.3'
-PYSPHARM_SYL_VERSION = '1.2.1'
+SCHEMA = 'sht_bench.source_resolution_sweep.v1'
 SOURCES = {
     'ducc': ('../ducc', 'HEAD'),
     'shtns': ('../shtns', 'HEAD'),
-    'rustsht': ('../RustSHT', 'HEAD'),
+    'rustsht': ('../RustSHT', 'main'),
     'pyspharm-cpp': ('../pyspharm-cpp', 'HEAD'),
 }
 MODULES_FOR_BUILD = {
@@ -56,66 +54,8 @@ MODULES_FOR_BUILD = {
     'shtns': ('shtns', 'shtns'),
     'rustsht': ('rustsht', 'rustsht'),
     'pyspharm-cpp': ('spharm_cpp', 'pyspharm-cpp'),
-    'pyspharm-syl': ('spharm', 'pyspharm-syl'),
+    'pyspharm': ('spharm', 'pyspharm'),
 }
-
-
-def _resolve_pyspharm_syl_wheel(output: Path) -> dict:
-    """Download only the PyPI wheel compatible with this CPython/platform."""
-    if tuple(sys.version_info[:3]) != tuple(map(int, PYTHON_VERSION.split('.'))):
-        raise RuntimeError(
-            f'the sweep build controller must run on Python {PYTHON_VERSION}; '
-            f'found {sys.version.split()[0]}'
-        )
-    release_url = f'https://pypi.org/pypi/pyspharm-syl/{PYSPHARM_SYL_VERSION}/json'
-    with urlopen(release_url, timeout=30) as response:
-        release = json.load(response)
-    ordered_tags = list(sys_tags())
-    compatible = set(ordered_tags)
-    compatible_rank = {tag:index for index,tag in enumerate(ordered_tags)}
-    candidates = []
-    for artifact in release.get('urls', []):
-        if artifact.get('packagetype') != 'bdist_wheel':
-            continue
-        try:
-            name, version, build, tags = parse_wheel_filename(artifact['filename'])
-        except (KeyError, ValueError):
-            continue
-        if str(name).lower().replace('_', '-') != 'pyspharm-syl':
-            continue
-        if str(version) != PYSPHARM_SYL_VERSION or not (set(tags) & compatible):
-            continue
-        tag_rank = min((compatible_rank[tag] for tag in tags if tag in compatible), default=10**9)
-        candidates.append((tag_rank,artifact))
-    if not candidates:
-        raise RuntimeError(
-            f'PyPI pyspharm-syl {PYSPHARM_SYL_VERSION} has no compatible binary wheel '
-            f'for Python {PYTHON_VERSION} on {sys.platform}/{os.uname().machine}; '
-            'source distributions are not accepted'
-        )
-    artifact = min(candidates,key=lambda item:item[0])[1]
-    expected = artifact['digests']['sha256']
-    wheel_dir = output/'wheels'
-    wheel_dir.mkdir(parents=True,exist_ok=True)
-    wheel = wheel_dir/artifact['filename']
-    if wheel.exists() and _sha(wheel.read_bytes()) != expected:
-        raise ValueError(f'cached PyPI wheel checksum mismatch: {wheel}')
-    if not wheel.exists():
-        temporary = wheel.with_suffix(wheel.suffix+'.part')
-        with urlopen(artifact['url'],timeout=120) as response, temporary.open('wb') as stream:
-            shutil.copyfileobj(response,stream)
-        actual = _sha(temporary.read_bytes())
-        if actual != expected:
-            temporary.unlink(missing_ok=True)
-            raise ValueError(f'PyPI wheel checksum mismatch for {artifact["filename"]}: {actual} != {expected}')
-        temporary.replace(wheel)
-    return {
-        'name':'pyspharm-syl','version':PYSPHARM_SYL_VERSION,
-        'filename':artifact['filename'],'url':artifact['url'],
-        'sha256':expected,'size_bytes':artifact['size'],
-        'wheel_tags':sorted(str(tag) for tag in parse_wheel_filename(artifact['filename'])[3]),
-        'pypi_release_url':release_url,'local_path':str(wheel.resolve()),
-    }
 
 
 def _sha(data: bytes) -> str:
@@ -124,23 +64,6 @@ def _sha(data: bytes) -> str:
 
 def _canonical(data: Any) -> bytes:
     return json.dumps(data, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()
-
-
-def _validate_pyspharm_syl_probe(record: dict) -> None:
-    """Reject substituted distributions, source installs, and wrong wheel ABI."""
-    name=(record.get('distribution_name') or '').lower().replace('_','-')
-    if name!='pyspharm-syl' or record.get('distribution_version')!=PYSPHARM_SYL_VERSION:
-        raise ValueError('installed package is not the locked pyspharm-syl 1.2.1 distribution')
-    substitutions=sorted(
-        item for item in record.get('pyspharm_distributions', [])
-        if str(item).lower().replace('_','-')!='pyspharm-syl'
-    )
-    if substitutions:
-        raise ValueError(f'unexpected pyspharm package substitution: {substitutions}')
-    if 'Tag: cp313-cp313-' not in (record.get('wheel_metadata') or ''):
-        raise ValueError('installed pyspharm-syl artifact is not the CPython 3.13 binary wheel')
-    if (record.get('installer') or '').strip().lower() not in ('uv','pip'):
-        raise ValueError('pyspharm-syl was not installed from a wheel by uv/pip')
 
 
 def _relevant_untracked_source(relative: str) -> bool:
@@ -332,29 +255,32 @@ module_name,dist_name=sys.argv[1:3]
 capture=__import__('io').StringIO()
 with contextlib.redirect_stdout(capture): m=importlib.import_module(module_name)
 module_path=pathlib.Path(m.__file__).resolve()
-if dist_name=='pyspharm-syl':
+if dist_name=='pyspharm':
     import numpy as np
-    dist=md.distribution(dist_name)
-    normalized=(dist.metadata.get('Name') or '').lower().replace('_','-')
-    pyspharm_distributions=[(d.metadata.get('Name') or '') for d in md.distributions() if (d.metadata.get('Name') or '').lower().replace('_','-').startswith('pyspharm')]
-    wheel_metadata=dist.read_text('WHEEL')
-    installer=(dist.read_text('INSTALLER') or '').strip().lower()
-    prefix=pathlib.Path(sys.prefix).resolve()
-    if not module_path.is_relative_to(prefix): raise RuntimeError('spharm import escaped the isolated wheel environment')
+    prefix=pathlib.Path(sys.prefix)
+    records=[json.loads(f.read_text()) for f in (prefix/'conda-meta').glob('*.json')]
+    named=[str(r.get('name','')).lower() for r in records]
+    unexpected=sorted(x for x in named if x.startswith('pyspharm') and x!='pyspharm')
+    if unexpected: raise RuntimeError('unexpected conda package identity: '+repr(unexpected))
+    package=next((r for r in records if str(r.get('name','')).lower()=='pyspharm'),None)
+    if package is None: raise RuntimeError('conda pyspharm package record is missing')
+    distributions=[]
+    for d in md.distributions():
+        name=(d.metadata.get('Name') or '').lower().replace('_','-')
+        if name.startswith('pyspharm') and name!='pyspharm': raise RuntimeError('unexpected Python distribution: '+name)
+        if name=='pyspharm': distributions.append({'name':name,'version':d.version})
     try: native=importlib.import_module('_spherepack')
     except ImportError as exc: raise RuntimeError('compiled _spherepack extension is missing') from exc
     files=[pathlib.Path(native.__file__).resolve()]
     sh=m.Spharmt(16,8,gridtype='gaussian',legfunc='stored',rsphere=1.0)
     spectrum=np.zeros(10,dtype=np.complex64)
     precision={'input_dtype':'complex64','analysis_dtype':str(sh.grdtospec(np.zeros((8,16),dtype=np.float32),ntrunc=3).dtype),'synthesis_dtype':str(sh.spectogrd(spectrum).dtype),'numpy_abi':np._core._multiarray_umath._get_ndarray_c_version()}
-    if precision['analysis_dtype']!='complex64' or precision['synthesis_dtype']!='float32': raise RuntimeError('pyspharm-syl runtime precision differs from float32/complex64')
-    dist_files=[str(pathlib.Path(dist.locate_file(f)).resolve()) for f in dist.files or [] if str(f).endswith(('.so','.pyd'))]
-    if not dist_files or any(not pathlib.Path(f).is_relative_to(prefix) for f in dist_files): raise RuntimeError('pyspharm-syl native extension files are missing or escaped the wheel environment')
-    out={'import_banner':capture.getvalue(),'module_path':str(module_path),'native_module_path':str(files[0]),'distribution_name':normalized,'distribution_version':dist.version,'wheel_metadata':wheel_metadata,'installer':installer,'pyspharm_distributions':pyspharm_distributions,'python':sys.version,'python_version':'.'.join(map(str,sys.version_info[:3])),'numpy':np.__version__,'numpy_abi':precision['numpy_abi'],'precision_probe':precision,'binaries':[],'native_cpu_info':None}
+    dist={'name':package.get('name'),'version':package.get('version'),'build':package.get('build'),'build_number':package.get('build_number'),'channel':package.get('channel',package.get('schannel')),'url':package.get('url'),'sha256':package.get('sha256'),'md5':package.get('md5'),'depends':package.get('depends',[]),'subdir':package.get('subdir')}
+    out={'import_banner':capture.getvalue(),'module_path':str(module_path),'native_module_path':str(files[0]),'distribution_name':dist_name,'distribution_version':package.get('version'),'conda_record':dist,'python':sys.version,'python_version':'.'.join(map(str,sys.version_info[:3])),'numpy':np.__version__,'numpy_abi':precision['numpy_abi'],'python_distributions':distributions,'precision_probe':precision,'binaries':[],'native_cpu_info':None}
 else:
     dist=md.distribution(dist_name)
     files=[pathlib.Path(dist.locate_file(f)).resolve() for f in dist.files or [] if str(f).endswith(('.so','.pyd'))]
-    out={'import_banner':capture.getvalue(),'module_path':str(module_path),'distribution_name':dist.metadata['Name'],'distribution_version':dist.version,'python':sys.version,'python_version':'.'.join(map(str,sys.version_info[:3])),'numpy':md.version('numpy'),'binaries':[],'native_cpu_info':None}
+    out={'import_banner':capture.getvalue(),'module_path':str(module_path),'distribution_name':dist.metadata['Name'],'distribution_version':dist.version,'python':sys.version,'numpy':md.version('numpy'),'wheel_metadata':dist.read_text('WHEEL'),'installer':dist.read_text('INSTALLER'),'binaries':[],'native_cpu_info':None}
 for f in files:
     ldd=subprocess.run(['ldd',str(f)],capture_output=True,text=True)
     out['binaries'].append({'path':str(f),'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),'ldd':ldd.stdout,'ldd_returncode':ldd.returncode})
@@ -368,13 +294,6 @@ print(json.dumps(out,default=str))'''
     record = json.loads(result)
     if not Path(record['module_path']).is_relative_to(python.parent.parent):
         raise ValueError(f'{backend}: import escaped its isolated environment')
-    if record.get('python_version') != PYTHON_VERSION or record.get('numpy') != NUMPY_VERSION:
-        raise ValueError(
-            f'{backend}: expected Python {PYTHON_VERSION} / NumPy {NUMPY_VERSION}; '
-            f"found Python {record.get('python_version')} / NumPy {record.get('numpy')}"
-        )
-    if backend=='pyspharm-syl':
-        _validate_pyspharm_syl_probe(record)
     if not record['binaries']:
         raise ValueError(f'{backend}: no native extension binary found')
     # Keep the virtual-environment path. Resolving this symlink points at the
@@ -390,7 +309,7 @@ def build_local_sources(
 ) -> dict:
     if output.exists() and any(output.iterdir()):
         raise ValueError('build output directory already contains data; choose a new output path')
-    source_backends = tuple(name for name in selected if name != 'pyspharm-syl')
+    source_backends = tuple(name for name in selected if name != 'pyspharm')
     source_state = {}
     snapshots = {}
     for backend in source_backends:
@@ -411,13 +330,11 @@ def build_local_sources(
     manifest = {
         'schema': 1,
         'profile_schema': PROFILE_SCHEMA,
-        'source_policy': 'local Git checkouts use immutable snapshots; pyspharm-syl is installed from an exact verified PyPI wheel',
+        'source_policy': 'local Git checkouts; native builds use immutable source snapshots under source-snapshots/',
         'sources': snapshots,
         'builds': {},
         'selected_backends': list(selected),
-        'python_version':PYTHON_VERSION,
-        'numpy_version':NUMPY_VERSION,
-        'pyspharm_syl_version':PYSPHARM_SYL_VERSION,
+        'conda_policy': {'channel':CONDA_CHANNEL,'python':PYTHON_VERSION,'numpy':NUMPY_VERSION,'pyspharm':PYSPHARM_VERSION},
         **provenance,
     }
     output.mkdir(parents=True, exist_ok=True)
@@ -427,26 +344,30 @@ def build_local_sources(
         if backend not in selected:
             continue
         venv = output / 'envs' / backend
-        python = venv / 'bin' / 'python'
+        python = conda_python(venv) if backend == 'pyspharm' else venv / 'bin' / 'python'
         log_path = output / f'build-{backend}.log'
         with log_path.open('w') as log:
             try:
-                if python_version != PYTHON_VERSION:
-                    raise ValueError(f'this locked sweep requires Python {PYTHON_VERSION}, requested {python_version}')
-                _run_logged(['uv','venv','--python',PYTHON_VERSION,str(venv)],env=env,log=log)
-                _run_logged(['uv','pip','install','--python',str(python),f'numpy=={NUMPY_VERSION}'],env=env,log=log)
-                _run_logged(['uv','pip','install','--python',str(python),'-e',str(ROOT)],env=env,log=log)
-                if backend == 'pyspharm-syl':
-                    artifact = _resolve_pyspharm_syl_wheel(output)
-                    command = ['uv','pip','install','--python',str(python),'--no-deps',artifact['local_path']]
-                    entry.update({'build_kind':'pypi-wheel','build_origin':'PyPI','package':'pyspharm-syl','package_version':PYSPHARM_SYL_VERSION,'pypi_wheel':artifact,'sha':artifact['sha256'],'build_command':command})
+                if backend == 'pyspharm':
+                    conda = find_conda()
+                    command = conda_create_command(conda,venv,python=PYTHON_VERSION,numpy=NUMPY_VERSION,pyspharm=PYSPHARM_VERSION)
+                    entry.update({'build_kind':'conda-forge','build_origin':CONDA_CHANNEL,'conda_executable':conda,'conda_create_command':command})
                     _run_logged(command,env=env,log=log)
+                    package = verify_pyspharm_environment(venv)
+                    entry.update({'resolved_conda_package':package,'sha':package.get('sha256') or f"{CONDA_CHANNEL}::pyspharm={package['version']}#{package['build_string']}"})
+                    _run_logged(['uv','pip','install','--python',str(python),'-e',str(ROOT)],env=env,log=log)
+                    exports = installed_environment_exports(conda,venv)
+                    explicit = output/'pyspharm-conda-explicit.txt'
+                    environment = output/'pyspharm-conda-environment.yml'
+                    explicit.write_text(exports['explicit'])
+                    environment.write_text(exports['environment'])
+                    entry['conda_exports'] = {'explicit_file':str(explicit.resolve()),'explicit_sha256':_sha(explicit.read_bytes()),'environment_file':str(environment.resolve())}
                 else:
+                    _run_logged(['uv','venv','--python',python_version,str(venv)],env=env,log=log)
+                    _run_logged(['uv','pip','install','--python',str(python),'-e',str(ROOT)],env=env,log=log)
                     source = Path(snapshots[backend]['build_snapshot_path'])
                     entry.update(snapshots[backend])
                     entry['build_kind'] = 'local-git-source-snapshot'
-                    entry['build_origin'] = 'Git source snapshot'
-                    entry['sha'] = entry['resolved_sha']
                     command = ['uv','pip','install','--python',str(python),'--verbose','--no-cache',str(source)]
                     if backend == 'pyspharm-cpp':
                         command[3:3] = ['--config-setting','cmake.define.SPHARM_CPP_BUILD_PROFILE=multiarch']
@@ -457,10 +378,12 @@ def build_local_sources(
                     _run_logged(command,env=build_env,log=log)
                     entry['compiler_metadata_files'] = _collect_build_inputs(source,backend,output)
                 module_record = _probe_backend(python,backend,env)
+                if backend == 'pyspharm':
+                    verify_import_path(venv,module_record['module_path'])
                 entry.update(module_record)
                 entry['status'] = 'built'
-            except (subprocess.SubprocessError,OSError,ValueError,KeyError,RuntimeError) as exc:
-                entry['status'] = 'build_failed'
+            except (subprocess.SubprocessError,OSError,ValueError,KeyError) as exc:
+                entry['status'] = 'unavailable' if backend == 'pyspharm' else 'build_failed'
                 entry['error'] = str(exc)
         write_json(output / 'build-manifest.json',manifest)
     write_json(output / 'build-manifest.json',manifest)
@@ -618,7 +541,7 @@ def _run_sweep(args, cases: list[dict], cells: list[dict], build_path: Path) -> 
         cell['source_sha'] = source_sha
         cell['id'] = _cell_id(cell,source_sha=source_sha,build_hash=build_hash,harness_sha=harness_sha)
         cell['validation_id'] = _validation_id(cell,source_sha=source_sha,build_hash=build_hash,harness_sha=harness_sha)[0]
-    profile_record = {'schema':PROFILE_SCHEMA,'profile_version':2,'cases':cases}
+    profile_record = {'schema':PROFILE_SCHEMA,'profile_version':1,'cases':cases}
     _write_immutable_json(output/'resolution-profile.json',profile_record,resume=args.resume)
     static_counts = plan_counts(iter(cells))
     plan_record = {
@@ -626,7 +549,7 @@ def _run_sweep(args, cases: list[dict], cells: list[dict], build_path: Path) -> 
         'counts':static_counts,
         'cells':cells,
         'latitude_coordinates_artifact':'resolution-profile.json:cases[].latitude_coordinates_radians',
-        'unsupported_policy':'native full triangular truncation only for pyspharm-cpp and pyspharm-syl; half mmax is recorded unsupported, never emulated by zeroing coefficients',
+        'unsupported_policy':'native full triangular truncation only for pyspharm-cpp and pyspharm; half mmax is recorded unsupported, never emulated by zeroing coefficients',
     }
     _write_immutable_json(output/'workload-plan.json',plan_record,resume=args.resume)
     build_hash = build_mode['build_manifest_sha256']
@@ -845,14 +768,14 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument('--output',type=Path,help='new raw result directory (never overwritten)')
     p.add_argument('--build-manifest',type=Path,help='use an existing sweep build manifest')
     p.add_argument('--build',action='store_true',help='build isolated environments from the local source checkouts')
-    p.add_argument('--python',default=PYTHON_VERSION,help='locked uv Python version for isolated backend environments')
+    p.add_argument('--python',default='3.13',help='uv Python version for isolated backend environments')
     p.add_argument('--ducc-source',type=Path)
     p.add_argument('--shtns-source',type=Path)
     p.add_argument('--rustsht-source',type=Path)
     p.add_argument('--pyspharm-cpp-source',type=Path)
     p.add_argument('--ducc-ref')
     p.add_argument('--shtns-ref')
-    p.add_argument('--rustsht-ref',default='HEAD')
+    p.add_argument('--rustsht-ref',default='main')
     p.add_argument('--pyspharm-cpp-ref')
     p.add_argument('--grid',default='CC,GL',help='CC,GL selection')
     p.add_argument('--backend',default=','.join(BACKENDS),help='comma-separated backend selection')
@@ -873,14 +796,10 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv=None) -> int:
     args = parser().parse_args(argv)
-    if args.python != PYTHON_VERSION:
-        parser().error(f'this sweep pins all backend environments to Python {PYTHON_VERSION}')
     try:
         args.grid_values = _parse_csv(args.grid,allowed=('CC','GL'))
         args.backend_values = _parse_csv(args.backend,allowed=BACKENDS)
         args.thread_values = _parse_csv(args.threads,positive_int=True)
-        if set(args.thread_values)-set(THREADS):
-            raise ValueError(f'thread counts are limited to {THREADS} for this sweep; q16 is reserved for separate diagnosis')
         args.precision_values = _parse_csv(args.precision,allowed=PRECISIONS)
         args.mmax_values = _parse_csv(args.mmax,allowed=('full','half'))
     except ValueError as exc:
@@ -910,8 +829,8 @@ def main(argv=None) -> int:
                 (cell['backend'],cell['workload']['grid'],cell['workload']['nlat'],cell['workload']['nlon'],cell['workload']['lmax'],cell['workload']['mmax'],cell['workload']['spin'],cell['workload']['precision'],cell['threads_requested'])
                 for cell in cells if cell['static_status']=='planned'
             }),
-            'precision_rule':'SHTns only float64; PyPI pyspharm-syl uses float32; other selected backends use requested precisions',
-            'half_order_rule':'pyspharm-cpp and pyspharm-syl public APIs lack independent native mmax; half-order cells are explicit unsupported outcomes',
+            'precision_rule':'SHTns only float64; conda-forge pyspharm uses float32; other selected backends use requested precisions',
+            'half_order_rule':'pyspharm-cpp and pyspharm public APIs lack independent native mmax; half-order cells are explicit unsupported outcomes',
         },indent=2))
         return 0
     if args.output is None:

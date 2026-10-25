@@ -26,8 +26,6 @@ Native SHTOOLS GLQ routines require `nlon = 2*nlat - 1`, whereas the default atm
 
 The `pyspharm` backend is installed from conda-forge in a separate conda environment. The host comparison uses Python 3.13.15, NumPy 2.5.4, and pyspharm 1.0.9 build `np2py313h854c110_1017`. `spharm` and `_spherepack` are checked against that prefix before benchmarking. The conda build is recorded as `conda-forge`; it is not installed through uv and is not labeled as a wheel. Source-build matrices contain DUCC, SHTns, and pyshtools/SHTOOLS; pyshtools contributes only when a requested GL case uses its compact native GLQ geometry.
 
-The separate focused CC/GL resolution sweep uses the PyPI `pyspharm-syl` 1.2.1 wheel instead. It pins all five implementation environments to Python 3.13.15 and NumPy 2.5.3 and records wheel and import provenance separately from the conda matrix above.
-
 The refreshed package's build identity, capability limits, validation results, matched q1 comparisons, and tracked machine-readable data are in the [pyspharm conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 
 On this host, the existing uv matrix environments also use Python 3.13.15 and

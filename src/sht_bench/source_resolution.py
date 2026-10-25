@@ -10,12 +10,12 @@ import numpy as np
 
 from .source_adapters import Workload, capability
 
-PROFILE_SCHEMA = 'sht_bench.source_resolution_profile.v2'
-BACKENDS = ('ducc', 'shtns', 'rustsht', 'pyspharm-cpp', 'pyspharm-syl')
+PROFILE_SCHEMA = 'sht_bench.source_resolution_profile.v1'
+BACKENDS = ('ducc', 'shtns', 'rustsht', 'pyspharm-cpp', 'pyspharm')
 OPERATIONS = ('analysis', 'synthesis')
 SPINS = (0, 1)
 PRECISIONS = ('float64', 'float32')
-THREADS = (1, 2, 4, 8)
+THREADS = (1, 2, 4, 8, 16)
 
 CC_PROFILE = (
     {'resolution': '2.5°', 'nlat': 73, 'nlon': 144, 'lmax': 36},
@@ -43,7 +43,7 @@ BACKEND_PRECISIONS = {
     'shtns': ('float64',),
     'rustsht': PRECISIONS,
     'pyspharm-cpp': PRECISIONS,
-    'pyspharm-syl': ('float32',),
+    'pyspharm': ('float32',),
 }
 
 
@@ -102,7 +102,7 @@ def resolution_cases(grids: tuple[str, ...] = ('CC', 'GL'), *, endpoints_only: b
 
 
 def selected_threads(backend: str, requested: tuple[int, ...]) -> tuple[int, ...]:
-    if backend in ('pyspharm', 'pyspharm-syl'):
+    if backend == 'pyspharm':
         return (1,) if 1 in requested else ()
     return requested
 

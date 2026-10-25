@@ -88,7 +88,7 @@ def _json_safe(value):
 def harness_hash():
     from bench_common import timing,environment
     paths = [Path(__file__),*[Path(__file__).with_name(name) for name in
-             ('source_adapters.py','source_validation.py','source_batch.py','source_resources.py','source_resolution.py','source_resolution_report.py','grids.py')],
+             ('source_adapters.py','source_validation.py','source_batch.py','source_resources.py','grids.py')],
              Path(timing.__file__),Path(environment.__file__)]
     return hashlib.sha256(b''.join(p.read_bytes() for p in paths)).hexdigest()
 
