@@ -62,6 +62,42 @@ def workloads(degrees, smoke=False):
                     yield Workload(grid,nlat,nlon,l,m,spin=spin,precision=precision,geometry_group=group)
 
 
+def select_workloads(configs, *, grids=None, precisions=None, spins=None,
+                     orders=None, geometry_groups=None):
+    """Select existing workload definitions without changing their geometry."""
+    selected = []
+    for workload in configs:
+        if grids is not None and workload.grid not in grids:
+            continue
+        if precisions is not None and workload.precision not in precisions:
+            continue
+        if spins is not None and workload.spin not in spins:
+            continue
+        if orders is not None:
+            order = 'full' if workload.mmax == workload.lmax else 'quarter'
+            if order not in orders:
+                continue
+        if geometry_groups is not None and workload.geometry_group not in geometry_groups:
+            continue
+        selected.append(workload)
+    return selected
+
+
+def select_batches(configs, batches=None):
+    """Expand the selected base workloads to explicitly requested batch sizes."""
+    if batches is None:
+        return list(configs)
+    return [replace(workload, batch=batch)
+            for workload in configs for batch in sorted(batches)]
+
+
+def _selection(value, allowed, option, *, converter=str):
+    values = [converter(item.strip()) for item in value.split(',') if item.strip()]
+    if not values or len(values) != len(set(values)) or set(values) - set(allowed):
+        raise ValueError(f'{option} must be a non-empty, unique subset of {sorted(allowed)}')
+    return set(values)
+
+
 def identity(backend,w,q,round_index,sha):
     data = dict(backend=backend,workload=w.record(),threads_requested=q,round=round_index,source_sha=sha)
     return hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()[:24]
@@ -260,6 +296,13 @@ def main(argv=None):
     parser.add_argument('--degrees',default=','.join(map(str,DEGREES)))
     parser.add_argument('--threads',default='1,2,4,8,16')
     parser.add_argument('--backends',default='ducc,shtns,rustsht,pyspharm')
+    parser.add_argument('--grids',default='GL,CC,F1',help='comma-separated GL,CC,F1 workload grids')
+    parser.add_argument('--precisions',default='float64,float32',help='comma-separated float64,float32 workload precisions')
+    parser.add_argument('--spins',default='0,1',help='comma-separated spin workloads')
+    parser.add_argument('--orders',default='full,quarter',help='comma-separated full,quarter coefficient orders')
+    parser.add_argument('--geometry-groups',help='optional comma-separated geometry groups: minimum,quadrature,extended,simd,atmospheric,regular')
+    parser.add_argument('--allocations',default='allocating,preallocated',help='comma-separated allocating,preallocated calls')
+    parser.add_argument('--batches',help='optional comma-separated batch sizes; default keeps the standard batch-1 plan')
     parser.add_argument('--rounds',type=int,default=3)
     parser.add_argument('--repeat',type=int,default=30)
     parser.add_argument('--min-time',type=float,default=.02)
@@ -283,8 +326,19 @@ def main(argv=None):
     try:
         requested_degrees = [int(value) for value in args.degrees.split(',')]
         requested_threads = [int(value) for value in args.threads.split(',')]
+        grids = _selection(args.grids,('GL','CC','F1'),'--grids')
+        precisions = _selection(args.precisions,('float64','float32'),'--precisions')
+        spins = _selection(args.spins,(0,1),'--spins',converter=int)
+        orders = _selection(args.orders,('full','quarter'),'--orders')
+        geometry_groups = (None if args.geometry_groups is None else
+                           _selection(args.geometry_groups,('minimum','quadrature','extended','simd','atmospheric','regular'),'--geometry-groups'))
+        allocations = _selection(args.allocations,('allocating','preallocated'),'--allocations')
+        batches = (None if args.batches is None else
+                   _selection(args.batches,range(1,65),'--batches',converter=int))
     except ValueError:
-        parser.error('degrees and threads must be comma-separated integers')
+        parser.error('invalid comma-separated workload selection or integer list')
+    if batches is not None and args.secondary:
+        parser.error('--batches cannot be combined with --secondary')
     if any(value<1 for value in requested_degrees+requested_threads) or len(set(requested_degrees))!=len(requested_degrees) or len(set(requested_threads))!=len(requested_threads):
         parser.error('degrees and threads must contain unique positive integers')
     requested_backends = args.backends.split(',')
@@ -300,6 +354,9 @@ def main(argv=None):
     code_hash = harness_hash()
     run_config = {'build_manifest_sha256':build_hash,'harness_sha256':code_hash,
                   'degrees':args.degrees,'threads':args.threads,'backends':args.backends,
+                  'grids':args.grids,'precisions':args.precisions,'spins':args.spins,
+                  'orders':args.orders,'geometry_groups':args.geometry_groups,
+                  'allocations':args.allocations,'batches':args.batches,
                   'rounds':args.rounds,'repeat':args.repeat,'min_time':args.min_time,
                   'timeout':args.timeout,'smoke':args.smoke,'secondary':args.secondary,'memory_limit_bytes':memory_limit_bytes}
     config_path = args.output/'run-config.json'
@@ -324,7 +381,11 @@ def main(argv=None):
     qs = [int(q) for q in args.threads.split(',')]
     backends = args.backends.split(',')
     degrees = [int(l) for l in args.degrees.split(',')]
-    configs = list(workloads(degrees,args.smoke))
+    configs = select_workloads(
+        workloads(degrees,args.smoke), grids=grids, precisions=precisions,
+        spins=spins, orders=orders, geometry_groups=geometry_groups,
+    )
+    configs = select_batches(configs,batches)
     if args.secondary:
         configs += [replace(w,operation=op) for w in list(configs) for op in ('adjoint_analysis','adjoint_synthesis','gradient','deriv1') if w.spin==0 or op.startswith('adjoint')]
         configs += [replace(w,batch=4) for w in list(configs) if w.operation in ('analysis','synthesis')]
@@ -333,7 +394,8 @@ def main(argv=None):
                     for delta,origin in ((1,0.0),(0,.37),(1,.37))]
     write_json(args.output/'workload-plan.json',{'workloads':[w.record() for w in configs],
                'backends':backends,'threads':qs,'rounds':args.rounds,
-               'operation_expansion':'synthesis entries expand to analysis and synthesis; every entry expands to allocating and preallocated'})
+               'allocations':sorted(allocations),
+               'operation_expansion':'synthesis entries expand to analysis and synthesis'})
     ledger = []
     # Alternate backend order between independent process rounds.
     for round_index in range(args.rounds):
@@ -341,7 +403,7 @@ def main(argv=None):
         for wbase in configs:
             ops = ('analysis','synthesis') if wbase.operation=='synthesis' else (wbase.operation,)
             for op in ops:
-                for allocation in ('allocating','preallocated'):
+                for allocation in sorted(allocations):
                     w = replace(wbase,operation=op,allocation=allocation)
                     for q in qs:
                         for backend in order:

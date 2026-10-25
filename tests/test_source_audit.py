@@ -14,7 +14,8 @@ from sht_bench.source_audit import audit, expected_cases, required_base_workload
 
 
 def _write_run(root: Path, *, timed=False, timed_changes=None, row_changes=None, include_missing=False, extra=False,
-               secondary=False, omit_base_scope=False, omit_secondary_scope=False):
+               secondary=False, omit_base_scope=False, omit_secondary_scope=False,
+               extra_plan=False, config_changes=None):
     root.mkdir(parents=True)
     build = {"builds": {"ducc": {"status": "built", "sha": "source-sha", "build_kind": "git-source", "module_path": "/isolated/ducc.py"}}}
     manifest_path = root / "build-manifest.json"
@@ -30,7 +31,11 @@ def _write_run(root: Path, *, timed=False, timed_changes=None, row_changes=None,
         plan_workloads.remove(next(iter(required_base_workloads(config))))
     if omit_secondary_scope:
         plan_workloads.remove(next(w for w in plan_workloads if w.get("batch") == 4))
+    if extra_plan:
+        plan_workloads.append(Workload("GL", 8, 10, 2, 2, geometry_group="extra").record())
     plan = {"workloads": plan_workloads, "backends": ["ducc"], "threads": [1], "rounds": 1}
+    if config_changes:
+        config.update(config_changes)
     (root / "run-config.json").write_text(json.dumps(config))
     (root / "workload-plan.json").write_text(json.dumps(plan))
     cells = root / "cells"
@@ -175,6 +180,50 @@ def test_audit_rejects_plan_that_omits_required_secondary_scope(tmp_path):
     assert issue["missing_required_workloads"] == 1
 
 
+def test_audit_rejects_extra_unrequested_planned_workloads(tmp_path):
+    result = audit(_write_run(tmp_path / "extra-plan", extra_plan=True))
+    assert result["coverage_complete"] is True
+    assert result["missing_cells"] == 0
+    assert result["evidence_consistent"] is False
+    issue = next(issue for issue in result["evidence_issues"] if "unrequested geometry" in issue["problem"])
+    assert issue["unexpected_workloads"] == 1
+
+
+def test_audit_normalizes_whitespace_in_selection_configuration(tmp_path):
+    run = _write_run(tmp_path / "whitespace-config", config_changes={
+        "grids": " GL,CC,F1 ",
+        "precisions": " float64,float32 ",
+        "spins": " 0,1 ",
+        "orders": " full,quarter ",
+        "geometry_groups": " minimum,quadrature,extended,simd,atmospheric,regular ",
+        "threads": " 1 ",
+        "backends": " ducc ",
+        "allocations": " allocating,preallocated ",
+    })
+    result = audit(run)
+    assert result["coverage_complete"] is True
+    assert result["evidence_consistent"] is True
+
+
+def test_audit_resolves_relative_build_manifest_from_result_directory(tmp_path):
+    run = _write_run(tmp_path / "relative-manifest")
+    for path in (run / "cells").glob("*.json"):
+        row = json.loads(path.read_text())
+        row["build_manifest"] = "build-manifest.json"
+        path.write_text(json.dumps(row))
+    result = audit(run)
+    assert result["coverage_complete"] is True
+    assert result["evidence_consistent"] is True
+
+
+def test_explicit_relative_build_manifest_remains_relative_to_working_directory(tmp_path, monkeypatch):
+    run = _write_run(tmp_path / "explicit-relative-manifest")
+    monkeypatch.chdir(run)
+    result = audit(run, build_manifest=Path("build-manifest.json"))
+    assert result["coverage_complete"] is True
+    assert result["evidence_consistent"] is True
+
+
 def test_audit_rejects_forged_timed_status_with_failed_metrics(tmp_path):
     timed_changes = {"validation": {"status": "supported_and_validated", "tolerance": 5e-5, "fixtures": []}}
     run = _write_run(tmp_path / "forged", timed=True, timed_changes=timed_changes)
@@ -189,6 +238,50 @@ def test_audit_accepts_complete_valid_timing_evidence(tmp_path):
     result = audit(run)
     assert result["coverage_complete"] is True
     assert result["evidence_consistent"] is True
+
+
+def test_filtered_plan_requires_selected_workloads_and_allocation_scope():
+    config = {
+        "degrees": "16,64,255",
+        "smoke": True,
+        "secondary": False,
+        "grids": "GL,CC",
+        "precisions": "float32",
+        "spins": "0,1",
+        "orders": "full",
+        "geometry_groups": "minimum,quadrature,extended,regular",
+        "batches": "1,4",
+    }
+    selected = list(required_base_workloads(config))
+    assert selected
+    assert all(item["grid"] in {"GL", "CC"} for item in selected)
+    assert all(item["precision"] == "float32" for item in selected)
+    assert all(item["mmax"] == item["lmax"] for item in selected)
+    assert all(item["geometry_group"] in {"minimum", "quadrature", "extended", "regular"} for item in selected)
+    assert {item["batch"] for item in selected} == {1, 4}
+
+    plan = {
+        "workloads": selected,
+        "backends": ["ducc", "pyspharm"],
+        "threads": [1],
+        "rounds": 3,
+        "allocations": ["allocating"],
+    }
+    assert len(set(expected_cases(plan))) == len(selected) * 2 * 2 * 3
+
+
+def test_quarter_selection_has_no_distinct_l1_order():
+    config = {
+        "degrees": "1",
+        "smoke": True,
+        "secondary": False,
+        "grids": "GL",
+        "precisions": "float32",
+        "spins": "0",
+        "orders": "quarter",
+        "geometry_groups": "minimum",
+    }
+    assert list(required_base_workloads(config)) == []
 
 
 def test_audit_rejects_failed_numerical_metrics_even_when_fixture_claims_pass(tmp_path):

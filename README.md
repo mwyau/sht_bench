@@ -44,10 +44,12 @@ Median transform time is shown in milliseconds; lower is better. Backend colors 
 
 #### Conda-forge pyspharm — AMD64, Python 3.14.9
 
-These figures show pyspharm results from the dedicated conda-forge environment.
-Other backend measurements use Python 3.13.15 and are not combined with these
-plots as matched comparisons. See the [full pyspharm report](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md)
-for build provenance, validation outcomes, and the complete result data.
+These figures show standalone pyspharm results from the dedicated conda-forge
+environment. The full report also links focused, precision-matched controls for
+pyspharm, DUCC, SHTns, and RustSHT, all measured with Python 3.14.9 and NumPy
+2.5.4. Older source-matrix measurements use Python 3.13.15 and remain separate.
+See the [full pyspharm report](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md) for
+build provenance, validation outcomes, and the matched comparison data.
 
 | GL scalar synthesis | CC spin-1 synthesis |
 | --- | --- |

@@ -26,7 +26,7 @@ Native SHTOOLS GLQ routines require `nlon = 2*nlat - 1`, whereas the default atm
 
 The `pyspharm` backend is installed from conda-forge in a separate conda environment. The host comparison uses Python 3.14.9, NumPy 2.5.4, and pyspharm 1.0.9 build `np2py314h2766e9b_1017`. `spharm` and `_spherepack` are checked against that prefix before benchmarking. The conda build is recorded as `conda-forge`; it is not installed through uv and is not labeled as a wheel. New wheel/source matrix environments default to Python 3.14.8 and NumPy 2.5.4, within the same Python 3.14 minor line. Source-build matrices contain DUCC, SHTns, and pyshtools/SHTOOLS; pyshtools contributes only when a requested GL case uses its compact native GLQ geometry.
 
-The package build identity, capability limits, q1 validation results, and tracked measurements are in the [pyspharm conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md). The pyspharm rerun uses Python 3.14.9; cross-version ratios against the existing Python 3.13.15 source results are excluded.
+The package build identity, capability limits, q1 validation results, and tracked measurements are in the [pyspharm conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md). The pyspharm rerun uses Python 3.14.9; cross-version ratios against the historical Python 3.13.15 source matrix are excluded. The report also contains matched controls where all four backends use Python 3.14.9 and NumPy 2.5.4.
 
 Result rows retain their measured Python and NumPy versions. The conda-forge
 pyspharm environment uses Python 3.14.9 and NumPy 2.5.4. New uv-managed
@@ -214,12 +214,20 @@ recorded as `resource_limited`.
 
 `python -m sht_bench.source_report DIRECTORY --output REPORT` regenerates
 precision-separated scalar/vector figures, setup/RSS figures, thread scaling,
-accuracy records, and matched RustSHT/DUCC and SHTns/DUCC ratios with absolute
-latency differences. Only numerically validated timing cells enter these
+accuracy records, and matched backend ratios with absolute latency differences.
+Only numerically validated timing cells enter these
 comparisons. Backend colors are fixed. Each matched pair shares the exact
 workload, requested thread count and independent process round.
+`--focus-backend pyspharm` limits figures to workload groups that contain a
+validated pyspharm series while keeping the outcome, accuracy and matched-pair
+tables complete.
 `--tables-only` exports the audited outcome, accuracy, timing and comparison
 tables without rendering figures; the default report also renders figures.
+Matched ratios include pyspharm/DUCC and pyspharm/RustSHT only for identical
+workloads and precision. A pyspharm/SHTns ratio is emitted only if both APIs
+provide the same precision; otherwise their results remain in separate
+precision groups. The focused conda-forge comparison uses Python 3.14.9 and
+NumPy 2.5.4 for all four backends.
 
 Timed analysis uses the same independent reference field, cast to the selected
 precision, for every backend on a given grid. Its coefficient recovery is a

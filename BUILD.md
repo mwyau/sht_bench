@@ -29,6 +29,10 @@ PyPI wheel or Git source build.
 The current numerical, performance, and capability results are in the
 [pyspharm conda-forge report](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md),
 with compact timing and validation data under `docs/data/`.
+The focused matched controls use Python 3.14.9 and NumPy 2.5.4 in all four
+backend environments, with DUCC, SHTns, and RustSHT source SHAs recorded in the
+same build manifest. Their tables pair only identical workloads and supported
+precision; the earlier Python 3.13.15 source matrix remains a separate dataset.
 
 ## Architecture-specific backend selection
 

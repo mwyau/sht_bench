@@ -2,11 +2,13 @@
 
 ## Status
 
-This report covers the DUCC, SHTns, and RustSHT source-matrix runs. Their
-recorded environments use Python 3.13.15. Current pyspharm measurements use
-Python 3.14.9 and are reported separately in the
-[pyspharm results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md); cross-version
-performance ratios are not reported.
+This report preserves the DUCC, SHTns, and RustSHT source-matrix runs recorded
+with Python 3.13.15. A later focused control run measured all four backends,
+including conda-forge pyspharm, with Python 3.14.9 and NumPy 2.5.4. Its
+precision-matched results are published in the
+[pyspharm results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md). Those new
+comparisons are separate from the historical Python 3.13.15 measurements and
+do not change their timing data.
 The focused matrix has one complete independent process round and a partial
 second round; its q2–q16 performance is provisional and does not establish
 stable thread scaling.
@@ -157,7 +159,8 @@ workloads.
 
 The complete round-0 float64 q-scaling summary aggregates by backend, geometry,
 operation, allocation, and q. It contains DUCC, SHTns, and RustSHT results.
-Pyspharm measurements use a separate Python 3.14.9 environment.
+Pyspharm is not included in these historical Python 3.13.15 tables; the matched
+Python 3.14.9 controls are in the [current results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 
 The eight q-thread figures use round-0 float64 warm samples only. Panels separate
 grid, spin, full/quarter order, operation, and allocation; backend colors are
@@ -271,7 +274,9 @@ pairs per backend and operation, median locked/original latency ratios were
 with material run-to-run variability on this shared host. These ratios check
 reproduction at a fixed source SHA and are not cross-backend performance
 comparisons. The source SHAs, locked build manifest, and reproduction table
-are summarized here. Pyspharm results use a separate Python 3.14.9 environment.
+are summarized here. These reproduction tables exclude pyspharm. The later
+same-version pyspharm controls are linked from the
+[current pyspharm report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 
 The captured host is an AMD Ryzen 9 5950X with 16 physical and 32 logical
 cores. It is a shared host with boost enabled. RustSHT's build records

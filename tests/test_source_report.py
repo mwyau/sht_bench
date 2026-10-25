@@ -31,6 +31,7 @@ def test_figure_gallery_pages_retain_every_figure_and_navigation(tmp_path):
     assert pages==['figures-0001.md','figures-0002.md','figures-0003.md']
     contents=[(tmp_path/page).read_text() for page in pages]
     assert [text.count('[![') for text in contents]==[48,48,1]
+    assert all(not text.endswith('\n\n') for text in contents)
     for name in figures:
         assert sum(text.count(f'[![{name}]({name})]({name})') for text in contents)==1
     assert all('[Results index](README.md)' in text for text in contents)
@@ -97,9 +98,11 @@ def _report_run(root: Path):
 
 def test_source_report_tables_only_cli_flag(monkeypatch, tmp_path):
     calls = []
-    monkeypatch.setattr(source_report, "report", lambda directory, output, *, plots=True: calls.append((directory, output, plots)))
-    assert source_report.main([str(tmp_path / "run"), "--output", str(tmp_path / "tables"), "--tables-only"]) == 0
-    assert calls == [(tmp_path / "run", tmp_path / "tables", False)]
+    monkeypatch.setattr(source_report, "report", lambda directory, output, *, plots=True, focus_backend=None:
+                        calls.append((directory, output, plots, focus_backend)))
+    assert source_report.main([str(tmp_path / "run"), "--output", str(tmp_path / "tables"),
+                               "--tables-only", "--focus-backend", "pyspharm"]) == 0
+    assert calls == [(tmp_path / "run", tmp_path / "tables", False, "pyspharm")]
 
 
 def test_source_report_exports_outcomes_timings_pairs_and_provenance(monkeypatch, tmp_path):
@@ -116,6 +119,9 @@ def test_source_report_exports_outcomes_timings_pairs_and_provenance(monkeypatch
     paired = list(csv.DictReader((output / "paired-summary.csv").open()))
     scaling = list(csv.DictReader((output / "thread-scaling.csv").open()))
     accuracy = json.loads((output / "accuracy.json").read_text())
+
+    for name in ("outcomes.csv", "timings.csv", "matched-ratios.csv", "paired-summary.csv", "thread-scaling.csv"):
+        assert b"\r" not in (output / name).read_bytes()
 
     assert len(outcomes) == 2
     assert len(timings) == 2
@@ -136,6 +142,24 @@ def test_source_report_exports_outcomes_timings_pairs_and_provenance(monkeypatch
     assert (output / "build-provenance.json").read_text() == json.dumps(build, indent=2) + "\n"
     assert manifest["plots_requested"] is False
     assert manifest["command"].endswith("--tables-only")
+
+
+def test_source_report_rebuilds_portable_relative_cell_bundle(monkeypatch, tmp_path):
+    run, _, build = _report_run(tmp_path)
+    for path in (run / "cells").glob("*.json"):
+        row = json.loads(path.read_text())
+        row["build_manifest"] = "build-provenance.json"
+        path.write_text(json.dumps(row))
+    (run / "build-provenance.json").write_text(json.dumps(build, indent=2) + "\n")
+    monkeypatch.setattr(source_audit, "audit", lambda directory, **kwargs: {
+        "evidence_consistent": True, "expected_cells": 2, "missing_cells": 0,
+        "coverage_complete": True, "status_counts": {"timed_successfully": 2},
+    })
+    manifest = source_report.report(run, run, plots=False)
+    assert manifest["source_directory"] == str(run)
+    assert (run / "build-provenance.json").read_text() == json.dumps(build, indent=2) + "\n"
+    assert all((run / row["raw_cell"]).is_file()
+               for row in csv.DictReader((run / "outcomes.csv").open()))
 
 
 def test_report_streams_compact_rows_and_reuses_audited_file_snapshot(monkeypatch, tmp_path):
@@ -278,11 +302,25 @@ def test_report_uses_fixed_backend_colors_and_separate_build_styles():
     ) == "pyspharm conda-forge 1.0.9-np2py314h2766e9b_1017"
     sha = "abcdef0123456789abcdef0123456789abcdef01"
     assert source_report.revision_label(sha) == sha[:10]
+
+
+def test_plot_focus_keeps_matched_rows_and_drops_unrelated_groups():
+    common = Workload("GL", 8, 12, 1, 1, precision="float32").record()
+    other_precision = dict(common, precision="float64")
+    rows = [
+        {"backend": "pyspharm", "workload": common},
+        {"backend": "ducc", "workload": common},
+        {"backend": "shtns", "workload": other_precision},
+    ]
+
+    groups = source_report.plot_groups(rows, focus_backend="pyspharm")
+    assert len(groups) == 1
+    assert {row["backend"] for group in groups.values() for row in group} == {"pyspharm", "ducc"}
     assert source_report.revision_label("rustsht==1.2.3") == "rustsht==1.2.3"
     assert source_report.revision_label("ABCDEF0123456789abcdef0123456789abcdef01") == "ABCDEF0123456789abcdef0123456789abcdef01"
 
 
-def test_matched_comparisons_include_pyspharm_only_on_exact_workload_identity():
+def test_matched_comparisons_include_pyspharm_direct_pairs_only_on_exact_identity():
     workload = {
         "grid": "GL", "nlat": 34, "nlon": 65, "lmax": 16, "mmax": 16,
         "spin": 0, "precision": "float32", "operation": "synthesis",
@@ -296,13 +334,23 @@ def test_matched_comparisons_include_pyspharm_only_on_exact_workload_identity():
         "backend": "pyspharm", "source_sha": "conda-artifact", "build_mode": "conda-forge",
         "workload": workload, "threads_requested": 1, "round": 0, "median_s": 3e-4,
     }
-    different_precision = {
-        **pyspharm, "workload": {**workload, "precision": "float64"},
+    rustsht = {
+        "backend": "rustsht", "source_sha": "rustsht-sha", "build_mode": "git-source",
+        "workload": workload, "threads_requested": 1, "round": 0, "median_s": 1.5e-4,
     }
+    shtns_different_precision = {
+        "backend": "shtns", "source_sha": "shtns-sha", "build_mode": "git-source",
+        "workload": {**workload, "precision": "float64"}, "threads_requested": 1,
+        "round": 0, "median_s": 1e-4,
+    }
+    rows = source_report.matched_comparisons(
+        [reference, rustsht, shtns_different_precision, pyspharm]
+    )
 
-    rows = source_report.matched_comparisons([reference, pyspharm, different_precision])
-
-    assert len(rows) == 1
-    assert rows[0]["backend"] == "pyspharm"
-    assert rows[0]["build_mode"] == "conda-forge"
-    assert math.isclose(rows[0]["ratio"], 1.5, rel_tol=1e-12)
+    assert {(row["backend"], row["reference"]) for row in rows} == {
+        ("pyspharm", "ducc"), ("pyspharm", "rustsht"), ("rustsht", "ducc"),
+    }
+    ratios = {(row["backend"], row["reference"]): row["ratio"] for row in rows}
+    assert math.isclose(ratios[("pyspharm", "ducc")], 1.5, rel_tol=1e-12)
+    assert math.isclose(ratios[("pyspharm", "rustsht")], 2.0, rel_tol=1e-12)
+    assert math.isclose(ratios[("rustsht", "ducc")], 0.75, rel_tol=1e-12)

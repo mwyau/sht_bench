@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "expected_cells": 576,
+  "recorded_cells": 576,
+  "missing_cells": 0,
+  "unexpected_cells": 0,
+  "status_counts": {
+    "numerical_validation_failed": 24,
+    "timed_successfully": 252,
+    "unsupported": 300
+  },
+  "evidence_issues": [],
+  "coverage_complete": true,
+  "evidence_consistent": true,
+  "all_requested_cells_accounted_for": true,
+  "missing_case_examples": [],
+  "note": "Coverage includes explicit unsupported and numerical-failure outcomes; it does not imply universal numerical validity or performance superiority."
+}

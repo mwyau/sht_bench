@@ -1,0 +1,21 @@
+{
+  "build_manifest_sha256": "bbd19df2ad7160655e7fb1f9b7c43ab1cf2d9e2b0e97ee935b067b5280a102fb",
+  "harness_sha256": "cbdd6363ea4c8764e7055d598eea8fb2ceb5492060781d1bd4daa717c3fdae3d",
+  "degrees": "360",
+  "threads": "1",
+  "backends": "ducc,shtns,rustsht,pyspharm",
+  "grids": "CC",
+  "precisions": "float32",
+  "spins": "0",
+  "orders": "full",
+  "geometry_groups": "regular",
+  "allocations": "allocating",
+  "batches": null,
+  "rounds": 3,
+  "repeat": 30,
+  "min_time": 0.02,
+  "timeout": 600.0,
+  "smoke": true,
+  "secondary": false,
+  "memory_limit_bytes": null
+}

@@ -22,9 +22,10 @@ and [reusable environment specification](../environments/pyspharm-conda-forge-li
 are tracked with the results.
 
 New uv-managed environments default to Python 3.14.8 and NumPy 2.5.4. The
-existing DUCC, SHTns, and RustSHT timing data still use Python 3.13.15; they
-were not rerun for this focused migration and are not combined with these
-pyspharm timings as matched ratios. Their source revisions are unchanged:
+historical DUCC, SHTns, and RustSHT matrix still uses Python 3.13.15. For a
+direct comparison, a separate focused control reran all four backends with
+Python 3.14.9 and NumPy 2.5.4; those measurements are reported below and kept
+separate from the historical matrix. The source revisions are unchanged:
 DUCC `31d9fe99fefa5ca29df17b7e6d2362b8c5c4a05f`, SHTns
 `4e69ceb3fc5f19475d55b03ff0fdec210dc3075e`, and RustSHT
 `75cf62ecfc4a324fc4f7d9e652c3d285dbf32cc4`.
@@ -77,6 +78,78 @@ is in the [focused CC/batch record](data/pyspharm-conda-forge-2026-10-25/focused
 This is adapter validation; it does not establish separate public batch API
 semantics or performance scaling.
 
+## Matched Python 3.14 source controls
+
+The controls use the same build manifest for DUCC, SHTns, RustSHT, and
+conda-forge pyspharm. All four runtime environments report CPython 3.14.9 and
+NumPy 2.5.4. The pyspharm build is 1.0.9,
+`np2py314h2766e9b_1017`, from conda-forge main. Source SHAs are DUCC
+`31d9fe99fefa5ca29df17b7e6d2362b8c5c4a05f`, SHTns
+`4e69ceb3fc5f19475d55b03ff0fdec210dc3075e`, and RustSHT
+`75cf62ecfc4a324fc4f7d9e652c3d285dbf32cc4`.
+
+Each control used one requested thread, three isolated process rounds, 30 warm
+repetitions, and a 0.02-second minimum timing window. Setup and numerical
+validation remain outside warm transform timing. Every timed cell passed its
+configured precision gate; unsupported and numerical-failure cells are kept
+in the outcome ledgers. Backend order alternated across rounds. The shared
+build-manifest SHA-256 is
+`bbd19df2ad7160655e7fb1f9b7c43ab1cf2d9e2b0e97ee935b067b5280a102fb`; the
+selection-aware harness SHA-256 is
+`cbdd6363ea4c8764e7055d598eea8fb2ceb5492060781d1bd4daa717c3fdae3d`.
+
+The L64 control covered GL minimum and extended grids plus the minimum CC grid;
+scalar and spin-1 analysis/synthesis; float32 and float64 where implemented; and
+batch sizes 1 and 4 for allocating calls. It recorded all 576 requested
+outcomes:
+
+| Backend | Timed and validated | Unsupported | Numerical validation failure |
+| --- | ---: | ---: | ---: |
+| DUCC | 108 | 36 | 0 |
+| pyspharm | 60 | 84 | 0 |
+| RustSHT | 60 | 72 | 12 |
+| SHTns | 24 | 108 | 12 |
+| **Total** | **252** | **300** | **24** |
+
+The 60 timed pyspharm cells all used float32 spatial data and complex64
+coefficients. Their maximum relative L2 error was `1.200734e-5`, maximum
+absolute error `2.849102e-5`, and maximum scaled error `5.603562e-6`, all within
+the unchanged `5e-5` tolerance. Pyspharm's unsupported rows include float64,
+batch analysis, and the minimum GL spin-1 cases that do not resolve the
+highest-degree modes.
+
+Only exact workload and precision matches enter pair ratios. Across 15 L64
+workload groups with three process pairs each, pyspharm/DUCC median paired
+ratios ranged from `0.210` to `0.918`. Across six groups, pyspharm/RustSHT
+ratios ranged from `0.053` to `0.204`. No pyspharm/SHTns ratio is emitted:
+SHTns uses float64/complex128, while pyspharm exposes float32/complex64. The
+separate L64 float64 SHTns/DUCC comparisons remain available in the report.
+
+A second control covered scalar float32/complex64 transforms on the regular CC
+grid at L360 (`721×1440`). All 24 requested outcomes are accounted for:
+DUCC and pyspharm each had six timed, validated cells; RustSHT's six cells
+failed the numerical gate; and SHTns's six cells were unsupported at the
+requested precision. Pyspharm's maximum relative L2 error was `3.990527e-6`,
+maximum absolute error `1.049042e-5`, and maximum scaled error `1.351073e-6`.
+
+| Operation | pyspharm median (ms) | DUCC median (ms) | Paired pyspharm/DUCC ratio |
+| --- | ---: | ---: | ---: |
+| Analysis | 96.094 | 14.278 | 6.651 |
+| Synthesis | 57.891 | 6.736 | 8.595 |
+
+The ratios are medians of three round-level paired ratios; the latency columns
+are medians of the three cell medians, so dividing displayed latency values
+does not necessarily reproduce the ratio exactly. These large-grid ratios
+describe this single CC workload. They do not include RustSHT or SHTns because
+neither produced a valid float32 comparison at this configuration.
+
+The complete [L64 report and chart set](figures/pyspharm-conda-forge-2026-10-25/matched-q1-l64/README.md)
+contains 147 exact matched cell pairs, outcome and accuracy tables, all timing
+samples, the full raw cells, build provenance, and 100 figures for workload
+groups containing pyspharm. The [L360 CC report](figures/pyspharm-conda-forge-2026-10-25/matched-cc-l360/README.md)
+contains six matched pyspharm/DUCC pairs and 10 affected figures. Both audits
+report complete coverage and no evidence issues.
+
 ## Legacy matrix rerun
 
 The legacy command produced 180 timed records: 100 GL and 80 CC, each covering
@@ -91,8 +164,7 @@ identity.
 The [legacy matrix JSON](data/pyspharm-conda-forge-2026-10-25/legacy-matrix.json),
 [CSV](data/pyspharm-conda-forge-2026-10-25/legacy-matrix.csv), and
 [manifest](data/pyspharm-conda-forge-2026-10-25/legacy-matrix-manifest.json)
-replace the prior published pyspharm rows. No old-version performance ratios
-are reported.
+are the current conda-forge pyspharm legacy matrix exports.
 
 ## Numerical behavior and capability limits
 
@@ -120,10 +192,10 @@ contains these calculations and the direct validation diagnostics.
 
 Every active pyspharm chart now comes from the conda-forge Python 3.14.9
 results. Backend colors stay fixed; conda-forge is identified by line style in
-the legacy figures. The source q1 charts show only pyspharm and publish no
-cross-backend ratios. The figure index includes all q1 timing, setup, native
-setup, memory, and error-versus-latency plots, the legacy GL/CC charts, and
-setup/first-call summaries:
+the legacy figures. The package-specific source q1 charts show only pyspharm;
+the matched control reports add precision-matched DUCC and RustSHT comparisons
+and retain SHTns in a separate float64 group. The figure index includes all
+standalone q1, matched-control, and legacy GL/CC figures, plus setup summaries:
 
 - [Complete figure index](figures/pyspharm-conda-forge-2026-10-25/README.md)
 - [GL scalar synthesis](figures/pyspharm-conda-forge-2026-10-25/GL-scalar-synthesis.png)

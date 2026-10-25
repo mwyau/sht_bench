@@ -1,0 +1,32 @@
+{
+  "workloads": [
+    {
+      "grid": "CC",
+      "nlat": 721,
+      "nlon": 1440,
+      "lmax": 360,
+      "mmax": 360,
+      "spin": 0,
+      "precision": "float32",
+      "allocation": "allocating",
+      "batch": 1,
+      "phi0": 0.0,
+      "operation": "synthesis",
+      "geometry_group": "regular"
+    }
+  ],
+  "backends": [
+    "ducc",
+    "shtns",
+    "rustsht",
+    "pyspharm"
+  ],
+  "threads": [
+    1
+  ],
+  "rounds": 3,
+  "allocations": [
+    "allocating"
+  ],
+  "operation_expansion": "synthesis entries expand to analysis and synthesis"
+}

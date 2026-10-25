@@ -25,11 +25,12 @@ def case_key(backend, workload, threads, process_round):
 def expected_cases(plan):
     """Expand explicit plan entries into backend/operation/allocation/process cells."""
     seen = set()
+    allocations = plan.get('allocations', ('allocating', 'preallocated'))
     for fields in plan['workloads']:
         base = Workload(**fields)
         operations = ('analysis', 'synthesis') if base.operation == 'synthesis' else (base.operation,)
         for operation in operations:
-            for allocation in ('allocating', 'preallocated'):
+            for allocation in allocations:
                 w = replace(base, operation=operation, allocation=allocation)
                 for backend in plan['backends']:
                     for threads in plan['threads']:
@@ -41,14 +42,34 @@ def expected_cases(plan):
                             yield key
 
 
+def _config_values(config, key, default, *, converter=str):
+    value = config.get(key, default)
+    if isinstance(value, str):
+        values = [part.strip() for part in value.split(',') if part.strip()]
+    else:
+        values = list(value)
+    return [converter(part) for part in values]
+
+
 def required_base_workloads(config):
-    """Independently require minimum grids and the preserved standard geometries."""
+    """Independently reconstruct the requested subset of standard geometries."""
     from .grids import ATMOSPHERIC_GL_GRIDS, DEFAULT_CC_LMAX
+    grids = set(_config_values(config, 'grids', 'GL,CC,F1'))
+    precisions = set(_config_values(config, 'precisions', 'float64,float32'))
+    spins = set(_config_values(config, 'spins', '0,1', converter=int))
+    orders = set(_config_values(config, 'orders', 'full,quarter'))
+    geometry_groups = (None if config.get('geometry_groups') is None else
+                       set(_config_values(config, 'geometry_groups', '')))
     geometries = set()
-    degrees = [int(value) for value in config['degrees'].split(',')]
+    degrees = _config_values(config, 'degrees', '', converter=int)
     for degree in degrees:
         for grid in ('GL','CC','F1'):
             geometries.add((grid,degree+(2 if grid=='CC' else 1),2*degree+1,degree,'minimum'))
+        for grid in ('CC','F1'):
+            geometries.add((grid,max(32,2*degree+2),2*degree+1,degree,'quadrature'))
+        geometries.add(('GL',degree+2,2*degree+1,degree,'extended'))
+        if degree < 31:
+            geometries.add(('GL',32,2*degree+1,degree,'simd'))
         if degree in ATMOSPHERIC_GL_GRIDS:
             nlat,nlon,_ = ATMOSPHERIC_GL_GRIDS[degree]
             geometries.add(('GL',nlat,nlon,degree,'atmospheric'))
@@ -57,11 +78,26 @@ def required_base_workloads(config):
     if not config['smoke']:
         for degree in DEFAULT_CC_LMAX:
             geometries.add(('CC',2*degree+1,4*degree,degree,'regular'))
+    base = []
     for grid,nlat,nlon,degree,group in geometries:
-        for order in {degree,max(1,degree//4)}:
-            for spin in (0,1):
-                for precision in ('float64','float32'):
-                    yield Workload(grid,nlat,nlon,degree,order,spin=spin,precision=precision,geometry_group=group).record()
+        if grid not in grids or (geometry_groups is not None and group not in geometry_groups):
+            continue
+        orders_for_degree = set()
+        if 'full' in orders:
+            orders_for_degree.add(degree)
+        if 'quarter' in orders:
+            quarter = max(1,degree//4)
+            if quarter < degree:
+                orders_for_degree.add(quarter)
+        for order in orders_for_degree:
+            for spin in spins:
+                for precision in precisions:
+                    base.append(Workload(grid,nlat,nlon,degree,order,spin=spin,precision=precision,geometry_group=group).record())
+    if config.get('batches') is not None:
+        requested_batches = sorted({int(value) for value in config['batches'].split(',')})
+        base = [replace(Workload(**fields),batch=batch).record()
+                for fields in base for batch in requested_batches]
+    yield from base
 
 
 def required_plan_workloads(config):
@@ -202,15 +238,23 @@ def audit(directory, *, build_manifest=None, cell_paths=None):
         required = {json.dumps(w,sort_keys=True) for w in required_plan_workloads(config)}
         if required-planned:
             issues.append({'problem':'workload plan omits required geometry or experiment cases', 'missing_required_workloads':len(required-planned)})
-        if plan['rounds']!=config['rounds'] or plan['threads']!=[int(q) for q in config['threads'].split(',')] or plan['backends']!=config['backends'].split(','):
+        if planned-required:
+            issues.append({'problem':'workload plan includes unrequested geometry or experiment cases', 'unexpected_workloads':len(planned-required)})
+        expected_allocations = sorted(_config_values(config, 'allocations', 'allocating,preallocated'))
+        actual_allocations = sorted(plan.get('allocations', ('allocating', 'preallocated')))
+        if (plan['rounds']!=config['rounds']
+                or plan['threads']!=_config_values(config, 'threads', '', converter=int)
+                or plan['backends']!=_config_values(config, 'backends', '')
+                or actual_allocations!=expected_allocations):
             issues.append({'problem':'plan process/backend/thread dimensions differ from run configuration'})
     except (ValueError, TypeError, KeyError) as exc:
         issues.append({'problem':f'cannot establish required base workload scope: {exc}'})
     present = set()
     counts = Counter()
     manifest_path = build_manifest
+    manifest_referenced_by_cell = manifest_path is None
     paths = sorted((directory/'cells').glob('*.json')) if cell_paths is None else cell_paths
-    if manifest_path is None:
+    if manifest_referenced_by_cell:
         for path in paths:
             try:
                 candidate = json.loads(path.read_text()).get('build_manifest')
@@ -225,6 +269,8 @@ def audit(directory, *, build_manifest=None, cell_paths=None):
     else:
         try:
             manifest_path = Path(manifest_path)
+            if manifest_referenced_by_cell and not manifest_path.is_absolute():
+                manifest_path = directory/manifest_path
             if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != config['build_manifest_sha256']:
                 issues.append({'problem':'referenced build manifest digest changed'})
             build = json.loads(manifest_path.read_text())

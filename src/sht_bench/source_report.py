@@ -34,7 +34,7 @@ def figure_gallery(output, figures):
         if stale.name not in expected_pages:
             stale.unlink()
     if len(figures)<=48:
-        return [f'[![{name}]({name})]({name})\n' for name in figures],[]
+        return [f'[![{name}]({name})]({name})' for name in figures],[]
     index=['## Figures','',f'{len(figures)} figures; each page contains at most 48 previews.','']
     for i,page in enumerate(pages):
         first=i*48
@@ -43,7 +43,7 @@ def figure_gallery(output, figures):
         if i:navigation.append(f'[Previous]({pages[i-1]})')
         if i+1<len(pages):navigation.append(f'[Next]({pages[i+1]})')
         lines=[f'# Figures {first+1}–{first+len(selected)}','', ' | '.join(navigation),'']
-        lines.extend(f'[![{name}]({name})]({name})\n' for name in selected)
+        lines.extend(f'[![{name}]({name})]({name})' for name in selected)
         (output/page).write_text('\n'.join(lines)+'\n')
         index.append(f'- [Figures {first+1}–{first+len(selected)}]({page})')
     return index,pages
@@ -54,25 +54,43 @@ def matched_key(r):
 
 
 def matched_comparisons(valid):
-    """Return backend/DUCC comparisons only for identical validated worksets."""
+    """Return requested direct comparisons only for identical validated worksets."""
     index={(r['backend'],matched_key(r)):r for r in valid}
     comparisons=[]
-    for r in valid:
-        if r['backend'] not in ('rustsht','shtns','pyspharm'):
-            continue
-        reference=index.get(('ducc',matched_key(r)))
-        if reference is None:
-            continue
-        comparisons.append(dict(
-            backend=r['backend'],reference='ducc',source_sha=r['source_sha'],
-            reference_sha=reference['source_sha'],build_mode=r['build_mode'],
-            reference_build_mode=reference['build_mode'],**r['workload'],
-            threads=r['threads_requested'],round=r['round'],
-            latency_ms=1000*r['median_s'],reference_ms=1000*reference['median_s'],
-            ratio=r['median_s']/reference['median_s'],
-            excess_ms=1000*(r['median_s']-reference['median_s']),
-        ))
+    pairs=(('pyspharm','ducc'),('pyspharm','rustsht'),('pyspharm','shtns'),
+           ('rustsht','ducc'),('shtns','ducc'))
+    for backend,reference_backend in pairs:
+        for r in valid:
+            if r['backend'] != backend:
+                continue
+            reference=index.get((reference_backend,matched_key(r)))
+            if reference is None:
+                continue
+            comparisons.append(dict(
+                backend=r['backend'],reference=reference_backend,source_sha=r['source_sha'],
+                reference_sha=reference['source_sha'],build_mode=r['build_mode'],
+                reference_build_mode=reference['build_mode'],**r['workload'],
+                threads=r['threads_requested'],round=r['round'],
+                latency_ms=1000*r['median_s'],reference_ms=1000*reference['median_s'],
+                ratio=r['median_s']/reference['median_s'],
+                excess_ms=1000*(r['median_s']-reference['median_s']),
+            ))
     return comparisons
+
+
+def plot_groups(valid, focus_backend=None):
+    """Group valid rows for plots, optionally keeping only groups containing a backend."""
+    groups=defaultdict(list)
+    for r in valid:
+        w=r['workload']
+        order='full' if w['mmax']==w['lmax'] else 'quarter'
+        key=(w['grid'],w['spin'],w['precision'],w['allocation'],w['operation'],order,
+             w['geometry_group'],w['batch'],w['phi0'],w['nlon']%2)
+        groups[key].append(r)
+    if focus_backend is None:
+        return groups
+    return {key: rows for key, rows in groups.items()
+            if any(row['backend']==focus_backend for row in rows)}
 
 
 def csv_file(path,rows):
@@ -80,7 +98,7 @@ def csv_file(path,rows):
     first=next(rows,None)
     if first is None:return
     with path.open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(first))
+        writer=csv.DictWriter(f,fieldnames=list(first),lineterminator='\n')
         writer.writeheader()
         writer.writerows(chain((first,),rows))
 
@@ -112,11 +130,13 @@ def collect_for_report(directory,output,*,cell_paths=None):
             builds.add(r.get('build_manifest_sha256'))
             if provenance_path is None and r.get('build_manifest'):
                 provenance_path=Path(r['build_manifest'])
+                if not provenance_path.is_absolute():
+                    provenance_path=directory/provenance_path
             outcome=dict(id=r['id'],backend=r['backend'],source_sha=r['source_sha'],build_mode=r['build_mode'],
                          **r['workload'],threads=r['threads_requested'],round=r['round'],status=r['status'],
                          reason=r.get('reason',''),raw_cell=f"cells/{r['id']}.json")
             if writer is None:
-                writer=csv.DictWriter(outcomes,fieldnames=list(outcome))
+                writer=csv.DictWriter(outcomes,fieldnames=list(outcome),lineterminator='\n')
                 writer.writeheader()
             writer.writerow(outcome)
             maximum_error=0.0
@@ -157,7 +177,7 @@ def collect_for_report(directory,output,*,cell_paths=None):
     return valid,counts,recorded,hashes,builds,provenance_path
 
 
-def report(directory,output,*,plots=True):
+def report(directory,output,*,plots=True,focus_backend=None):
     from .source_audit import audit
     cell_paths=sorted((directory/'cells').glob('*.json'))
     evidence = audit(directory,cell_paths=cell_paths)
@@ -218,12 +238,7 @@ def report(directory,output,*,plots=True):
         import matplotlib
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
-        groups=defaultdict(list)
-        for r in valid:
-            w=r['workload']
-            order='full' if w['mmax']==w['lmax'] else 'quarter'
-            key=(w['grid'],w['spin'],w['precision'],w['allocation'],w['operation'],order,w['geometry_group'],w['batch'],w['phi0'],w['nlon']%2)
-            groups[key].append(r)
+        groups=plot_groups(valid,focus_backend)
         for key,group in sorted(groups.items()):
             grid,spin,precision,allocation,op,order,geometry,batch,phi0,parity=key
             longitude='odd' if parity else 'even'
@@ -299,16 +314,22 @@ def report(directory,output,*,plots=True):
     manifest={'status_counts':dict(counts),'expected_cells':expected,'pending_cells':pending,
               'raw_cells':recorded,'timed_cells':len(valid),'matched_pairs':len(comparisons),'figures':figures,
               'figure_pages':gallery_pages,
+              'figure_focus_backend':focus_backend,
               'harness_sha256':next(iter(hashes),None),'build_manifest_sha256':next(iter(builds),None),
               'coverage_complete':evidence['coverage_complete'],'evidence_consistent':evidence['evidence_consistent'],
-              'source_directory':str(directory.resolve()),'plots_requested':plots,
+              'source_directory':str(directory),'plots_requested':plots,
               'command':f'uv run --extra plot python -m sht_bench.source_report {directory} --output {output}'+('' if plots else ' --tables-only')}
+    if focus_backend is not None:
+        manifest['command']+=f' --focus-backend {focus_backend}'
     (output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     lines=['# Source benchmark results','',f'{recorded} recorded outcomes of {expected}; {pending} pending. {len(valid)} timed after numerical validation.','',
            'Measurements are provisional on a shared host. Ratios pair the same grid, bandwidth, precision, allocation, operation, thread request, and process round.','',
            *( [f"The Spherepack series uses {psh_caption}; its timing environment, package hash, native extension, and linked libraries are in `build-provenance.json`.",""] if psh_caption else [] ),
            '| Outcome | Cells |','| --- | ---: |',*[f'| {k} | {v} |' for k,v in sorted(counts.items())],'',
-           '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records RustSHT/DUCC, SHTns/DUCC, and pyspharm/DUCC ratios where complete workload and precision matches exist, with absolute latency excess in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','',
+           '`outcomes.csv` identifies every recorded status and its raw cell. `build-provenance.json` preserves the referenced build manifest. Raw cells contain every timing sample, numerical metrics, CPU controls, and build-manifest reference. `matched-ratios.csv` records pyspharm/DUCC, pyspharm/RustSHT, and pyspharm/SHTns ratios when a complete workload and precision match exists, along with RustSHT/DUCC and SHTns/DUCC ratios. Absolute latency excess is in milliseconds; `paired-summary.csv` summarizes those process pairs. `thread-scaling.csv` pairs each thread request with its q1 process round. `accuracy.json` includes successful and failed validation fixtures. Peak RSS includes setup and validation buffers.','',
+           *( ['Run dimensions are in [run-config.json](run-config.json) and [workload-plan.json](workload-plan.json). The [audit](audit.json) and [evidence audit](evidence-audit.json) retain coverage checks. Raw cells are in [raw-cells.tar.gz](raw-cells.tar.gz) under `cells/<id>.json`; extract that archive here before rerunning the audit or report.','']
+              if all((output/name).is_file() for name in ('run-config.json','workload-plan.json','audit.json','raw-cells.tar.gz')) else [] ),
+           *( [f'Figures are limited to workload groups containing `{focus_backend}`.' if focus_backend else 'Figures include all validated workload groups.',''] ),
            'For secondary workloads, accuracy entries distinguish base A/S gates from requested derivative synthesis and adjoint identity checks. Adjoint scaled residuals are separate from relative L2 synthesis errors.','']
     lines.extend(gallery_lines)
     (output/'README.md').write_text('\n'.join(lines)+'\n')
@@ -320,8 +341,9 @@ def main(argv=None):
     parser.add_argument('directory',type=Path)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--tables-only',action='store_true',help='export audited ledgers and matched tables without rendering figures')
+    parser.add_argument('--focus-backend',choices=tuple(COLORS),help='limit figures to workload groups containing this backend')
     args=parser.parse_args(argv)
-    report(args.directory,args.output,plots=not args.tables_only)
+    report(args.directory,args.output,plots=not args.tables_only,focus_backend=args.focus_backend)
     return 0
 
 
