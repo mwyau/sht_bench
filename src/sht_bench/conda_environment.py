@@ -10,7 +10,7 @@ from typing import Mapping
 
 
 PYSPHARM_VERSION = "1.0.9"
-PYTHON_VERSION = "3.13.15"
+PYTHON_VERSION = "3.14.9"
 NUMPY_VERSION = "2.5.4"
 CONDA_CHANNEL = "conda-forge"
 

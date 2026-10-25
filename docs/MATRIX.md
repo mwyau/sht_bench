@@ -24,15 +24,14 @@ Grid support is:
 
 Native SHTOOLS GLQ routines require `nlon = 2*nlat - 1`, whereas the default atmospheric Gaussian grids use an even `nlon = 4F`. SHTOOLS is therefore excluded from the default common-grid GL matrix rather than measured on a different grid under the same label.
 
-The `pyspharm` backend is installed from conda-forge in a separate conda environment. The host comparison uses Python 3.13.15, NumPy 2.5.4, and pyspharm 1.0.9 build `np2py313h854c110_1017`. `spharm` and `_spherepack` are checked against that prefix before benchmarking. The conda build is recorded as `conda-forge`; it is not installed through uv and is not labeled as a wheel. Source-build matrices contain DUCC, SHTns, and pyshtools/SHTOOLS; pyshtools contributes only when a requested GL case uses its compact native GLQ geometry.
+The `pyspharm` backend is installed from conda-forge in a separate conda environment. The host comparison uses Python 3.14.9, NumPy 2.5.4, and pyspharm 1.0.9 build `np2py314h2766e9b_1017`. `spharm` and `_spherepack` are checked against that prefix before benchmarking. The conda build is recorded as `conda-forge`; it is not installed through uv and is not labeled as a wheel. New wheel/source matrix environments default to Python 3.14.8 and NumPy 2.5.4, within the same Python 3.14 minor line. Source-build matrices contain DUCC, SHTns, and pyshtools/SHTOOLS; pyshtools contributes only when a requested GL case uses its compact native GLQ geometry.
 
-The refreshed package's build identity, capability limits, validation results, matched q1 comparisons, and tracked machine-readable data are in the [pyspharm conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
+The package build identity, capability limits, q1 validation results, and tracked measurements are in the [pyspharm conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md). The pyspharm rerun uses Python 3.14.9; cross-version ratios against the existing Python 3.13.15 source results are excluded.
 
-On this host, the existing uv matrix environments also use Python 3.13.15 and
-NumPy 2.5.3. The conda environment uses the same Python patch release and
-NumPy 2.5.4. The refreshed source-matrix control environment uses NumPy 2.5.4
-for all four implementations. These runs use Python 3.13, not 3.14; each
-result manifest records the resolved Python and NumPy versions.
+Result rows retain their measured Python and NumPy versions. The conda-forge
+pyspharm environment uses Python 3.14.9 and NumPy 2.5.4. New uv-managed
+environments use Python 3.14.8 and NumPy 2.5.4. Each result manifest records
+runtime versions and build provenance.
 
 PyPI wheel availability is evaluated only for backends installed through uv. A backend whose pinned wheel cannot be resolved is recorded as an exclusion and omitted from the wheel matrix rather than compiled from source. This allows the same command to run on x86_64 and arm64; for example, if the pinned DUCC release has no compatible arm64 wheel, only its source-build series is measured. The conda-forge pyspharm environment uses the package solver for the host platform and records the resolved package build. Because plotting uses successful result records, unavailable package series are absent from the figures.
 

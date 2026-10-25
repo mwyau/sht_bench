@@ -790,7 +790,7 @@ def plot_all(args: argparse.Namespace) -> int:
         build_string = identity.get("build_string", "unresolved-build")
         pyspharm_environment = (
             f"The pyspharm series uses conda-forge {version} build `{build_string}`, "
-            f"Python {conda_pyspharm.get('python_version', '3.13')}, "
+            f"Python {conda_pyspharm.get('python_version', '3.14')}, "
             f"and NumPy {conda_pyspharm.get('numpy_version', '2')}."
         )
     (output / "README.md").write_text(
@@ -1137,7 +1137,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="package provenance dimension (default: installed)",
     )
     matrix.add_argument(
-        "--python", default="3.13", help="Python used for wheel/source environments"
+        "--python", default="3.14.8", help="Python used for wheel/source environments"
     )
     matrix.add_argument(
         "--reuse",

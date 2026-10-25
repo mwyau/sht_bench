@@ -1,10 +1,12 @@
-# Spherical harmonic transform benchmark results: 2026-10-22 run and 2026-10-25 pyspharm refresh
+# Spherical harmonic transform benchmark results: 2026-10-22 run
 
 ## Status
 
-This report retains the original source-matrix context and focused L64
-results for DUCC, SHTns, and RustSHT. The active pyspharm results were replaced
-by the conda-forge rerun documented in the [current results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
+This report covers the DUCC, SHTns, and RustSHT source-matrix runs. Their
+recorded environments use Python 3.13.15. Current pyspharm measurements use
+Python 3.14.9 and are reported separately in the
+[pyspharm results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md); cross-version
+performance ratios are not reported.
 The focused matrix has one complete independent process round and a partial
 second round; its q2–q16 performance is provisional and does not establish
 stable thread scaling.
@@ -154,8 +156,8 @@ round-1 q16 SHTns results differ by orders of magnitude on repeated GL-minimum
 workloads.
 
 The complete round-0 float64 q-scaling summary aggregates by backend, geometry,
-operation, allocation, and q. The refreshed pyspharm per-cell source timings
-and matched q1 data are tracked in the [current result data directory](data/pyspharm-conda-forge-2026-10-25/README.md).
+operation, allocation, and q. It contains DUCC, SHTns, and RustSHT results.
+Pyspharm measurements use a separate Python 3.14.9 environment.
 
 The eight q-thread figures use round-0 float64 warm samples only. Panels separate
 grid, spin, full/quarter order, operation, and allocation; backend colors are
@@ -223,30 +225,25 @@ by the validator.
 For successful float64 fixtures, the maximum coefficient-recovery and map
 round-trip relative-L2 errors were respectively 2.82e-14 and 6.97e-14 for
 DUCC, 9.33e-12 and 9.33e-12 for SHTns, and 3.54e-14 and 1.23e-13 for
-RustSHT. The refreshed pyspharm stage-by-stage values are in the [tracked
-accuracy export](data/pyspharm-conda-forge-2026-10-25/source-q1-accuracy.csv).
+RustSHT. Current pyspharm validation values are in the
+[pyspharm results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 These checks describe agreement with the benchmark's
 numerical references and round-trip criteria; they are not a broader
 scientific validation.
 
-The refreshed q1 source matrix records 7,296 outcomes: 3,684 timed after
-validation, 354 numerically invalid, 3,258 unsupported, and no execution
-failures. Invalid and unsupported outcomes remain explicit and are excluded
-from timing comparisons.
+The DUCC, SHTns, and RustSHT q1 source matrix subset records 5,472 outcomes:
+3,558 timed after validation, 354 numerically invalid, 1,560 unsupported, and
+no execution failures. Invalid and unsupported outcomes remain explicit and
+are excluded from timing comparisons.
 
 | Backend | Failure count and scope | Observed category |
 | --- | --- | --- |
 | SHTns | 192 float64: CC minimum 96 and F1 minimum 96 | Minimum-grid coefficient recovery and round-trip checks failed while independent synthesis passed; no underlying cause is inferred here. |
 | RustSHT | 162 float32 across CC/F1/GL minimum and quadrature geometries | High-mode synthesis and/or map round-trip errors exceeded the unchanged float32 tolerance. |
 
-No pyspharm numerical or execution failures occurred in the refreshed q1 run.
-The 18 GL-minimum spin-1 outcomes at `nlat=L+1` are unsupported because the
-highest-degree modes are unobservable there. A direct probe also confirms
-`vhsgsi ierror=3` for GL 32×33 at L16 on the conda build; affected workload
-variants are marked unsupported without retry. The current acceptance
-criteria were not changed. Separate standalone CC L63 precision probes do
-fail the unchanged float32 tolerance on highest-degree modes; those
-non-timed diagnostics are recorded in the [current pyspharm results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
+Pyspharm capability limits and numerical diagnostics are documented with the
+Python 3.14.9 results in the
+[pyspharm results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 
 ## Source and build provenance
 
@@ -256,8 +253,6 @@ non-timed diagnostics are recorded in the [current pyspharm results report](PYSP
 | SHTns | master | `4e69ceb3fc5f19475d55b03ff0fdec210dc3075e` |
 | RustSHT | main | `75cf62ecfc4a324fc4f7d9e652c3d285dbf32cc4` |
 
-The refreshed q1 smoke build manifest SHA-256 is
-`d6fe72d153a3357828f7ca52d865ee08de462d11e0e915f2e4e05092ca14286b`.
 The reduced locked build manifest SHA-256 is
 `368e33170d308a7edf8d1ff2bac3889b772f545b6e8173d4d2447e0f7c218254`; its
 frozen harness SHA-256 is
@@ -276,8 +271,7 @@ pairs per backend and operation, median locked/original latency ratios were
 with material run-to-run variability on this shared host. These ratios check
 reproduction at a fixed source SHA and are not cross-backend performance
 comparisons. The source SHAs, locked build manifest, and reproduction table
-are summarized here; the active package-specific evidence is tracked in the
-current result data directory linked below.
+are summarized here. Pyspharm results use a separate Python 3.14.9 environment.
 
 The captured host is an AMD Ryzen 9 5950X with 16 physical and 32 logical
 cores. It is a shared host with boost enabled. RustSHT's build records
@@ -288,10 +282,10 @@ generalization beyond this host.
 
 ## Current tracked result data
 
-The active pyspharm measurements, unsupported outcomes, numerical metrics,
-and matched q1 comparisons are published in the [conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md)
+Current pyspharm measurements, unsupported outcomes, numerical metrics, and
+build provenance are published in the [conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md)
 and its [machine-readable data](data/pyspharm-conda-forge-2026-10-25/README.md).
-The tracked [AMD64 plot gallery](../results/matrix/plots/README.md) has been
-regenerated from the active matrix, which contains conda-forge pyspharm rows.
+The source-matrix results above cover DUCC, SHTns, and RustSHT. They are not
+paired with pyspharm because their recorded Python versions differ.
 The exhaustive source sweep and focused L64 q-matrix remain incomplete as
 described above; no unexecuted cell is reported as complete.

@@ -274,8 +274,8 @@ def test_report_uses_fixed_backend_colors_and_separate_build_styles():
     assert source_report.MARKERS == {"local-git-source-snapshot": "s", "git-source": "s", "conda-forge": "D"}
     assert source_report._series_label(
         "pyspharm", "conda-forge", "artifact-hash",
-        {"version": "1.0.9", "build_string": "np2py313h854c110_1017"},
-    ) == "pyspharm conda-forge 1.0.9-np2py313h854c110_1017"
+        {"version": "1.0.9", "build_string": "np2py314h2766e9b_1017"},
+    ) == "pyspharm conda-forge 1.0.9-np2py314h2766e9b_1017"
     sha = "abcdef0123456789abcdef0123456789abcdef01"
     assert source_report.revision_label(sha) == sha[:10]
     assert source_report.revision_label("rustsht==1.2.3") == "rustsht==1.2.3"

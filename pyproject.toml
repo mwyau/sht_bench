@@ -7,7 +7,7 @@ name = "sht-bench"
 version = "0.1.0"
 description = "Reproducible Python benchmarks for spherical harmonic transform libraries"
 readme = "README.md"
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.11,<3.15"
 dependencies = [
     "numpy>=1.26",
 ]

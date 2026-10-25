@@ -17,8 +17,8 @@ SHTns has no PyPI wheel, so both uv benchmark environments compile a Git checkou
 Each invocation records the resolved SHA. Plotting shows one SHTns source series.
 
 Spherepack is imported as `spharm` from a separate conda-forge environment. The
-Linux x86-64 comparison environment uses Python 3.13.15, NumPy 2.5.4, and
-`pyspharm 1.0.9` build `np2py313h854c110_1017`. The environment specification
+Linux x86-64 comparison environment uses Python 3.14.9, NumPy 2.5.4, and
+`pyspharm 1.0.9` build `np2py314h2766e9b_1017`. The environment specification
 is [environments/pyspharm-conda-forge-linux-64.yml](environments/pyspharm-conda-forge-linux-64.yml);
 the resolved artifact URL, package hash, native extension hash, linked
 libraries, and full conda exports are recorded with each build. The solver
@@ -202,10 +202,10 @@ uv run --extra plot python -m sht_bench.source_report \
   results/source-run/smoke --output results/source-run/smoke-report
 ```
 
-`build_sources.py` defaults to Python 3.13 for uv-managed source packages.
+`build_sources.py` defaults to Python 3.14.8 for uv-managed source packages.
 Native packages are installed from Git checkout paths through their current
 build systems, including RustSHT's root Maturin release build. The pyspharm
-environment is created from conda-forge with Python 3.13.15 and NumPy 2.5.4.
+environment is created from conda-forge with Python 3.14.9 and NumPy 2.5.4.
 The compiler environment preserves caller settings;
 defaults select GCC/G++/gfortran, `DUCC0_OPTIMIZATION=native`, and
 `RUSTFLAGS='-C target-cpu=native'`. SHTns's Git build configures its FFTW/OpenMP

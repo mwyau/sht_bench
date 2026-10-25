@@ -4,44 +4,44 @@
   "platform": "linux-64",
   "channel_policy": "conda-forge only, strict channel priority",
   "solver_request": {
-    "python": "3.13.15",
+    "python": "3.14.9",
     "numpy": "2.5.4",
     "pyspharm": "1.0.9"
   },
   "packages": {
     "pyspharm": {
       "version": "1.0.9",
-      "build_string": "np2py313h854c110_1017",
+      "build_string": "np2py314h2766e9b_1017",
       "build_number": 1017,
       "channel": "https://conda.anaconda.org/conda-forge/linux-64",
-      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/pyspharm-1.0.9-np2py313h854c110_1017.conda",
-      "sha256": "2f12e25a18c47c9a7545cb36a29cfecd553a42dde7df30b06af1d08def5986fc",
-      "md5": "fbff7ab12db1afd3b45c3a20576955c2"
+      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+      "sha256": "1edea5872986bd960a9d42f234960e36fdfd8cf6a110c37daaa53baf20b94b00",
+      "md5": "eeff4953b1dc383de80803b5bfa9f2dc"
     },
     "python": {
-      "version": "3.13.15",
-      "build_string": "hf47f18c_103_cp313",
+      "version": "3.14.9",
+      "build_string": "hcd007b5_100_cp314",
       "channel": "https://conda.anaconda.org/conda-forge/linux-64",
-      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/python-3.13.15-hf47f18c_103_cp313.conda",
-      "sha256": "cc18ba39af0d591ac012c1334ac98aa59ec7be389719b4cd80cc0a58a53019de"
+      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/python-3.14.9-hcd007b5_100_cp314.conda",
+      "sha256": "87874d825447bb21759c6378cbbc4ce380b2b639609bfd4cb67dc864641ac759"
     },
     "numpy": {
       "version": "2.5.4",
-      "build_string": "py313hb5f73ae_0",
+      "build_string": "py314hd3a7d6b_0",
       "channel": "https://conda.anaconda.org/conda-forge/linux-64",
-      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/numpy-2.5.4-py313hb5f73ae_0.conda",
-      "sha256": "e8ffae51383b57192b018bdeeb95c84ec617aa1428656825b1d4a326b81410dd",
+      "artifact": "https://conda.anaconda.org/conda-forge/linux-64/numpy-2.5.4-py314hd3a7d6b_0.conda",
+      "sha256": "7533361a15ff1d4c1e7069b9410d32a602a6a9350d717a43731b07e3565a6689",
       "numpy_c_abi": 33554432
     }
   },
   "runtime": {
-    "python": "3.13.15",
+    "python": "3.14.9",
     "numpy": "2.5.4",
     "spharm_import": "spharm",
-    "module_path_within_prefix": "lib/python3.13/site-packages/spharm/__init__.py",
+    "module_path_within_prefix": "lib/python3.14/site-packages/spharm/__init__.py",
     "native_module": "_spherepack",
-    "native_extension_path_within_prefix": "lib/python3.13/site-packages/_spherepack.cpython-313-x86_64-linux-gnu.so",
-    "native_extension_sha256": "fd7e75f19c39e2663a789701f9e13a1e4c5fec48bcfd165ca3b47ddef88f7741",
+    "native_extension_path_within_prefix": "lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+    "native_extension_sha256": "94b3c6d2fa5b7083beef10be8e2bb3a9389f463cb2540909ffb2cd03861f5310",
     "analysis_output_dtype": "complex64",
     "synthesis_output_dtype": "float32",
     "python_distributions_named_pyspharm": [
@@ -58,7 +58,7 @@
     "specification": "pyspharm-conda-forge-linux-64.yml",
     "full_solver_export": "pyspharm-conda-forge-linux-64.export.yml",
     "explicit_artifact_list": "pyspharm-conda-forge-linux-64.explicit.txt",
-    "full_solver_export_sha256": "6ef51939e9201b8437e408000c08ce425455717f28ef6edda8c7de9f3d80cab1",
-    "explicit_artifact_list_sha256": "0f9a93e9764330c3d9cf309d077325a092b58fb164e64d71a7c551dc360e44d7"
+    "full_solver_export_sha256": "433cb96df74f5fb2a8cb9fa2fd125ba1dc69e4c94309749cfad008feb10f23ec",
+    "explicit_artifact_list_sha256": "f65660b6e1c04a91192f987e71f99b97c5ad83c9d8d6d97c427e204becbd211d"
   }
 }

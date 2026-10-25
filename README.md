@@ -40,16 +40,18 @@ Forward one-dimensional DUCC FFT timings on GitHub-hosted runners. These panels 
 
 ### SHT
 
-Median transform time is shown in milliseconds; lower is better. Backend colors are fixed across figures. Wheel/installed builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines. SHTns is source-built and shown once as a dashed series. pyspharm uses conda-forge `pyspharm 1.0.9`, build `np2py313h854c110_1017`, with Python 3.13.15 and NumPy 2.5.4 on this host. See the [pyspharm migration results and numerical checks](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md).
+Median transform time is shown in milliseconds; lower is better. Backend colors are fixed across figures. Wheel/installed builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines. SHTns is source-built and shown once as a dashed series. New uv-managed benchmark environments default to Python 3.14.8 and NumPy 2.5.4; the conda-forge pyspharm environment uses Python 3.14.9. pyspharm is `pyspharm 1.0.9`, build `np2py314h2766e9b_1017`. See the [pyspharm results and numerical validation](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md).
 
-#### AMD64 — AMD Ryzen 9 5950X, 16 threads
+#### Conda-forge pyspharm — AMD64, Python 3.14.9
 
-[Full AMD64 plot matrix](results/matrix/plots/README.md)
+These figures show pyspharm results from the dedicated conda-forge environment.
+Other backend measurements use Python 3.13.15 and are not combined with these
+plots as matched comparisons. See the [full pyspharm report](docs/PYSPHARM_CONDA_RESULTS_2026-10-25.md)
+for build provenance, validation outcomes, and the complete result data.
 
-| Grid | Analysis | Synthesis |
-| --- | --- | --- |
-| CC | <a href="results/matrix/plots/by-lmax/cc/analysis/threads-16.png"><img src="results/matrix/plots/by-lmax/cc/analysis/threads-16.png" alt="AMD64 CC analysis, 16 threads" width="430"></a> | <a href="results/matrix/plots/by-lmax/cc/synthesis/threads-16.png"><img src="results/matrix/plots/by-lmax/cc/synthesis/threads-16.png" alt="AMD64 CC synthesis, 16 threads" width="430"></a> |
-| GL | <a href="results/matrix/plots/by-lmax/gl/analysis/threads-16.png"><img src="results/matrix/plots/by-lmax/gl/analysis/threads-16.png" alt="AMD64 GL analysis, 16 threads" width="430"></a> | <a href="results/matrix/plots/by-lmax/gl/synthesis/threads-16.png"><img src="results/matrix/plots/by-lmax/gl/synthesis/threads-16.png" alt="AMD64 GL synthesis, 16 threads" width="430"></a> |
+| GL scalar synthesis | CC spin-1 synthesis |
+| --- | --- |
+| [![GL scalar synthesis](docs/figures/pyspharm-conda-forge-2026-10-25/GL-scalar-synthesis.png)](docs/figures/pyspharm-conda-forge-2026-10-25/GL-scalar-synthesis.png) | [![CC spin-1 synthesis](docs/figures/pyspharm-conda-forge-2026-10-25/CC-vector-synthesis.png)](docs/figures/pyspharm-conda-forge-2026-10-25/CC-vector-synthesis.png) |
 
 #### ARM64 — Raspberry Pi 5 8GB, 4 threads
 

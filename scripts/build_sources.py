@@ -66,7 +66,7 @@ def main(argv=None):
     parser.add_argument('--root', type=Path, default=Path('.sources'))
     parser.add_argument('--mode', choices=('latest', 'locked'), default='latest')
     parser.add_argument('--lock', type=Path)
-    parser.add_argument('--python', default='3.13')
+    parser.add_argument('--python', default='3.14.8')
     parser.add_argument('--backend', choices=tuple(MODULES), action='append',
                         help='backend(s) to build; defaults to every supported backend')
     for name in ('ducc', 'shtns', 'rustsht'):
@@ -133,7 +133,7 @@ def main(argv=None):
                     )
                 else:
                     run(['uv', 'venv', '--python', args.python, venv], env=env, log=log)
-                run(['uv', 'pip', 'install', '--python', python, '-e', '.[plot]', 'pytest', 'scipy'], env=env, log=log)
+                run(['uv', 'pip', 'install', '--python', python, '-e', '.[plot]', 'pytest', 'scipy', f'numpy=={NUMPY_VERSION}'], env=env, log=log)
                 if backend != 'pyspharm':
                     path = args.root.resolve() / backend
                     if git(path, 'rev-parse', 'HEAD') != sources['sources'][backend]['sha']:

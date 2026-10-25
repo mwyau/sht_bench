@@ -296,7 +296,10 @@ def create_environment(
     # Install the harness without pulling the compiled comparison backends.
     if python is not None:
         run(
-            ["uv", "pip", "install", "--python", str(python), "-e", ".[plot]"],
+            [
+                "uv", "pip", "install", "--python", str(python), "-e", ".[plot]",
+                f"numpy=={PYSPHARM_NUMPY_VERSION}",
+            ],
             env=build_env,
         )
 
@@ -572,8 +575,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--python",
-        default="3.13",
-        help="interpreter/version passed to 'uv venv' (default: 3.13)",
+        default="3.14.8",
+        help="interpreter/version passed to uv-managed environments (default: 3.14.8)",
     )
     parser.add_argument(
         "--reuse",

@@ -126,10 +126,11 @@ def test_legacy_matrix_selects_conda_environment_for_pyspharm(monkeypatch):
     )
     assert args.backend == ["pyspharm"]
     assert args.build == "source"
+    assert args.python == "3.14.8"
 
     commands = []
     monkeypatch.setattr("sht_bench.cli._run_subprocess", lambda command, **_: commands.append(command))
-    python = _build_conda_matrix_env("3.13", reuse=False)
+    python = _build_conda_matrix_env("3.14.8", reuse=False)
     assert python.name == "python"
     command = commands[0]
     assert command[command.index("--build") + 1] == "wheel"
@@ -195,8 +196,8 @@ def test_plot_style_is_stable_by_backend_and_build():
     }
     assert _series_label({
         "backend": "pyspharm", "build_mode": "conda-forge", "backend_version": "1.0.9",
-        "build_string": "np2py313h854c110_1017",
-    }) == "pyspharm (conda-forge 1.0.9-np2py313h854c110_1017)"
+        "build_string": "np2py314h2766e9b_1017",
+    }) == "pyspharm (conda-forge 1.0.9-np2py314h2766e9b_1017)"
     assert _matrix_output_name("conda-forge", "cc", 1) == "conda-forge-cc-t1.json"
     assert CELL_RESULT_RE.fullmatch("conda-forge-cc-t1.json")
 
@@ -262,11 +263,11 @@ def test_plot_index_inlines_clickable_comparisons():
         threads=[1],
         lmax_values=[36],
         pyspharm_environment=(
-            "The pyspharm series uses conda-forge 1.0.9 build `np2py313`, "
-            "Python 3.13.15, and NumPy 2.5.4."
+            "The pyspharm series uses conda-forge 1.0.9 build `np2py314`, "
+            "Python 3.14.9, and NumPy 2.5.4."
         ),
     )
-    assert "conda-forge 1.0.9 build `np2py313`" in conda_index
+    assert "conda-forge 1.0.9 build `np2py314`" in conda_index
 
 
 def test_matrix_csv_keeps_union_of_build_provenance_fields(tmp_path):
@@ -275,14 +276,14 @@ def test_matrix_csv_keeps_union_of_build_provenance_fields(tmp_path):
         {"backend": "ducc", "build_mode": "wheel", "median_s": 0.1},
         {
             "backend": "pyspharm", "build_mode": "conda-forge", "median_s": 0.2,
-            "build_identity": {"version": "1.0.9", "build_string": "np2py313"},
+            "build_identity": {"version": "1.0.9", "build_string": "np2py314"},
             "samples_s": [0.19, 0.2, 0.21],
         },
     ], output)
 
     rows = list(csv.DictReader(output.with_suffix(".csv").open()))
     assert json.loads(rows[1]["build_identity"]) == {
-        "build_string": "np2py313", "version": "1.0.9",
+        "build_string": "np2py314", "version": "1.0.9",
     }
     assert "samples_s" not in rows[1]
     assert len(json.loads(output.read_text())) == 2
@@ -310,7 +311,7 @@ def test_conda_forge_series_renders_a_chart_with_package_identity(tmp_path):
     _plot_lines(
         [{
             "backend": "pyspharm", "build_mode": "conda-forge",
-            "backend_version": "1.0.9", "build_string": "np2py313h854c110_1017",
+            "backend_version": "1.0.9", "build_string": "np2py314h2766e9b_1017",
             "grid": "gl", "operation": "analysis", "lmax": 42,
             "threads_requested": 1, "median_s": 0.001,
         }],

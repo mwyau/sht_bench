@@ -355,7 +355,7 @@ def build_local_sources(
                     _run_logged(command,env=env,log=log)
                     package = verify_pyspharm_environment(venv)
                     entry.update({'resolved_conda_package':package,'sha':package.get('sha256') or f"{CONDA_CHANNEL}::pyspharm={package['version']}#{package['build_string']}"})
-                    _run_logged(['uv','pip','install','--python',str(python),'-e',str(ROOT)],env=env,log=log)
+                    _run_logged(['uv','pip','install','--python',str(python),'-e',str(ROOT),f'numpy=={NUMPY_VERSION}'],env=env,log=log)
                     exports = installed_environment_exports(conda,venv)
                     explicit = output/'pyspharm-conda-explicit.txt'
                     environment = output/'pyspharm-conda-environment.yml'
@@ -364,7 +364,7 @@ def build_local_sources(
                     entry['conda_exports'] = {'explicit_file':str(explicit.resolve()),'explicit_sha256':_sha(explicit.read_bytes()),'environment_file':str(environment.resolve())}
                 else:
                     _run_logged(['uv','venv','--python',python_version,str(venv)],env=env,log=log)
-                    _run_logged(['uv','pip','install','--python',str(python),'-e',str(ROOT)],env=env,log=log)
+                    _run_logged(['uv','pip','install','--python',str(python),'-e',str(ROOT),f'numpy=={NUMPY_VERSION}'],env=env,log=log)
                     source = Path(snapshots[backend]['build_snapshot_path'])
                     entry.update(snapshots[backend])
                     entry['build_kind'] = 'local-git-source-snapshot'
@@ -768,7 +768,7 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument('--output',type=Path,help='new raw result directory (never overwritten)')
     p.add_argument('--build-manifest',type=Path,help='use an existing sweep build manifest')
     p.add_argument('--build',action='store_true',help='build isolated environments from the local source checkouts')
-    p.add_argument('--python',default='3.13',help='uv Python version for isolated backend environments')
+    p.add_argument('--python',default='3.14.8',help='uv Python version for isolated backend environments')
     p.add_argument('--ducc-source',type=Path)
     p.add_argument('--shtns-source',type=Path)
     p.add_argument('--rustsht-source',type=Path)
