@@ -16,6 +16,8 @@ The FFT experiment includes a runtime characterization of NumPy `longdouble`. It
 
 The default comparison includes DUCC, SHTns, and Spherepack/pyspharm where their grid interfaces are compatible. Native SHTOOLS/pyshtools remains available for compact GLQ experiments but is not part of the default atmospheric full-Gaussian-grid comparison.
 
+The separate focused CC/GL resolution sweep compares the PyPI `pyspharm-syl` 1.2.1 wheel with DUCC, SHTns, RustSHT, and pyspharm-cpp. Its isolated environments use Python 3.13.15 and NumPy 2.5.3. `pyspharm-syl` currently has a CPython 3.13 wheel and no CPython 3.14 wheel, so the sweep pins every implementation to Python 3.13.15.
+
 ## Results
 
 ### FFT

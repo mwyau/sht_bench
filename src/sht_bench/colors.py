@@ -5,6 +5,7 @@ BACKEND_COLORS = {
     'shtns': '#ff7f0e',
     'pyshtools': '#2ca02c',
     'pyspharm': '#d62728',
+    'pyspharm-syl': '#d62728',
     'pyspharm-cpp': '#8c564b',
     'rustsht': '#9467bd',
 }

@@ -244,32 +244,44 @@ flags and host CPU capabilities are recorded separately.
 
 ## CC/GL source resolution sweep
 
-The focused resolution sweep is a separate experiment from the historical
+The focused resolution sweep is a separate experiment from the existing
 `source-matrix` CLI. It builds each Git implementation in its own `uv`
 environment from the local sibling checkouts, snapshots the selected commit
-without modifying those checkouts, and creates a separate conda-forge
-environment for pyspharm. RustSHT defaults to its local `main` ref. The pyspharm-cpp source
-uses its recorded `third_party/ducc` Git submodule; the installed backend is
+without modifying those checkouts, and installs PyPI `pyspharm-syl` as a
+verified binary wheel. All five sweep environments are pinned to Python
+3.13.15 and NumPy 2.5.3. The `pyspharm-syl` release currently supplies a
+CPython 3.13 wheel, not a CPython 3.14 wheel, so this comparison uses Python
+3.13 for every backend. RustSHT defaults to the captured local `HEAD`. The
+pyspharm-cpp source uses its recorded `third_party/ducc` Git submodule; the installed backend is
 reported as DUCC-derived because it uses DUCC algorithms behind the
 PySpharm-compatible `spharm_cpp.Spharmt` API. Its extension is built with the
 checkout's scikit-build-core, CMake, and nanobind configuration and the
 multiarch CMake profile. The build manifest records both the standalone DUCC
 SHA and the nested DUCC submodule SHA.
 
+The Spherepack series is the `pyspharm-syl==1.2.1` PyPI wheel, installed with
+`uv` in its own environment. The build step resolves a wheel compatible with
+the controller's CPython/platform tags, verifies its SHA-256 against the
+PyPI release metadata, rejects source distributions and other `pyspharm*`
+packages, and checks that `import spharm` and `_spherepack` resolve inside the
+isolated environment. Runtime float32/complex64 precision, the NumPy ABI,
+Python/NumPy versions, wheel tag, linked libraries, and wheel checksum are
+recorded in the build manifest. This PyPI wheel path is separate from the
+conda-forge `pyspharm` environment used by the existing matrix and
+source-matrix commands.
+
 The versioned profile contains seven endpoint-inclusive CC grids from
 73×144/L36 through 721×1440/L360, and seven GL grids with `nlat=2*N`,
 `nlon=4*N`, and `N=32,45,64,90,128,180,320`. Exact north-to-south latitude
 and colatitude coordinate arrays are saved with the plan. Full and half order
 means `mmax=L` and `mmax=L//2`, with unchanged `lmax=L`. pyspharm-cpp and
-pyspharm expose only triangular truncation, so their half-order cells are
-recorded unsupported; no coefficients are zeroed to simulate reduced order.
-The conda-forge pyspharm matrix is float32/complex64 and serial. SHTns is
-float64 only. GL spin-1 minimum-latitude cells require one additional latitude
-row for the highest-degree modes to remain numerically observable. The
-GL32×33/L16 Spherepack constructor failure is retained as a specific
-unsupported workload. CC L1023 is resource-limited on this host: stored plan
-arrays alone require 51,514,507,440 bytes, which does not leave the required
-2x memory headroom.
+PyPI pyspharm-syl expose only triangular truncation, so their half-order cells
+are recorded unsupported; no coefficients are zeroed to simulate reduced
+order. The `pyspharm-syl` wheel uses float32/complex64 and a serial Spherepack
+API. SHTns is float64 only. Numerical capability restrictions for this wheel
+come from its own adapter probes and validation results; the separate conda
+build's historical failures are not copied into its capability table. The
+sweep uses q1/q2/q4/q8; q16 is reserved for a separate stability diagnosis.
 
 Run the plan before building. The plan prints the exact API-supported and
 unsupported outcome counts, and `--smoke` restricts it to CC 2.5° and GL N32:
@@ -277,16 +289,17 @@ unsupported outcome counts, and `--smoke` restricts it to CC 2.5° and GL N32:
 ```bash
 uv run --extra plot python scripts/run_source_resolution_sweep.py --plan-only
 uv run --extra plot python scripts/run_source_resolution_sweep.py \
-  --output results/source-resolution-20261025 --build
+  --output results/source-resolution-20261025-pypi-wheel --threads 1,2,4,8 --build
 uv run --extra plot python scripts/run_source_resolution_sweep.py \
-  --output results/source-resolution-20261025 --resume
+  --output results/source-resolution-20261025-pypi-wheel --resume
 uv run --extra plot python scripts/run_source_resolution_sweep.py \
-  --output results/source-resolution-20261025 --replot
+  --output results/source-resolution-20261025-pypi-wheel --replot
 ```
 
 The build command accepts `--ducc-source`, `--shtns-source`,
 `--rustsht-source`, and `--pyspharm-cpp-source` path overrides, plus ref
-overrides. Run outputs are never replaced. Resume checks the build-manifest,
+overrides. `--python` is locked to 3.13.15 and every isolated environment pins
+NumPy 2.5.3. Run outputs are never replaced. Resume checks the build-manifest,
 profile, runner, harness, and workload identities. Every supported numerical
 gate runs in a fresh process before its timing cells; thread-count cells also
 run in fresh processes with affinity and backend thread controls set before

@@ -207,6 +207,44 @@ def test_conda_pyspharm_capability_keeps_observed_edge_failures_explicit():
     assert "ierror=3" in capability("pyspharm", constructor_failure)
 
 
+def test_pypi_pyspharm_syl_has_its_own_capability_and_spharm_adapter(monkeypatch):
+    from sht_bench import source_adapters
+
+    calls = {}
+
+    class FakeSpharmt:
+        def __init__(self, *args, **kwargs):
+            calls['constructor']=(args,kwargs)
+
+        def spectogrd(self, spectrum):
+            calls['synthesis_spectrum']=spectrum.copy()
+            return np.zeros((8,12),dtype=np.float32)
+
+        def grdtospec(self, field, ntrunc):
+            calls['analysis_shape']=(field.shape,ntrunc)
+            return np.zeros(6,dtype=np.complex64)
+
+    monkeypatch.setattr(source_adapters.importlib,'import_module',lambda name:types.SimpleNamespace(Spharmt=FakeSpharmt))
+    w=Workload('GL',8,12,2,2,precision='float32')
+    assert capability('pyspharm-syl',w) is None
+    assert capability('pyspharm-syl',replace(w,precision='float64')) == (
+        'PyPI pyspharm-syl 1.2.1 (Spherepack) runtime uses float32/complex64'
+    )
+    assert capability('pyspharm-syl',replace(w,mmax=1)) == 'public API has full triangular truncation only'
+    adapter=Adapter('pyspharm-syl',w,1)
+    assert calls['constructor'][0] == (12,8)
+    assert calls['constructor'][1]['gridtype'] == 'gaussian'
+    assert adapter.native_api == 'spharm.Spharmt'
+    assert adapter.thread_control.startswith('Spherepack API has no thread-count')
+    native=adapter.encode(np.ones((1,w.size),dtype=np.complex64))
+    assert native.dtype == np.complex64
+    result=adapter.operation(native,None,operation='synthesis')()
+    assert adapter.canonical_synthesis_output(result).shape == (1,8,12)
+    maps=np.zeros((1,8,12),dtype=np.float32)
+    assert adapter.analysis(maps).dtype == np.complex64
+    assert calls['analysis_shape'] == ((8,12),2)
+
+
 def test_rust_gradient_zeros_constant_mode_in_private_copy(monkeypatch):
     from sht_bench import source_adapters
 

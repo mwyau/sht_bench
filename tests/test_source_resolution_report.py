@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from sht_bench.source_resolution_report import (
+    BACKEND_LABELS,
+    BUILD_STYLES,
     _optional_plot_availability,
     _raw_comparisons,
     _summaries,
@@ -33,6 +35,14 @@ def test_ratios_require_exact_workload_and_thread_match_and_keep_ms_difference()
     assert orders==[]
 
 
+def test_matched_ratios_require_identical_python_and_numpy_versions():
+    ducc=_record('ducc')
+    syl=_record('pyspharm-syl',median_s=.002)
+    ducc.update(python_version='3.13.15',numpy_version='2.5.3')
+    syl.update(python_version='3.13.15',numpy_version='2.5.4')
+    assert _raw_comparisons([ducc,syl])[0] == []
+
+
 def test_thread_and_order_derivations_keep_native_order_support_distinct():
     rows=[
         _record('ducc',q=1,mmax=36,mode='full',median_s=.004),
@@ -61,11 +71,34 @@ def test_summaries_allow_missing_native_setup_timing():
     assert summary['setup_s_median']==.01
 
 
+def test_summaries_retain_wheel_and_environment_identity():
+    record=_record('pyspharm-syl')
+    record.update({
+        'id':'syl-cell','source_sha':'wheel-sha','build_mode':'pypi-wheel',
+        'build_origin':'PyPI','package_version':'1.2.1','artifact_sha256':'wheel-sha',
+        'python_version':'3.13.15','numpy_version':'2.5.3',
+    })
+    summary=_summaries([record],{'syl-cell':{'samples_s':[.001]}})[0]
+    assert summary['build_origin']=='PyPI'
+    assert summary['package_version']=='1.2.1'
+    assert summary['artifact_sha256']=='wheel-sha'
+    assert summary['python_version']=='3.13.15'
+    assert summary['numpy_version']=='2.5.3'
+
+
 def test_single_backend_q1_run_omits_empty_comparison_figures():
     records=[_record('pyspharm')]
     assert _optional_plot_availability(records,[],[],'float64') == {
         'order':False,'matched':False,'threads':False,
     }
+
+
+def test_pypi_spherepack_series_keeps_backend_color_and_wheel_build_style():
+    from sht_bench.colors import BACKEND_COLORS
+
+    assert BACKEND_LABELS['pyspharm-syl']=='pyspharm-syl (PyPI wheel)'
+    assert BUILD_STYLES['pypi-wheel']=='-'
+    assert BACKEND_COLORS['pyspharm-syl']==BACKEND_COLORS['pyspharm']
 
 
 def test_optional_figures_require_matching_precision_and_multiple_threads():

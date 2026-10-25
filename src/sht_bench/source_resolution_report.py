@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 import csv
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -12,10 +13,10 @@ from .colors import BACKEND_COLORS
 
 BACKEND_LABELS = {
     'ducc':'DUCC', 'shtns':'SHTns', 'rustsht':'RustSHT',
-    'pyspharm-cpp':'pyspharm-cpp (DUCC-derived)', 'pyspharm':'pyspharm (conda-forge)',
+    'pyspharm-cpp':'pyspharm-cpp (DUCC-derived)', 'pyspharm-syl':'pyspharm-syl (PyPI wheel)',
 }
-BUILD_STYLES = {'local-git-source-snapshot':'--', 'conda-forge':'-.'}
-BUILD_CAPTION = 'pyspharm: conda-forge build'
+BUILD_STYLES = {'local-git-source-snapshot':'--', 'conda-forge':'-.', 'pypi-wheel':'-'}
+BUILD_CAPTION = 'pyspharm-syl: PyPI wheel'
 MARKERS = ('o','s','^','D','v','P','X','<','>')
 OUTCOME_FIELDS = (
     'id','backend','grid','case_id','resolution','nlat','nlon','lmax','mmax','mmax_mode',
@@ -24,7 +25,8 @@ OUTCOME_FIELDS = (
     'grid_points_per_second','setup_s','native_setup_s','first_synthesis_s','first_analysis_s',
     'rss_before_setup_bytes','rss_after_setup_bytes','peak_rss_bytes','threads_effective',
     'persistent_state_delta_bytes','setup_components_s_json','persistent_state_note',
-    'thread_control','source_sha','build_mode','import_path','raw_result_path',
+    'thread_control','source_sha','source_snapshot_sha256','build_mode','build_origin','package_version',
+    'artifact_sha256','python_version','numpy_version','import_path','raw_result_path',
 )
 
 
@@ -54,6 +56,41 @@ def _audit(output: Path, plan: dict, build_hash: str, harness_hash: str) -> tupl
     files = {path.stem:path for path in (output/'cells').glob('*.json')}
     results = {}
     issues = []
+    build_manifest_path=output/'build-manifest.json'
+    build_manifest=_read(build_manifest_path) if build_manifest_path.exists() else {}
+    for backend,entry in build_manifest.get('builds',{}).items():
+        if entry.get('status')!='built' or entry.get('build_kind')!='local-git-source-snapshot':
+            continue
+        revision=entry.get('resolved_sha')
+        snapshot_hash=entry.get('build_snapshot_sha256')
+        if entry.get('sha')!=revision or not isinstance(revision,str) or len(revision)!=40:
+            issues.append(f'{backend} build is missing its exact 40-character Git revision')
+        if not isinstance(snapshot_hash,str) or len(snapshot_hash)!=64:
+            issues.append(f'{backend} build is missing its tracked source-snapshot checksum')
+    syl=build_manifest.get('builds',{}).get('pyspharm-syl')
+    if syl is not None and syl.get('status') == 'built':
+        wheel=syl.get('pypi_wheel',{})
+        wheel_path=Path(wheel.get('local_path',''))
+        if syl.get('build_kind')!='pypi-wheel' or syl.get('build_origin')!='PyPI':
+            issues.append('pyspharm-syl build is not identified as a PyPI wheel')
+        if syl.get('package')!='pyspharm-syl' or syl.get('package_version')!='1.2.1':
+            issues.append('pyspharm-syl package identity/version differs from the locked release')
+        if syl.get('distribution_name')!='pyspharm-syl' or syl.get('distribution_version')!='1.2.1':
+            issues.append('installed pyspharm-syl distribution identity/version is inconsistent')
+        if syl.get('python_version')!='3.13.15' or syl.get('numpy')!='2.5.3':
+            issues.append('pyspharm-syl environment differs from the locked Python/NumPy versions')
+        if 'Tag: cp313-cp313-' not in (syl.get('wheel_metadata') or ''):
+            issues.append('pyspharm-syl installed WHEEL metadata is not CPython 3.13')
+        if not wheel.get('filename','').endswith('.whl') or not wheel.get('url','').startswith('https://files.pythonhosted.org/'):
+            issues.append('pyspharm-syl artifact is not a resolved PyPI wheel')
+        if not wheel_path.is_file():
+            issues.append('resolved pyspharm-syl wheel artifact is missing from the run output')
+        else:
+            actual=hashlib.sha256(wheel_path.read_bytes()).hexdigest()
+            if actual!=wheel.get('sha256') or actual!=syl.get('sha'):
+                issues.append('pyspharm-syl wheel artifact checksum differs from the build manifest')
+        if not syl.get('module_path') or not syl.get('native_module_path'):
+            issues.append('pyspharm-syl import or compiled extension path is missing')
     if set(files)-set(expected):
         issues.append(f'{len(set(files)-set(expected))} unexpected result files')
     for identifier, cell in expected.items():
@@ -165,7 +202,7 @@ def _audit(output: Path, plan: dict, build_hash: str, harness_hash: str) -> tupl
     return audit,results,validations
 
 
-def _cell_record(cell: dict, result: dict, path: Path | None) -> dict:
+def _cell_record(cell: dict, result: dict, path: Path | None, build: dict) -> dict:
     w = cell['workload']
     c = cell['resolution_case']
     before=result.get('rss_before_setup_bytes');after=result.get('rss_after_setup_bytes')
@@ -181,6 +218,12 @@ def _cell_record(cell: dict, result: dict, path: Path | None) -> dict:
         'persistent_state_delta_bytes':after-before if isinstance(after,(int,float)) and isinstance(before,(int,float)) else None,
         'setup_components_s_json':result.get('setup_components_s'),
         'persistent_state_note':result.get('persistent_state_note'),
+        'build_origin':build.get('build_origin'),
+        'source_snapshot_sha256':build.get('build_snapshot_sha256'),
+        'package_version':build.get('package_version') or build.get('distribution_version'),
+        'artifact_sha256':build.get('pypi_wheel',{}).get('sha256'),
+        'python_version':build.get('python_version'),
+        'numpy_version':build.get('numpy'),
         'raw_result_path':str(path) if path is not None else '',
     }
 
@@ -192,7 +235,8 @@ def _median_or_none(values: list) -> float | None:
 
 
 def _summaries(records: list[dict], results: dict[str,dict]) -> list[dict]:
-    keys = ('backend','grid','case_id','resolution','nlat','nlon','lmax','mmax','mmax_mode','precision','spin','operation','threads_requested')
+    keys = ('backend','build_mode','build_origin','package_version','artifact_sha256','python_version','numpy_version','source_sha','source_snapshot_sha256',
+            'grid','case_id','resolution','nlat','nlon','lmax','mmax','mmax_mode','precision','spin','operation','threads_requested')
     grouped = defaultdict(list)
     for record in records:
         grouped[tuple(record.get(k) for k in keys)].append(record)
@@ -240,7 +284,7 @@ def _percentile(values: list[float], fraction: float) -> float:
     return float(ordered[lower]*(upper-position)+ordered[upper]*(position-lower))
 
 
-def _accuracy_rows(validations: dict[str,dict], profile: dict) -> tuple[list[dict],dict[tuple,dict]]:
+def _accuracy_rows(validations: dict[str,dict], profile: dict, builds: dict[str,dict]) -> tuple[list[dict],dict[tuple,dict]]:
     case_lookup={(case['grid'],case['nlat'],case['nlon'],case['lmax']):case for case in profile['cases']}
     rows=[]
     maxima={}
@@ -249,8 +293,14 @@ def _accuracy_rows(validations: dict[str,dict], profile: dict) -> tuple[list[dic
         w=identity.get('workload',{})
         case=case_lookup.get((w.get('grid'),w.get('nlat'),w.get('nlon'),w.get('lmax')),{})
         validation=result.get('validation') or {}
+        build=builds.get(identity.get('backend'),{})
         base={
             'validation_id':identifier,'backend':identity.get('backend'),'grid':w.get('grid'),
+            'source_sha':identity.get('source_sha'),'build_mode':build.get('build_kind'),
+            'source_snapshot_sha256':build.get('build_snapshot_sha256'),
+            'build_origin':build.get('build_origin'),'package_version':build.get('package_version') or build.get('distribution_version'),
+            'artifact_sha256':build.get('pypi_wheel',{}).get('sha256'),
+            'python_version':build.get('python_version'),'numpy_version':build.get('numpy'),
             'case_id':case.get('case_id'),'resolution':case.get('resolution'),
             'nlat':w.get('nlat'),'nlon':w.get('nlon'),'lmax':w.get('lmax'),
             'mmax':w.get('mmax'),'precision':w.get('precision'),'spin':w.get('spin'),
@@ -290,14 +340,24 @@ def _raw_comparisons(records: list[dict]) -> tuple[list[dict],list[dict],list[di
         if not ducc or not isinstance(ducc.get('median_s'),(int,float)):continue
         for backend,row in backends.items():
             if backend=='ducc' or not isinstance(row.get('median_s'),(int,float)):continue
+            if row.get('python_version')!=ducc.get('python_version') or row.get('numpy_version')!=ducc.get('numpy_version'):
+                continue
             base=dict(zip(matched_keys,key))
             ratios.append({**base,'backend':backend,'ducc_median_s':ducc['median_s'],'backend_median_s':row['median_s'],
                            'ratio_to_ducc':row['median_s']/ducc['median_s'],
                            'speedup_vs_backend':ducc['median_s']/row['median_s'],
                            'absolute_difference_ms':1000*(row['median_s']-ducc['median_s']),
-                           'backend_build_mode':row.get('build_mode'),'ducc_build_mode':ducc.get('build_mode'),
+                           'backend_build_mode':row.get('build_mode'),'backend_build_origin':row.get('build_origin'),
+                           'backend_package_version':row.get('package_version'),'backend_artifact_sha256':row.get('artifact_sha256'),
+                           'backend_source_sha':row.get('source_sha'),'backend_python_version':row.get('python_version'),
+                           'backend_source_snapshot_sha256':row.get('source_snapshot_sha256'),
+                           'backend_numpy_version':row.get('numpy_version'),
+                           'ducc_build_mode':ducc.get('build_mode'),'ducc_source_sha':ducc.get('source_sha'),
+                           'ducc_source_snapshot_sha256':ducc.get('source_snapshot_sha256'),
+                           'ducc_python_version':ducc.get('python_version'),'ducc_numpy_version':ducc.get('numpy_version'),
                            'matched':True})
-    thread_keys=('backend','grid','case_id','resolution','nlat','nlon','lmax','mmax','mmax_mode','precision','spin','operation','round')
+    provenance_keys=('build_mode','build_origin','package_version','artifact_sha256','python_version','numpy_version','source_sha','source_snapshot_sha256')
+    thread_keys=('backend',*provenance_keys,'grid','case_id','resolution','nlat','nlon','lmax','mmax','mmax_mode','precision','spin','operation','round')
     threads=defaultdict(dict)
     for row in records:
         if row['status']=='timed_successfully':
@@ -314,7 +374,7 @@ def _raw_comparisons(records: list[dict]) -> tuple[list[dict],list[dict],list[di
             speedup=baseline['median_s']/row['median_s']
             scaling.append({**dict(zip(thread_keys,key)),'threads_requested':q,'median_s':row['median_s'],
                             'speedup_vs_q1':speedup,'parallel_efficiency':speedup/q})
-    order_keys=('backend','grid','case_id','nlat','nlon','lmax','precision','spin','operation','threads_requested','round')
+    order_keys=('backend',*provenance_keys,'grid','case_id','nlat','nlon','lmax','precision','spin','operation','threads_requested','round')
     orders=defaultdict(dict)
     for row in records:
         if row['status']=='timed_successfully':
@@ -425,6 +485,7 @@ def _plot_threads(report: Path, records: list[dict], cases: list[dict], precisio
     plt=_matplotlib()
     fig,axes=plt.subplots(4,2,figsize=(15,16),constrained_layout=True)
     facets=((0,'analysis','Scalar analysis'),(0,'synthesis','Scalar synthesis'),(1,'analysis','Vector analysis'),(1,'synthesis','Vector synthesis'))
+    thread_counts=sorted({r['threads_requested'] for r in records if r['precision']==precision and r['status']=='timed_successfully'})
     case_markers={case['case_id']:MARKERS[index%len(MARKERS)] for index,case in enumerate(cases)}
     for row_index,(spin,operation,title) in enumerate(facets):
         for col_index,grid in enumerate(('CC','GL')):
@@ -439,14 +500,14 @@ def _plot_threads(report: Path, records: list[dict], cases: list[dict], precisio
                     if len(qs)<2:continue
                     build=backend_records[0].get('build_mode')
                     ax.plot(qs,points,color=BACKEND_COLORS[backend],marker=case_markers[case['case_id']],linestyle=BUILD_STYLES.get(build,'-'),alpha=.75)
-            ax.set_xscale('log',base=2);ax.set_xticks((1,2,4,8,16),(1,2,4,8,16));ax.set_yscale('log')
+            ax.set_xscale('log',base=2);ax.set_xticks(thread_counts,[str(q) for q in thread_counts]);ax.set_yscale('log')
             ax.grid(True,which='both',alpha=.25);ax.set_title(f'{title} — {grid}')
             ax.set_ylabel('Median warm call (ms)' if col_index==0 else '');ax.set_xlabel('Requested physical-core threads')
     from matplotlib.lines import Line2D
     backend_handles=[Line2D([0],[0],color=BACKEND_COLORS[name],label=BACKEND_LABELS[name]) for name in BACKEND_LABELS]
     marker_handles=[Line2D([0],[0],color='#444444',marker=case_markers[case['case_id']],linestyle='None',label=case['case_id']) for case in cases]
     fig.legend(handles=backend_handles+marker_handles,loc='outside lower center',ncol=5,fontsize=8)
-    fig.suptitle(f'{precision}: q1/q2/q4/q8/q16 at every profile case, full mmax; marker identifies resolution; {BUILD_CAPTION}')
+    fig.suptitle(f'{precision}: threads {", ".join(map(str,thread_counts))} at every profile case, full mmax; marker identifies resolution; {BUILD_CAPTION}')
     fig.savefig(report/f'threads-{precision}.png',dpi=150);plt.close(fig)
 
 
@@ -472,7 +533,7 @@ def _plot_overheads(report: Path, records: list[dict], precision: str) -> None:
             ax.set_xscale('log');ax.set_yscale('log');ax.grid(True,which='both',alpha=.25)
             ax.set_title(f'{title} — {grid}');ax.set_xlabel('Warm transform median (ms)');ax.set_ylabel('Constructor/grid setup (s)' if col_index==0 else '')
             if row_index==0 and col_index==0:ax.legend(fontsize=8,ncol=2)
-    fig.suptitle(f'{precision}: setup cost versus warm latency, full mmax, q1; open markers identify the conda-forge build; {BUILD_CAPTION}')
+    fig.suptitle(f'{precision}: setup cost versus warm latency, full mmax, q1; open markers are reserved for conda builds; {BUILD_CAPTION}')
     fig.savefig(report/f'setup-vs-warm-{precision}.png',dpi=150);plt.close(fig)
 
     fig,axes=plt.subplots(2,2,figsize=(13,10),constrained_layout=True)
@@ -535,19 +596,20 @@ def render(output: Path) -> dict:
     output=Path(output).resolve()
     plan=_read(output/'workload-plan.json')
     profile=_read(output/'resolution-profile.json')
-    BACKEND_LABELS['pyspharm']='pyspharm (conda-forge)'
-    BUILD_CAPTION='pyspharm: conda-forge build'
+    BACKEND_LABELS['pyspharm-syl']='pyspharm-syl (PyPI wheel)'
+    BUILD_CAPTION='pyspharm-syl: PyPI wheel'
     build_manifest_path=output/'build-manifest.json'
+    build_manifest={}
     if build_manifest_path.exists():
         build_manifest=_read(build_manifest_path)
-        pyspharm_build=build_manifest.get('builds',{}).get('pyspharm',{})
-        package=pyspharm_build.get('resolved_conda_package',{})
-        if package:
-            BACKEND_LABELS['pyspharm'] = (
-                f"pyspharm (conda-forge {package.get('version')}"
-                f"-{package.get('build_string')})"
-            )
-            BUILD_CAPTION = f"pyspharm: conda-forge {package.get('version')}-{package.get('build_string')}"
+        wheel_build=build_manifest.get('builds',{}).get('pyspharm-syl',{})
+        wheel=wheel_build.get('pypi_wheel',{})
+        version=wheel_build.get('package_version')
+        filename=wheel.get('filename')
+        digest=wheel.get('sha256')
+        if version and filename and digest:
+            BACKEND_LABELS['pyspharm-syl']=f'pyspharm-syl (PyPI wheel {version})'
+            BUILD_CAPTION=f'pyspharm-syl {version} PyPI wheel {filename} sha256:{digest[:12]}'
     config=plan['configuration']
     audit,results,validations=_audit(output,plan,config['build_manifest_sha256'],config['harness_sha256'])
     (output/'final-audit.json').write_text(json.dumps(audit,indent=2)+'\n')
@@ -559,15 +621,16 @@ def render(output: Path) -> dict:
         result=results.get(identifier)
         if result is None:
             result={'id':identifier,'status':'pending','reason':'no outcome file was recorded'}
-        records.append(_cell_record(cell,result,path if path.exists() else None))
+        build=build_manifest.get('builds',{}).get(cell['backend'],{})
+        records.append(_cell_record(cell,result,path if path.exists() else None,build))
     records.sort(key=lambda r:(r['grid'],r['nlat'],r['backend'],r['precision'],r['spin'],r['operation'],r['mmax'],r['threads_requested'],r['round']))
     summaries=_summaries(records,results)
-    accuracy_rows,maxima=_accuracy_rows(validations,profile)
+    accuracy_rows,maxima=_accuracy_rows(validations,profile,build_manifest.get('builds',{}))
     ratios,scaling,order=_raw_comparisons(records)
     _write_csv(report/'outcomes.csv',list(OUTCOME_FIELDS),records)
     summary_fields=sorted({key for row in summaries for key in row})
     _write_csv(report/'summary.csv',summary_fields,summaries)
-    _write_csv(report/'accuracy.csv',('validation_id','backend','grid','case_id','resolution','nlat','nlon','lmax','mmax','precision','spin','threads_requested','status','tolerance','fixture','metric','relative_l2','max_absolute','scaled_error','passed'),accuracy_rows)
+    _write_csv(report/'accuracy.csv',('validation_id','backend','source_sha','source_snapshot_sha256','build_mode','build_origin','package_version','artifact_sha256','python_version','numpy_version','grid','case_id','resolution','nlat','nlon','lmax','mmax','precision','spin','threads_requested','status','tolerance','fixture','metric','relative_l2','max_absolute','scaled_error','passed'),accuracy_rows)
     _write_csv(report/'matched-ratios.csv',list(ratios[0]) if ratios else ('backend','grid','case_id','nlat','nlon','lmax','mmax','mmax_mode','precision','spin','operation','threads_requested','round','ratio_to_ducc','speedup_vs_backend','absolute_difference_ms'),ratios)
     _write_csv(report/'thread-scaling.csv',list(scaling[0]) if scaling else ('backend','grid','case_id','precision','spin','operation','threads_requested','speedup_vs_q1','parallel_efficiency'),scaling)
     _write_csv(report/'order-comparison.csv',list(order[0]) if order else ('backend','grid','case_id','precision','spin','operation','half_over_full','full_over_half_speedup'),order)
@@ -600,7 +663,7 @@ def render(output: Path) -> dict:
         '- Accuracy records use an independent normalized associated-Legendre recurrence; no timings from failed gates are included in comparisons.\n'
         '- Ratios are matched on grid dimensions, L, mmax, precision, spin, operation, and thread count.\n'
         f'- Optional matched figures by precision: {json.dumps(optional_plots, sort_keys=True)}; figures are omitted when no matched outcomes exist.\n'
-        f'- Backend colors are fixed; line style and open markers identify build origin. The Spherepack series uses {BUILD_CAPTION}.\n'
+        f'- Backend colors are fixed; line style and markers identify build origin. The Spherepack series uses {BUILD_CAPTION}.\n'
         '- CC and GL are shown in separate facets. GL N=320 (640×1280) is not paired as an identical workload with CC 0.25° (721×1440, L=360).\n'
         '- `pyspharm-cpp` is DUCC-derived and is distinguished by its API and package/build metadata.\n'
     )

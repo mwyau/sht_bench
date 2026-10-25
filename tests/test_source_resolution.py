@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from sht_bench.source_resolution import (
     BACKENDS, CC_PROFILE, GL_PROFILE, case_reference, planned_cells,
@@ -44,12 +45,12 @@ def test_resolution_plan_keeps_lmax_and_requests_native_full_and_half_mmax():
 
 def test_default_plan_counts_backend_api_exclusions_explicitly():
     counts=plan_counts(planned_cells(resolution_cases()))
-    assert counts['total'] == 12_096
-    assert counts['planned'] == 10_248
-    assert counts['unsupported'] == 1_848
+    assert counts['total'] == 9_744
+    assert counts['planned'] == 8_232
+    assert counts['unsupported'] == 1_512
     assert tuple(counts['by_backend']) == BACKENDS
     assert counts['by_backend']['pyspharm-cpp']['unsupported'] > 0
-    assert counts['by_backend']['pyspharm']['unsupported'] > 0
+    assert counts['by_backend']['pyspharm-syl']['unsupported'] > 0
     assert counts['by_backend']['shtns']['unsupported'] == 0
 
 
@@ -58,7 +59,23 @@ def test_endpoint_smoke_keeps_only_small_cc_and_gl_cases():
     assert [(case['grid'],case['case_id']) for case in cases] == [('CC','CC-2.5deg'),('GL','GL-N32')]
 
 
-def test_source_resolution_cli_accepts_pyspharm_plan_without_building(tmp_path, capsys):
+def test_resolution_sweep_limits_default_thread_set_and_rejects_q16(capsys):
+    from sht_bench.source_resolution import THREADS
+    import runpy
+    from pathlib import Path
+
+    assert THREADS==(1,2,4,8)
+    script=Path(__file__).resolve().parents[1]/'scripts'/'run_source_resolution_sweep.py'
+    main=runpy.run_path(str(script),run_name='sht_bench_source_resolution_q16_test')['main']
+    with pytest.raises(SystemExit):
+        main(['--plan-only','--threads','1,16'])
+    assert 'q16 is reserved for separate diagnosis' in capsys.readouterr().err
+    with pytest.raises(SystemExit):
+        main(['--plan-only','--python','3.14'])
+    assert 'pins all backend environments to Python 3.13.15' in capsys.readouterr().err
+
+
+def test_source_resolution_cli_accepts_pyspharm_syl_plan_without_building(tmp_path, capsys):
     import runpy
     from pathlib import Path
 
@@ -66,13 +83,13 @@ def test_source_resolution_cli_accepts_pyspharm_plan_without_building(tmp_path, 
     main = runpy.run_path(str(script), run_name='sht_bench_source_resolution_test')['main']
 
     result = main([
-        '--plan-only', '--grid', 'CC', '--backend', 'pyspharm',
+        '--plan-only', '--grid', 'CC', '--backend', 'pyspharm-syl',
         '--threads', '1', '--precision', 'float32', '--mmax', 'full', '--rounds', '1',
     ])
     import json
 
     plan = json.loads(capsys.readouterr().out)
     assert result == 0
-    assert tuple(plan['outcomes']['by_backend']) == ('pyspharm',)
+    assert tuple(plan['outcomes']['by_backend']) == ('pyspharm-syl',)
     assert plan['outcomes']['total'] == 28
-    assert plan['precision_rule'].startswith('SHTns only float64; conda-forge pyspharm')
+    assert plan['precision_rule'].startswith('SHTns only float64; PyPI pyspharm-syl')

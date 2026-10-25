@@ -62,7 +62,7 @@ def spherepack_stored_arrays(nlat, nlon, grid):
         synthesis = n1*n2*(2*nlat-n1+1)+nlon+15+2*nlat
         lengths = {'wshags':scalar,'wshsgs':scalar,'wvhags':analysis,'wvhsgs':synthesis}
     return {'array_lengths':lengths,'itemsize_bytes':4,'persistent_lower_bound_bytes':sum(lengths.values())*4,
-            'method':'spharm.Spharmt legfunc=stored array-length formulas; checked against conda-forge pyspharm 1.0.9'}
+            'method':'spharm.Spharmt legfunc=stored array-length formulas; shared by pyspharm upstream 1.0.9 and pyspharm-syl 1.2.1'}
 
 
 def preflight(backend, workload, *, limit_bytes=None):
@@ -71,7 +71,7 @@ def preflight(backend, workload, *, limit_bytes=None):
     budget = min(available,limit_bytes) if available is not None and limit_bytes is not None else (available if limit_bytes is None else limit_bytes)
     result = {'memory_observation':observation,'memory_budget_bytes':budget,'persistent_lower_bound_bytes':None,
               'resource_limited':False}
-    if backend == 'pyspharm' and workload.grid in ('GL','CC') and workload.nlat>=3 and workload.nlon>=4:
+    if backend in ('pyspharm','pyspharm-syl') and workload.grid in ('GL','CC') and workload.nlat>=3 and workload.nlon>=4:
         result.update(spherepack_stored_arrays(workload.nlat,workload.nlon,workload.grid))
         if budget is not None and result['persistent_lower_bound_bytes']>budget:
             result['resource_limited'] = True
