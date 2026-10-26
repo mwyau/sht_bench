@@ -4,7 +4,7 @@ These tracked records are from `pyspharm` 1.0.9 build
 `np2py314h2766e9b_1017`, Linux x86-64, CPython 3.14.9, and NumPy 2.5.4.
 Package and environment hashes, exact conda exports, runtime dtypes, import
 paths, extension hash, and linked libraries are recorded in the
-[environment provenance](../../../environments/pyspharm-conda-forge-linux-64.provenance.json).
+[environment provenance](../../../../../environments/pyspharm-conda-forge-linux-64.provenance.json).
 
 ## Source q1
 
@@ -28,7 +28,7 @@ matched ratios, and regenerated charts:
 ## Legacy matrix
 
 - `legacy-matrix.json` retains all seven timing samples for each of 180 GL/CC operation, bandwidth, and requested-thread cells.
-- `legacy-matrix.csv`, `legacy-matrix-manifest.json`, and `legacy-matrix-summary.json` provide the tabular export, run configuration, and compact counts/range.
+- `legacy-matrix.csv`, `legacy-matrix-summary.json`, and `legacy-matrix-summary.json` provide the tabular export, run configuration, and compact counts/range.
 
 ## Numerical diagnostics
 

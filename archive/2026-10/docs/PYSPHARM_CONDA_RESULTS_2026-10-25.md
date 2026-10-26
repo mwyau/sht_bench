@@ -16,9 +16,9 @@ analysis returns `complex64` coefficients and synthesis returns `float32`
 maps. The native extension links to `libm`, `libc`, and the system loader; it
 has no direct FFT, BLAS, or LAPACK linkage. The imported module, extension,
 package record, dependencies, and linked libraries are recorded in the
-[environment provenance](../environments/pyspharm-conda-forge-linux-64.provenance.json).
-The [explicit conda export](../environments/pyspharm-conda-forge-linux-64.explicit.txt)
-and [reusable environment specification](../environments/pyspharm-conda-forge-linux-64.export.yml)
+[environment provenance](../../../environments/pyspharm-conda-forge-linux-64.provenance.json).
+The [explicit conda export](../../../environments/pyspharm-conda-forge-linux-64.explicit.txt)
+and [reusable environment specification](../../../environments/pyspharm-conda-forge-linux-64.export.yml)
 are tracked with the results.
 
 New uv-managed environments default to Python 3.14.8 and NumPy 2.5.4. The
@@ -163,7 +163,7 @@ identity.
 
 The [legacy matrix JSON](data/pyspharm-conda-forge-2026-10-25/legacy-matrix.json),
 [CSV](data/pyspharm-conda-forge-2026-10-25/legacy-matrix.csv), and
-[manifest](data/pyspharm-conda-forge-2026-10-25/legacy-matrix-manifest.json)
+[manifest](data/pyspharm-conda-forge-2026-10-25/legacy-matrix-summary.json)
 are the current conda-forge pyspharm legacy matrix exports.
 
 ## Numerical behavior and capability limits

@@ -1,297 +1,41 @@
-# Benchmark matrix
+# GL/CC scaling benchmark
 
-The `matrix` command evaluates combinations of build mode, transform implementation, grid, thread count, spectral scale, and transform direction. Each thread count runs in a fresh Python process so thread-related environment variables are set before numerical libraries are imported.
+## Standard workload
 
-## Dimensions
+| Dimension | Values |
+| --- | --- |
+| GL | N = 32, 45, 64, 90, 128, 180, 320; `nlat=2N, nlon=4N, lmax=N` |
+| CC | L = 36, 45, 60, 90, 120, 180, 360; `nlat=2L+1, nlon=4L, lmax=L` |
+| Backend | DUCC, SHTns, RustSHT, conda-forge pyspharm; optional DUCC-derived pyspharm-cpp |
+| Spin | 0 (scalar), 1 (vector) |
+| Direction | Analysis, synthesis |
+| Precision | float32 or float64 as actually supported |
+| Requested threads | **1, 2, 4, 8, 16** where supported |
+| Truncation | Full triangular, `mmax=lmax` (half-order optional later) |
 
-The matrix varies:
+Pyspharm has no public native thread control and is timed at **q1 only**. SHTns Python exposes float64 only. Do not replace one grid, backend, precision or native batch operation with another and call it a match.
 
-- build mode: `installed`, `wheel`, `source`, or `both`;
-- backend: DUCC, SHTns, pyshtools/SHTOOLS, and conda-forge pyspharm/Spherepack;
-- grid: Gauss–Legendre (`gl`) and regular/Clenshaw–Curtis (`cc`), subject to backend support;
-- thread count;
-- spectral scale;
-- operation: analysis and synthesis.
+## Fast exploratory measurement protocol
 
-Grid support is:
+**One warmup, three timed samples, one process round** per supported cell, keeping reusable construction outside warm-call timing. Save all three raw samples, the median latency in milliseconds, setup latency separately, CPU/thread request, exact workload, binary provenance and outcome status. Exclude unsupported, execution-failed and resource-limited cases from lines; leave holes visible.
 
-| Backend | Default atmospheric `gl` | Custom compact `gl` | `cc` |
-| --- | :---: | :---: | :---: |
-| DUCC | yes | yes | yes |
-| SHTns | yes | yes | yes |
-| pyshtools / SHTOOLS | no | yes | no |
-| pyspharm / Spherepack | yes | yes | yes |
+Basic shape/dtype/finite checks are enough to establish that a timing call ran, **not** that its numerical algorithm is accurate. Label the resulting performance study exploratory. Avoid lengthy independent reference/round-trip audits and expensive repeated process rounds unless a specific anomaly requires investigation.
 
-Native SHTOOLS GLQ routines require `nlon = 2*nlat - 1`, whereas the default atmospheric Gaussian grids use an even `nlon = 4F`. SHTOOLS is therefore excluded from the default common-grid GL matrix rather than measured on a different grid under the same label.
+**Runner status:** `scripts/run_source_resolution_sweep.py` currently performs heavy validation and audit work independent of `--repeat`. A lightweight runner path needs to be implemented before launching the requested low-overhead sweep.
 
-The `pyspharm` backend is installed from conda-forge in a separate conda environment. The host comparison uses Python 3.14.9, NumPy 2.5.4, and pyspharm 1.0.9 build `np2py314h2766e9b_1017`. `spharm` and `_spherepack` are checked against that prefix before benchmarking. The conda build is recorded as `conda-forge`; it is not installed through uv and is not labeled as a wheel. New wheel/source matrix environments default to Python 3.14.8 and NumPy 2.5.4, within the same Python 3.14 minor line. Source-build matrices contain DUCC, SHTns, and pyshtools/SHTOOLS; pyshtools contributes only when a requested GL case uses its compact native GLQ geometry.
-
-The package build identity, capability limits, q1 validation results, and tracked measurements are in the [pyspharm conda-forge results report](PYSPHARM_CONDA_RESULTS_2026-10-25.md). The pyspharm rerun uses Python 3.14.9; cross-version ratios against the historical Python 3.13.15 source matrix are excluded. The report also contains matched controls where all four backends use Python 3.14.9 and NumPy 2.5.4.
-
-Result rows retain their measured Python and NumPy versions. The conda-forge
-pyspharm environment uses Python 3.14.9 and NumPy 2.5.4. New uv-managed
-environments use Python 3.14.8 and NumPy 2.5.4. Each result manifest records
-runtime versions and build provenance.
-
-PyPI wheel availability is evaluated only for backends installed through uv. A backend whose pinned wheel cannot be resolved is recorded as an exclusion and omitted from the wheel matrix rather than compiled from source. This allows the same command to run on x86_64 and arm64; for example, if the pinned DUCC release has no compatible arm64 wheel, only its source-build series is measured. The conda-forge pyspharm environment uses the package solver for the host platform and records the resolved package build. Because plotting uses successful result records, unavailable package series are absent from the figures.
-
-Unsupported cases are skipped. Missing packages and other setup failures are reported; `--strict` returns a nonzero exit status for failures.
-
-## Default command
-
-Plot generation requires the `plot` extra:
+## Run configuration
 
 ```bash
-uv run --extra plot sht-bench matrix --plot
+uv run --extra plot python scripts/run_source_resolution_sweep.py \
+  --plan-only --backend ducc,shtns,rustsht,pyspharm \
+  --grid CC,GL --threads 1,2,4,8,16 \
+  --precision float32,float64 --mmax full --rounds 1 --repeat 3
 ```
 
-Defaults:
+For an existing build, supply `--build-manifest PATH`; for a new one, use `--build`. Save outputs under a new directory in `results/` and regenerate with `--replot`. Do not merge rows from differently configured runs without clear provenance.
 
-```text
-build      = installed
-backend    = all
-grid       = all
-threads    = auto
-GL         = F32, F48, F64, F80, F128, F160, F256, F320, F512, F640
-CC         = 2.5°, 1.5°, 1.25°, 1°, 0.75°, 0.5°, 0.25°, 0.125°
-operation  = all
-```
+## Figures and published results
 
-The GL `lmax` values are `42,63,85,159,255,319,511,639,1023,1279`. The corresponding spectral truncations are `T42`, `T63`, `T85`, `TL159`, `TL255`, `TL319`, `TL511`, `TL639`, `TL1023`, and `TL1279`. The CC values are `36,60,72,90,120,180,360,720`. Supplying `--lmax` overrides the grid-specific defaults.
+Produce **16 scaling figures** for GL/CC × precision × spin × direction. Each has **five panels** for q1/q2/q4/q8/q16, with an x-axis of increasing resolution and a logarithmic median-latency y-axis; each backend gets one curve based only on actually measured matching cases. Use the existing fixed backend colors. The q1-only pyspharm data may be shown only in the q1 panel, or as a clearly labeled *serial reference*, not a fake thread-scaling curve.
 
-The full GL mappings and CC grid dimensions are listed in the root [README](../README.md).
-
-`--threads auto` selects powers of two up to the detected logical CPU count and also includes the exact logical count when needed. Explicit thread counts are preferable when CPU affinity is controlled externally.
-
-## Examples
-
-Compare the uv binary-package and source-build environments with the separate
-conda-forge pyspharm environment across both default grid sweeps:
-
-```bash
-uv run --extra plot sht-bench matrix \
-  --build both \
-  --threads 1,2,4,8,16 \
-  --plot
-```
-
-Run only the default atmospheric Gaussian sweep:
-
-```bash
-uv run --extra plot sht-bench matrix \
-  --build both \
-  --grid gl \
-  --threads 1,2,4,8,16 \
-  --output results/gl \
-  --plot
-```
-
-Run only the default regular-grid sweep:
-
-```bash
-uv run --extra plot sht-bench matrix \
-  --build both \
-  --grid cc \
-  --threads 1,2,4,8,16 \
-  --output results/cc \
-  --plot
-```
-
-`--lmax` and `--threads` accept comma-separated values and inclusive `start:stop[:step]` ranges.
-
-## Replacing part of an existing matrix
-
-`--merge-existing` rebuilds `matrix.json` from the cell files already present in the output directory plus the cells generated by the current command. A newly generated cell replaces the previous file with the same build/grid/thread identity.
-
-For example, after deleting obsolete CC cell files, regenerate CC while retaining compatible GL cells:
-
-```bash
-uv run --extra plot sht-bench matrix \
-  --build both \
-  --grid cc \
-  --threads 1,2,4,8,16 \
-  --reuse \
-  --merge-existing \
-  --output results/matrix \
-  --plot
-```
-
-Results produced with different grid definitions must not be combined as one benchmark series. Because both the GL and CC default definitions changed in this revision, existing results from the earlier compact-GL/offset-CC matrix should be regenerated before comparison with the new defaults.
-
-## Process isolation
-
-A matrix cell is defined by build mode, grid, and requested thread count. Each cell invokes `sht-bench run` in a separate process. The selected backends and spectral-scale values for that cell are then measured in that process.
-
-This separation prevents OpenMP, BLAS, MKL, or backend thread state initialized during import from carrying across thread-count changes.
-
-## Output files
-
-A matrix writes one JSON/CSV pair for each executed cell, a combined result file, and a manifest:
-
-```text
-results/matrix/
-├── installed-gl-t1.json
-├── installed-gl-t1.csv
-├── installed-cc-t1.json
-├── installed-cc-t1.csv
-├── ...
-├── matrix.json
-├── matrix.csv
-├── matrix-manifest.json
-└── plots/
-    ├── README.md
-    ├── manifest.json
-    ├── by-lmax/
-    │   └── <grid>/<operation>/threads-<N>.png
-    └── by-threads/
-        └── <grid>/<operation>/lmax-<L>.png
-```
-
-`matrix.json` contains the union of successful cell results. `matrix-manifest.json` records the requested dimensions, generated files, excluded combinations, and failed cells.
-
-## Plots
-
-`--plot` generates all matrix figures after data collection. Existing results can be replotted with:
-
-```bash
-uv run --extra plot sht-bench plot-all \
-  results/matrix/matrix.json \
-  --output results/matrix/plots
-```
-
-The generated figures include:
-
-- transform time versus atmospheric Gaussian scale for GL and versus regular-grid spacing for CC, for each operation and thread count;
-- transform time versus thread count for each grid, operation, and spectral scale.
-
-`plots/README.md` displays the figures as clickable thumbnails with analysis and synthesis side by side. Each thumbnail links to the corresponding full-resolution PNG.
-
-Backend color is fixed across all figures. Wheel and installed builds use solid lines, Git source builds use dashed lines, and conda-forge builds use dash-dot lines. SHTns is source-built in both uv environments and is plotted once as a dashed source series, using the explicit source-run measurement when both are available. pyspharm figures identify the conda-forge version and build string in the legend and methodology. GL plots label the sampled x-axis points `F32`, `F48`, `F64`, `F80`, `F128`, `F160`, `F256`, `F320`, `F512`, and `F640`; CC plots label the sampled regular-grid resolutions explicitly. Both retain logarithmic x-axis spacing. Thread plots label the actual requested counts such as `1, 2, 4, 8, 16`. CC resolution runs from coarse to fine from left to right. Transform-time axes state that lower values are better. Median transform time is plotted by default.
-
-## Interpretation
-
-The matrix measures the configured transform calls across the selected software and hardware conditions. Precision, coefficient conventions, setup model, build configuration, and effective thread control differ between implementations and should be reported with timing comparisons.
-
-## Numerically gated Git source comparison
-
-`sht-bench source-matrix` runs the Git-source environments described in
-[BUILD.md](../BUILD.md#git-source-matrix). The workload records include explicit
-latitude/longitude dimensions, inclusive degree and order, spin, precision,
-operation, allocation, longitude origin and geometry group. Default degree
-candidates cover 1 through 1279; atmospheric GL and common regular CC geometries
-are additional named groups. Minimum analysis grids use `L+1` GL/F1 latitudes
-or `L+2` CC latitudes and `2L+1` longitudes. Full and quarter orders are separate.
-
-Before transform timing, each worker checks independent normalized
-associated-Legendre synthesis on the complete random-field grid and at sampled
-coordinates for low-degree real and
-imaginary harmonics, high-degree zonal and sectoral modes, random spectra,
-full coefficient recovery, and synthesis–analysis map round trips. Canonical
-coefficients are orthonormal complex positive orders with the Condon–Shortley
-phase. Spin-1 E is the negative normalized scalar gradient, and B is its
-90-degree rotation in the colatitude/eastward frame. Adapters convert native
-phase, scaling and signs outside timing. The relative L2 and scaled-error
-limits are `2e-10` for float64 and `5e-5` for float32; maximum absolute errors
-are also retained. Every failed gate excludes that cell from comparative timing.
-
-Allocating and output-buffer calls are distinct workloads. Constructor/grid
-setup, first calls and validation occur before warm transform timing. Calibrated
-batches target 20 ms by default, with 30 raw samples and three independent
-process rounds. Backend order reverses between rounds. Worker affinity uses
-one allowed logical CPU per physical core, ordered by L3 domain. Effective
-thread counts remain unknown when the native API cannot query them. Process
-peak RSS includes setup, validation and buffers and is recorded separately
-from warm latency. Results on the shared host carry a provisional label.
-
-Use `--secondary` for the base matrix plus adjoint, derivative, batch and
-independent longitude parity/origin requests. Each baseline grid has both
-longitude parities at origins 0 and 0.37 radians. Native capability exclusions
-have explicit records. `--resume` checks
-workload identity, source SHA, build-manifest digest and harness digest; it does
-not silently reuse measurements from changed code. Workers verify imported
-module paths and the controller verifies binary hashes. A worker timeout is
-recorded as `resource_limited`.
-
-`python -m sht_bench.source_report DIRECTORY --output REPORT` regenerates
-precision-separated scalar/vector figures, setup/RSS figures, thread scaling,
-accuracy records, and matched backend ratios with absolute latency differences.
-Only numerically validated timing cells enter these
-comparisons. Backend colors are fixed. Each matched pair shares the exact
-workload, requested thread count and independent process round.
-`--focus-backend pyspharm` limits figures to workload groups that contain a
-validated pyspharm series while keeping the outcome, accuracy and matched-pair
-tables complete.
-`--tables-only` exports the audited outcome, accuracy, timing and comparison
-tables without rendering figures; the default report also renders figures.
-Matched ratios include pyspharm/DUCC and pyspharm/RustSHT only for identical
-workloads and precision. A pyspharm/SHTns ratio is emitted only if both APIs
-provide the same precision; otherwise their results remain in separate
-precision groups. The focused conda-forge comparison uses Python 3.14.9 and
-NumPy 2.5.4 for all four backends.
-
-Timed analysis uses the same independent reference field, cast to the selected
-precision, for every backend on a given grid. Its coefficient recovery is a
-separate validity check. Independent full fields are cached by workload,
-coefficient bytes, NumPy version and harness digest, with file checksums verified
-on reuse. Independent coordinates are also cached without changing their rules
-or float64 values.
-
-SHTns uses `sht_reg_fast` for Fejer-1 midpoint nodes and `sht_reg_poles` for
-endpoint-including CC nodes; the adapter checks the actual latitude nodes.
-Additional F1 and CC quadrature grids use `nlat=max(32,2L+2)`. The GL `extended`
-group uses `nlat=L+2`; it is distinct from the `nlat=L+1` minimum group and
-atmospheric grids, with its own numerical outcomes.
-Spherepack vector transforms use unit radius, convert E/B to divergence/vorticity
-by multiplication with `sqrt(l(l+1))` and the scalar normalization factor,
-and convert eastward/northward velocity to colatitude/eastward components.
-Its rank-three field API measures native batches. RustSHT float32 workloads
-use the native `rustsht._rustsht.ShtPlan32` class when exposed by the selected
-revision; unsupported output buffers and operations have explicit outcomes.
-DUCC batch synthesis uses the native explicit-ring API. Its per-field
-`analysis_2d` calls are used only for validation and a labelled first-call
-diagnostic; they are not a native batched-analysis benchmark.
-
-Native A/S call arguments and output conversions are prepared outside first-call
-and warm timing. `native_setup_s` measures exposed constructor/grid/precomputation
-calls for RustSHT, SHTns and Spherepack. SHTns constructor and `set_grid` times are
-separate from independent node verification. DUCC exposes no reusable 2d plan;
-its internal API setup remains in call latency, and external native setup is
-unavailable rather than zero. A separate operation-preparation measurement
-includes RustSHT's additional gradient plan.
-
-Workers record observed available memory and finite cgroup limits. Stored
-Spherepack plans whose persistent arrays alone exceed that budget are marked
-`resource_limited` before allocation. `--memory-limit-gib` can impose a smaller
-budget. When a budget is available, the worker bounds additional virtual address
-space relative to its post-import baseline; this limit is distinct from measured
-peak RSS.
-
-`python -m sht_bench.source_audit DIRECTORY --output AUDIT.json --require-complete`
-checks exact expanded workload/process identities against `workload-plan.json`
-and independently requires configured minimum/standard geometries and secondary
-experiment dimensions.
-It recomputes numerical acceptance from stored fixture metrics and raw-sample
-statistics, and checks source/build identity, affinity and secondary/output-buffer
-gates. Missing, duplicate, unexpected or inconsistent cells prevent a complete
-passing audit. The report command writes `evidence-audit.json` and rejects
-inconsistent evidence before generating comparisons. Partial reports identify
-the exact number of pending cells. Coverage refers to the stored run plan.
-Audit and export share one file snapshot. Accuracy and outcome records are
-streamed to disk; plot processing retains compact successful-case metadata
-instead of every raw fixture payload.
-For secondary workloads, accuracy records distinguish base A/S fixtures from
-the requested derivative synthesis or adjoint identity. Derivative checks use
-the independent harmonic reference at sampled grid nodes; adjoint checks retain
-both inner products and their scaled residual. Error-versus-latency plots use
-the maximum relative L2 across base fixtures and requested derivative checks;
-adjoint identity residuals remain separate quantities in the accuracy records.
-
-Report facets distinguish longitude parity and origin as well as grid, spin,
-precision, order, allocation and batch size. Error-versus-latency points identify
-`lmax` by annotation and use one requested thread count per panel. Source and
-legacy figures share the same fixed backend palette. `paired-summary.csv`
-aggregates matched process pairs, while `thread-scaling.csv` records speedup
-relative to the same backend/workload/process round at q1 and efficiency per
-requested physical-core thread. `setup_s` includes adapter initialization and
-coordinate checks; its plot is labelled accordingly. Peak RSS includes
-validation and buffers, as recorded in each cell's memory policy.
+Commit one tidy CSV/JSON dataset and a concise figure index; do not generate hundreds of optional setup/memory/validation images. The [current results status](RESULTS.md) and [historical archive](../archive/README.md) distinguish the planned sweep from earlier partial controls.
