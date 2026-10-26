@@ -19,17 +19,18 @@ sudo apt-get install build-essential gfortran libfftw3-dev python3-dev
 uv sync --extra plot
 ```
 
-The low-overhead scaling runner is `scripts/run_fast_scaling.py`; it reuses installed adapters and accepts **`--build-manifest PATH`**. The full-audit source runner remains available for numerical studies, but is not used by this timing-only experiment. The completed sweep's manifest records the exact source refs, SHAs, Python/NumPy builds, installed module paths, and native binary hashes. No Git source checkout is modified by the benchmark.
+The low-overhead scaling runner is `scripts/run_fast_scaling.py`; it reuses installed adapters and accepts **`--build-manifest PATH`**. The full-audit source runner remains available for numerical studies, but is not used by this timing-only experiment. The dense L1024 result is in `results/gl-cc-resolution-scaling-l1024/`; its manifest records the exact source refs, SHAs, Python/NumPy builds, installed module paths, and native binary hashes. No Git source checkout is modified by the benchmark.
 
-Reproduce the complete sweep using the saved build manifest and a fresh output directory:
+Reproduce the complete dense sweep using the saved build manifest and a fresh output directory:
 
 ```bash
-uv run --extra plot python scripts/run_fast_scaling.py \
-  --build-manifest results/gl-cc-resolution-scaling/build-manifest.json \
-  --output results/gl-cc-resolution-scaling-reproduction \
+env -u OMP_WAIT_POLICY uv run --extra plot python scripts/run_fast_scaling.py \
+  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
+  --output results/gl-cc-resolution-scaling-l1024-reproduction \
+  --profile dense-to-1024 \
   --backend ducc,shtns,rustsht,pyspharm \
   --grid GL,CC --threads 1,2,4,8,16 \
-  --precision float32,float64 --min-time 0.005 --timeout 180
+  --precision float64,float32 --min-time 0.005 --timeout 180
 ```
 
 Setup and plan construction are **not** warm-call timings. Current scenarios and execution requirements are in [docs/MATRIX.md](docs/MATRIX.md). Archived build studies are indexed in [archive/README.md](archive/README.md).
