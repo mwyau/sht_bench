@@ -19,6 +19,17 @@ sudo apt-get install build-essential gfortran libfftw3-dev python3-dev
 uv sync --extra plot
 ```
 
-The benchmark script is `scripts/run_source_resolution_sweep.py`. Use `--build` with an empty output directory for a new set of source builds, or **`--build-manifest PATH`** to reuse already-built binaries. The script's `--help` shows source paths and Git ref overrides. No Git source checkout should be modified for benchmarking.
+The low-overhead scaling runner is `scripts/run_fast_scaling.py`; it reuses installed adapters and accepts **`--build-manifest PATH`**. The full-audit source runner remains available for numerical studies, but is not used by this timing-only experiment. The completed sweep's manifest records the exact source refs, SHAs, Python/NumPy builds, installed module paths, and native binary hashes. No Git source checkout is modified by the benchmark.
 
-Save the exact source SHAs, compiler/build configuration, linked native dependencies, conda package identity, Python/NumPy versions and import paths with results. Setup and plan construction are **not** warm-call timings. Current scenarios and execution requirements are in [docs/MATRIX.md](docs/MATRIX.md). Archived build studies are indexed in [archive/README.md](archive/README.md).
+Reproduce the complete sweep using the saved build manifest and a fresh output directory:
+
+```bash
+uv run --extra plot python scripts/run_fast_scaling.py \
+  --build-manifest results/gl-cc-resolution-scaling/build-manifest.json \
+  --output results/gl-cc-resolution-scaling-reproduction \
+  --backend ducc,shtns,rustsht,pyspharm \
+  --grid GL,CC --threads 1,2,4,8,16 \
+  --precision float32,float64 --min-time 0.005 --timeout 180
+```
+
+Setup and plan construction are **not** warm-call timings. Current scenarios and execution requirements are in [docs/MATRIX.md](docs/MATRIX.md). Archived build studies are indexed in [archive/README.md](archive/README.md).

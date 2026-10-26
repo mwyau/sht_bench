@@ -13,20 +13,38 @@ The target is a **multi-resolution scaling curve for every supported backend** o
 
 The requested deliverable is **16 main figures** (GL/CC × float32/float64 × spin0/spin1 × analysis/synthesis), each showing compatible backends against resolution with q1/q2/q4/q8/q16 panels. Exact timing records and failed/unsupported statuses accompany the plots.
 
-### Preparation and existing command
+### Run the lightweight sweep
 
 ```bash
 uv sync --extra plot
-uv run --extra plot python scripts/run_source_resolution_sweep.py \
-  --plan-only --grid CC,GL \
+uv run --extra plot python scripts/run_fast_scaling.py \
+  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
+  --output results/gl-cc-resolution-scaling \
   --backend ducc,shtns,rustsht,pyspharm \
-  --threads 1,2,4,8,16 --precision float32,float64 \
-  --mmax full --rounds 1 --repeat 3
+  --grid GL,CC --threads 1,2,4,8,16 \
+  --precision float32,float64 --min-time 0.005 --timeout 180
 ```
 
-The source runner also accepts `--build` to build isolated local backends, `--build-manifest PATH` to reuse a build, `--output results/resolution-scaling` to save results, `--min-time 0.005` to shorten calibration, and `--replot` to regenerate saved figures. See [build details](BUILD.md) and [matrix specification](docs/MATRIX.md).
+The fast runner performs one warmup, three calibrated timing samples, and one process round per workload. Native setup stays outside transform timing. It checks only output shape, dtype and finite values, so the results are exploratory performance measurements, not numerical accuracy claims. Use this smoke command for GL N32 and CC L36, and pass `--resume` to continue compatible partial results:
 
-**Implementation status:** The runner currently includes substantial numerical validation and auditing even with `--rounds 1 --repeat 3`; a lightweight execution path is still needed. The new four-backend, multi-degree scaling sweep **has not yet been published**. See [results status](docs/RESULTS.md). Do not interpret earlier L64-only controls or pyspharm-only degree sweeps as this deliverable.
+```bash
+uv run --extra plot python scripts/run_fast_scaling.py \
+  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
+  --output results/.gl-cc-scaling-smoke \
+  --backend ducc,shtns,rustsht,pyspharm --grid GL,CC \
+  --threads 1 --precision float32,float64 --min-time 0.005 --timeout 180 --smoke
+```
+
+Regenerate figures from saved timings with:
+
+```bash
+uv run --extra plot python scripts/run_fast_scaling.py \
+  --output results/gl-cc-resolution-scaling --replot
+```
+
+### Scaling results
+
+The final figures are in the [16-figure gallery](results/gl-cc-resolution-scaling/plots/README.md). The compact [timing CSV](results/gl-cc-resolution-scaling/timings.csv), raw-sample [JSON results](results/gl-cc-resolution-scaling/timings.json), and build manifest accompany them. See [build details](BUILD.md), [matrix specification](docs/MATRIX.md), and [results notes](docs/RESULTS.md).
 
 Earlier SHT studies, their raw data and figures are in the [historical archive](archive/README.md). The independent [FFT benchmark](docs/FFT.md) and Torch experiments remain available without alteration.
 

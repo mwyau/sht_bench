@@ -21,21 +21,23 @@ Pyspharm has no public native thread control and is timed at **q1 only**. SHTns 
 
 Basic shape/dtype/finite checks are enough to establish that a timing call ran, **not** that its numerical algorithm is accurate. Label the resulting performance study exploratory. Avoid lengthy independent reference/round-trip audits and expensive repeated process rounds unless a specific anomaly requires investigation.
 
-**Runner status:** `scripts/run_source_resolution_sweep.py` currently performs heavy validation and audit work independent of `--repeat`. A lightweight runner path needs to be implemented before launching the requested low-overhead sweep.
+The primary timing runner is `scripts/run_fast_scaling.py`. It bypasses independent references, coefficient recovery and audit passes while retaining basic output shape, dtype and finite-value checks, build identity, resource admission, per-worker timeouts, incremental results and resumption. The comprehensive source runner remains separate for numerical-validation studies.
 
 ## Run configuration
 
 ```bash
-uv run --extra plot python scripts/run_source_resolution_sweep.py \
-  --plan-only --backend ducc,shtns,rustsht,pyspharm \
-  --grid CC,GL --threads 1,2,4,8,16 \
-  --precision float32,float64 --mmax full --rounds 1 --repeat 3
+uv run --extra plot python scripts/run_fast_scaling.py \
+  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
+  --output results/gl-cc-resolution-scaling \
+  --backend ducc,shtns,rustsht,pyspharm \
+  --grid GL,CC --threads 1,2,4,8,16 \
+  --precision float32,float64 --min-time 0.005 --timeout 180
 ```
 
-For an existing build, supply `--build-manifest PATH`; for a new one, use `--build`. Save outputs under a new directory in `results/` and regenerate with `--replot`. Do not merge rows from differently configured runs without clear provenance.
+Run the small N32/L36 smoke first by adding `--smoke` and selecting a temporary output directory. The runner copies the exact build manifest into its output, writes partial data after each backend/resolution/thread workload, and supports compatible continuation with `--resume`. Regenerate only the 16 primary figures using `--replot`.
 
 ## Figures and published results
 
 Produce **16 scaling figures** for GL/CC × precision × spin × direction. Each has **five panels** for q1/q2/q4/q8/q16, with an x-axis of increasing resolution and a logarithmic median-latency y-axis; each backend gets one curve based only on actually measured matching cases. Use the existing fixed backend colors. The q1-only pyspharm data may be shown only in the q1 panel, or as a clearly labeled *serial reference*, not a fake thread-scaling curve.
 
-Commit one tidy CSV/JSON dataset and a concise figure index; do not generate hundreds of optional setup/memory/validation images. The [current results status](RESULTS.md) and [historical archive](../archive/README.md) distinguish the planned sweep from earlier partial controls.
+Commit one tidy CSV, one JSON dataset containing raw samples and build metadata, a compact status list, and exactly 16 primary PNGs under `results/gl-cc-resolution-scaling/plots/`. The gallery is `plots/README.md`. See [current results](RESULTS.md) and the [historical archive](../archive/README.md).
