@@ -1,0 +1,33 @@
+{
+  "backend": [
+    "ducc",
+    "shtns",
+    "rustsht",
+    "pyspharm"
+  ],
+  "grid": [
+    "GL",
+    "CC"
+  ],
+  "threads": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "precision": [
+    "float32",
+    "float64"
+  ],
+  "mmax": "full",
+  "rounds": 1,
+  "warmups": 1,
+  "samples": 3,
+  "min_time_s": 0.005,
+  "timeout_s": 180.0,
+  "memory_limit_bytes": null,
+  "smoke": false,
+  "build_manifest": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-build/build-manifest.json",
+  "build_manifest_sha256": "e4e9eaef8d327b06f79026eae1e322e5c74d9e8c560f8053054f9fff96b118af"
+}

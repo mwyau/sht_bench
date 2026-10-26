@@ -1,0 +1,529 @@
+{
+  "schema": 1,
+  "unsupported_and_skipped": [
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "skipped",
+      "threads": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "reason": "conda-forge pyspharm public API has no native thread-count control; measured once at q1"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N180",
+        "GL-N32",
+        "GL-N320",
+        "GL-N45",
+        "GL-N64",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        180,
+        320
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-0.25deg",
+        "CC-0.5deg",
+        "CC-0.75deg",
+        "CC-1.0deg",
+        "CC-1.5deg",
+        "CC-2.0deg",
+        "CC-2.5deg"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        180,
+        360
+      ],
+      "threads": [
+        1
+      ]
+    }
+  ],
+  "execution_failures_and_resource_limits": []
+}

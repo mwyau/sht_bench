@@ -49,6 +49,16 @@ def test_csv_row_keeps_three_raw_samples_and_milliseconds():
     assert row["output_shape"] == "[1, 12]"
 
 
+def test_csv_output_uses_lf_line_endings(tmp_path):
+    path = tmp_path / "timings.csv"
+    fast_scaling._write_csv(path, [{
+        "id": "cell", "backend": "ducc", "samples_s": [0.001, 0.002, 0.003],
+        "median_s": 0.002, "status": "timed_successfully",
+    }])
+
+    assert b"\r" not in path.read_bytes()
+
+
 def test_cli_configuration_is_full_ordered_thread_ladder():
     args = fast_scaling.parser().parse_args([])
     assert fast_scaling._parse_csv(args.threads, tuple(map(str, fast_scaling.THREADS)), "threads") == (

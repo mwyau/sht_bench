@@ -11,15 +11,15 @@ The target is a **multi-resolution scaling curve for every supported backend** o
 | **GL** (Gaussian) | N = 32, 45, 64, 90, 128, 180, 320; `nlat=2N`, `nlon=4N`, `lmax=N` |
 | **CC** (regular latitude-longitude) | L = 36, 45, 60, 90, 120, 180, 360; `nlat=2L+1`, `nlon=4L`, `lmax=L` |
 
-The requested deliverable is **16 main figures** (GL/CC × float32/float64 × spin0/spin1 × analysis/synthesis), each showing compatible backends against resolution with q1/q2/q4/q8/q16 panels. Exact timing records and failed/unsupported statuses accompany the plots.
+The benchmark delivers **16 main figures** (GL/CC × float32/float64 × spin0/spin1 × analysis/synthesis), each showing compatible backends against resolution with q1/q2/q4/q8/q16 panels. Exact timing records and unsupported statuses accompany the plots.
 
 ### Run the lightweight sweep
 
 ```bash
 uv sync --extra plot
 uv run --extra plot python scripts/run_fast_scaling.py \
-  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
-  --output results/gl-cc-resolution-scaling \
+  --build-manifest results/gl-cc-resolution-scaling/build-manifest.json \
+  --output results/gl-cc-resolution-scaling-reproduction \
   --backend ducc,shtns,rustsht,pyspharm \
   --grid GL,CC --threads 1,2,4,8,16 \
   --precision float32,float64 --min-time 0.005 --timeout 180
@@ -29,7 +29,7 @@ The fast runner performs one warmup, three calibrated timing samples, and one pr
 
 ```bash
 uv run --extra plot python scripts/run_fast_scaling.py \
-  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
+  --build-manifest results/gl-cc-resolution-scaling/build-manifest.json \
   --output results/.gl-cc-scaling-smoke \
   --backend ducc,shtns,rustsht,pyspharm --grid GL,CC \
   --threads 1 --precision float32,float64 --min-time 0.005 --timeout 180 --smoke

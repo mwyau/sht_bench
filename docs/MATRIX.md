@@ -27,8 +27,8 @@ The primary timing runner is `scripts/run_fast_scaling.py`. It bypasses independ
 
 ```bash
 uv run --extra plot python scripts/run_fast_scaling.py \
-  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
-  --output results/gl-cc-resolution-scaling \
+  --build-manifest results/gl-cc-resolution-scaling/build-manifest.json \
+  --output results/gl-cc-resolution-scaling-reproduction \
   --backend ducc,shtns,rustsht,pyspharm \
   --grid GL,CC --threads 1,2,4,8,16 \
   --precision float32,float64 --min-time 0.005 --timeout 180
