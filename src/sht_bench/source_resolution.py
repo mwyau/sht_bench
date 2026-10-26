@@ -11,6 +11,7 @@ import numpy as np
 from .source_adapters import Workload, capability
 
 PROFILE_SCHEMA = 'sht_bench.source_resolution_profile.v1'
+PROFILE_NAMES = ('standard', 'dense-to-1024')
 BACKENDS = ('ducc', 'shtns', 'rustsht', 'pyspharm-cpp', 'pyspharm')
 OPERATIONS = ('analysis', 'synthesis')
 SPINS = (0, 1)
@@ -36,6 +37,27 @@ GL_PROFILE = tuple(
         'nominal_longitude_resolution_deg': 90.0 / n,
     }
     for n in (32, 45, 64, 90, 128, 180, 320)
+)
+
+GL_DENSE_PROFILE = tuple(
+    {
+        'N': n,
+        'nlat': 2 * n,
+        'nlon': 4 * n,
+        'lmax': n,
+        'nominal_longitude_resolution_deg': 90.0 / n,
+    }
+    for n in (32, 45, 64, 90, 128, 160, 180, 192, 224, 256, 320, 384, 448, 512, 640, 768, 896, 1024)
+)
+
+CC_DENSE_PROFILE = tuple(
+    {
+        'resolution': f'CC L={lmax}',
+        'nlat': 2 * lmax + 1,
+        'nlon': 4 * lmax,
+        'lmax': lmax,
+    }
+    for lmax in (36, 45, 60, 90, 120, 160, 180, 192, 224, 256, 320, 360, 384, 448, 512, 640, 768, 896, 1024)
 )
 
 BACKEND_PRECISIONS = {
@@ -65,14 +87,23 @@ def latitude_nodes(grid: str, nlat: int) -> np.ndarray:
     return np.arcsin(mu[::-1])
 
 
-def resolution_cases(grids: tuple[str, ...] = ('CC', 'GL'), *, endpoints_only: bool = False) -> list[dict]:
+def resolution_cases(
+    grids: tuple[str, ...] = ('CC', 'GL'), *, profile: str = 'standard', endpoints_only: bool = False,
+) -> list[dict]:
     """Build geometry records, including the exact latitude coordinate arrays."""
+    if profile not in PROFILE_NAMES:
+        raise ValueError(f'unknown resolution profile {profile!r}; choose from {PROFILE_NAMES}')
+    gl_profile = GL_DENSE_PROFILE if profile == 'dense-to-1024' else GL_PROFILE
+    cc_profile = CC_DENSE_PROFILE if profile == 'dense-to-1024' else CC_PROFILE
     cases = []
     for grid in grids:
         if grid == 'CC':
-            samples = CC_PROFILE[:1] if endpoints_only else CC_PROFILE
+            samples = cc_profile[:1] if endpoints_only else cc_profile
             for item in samples:
-                identity = f"CC-{item['resolution'].replace('°', 'deg')}"
+                identity = (
+                    f"CC-L{item['lmax']}" if profile == 'dense-to-1024'
+                    else f"CC-{item['resolution'].replace('°', 'deg')}"
+                )
                 case = {
                     'case_id': identity,
                     'grid': 'CC',
@@ -84,7 +115,7 @@ def resolution_cases(grids: tuple[str, ...] = ('CC', 'GL'), *, endpoints_only: b
                 case['colatitude_coordinates_radians'] = colatitude_nodes('CC', item['nlat']).tolist()
                 cases.append(case)
         elif grid == 'GL':
-            samples = GL_PROFILE[:1] if endpoints_only else GL_PROFILE
+            samples = gl_profile[:1] if endpoints_only else gl_profile
             for item in samples:
                 case = {
                     'case_id': f"GL-N{item['N']}",

@@ -34,6 +34,7 @@ from sht_bench.source_adapters import (  # noqa: E402
     fixtures,
 )
 from sht_bench.source_resolution import (  # noqa: E402
+    PROFILE_NAMES,
     PROFILE_SCHEMA,
     case_reference,
     resolution_cases,
@@ -46,6 +47,7 @@ from sht_bench.source_resources import (  # noqa: E402
 
 BACKENDS = ("ducc", "shtns", "rustsht", "pyspharm")
 THREADS = (1, 2, 4, 8, 16)
+THREAD_EXECUTION_ORDER = (1, 8, 16, 2, 4)
 PRECISIONS = ("float32", "float64")
 OPERATIONS = ("analysis", "synthesis")
 SCHEMA = "sht_bench.fast_resolution_scaling.v1"
@@ -167,10 +169,25 @@ def _memory_admission(backend: str, workload: Workload, cap_bytes: int | None) -
     observed = preflight(backend, workload, limit_bytes=cap_bytes)
     floor = _working_floor(workload)
     budget = observed.get("memory_budget_bytes")
-    observed.update({"working_floor_bytes": floor, "resource_limited": bool(observed.get("resource_limited"))})
-    if budget is not None and floor > budget:
+    required = floor
+    reason = "estimated transform buffers exceed observed available memory or explicit memory budget"
+    if backend == "pyspharm" and observed.get("persistent_lower_bound_bytes") is not None:
+        # Spherepack's stored plan holds four large arrays and the public API
+        # exposes no plan-free or computed mode. Keep two times that measured
+        # lower bound available, as well as the generic transform-buffer floor.
+        plan_headroom = 2 * int(observed["persistent_lower_bound_bytes"])
+        observed["stored_plan_headroom_multiplier"] = 2
+        observed["stored_plan_headroom_bytes"] = plan_headroom
+        required = max(required, plan_headroom)
+        reason = "pyspharm stored-plan two-times headroom or estimated transform buffers exceed observed available memory or explicit memory budget"
+    observed.update({
+        "working_floor_bytes": floor,
+        "required_memory_bytes": required,
+        "resource_limited": bool(observed.get("resource_limited")),
+    })
+    if budget is not None and required > budget:
         observed["resource_limited"] = True
-        observed["reason"] = "estimated transform buffers exceed observed available memory or explicit memory budget"
+        observed["reason"] = reason
     return observed
 
 
@@ -236,6 +253,13 @@ def _worker(task_path: Path, result_path: Path) -> int:
             os.sched_setaffinity(0, cores[:q])
         shared["cpu_affinity"] = cores[:q]
         shared["l3_domains"] = {str(cpu): domains[cpu] for cpu in cores[:q]}
+        shared["thread_environment"] = {
+            name: os.environ.get(name)
+            for name in (
+                "OMP_NUM_THREADS", "OMP_WAIT_POLICY", "OMP_PROC_BIND", "OMP_PLACES",
+                "RAYON_NUM_THREADS", "DUCC0_NUM_THREADS",
+            )
+        }
 
         started = time.perf_counter()
         module = __import__(MODULES[backend])
@@ -448,6 +472,23 @@ def _scenarios(args, cases: list[dict], builds: dict, build_hash: str):
                     "reason": "conda-forge pyspharm public API has no native thread-count control; measured once at q1",
                 }
         for case in cases:
+            if backend == "pyspharm" and int(case["lmax"]) > 640:
+                # Enforce the native degree ceiling before constructing a
+                # Workload or starting a process that could allocate a plan.
+                for precision in selected_precision:
+                    for spin in (0, 1):
+                        for operation in OPERATIONS:
+                            key = (backend, case["case_id"], precision, spin, operation, "degree_limit")
+                            exclusions[key] = {
+                                "backend": backend, "status": "degree_limit",
+                                "grid": case["grid"], "case_id": case["case_id"],
+                                "resolution": case["resolution"], "lmax": case["lmax"],
+                                "precision": precision, "spin": spin,
+                                "operation": operation, "threads": [1],
+                                "max_degree": 640,
+                                "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed",
+                            }
+                continue
             for precision in selected_precision:
                 for spin in (0, 1):
                     for q in supported_threads:
@@ -485,7 +526,27 @@ def _scenarios(args, cases: list[dict], builds: dict, build_hash: str):
         if "case_ids" in entry:
             entry["case_ids"] = sorted(set(entry["case_ids"]))
             entry["lmax"] = sorted(set(entry["lmax"]))
-    return [group for group in grouped.values() if group["operations"]], list(exclusions.values())
+    grid_order = {grid: index for index, grid in enumerate(args.grid_values)}
+    backend_order = {backend: index for index, backend in enumerate(args.backend_values)}
+    precision_order = {precision: index for index, precision in enumerate(args.precision_values)}
+    thread_order = {q: index for index, q in enumerate(THREAD_EXECUTION_ORDER)}
+    groups = [group for group in grouped.values() if group["operations"]]
+    groups.sort(key=lambda group: (
+        thread_order.get(group["threads_requested"], len(thread_order)),
+        grid_order[group["case"]["grid"]], group["case"]["lmax"],
+        backend_order[group["backend"]], precision_order[group["precision"]], group["spin"],
+    ))
+    return groups, list(exclusions.values())
+
+
+def _figure_order() -> list[tuple[str, str, int, str]]:
+    return [
+        (grid, precision, spin, operation)
+        for precision in ("float64", "float32")
+        for grid in ("GL", "CC")
+        for spin in (0, 1)
+        for operation in OPERATIONS
+    ]
 
 
 def _plot(output: Path) -> None:
@@ -499,83 +560,94 @@ def _plot(output: Path) -> None:
     cells = result.get("cells", [])
     plot_dir = output / "plots"
     plot_dir.mkdir(parents=True, exist_ok=True)
-    grids = ("GL", "CC")
-    precisions = ("float32", "float64")
-    for grid in grids:
-        for precision in precisions:
-            for spin in (0, 1):
-                for operation in OPERATIONS:
-                    figure, axes = plt.subplots(1, 5, figsize=(18, 4.2), sharey=True)
-                    candidates = [
-                        row for row in cells
-                        if row.get("grid") == grid and row.get("precision") == precision
-                        and row.get("spin") == spin and row.get("operation") == operation
-                        and row.get("status") == "timed_successfully"
-                        and isinstance(row.get("median_s"), (int, float))
-                        and row["median_s"] > 0
-                    ]
-                    positive = [row["median_s"] for row in candidates]
-                    common_ylim = None
-                    if positive:
-                        lower = min(positive) / 1.6
-                        upper = max(positive) * 1.8
-                        common_ylim = (max(lower, 1e-7), upper)
-                    ladder = [case["lmax"] for case in result.get("resolution_cases", []) if case.get("grid") == grid]
-                    x_min, x_max = (min(ladder), max(ladder)) if ladder else (1, 2)
-                    x_pad = max(1.0, (x_max - x_min) * 0.03)
-                    for axis, q in zip(axes, THREADS):
-                        panel = [row for row in candidates if row["threads_requested"] == q]
-                        for backend in BACKENDS:
-                            points = sorted(
-                                (row for row in panel if row["backend"] == backend),
-                                key=lambda row: row["lmax"],
-                            )
-                            if not points:
-                                continue
-                            axis.plot(
-                                [row["lmax"] for row in points],
-                                [row["median_s"] * 1000 for row in points],
-                                marker="o", markersize=4, linewidth=1.5,
-                                color=BACKEND_COLORS[backend], label=backend,
-                            )
-                        axis.set_title(f"q{q}")
-                        axis.set_yscale("log")
-                        axis.set_xlabel("lmax")
-                        axis.set_xlim(x_min - x_pad, x_max + x_pad)
-                        axis.grid(True, which="both", alpha=0.22)
-                        if common_ylim:
-                            axis.set_ylim(common_ylim[0] * 1000, common_ylim[1] * 1000)
-                        if not panel:
-                            axis.text(0.5, 0.5, "No successful timings", ha="center", va="center", transform=axis.transAxes, fontsize=9)
-                    axes[0].set_ylabel("Median warm-call latency (ms, log scale)")
-                    title = f"{grid} · {precision} · spin {spin} · {operation}"
-                    figure.suptitle(title + " — exploratory (3 samples, median)", fontsize=12)
-                    handles, labels = [], []
-                    for axis in axes:
-                        panel_handles, panel_labels = axis.get_legend_handles_labels()
-                        for handle, label in zip(panel_handles, panel_labels):
-                            if label not in labels:
-                                handles.append(handle)
-                                labels.append(label)
-                    if handles:
-                        figure.legend(handles, labels, loc="lower center", ncol=min(4, len(labels)), frameon=False)
-                        figure.tight_layout(rect=(0, 0.13, 1, 0.92))
-                    else:
-                        figure.tight_layout(rect=(0, 0.03, 1, 0.92))
-                    name = f"{grid}_{precision}_spin{spin}_{operation}.png"
-                    figure.savefig(plot_dir / name, dpi=160, bbox_inches="tight")
-                    plt.close(figure)
-    figures = sorted(plot_dir.glob("*.png"))
-    expected = {f"{grid}_{precision}_spin{spin}_{operation}.png"
-                for grid in grids for precision in precisions for spin in (0, 1) for operation in OPERATIONS}
+    figure_order = _figure_order()
+    for grid, precision, spin, operation in figure_order:
+        figure, axes = plt.subplots(1, 5, figsize=(18, 4.2), sharey=True)
+        candidates = [
+            row for row in cells
+            if row.get("grid") == grid and row.get("precision") == precision
+            and row.get("spin") == spin and row.get("operation") == operation
+            and row.get("status") == "timed_successfully"
+            and isinstance(row.get("median_s"), (int, float))
+            and row["median_s"] > 0
+        ]
+        positive = [row["median_s"] for row in candidates]
+        common_ylim = None
+        if positive:
+            lower = min(positive) / 1.6
+            upper = max(positive) * 1.8
+            common_ylim = (max(lower, 1e-7), upper)
+        ladder = [case["lmax"] for case in result.get("resolution_cases", []) if case.get("grid") == grid]
+        x_min, x_max = (min(ladder), max(ladder)) if ladder else (1, 2)
+        x_pad = max(1.0, (x_max - x_min) * 0.03)
+        for axis, q in zip(axes, THREADS):
+            panel = [row for row in candidates if row["threads_requested"] == q]
+            for backend in BACKENDS:
+                by_degree = {
+                    int(row["lmax"]): row
+                    for row in panel if row["backend"] == backend
+                }
+                runs = []
+                run = []
+                for degree in ladder:
+                    row = by_degree.get(degree)
+                    if row is None:
+                        if run:
+                            runs.append(run)
+                            run = []
+                        continue
+                    run.append(row)
+                if run:
+                    runs.append(run)
+                if not runs:
+                    continue
+                for run_index, points in enumerate(runs):
+                    axis.plot(
+                        [row["lmax"] for row in points],
+                        [row["median_s"] * 1000 for row in points],
+                        marker="o", markersize=4, linewidth=1.5,
+                        color=BACKEND_COLORS[backend],
+                        label=backend if run_index == 0 else "_nolegend_",
+                    )
+            axis.set_title(f"q{q}")
+            axis.set_yscale("log")
+            axis.set_xlabel("lmax")
+            axis.set_xlim(x_min - x_pad, x_max + x_pad)
+            axis.grid(True, which="both", alpha=0.22)
+            if common_ylim:
+                axis.set_ylim(common_ylim[0] * 1000, common_ylim[1] * 1000)
+            if not panel:
+                axis.text(0.5, 0.5, "No successful timings", ha="center", va="center", transform=axis.transAxes, fontsize=9)
+        axes[0].set_ylabel("Median warm-call latency (ms, log scale)")
+        title = f"{grid} · {precision} · spin {spin} · {operation}"
+        figure.suptitle(title + " — exploratory (3 samples, median)", fontsize=12)
+        handles, labels = [], []
+        for axis in axes:
+            panel_handles, panel_labels = axis.get_legend_handles_labels()
+            for handle, label in zip(panel_handles, panel_labels):
+                if label not in labels:
+                    handles.append(handle)
+                    labels.append(label)
+        if handles:
+            figure.legend(handles, labels, loc="lower center", ncol=min(4, len(labels)), frameon=False)
+            figure.tight_layout(rect=(0, 0.13, 1, 0.92))
+        else:
+            figure.tight_layout(rect=(0, 0.03, 1, 0.92))
+        name = f"{grid}_{precision}_spin{spin}_{operation}.png"
+        figure.savefig(plot_dir / name, dpi=160, bbox_inches="tight")
+        plt.close(figure)
+    ordered_names = [f"{grid}_{precision}_spin{spin}_{operation}.png"
+                     for grid, precision, spin, operation in figure_order]
+    expected = set(ordered_names)
+    figures = list(plot_dir.glob("*.png"))
     for stale in figures:
         if stale.name not in expected:
             stale.unlink()
     lines = [
         "# GL/CC resolution scaling figures", "",
-        "Exploratory native allocating warm-call timings. Each figure separates grid, precision, spin and direction; the five panels show q1/q2/q4/q8/q16. Lines connect measured points only. SHTns is available at float64; conda-forge pyspharm is available at float32 and q1 only.", "",
+        "Exploratory native allocating warm-call timings. Each figure separates grid, precision, spin and direction; the five panels show q1/q2/q4/q8/q16. Markers show measured points; line segments stop at missing or failed degrees. Float64 figures precede float32. SHTns is available at float64; conda-forge pyspharm is available at float32 and q1 only, with a hard L640 ceiling.", "",
     ]
-    for name in sorted(expected):
+    for name in ordered_names:
         label = name.removesuffix(".png").replace("_", " · ")
         lines.extend([f"## {label}", "", f"![{label}]({name})", ""])
     (plot_dir / "README.md").write_text("\n".join(lines))
@@ -585,6 +657,7 @@ def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--build-manifest", type=Path, default=DEFAULT_BUILD)
     p.add_argument("--output", type=Path, default=ROOT / "results/gl-cc-resolution-scaling")
+    p.add_argument("--profile", choices=PROFILE_NAMES, default="standard", help="resolution ladder; dense-to-1024 includes 18 GL and 19 CC degrees")
     p.add_argument("--backend", default=",".join(BACKENDS), help="comma-separated: ducc,shtns,rustsht,pyspharm")
     p.add_argument("--grid", default="GL,CC", help="comma-separated GL,CC")
     p.add_argument("--threads", default=",".join(map(str, THREADS)), help="comma-separated 1,2,4,8,16")
@@ -623,13 +696,26 @@ def main(argv=None) -> int:
         print(f"regenerated 16 figures under {output / 'plots'}")
         return 0
     if args.smoke:
-        cases = resolution_cases(args.grid_values, endpoints_only=True)
+        cases = resolution_cases(args.grid_values, profile=args.profile, endpoints_only=True)
     else:
-        cases = resolution_cases(args.grid_values)
+        cases = resolution_cases(args.grid_values, profile=args.profile)
     builds, build_hash = _load_builds(args.build_manifest.expanduser().resolve(), args.backend_values)
     config = {
         "backend": list(args.backend_values), "grid": list(args.grid_values),
         "threads": list(args.thread_values), "precision": list(args.precision_values),
+        "resolution_profile": args.profile,
+        "thread_execution_order": [q for q in THREAD_EXECUTION_ORDER if q in args.thread_values],
+        "thread_environment_policy": {
+            "OMP_WAIT_POLICY": os.environ.get("OMP_WAIT_POLICY"),
+            "OMP_PROC_BIND": os.environ.get("OMP_PROC_BIND"),
+            "OMP_PLACES": os.environ.get("OMP_PLACES"),
+            "worker_affinity": "first q physical cores returned by source_runner.physical_cores",
+            "per_worker_thread_variables": {
+                "OMP_NUM_THREADS": "requested q", "RAYON_NUM_THREADS": "requested q",
+                "DUCC0_NUM_THREADS": "requested q",
+                "OPENBLAS_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "NUMEXPR_NUM_THREADS": "1",
+            },
+        },
         "mmax": "full", "rounds": 1, "warmups": 1, "samples": 3,
         "min_time_s": args.min_time, "timeout_s": args.timeout,
         "memory_limit_bytes": int(args.memory_limit_gib * 2**30) if args.memory_limit_gib else None,
@@ -651,7 +737,7 @@ def main(argv=None) -> int:
     elif _sha(manifest_copy.read_bytes()) != build_hash:
         parser().error("output build-manifest.json differs from the selected immutable build manifest")
     profile = [_case_short(case) for case in cases]
-    _write_json(output / "resolution-profile.json", {"schema": PROFILE_SCHEMA, "cases": profile})
+    _write_json(output / "resolution-profile.json", {"schema": PROFILE_SCHEMA, "name": args.profile, "cases": profile})
 
     groups, exclusion_values = _scenarios(args, cases, builds, build_hash)
     exclusions = exclusion_values[:]
@@ -743,7 +829,8 @@ def main(argv=None) -> int:
                 cell = {**base_cells[op], "status": status, "reason": reason or "worker did not record an outcome", "samples_s": []}
             cell["worker"] = {"import_s": shared.get("import_s"), "cpu_affinity": shared.get("cpu_affinity"),
                               "allocation_limit": shared.get("allocation_limit"), "native_api": shared.get("native_api"),
-                              "thread_control": shared.get("thread_control"), "planning_policy": shared.get("planning_policy")}
+                              "thread_control": shared.get("thread_control"), "planning_policy": shared.get("planning_policy"),
+                              "thread_environment": shared.get("thread_environment")}
             final_outcomes.append(cell)
         record = {"task_id": task_id, "shared": shared, "admission": admission, "outcomes": final_outcomes}
         _append_progress(progress_path, record)

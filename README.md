@@ -1,51 +1,69 @@
 # sht_bench
 
-CPU performance benchmarks for spherical harmonic transform (SHT) implementations: **DUCC**, **SHTns**, **RustSHT**, and **conda-forge pyspharm** (Spherepack). The optional pyspharm-cpp compatibility backend uses DUCC algorithms and is labeled *DUCC-derived*.
+CPU performance benchmarks for spherical harmonic transform (SHT) implementations: **DUCC**, **SHTns**, **RustSHT**, and conda-forge **pyspharm** (Spherepack). The optional pyspharm-cpp compatibility backend is derived from DUCC and is not an independent SHT implementation.
 
-## Current experiment: GL and CC scaling
+## Active benchmark: dense GL/CC scaling
 
-The target is a **multi-resolution scaling curve for every supported backend** on an identical grid and spectral truncation. Separate scalar (spin 0) and vector (spin 1), analysis and synthesis, and float32 and float64. Request **1, 2, 4, 8 and 16 threads** where supported; pyspharm is measured at q1 only because its public API does not expose native thread control.
+The current result compares scalar (spin 0) and vector (spin 1) analysis and synthesis on full triangular order, at float64 and float32 where supported, with q1/q2/q4/q8/q16. GL uses `nlat=2L, nlon=4L`; regular CC uses `nlat=2L+1, nlon=4L`.
 
-| Grid | Standard resolution ladder |
+| Grid | Dense-to-1024 degrees |
 | --- | --- |
-| **GL** (Gaussian) | N = 32, 45, 64, 90, 128, 180, 320; `nlat=2N`, `nlon=4N`, `lmax=N` |
-| **CC** (regular latitude-longitude) | L = 36, 45, 60, 90, 120, 180, 360; `nlat=2L+1`, `nlon=4L`, `lmax=L` |
+| GL | 32, 45, 64, 90, 128, 160, 180, 192, 224, 256, 320, 384, 448, 512, 640, 768, 896, 1024 |
+| CC | 36, 45, 60, 90, 120, 160, 180, 192, 224, 256, 320, 360, 384, 448, 512, 640, 768, 896, 1024 |
 
-The benchmark delivers **16 main figures** (GL/CC × float32/float64 × spin0/spin1 × analysis/synthesis), each showing compatible backends against resolution with q1/q2/q4/q8/q16 panels. Exact timing records and unsupported statuses accompany the plots.
+Conda-forge pyspharm is float32 and q1 only, and the runner caps it at L640 before constructing any workload or native plan. The earlier seven-point sweep is preserved in `results/gl-cc-resolution-scaling/`; use `--profile standard` to reproduce that ladder.
 
-### Run the lightweight sweep
+## Results
+
+The primary dataset contains **3,816 successful timings** and 8 pyspharm GL synthesis finite-output failures. There were no resource-limited cells. All measurements are exploratory timing-only results; output shape, dtype and finiteness were checked, with no numerical-accuracy claim. SHTns q8/q16 curves include intermittent ~12 ms plateaus and are flagged as suspect in the report.
+
+### Float64 figures
+
+- [GL spin 0 analysis](results/gl-cc-resolution-scaling-l1024/plots/GL_float64_spin0_analysis.png)
+- [GL spin 0 synthesis](results/gl-cc-resolution-scaling-l1024/plots/GL_float64_spin0_synthesis.png)
+- [GL spin 1 analysis](results/gl-cc-resolution-scaling-l1024/plots/GL_float64_spin1_analysis.png)
+- [GL spin 1 synthesis](results/gl-cc-resolution-scaling-l1024/plots/GL_float64_spin1_synthesis.png)
+- [CC spin 0 analysis](results/gl-cc-resolution-scaling-l1024/plots/CC_float64_spin0_analysis.png)
+- [CC spin 0 synthesis](results/gl-cc-resolution-scaling-l1024/plots/CC_float64_spin0_synthesis.png)
+- [CC spin 1 analysis](results/gl-cc-resolution-scaling-l1024/plots/CC_float64_spin1_analysis.png)
+- [CC spin 1 synthesis](results/gl-cc-resolution-scaling-l1024/plots/CC_float64_spin1_synthesis.png)
+
+### Float32 figures
+
+- [GL spin 0 analysis](results/gl-cc-resolution-scaling-l1024/plots/GL_float32_spin0_analysis.png)
+- [GL spin 0 synthesis](results/gl-cc-resolution-scaling-l1024/plots/GL_float32_spin0_synthesis.png)
+- [GL spin 1 analysis](results/gl-cc-resolution-scaling-l1024/plots/GL_float32_spin1_analysis.png)
+- [GL spin 1 synthesis](results/gl-cc-resolution-scaling-l1024/plots/GL_float32_spin1_synthesis.png)
+- [CC spin 0 analysis](results/gl-cc-resolution-scaling-l1024/plots/CC_float32_spin0_analysis.png)
+- [CC spin 0 synthesis](results/gl-cc-resolution-scaling-l1024/plots/CC_float32_spin0_synthesis.png)
+- [CC spin 1 analysis](results/gl-cc-resolution-scaling-l1024/plots/CC_float32_spin1_analysis.png)
+- [CC spin 1 synthesis](results/gl-cc-resolution-scaling-l1024/plots/CC_float32_spin1_synthesis.png)
+
+The [ordered figure gallery](results/gl-cc-resolution-scaling-l1024/plots/README.md), raw-sample [CSV](results/gl-cc-resolution-scaling-l1024/timings.csv), [JSON results](results/gl-cc-resolution-scaling-l1024/timings.json), [status record](results/gl-cc-resolution-scaling-l1024/statuses.json), resolution profile and build manifest are in the result directory. See the concise [results report](docs/RESULTS.md).
+
+## Reproduce
+
+Run the tested GL32/CC36 smoke first, then the complete dense ladder:
 
 ```bash
-uv sync --extra plot
 uv run --extra plot python scripts/run_fast_scaling.py \
-  --build-manifest results/gl-cc-resolution-scaling/build-manifest.json \
-  --output results/gl-cc-resolution-scaling-reproduction \
-  --backend ducc,shtns,rustsht,pyspharm \
-  --grid GL,CC --threads 1,2,4,8,16 \
-  --precision float32,float64 --min-time 0.005 --timeout 180
-```
-
-The fast runner performs one warmup, three calibrated timing samples, and one process round per workload. Native setup stays outside transform timing. It checks only output shape, dtype and finite values, so the results are exploratory performance measurements, not numerical accuracy claims. Use this smoke command for GL N32 and CC L36, and pass `--resume` to continue compatible partial results:
-
-```bash
-uv run --extra plot python scripts/run_fast_scaling.py \
-  --build-manifest results/gl-cc-resolution-scaling/build-manifest.json \
-  --output results/.gl-cc-scaling-smoke \
+  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
+  --output /tmp/gl-cc-scaling-smoke --profile dense-to-1024 --smoke \
   --backend ducc,shtns,rustsht,pyspharm --grid GL,CC \
-  --threads 1 --precision float32,float64 --min-time 0.005 --timeout 180 --smoke
+  --threads 1 --precision float64,float32 --min-time 0.005 --timeout 180
+
+env -u OMP_WAIT_POLICY uv run --extra plot python scripts/run_fast_scaling.py \
+  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
+  --output results/gl-cc-resolution-scaling-l1024-reproduction --profile dense-to-1024 \
+  --backend ducc,shtns,rustsht,pyspharm --grid GL,CC \
+  --threads 1,2,4,8,16 --precision float64,float32 --min-time 0.005 --timeout 180
 ```
 
-Regenerate figures from saved timings with:
+The runner does one warmup and three short calibrated samples in one process round, excludes native setup from warm-call timings, and saves progress for compatible resumption. Recreate the figures without rerunning transforms with:
 
 ```bash
 uv run --extra plot python scripts/run_fast_scaling.py \
-  --output results/gl-cc-resolution-scaling --replot
+  --output results/gl-cc-resolution-scaling-l1024 --replot
 ```
 
-### Scaling results
-
-The final figures are in the [16-figure gallery](results/gl-cc-resolution-scaling/plots/README.md). The compact [timing CSV](results/gl-cc-resolution-scaling/timings.csv), raw-sample [JSON results](results/gl-cc-resolution-scaling/timings.json), and build manifest accompany them. See [build details](BUILD.md), [matrix specification](docs/MATRIX.md), and [results notes](docs/RESULTS.md).
-
-Earlier SHT studies, their raw data and figures are in the [historical archive](archive/README.md). The independent [FFT benchmark](docs/FFT.md) and Torch experiments remain available without alteration.
-
-**Precision:** DUCC and RustSHT have float32/float64 paths, SHTns Python bindings are float64/complex128, and the tested conda-forge pyspharm interface is float32/complex64. Do not make cross-precision speedup claims.
+See [build details](BUILD.md), [matrix specification](docs/MATRIX.md), and the [historical archive](archive/README.md). The independent [FFT benchmark](docs/FFT.md) and Torch experiments remain available.
