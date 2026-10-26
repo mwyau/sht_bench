@@ -1,0 +1,565 @@
+{
+  "schema": 1,
+  "sources": {
+    "schema": 1,
+    "sources": {
+      "ducc": {
+        "origin": "https://github.com/mreineck/ducc.git",
+        "ref": "ducc0",
+        "sha": "31d9fe99fefa5ca29df17b7e6d2362b8c5c4a05f"
+      },
+      "shtns": {
+        "origin": "https://gricad-gitlab.univ-grenoble-alpes.fr/schaeffn/shtns.git",
+        "ref": "master",
+        "sha": "4e69ceb3fc5f19475d55b03ff0fdec210dc3075e"
+      },
+      "rustsht": {
+        "origin": "https://github.com/mwyau/RustSHT.git",
+        "ref": "main",
+        "sha": "579c09e5810045187e08f9525f7aaa4908a78adf"
+      }
+    }
+  },
+  "builds": {
+    "ducc": {
+      "status": "built",
+      "origin": "https://github.com/mreineck/ducc.git",
+      "ref": "ducc0",
+      "sha": "31d9fe99fefa5ca29df17b7e6d2362b8c5c4a05f",
+      "build_kind": "git-source",
+      "build_command": [
+        "uv",
+        "pip",
+        "install",
+        "--verbose",
+        "--python",
+        "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/ducc/bin/python",
+        "--no-cache",
+        "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/ducc"
+      ],
+      "import_banner": "",
+      "module_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/ducc/lib/python3.14/site-packages/ducc0.cpython-314-x86_64-linux-gnu.so",
+      "python": "3.14.9 | packaged by conda-forge | (main, Oct 22 2026, 10:21:21) [GCC 15.3.0]",
+      "numpy": "2.5.4",
+      "distribution_name": "ducc0",
+      "distribution_version": "0.42.0",
+      "wheel_metadata": "Wheel-Version: 1.0\nGenerator: scikit-build-core 1.0.3\nRoot-Is-Purelib: false\nTag: cp314-cp314-linux_x86_64\n\n",
+      "installer": "uv",
+      "binaries": [
+        {
+          "path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/ducc/lib/python3.14/site-packages/ducc0.cpython-314-x86_64-linux-gnu.so",
+          "sha256": "27067a9d69d226d301300cc12592b2c5650febb61d0074c1a20ec6addf2149d4",
+          "ldd": "\tlinux-vdso.so.1 (0x00007c44f8169000)\n\tlibstdc++.so.6 => /usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007c44f70ca000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007c44f6fa4000)\n\tlibmvec.so.1 => /usr/lib/x86_64-linux-gnu/libmvec.so.1 (0x00007c44f6ea9000)\n\tlibgcc_s.so.1 => /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007c44f6e7b000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007c44f6c58000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007c44f816b000)\n"
+        }
+      ],
+      "direct_url": [
+        [
+          "ducc0",
+          "{\"url\":\"file:///home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/ducc\",\"dir_info\":{}}"
+        ],
+        [
+          "sht-bench",
+          "{\"url\":\"file:///home/albert/sht_bench\",\"dir_info\":{\"editable\":true}}"
+        ]
+      ],
+      "native_import_output": "",
+      "python_executable": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/ducc/bin/python",
+      "freeze": "contourpy==1.4.0\ncycler==0.12.1\nducc0 @ file:///home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/ducc\nfonttools==4.67.0\niniconfig==2.3.1\nkiwisolver==1.5.1\nmatplotlib==3.11.2\nnumpy==2.5.4\npackaging==26.3\npillow==13.0.0\npluggy==1.7.0\npygments==2.21.0\npyparsing==3.3.3\npytest==9.1.1\npython-dateutil==3.0.0\nscipy==1.18.1\n-e file:///home/albert/sht_bench\nsix==1.17.0\ntzdata==2026.5\n",
+      "tracked_source_changes_after_build": "",
+      "submodules": "",
+      "compiler_metadata_files": [
+        {
+          "source_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/ducc/build/cp314-cp314-linux_x86_64/CMakeCache.txt",
+          "file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/build-metadata/ducc/build/cp314-cp314-linux_x86_64/CMakeCache.txt",
+          "sha256": "90df3cd3a322d391ae13f48a19f1551f55831bc6cb1a458199e172ee4bc6013f"
+        },
+        {
+          "source_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/ducc/build/cp314-cp314-linux_x86_64/build.ninja",
+          "file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/build-metadata/ducc/build/cp314-cp314-linux_x86_64/build.ninja",
+          "sha256": "bd8ca92ae9f65a3935895f9db3d5d65963b508de2f24eb626562a66b9871a3dc"
+        }
+      ]
+    },
+    "shtns": {
+      "status": "built",
+      "origin": "https://gricad-gitlab.univ-grenoble-alpes.fr/schaeffn/shtns.git",
+      "ref": "master",
+      "sha": "4e69ceb3fc5f19475d55b03ff0fdec210dc3075e",
+      "build_kind": "git-source",
+      "build_command": [
+        "uv",
+        "pip",
+        "install",
+        "--verbose",
+        "--python",
+        "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/shtns/bin/python",
+        "--no-cache",
+        "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/shtns"
+      ],
+      "import_banner": "[SHTns 3.7.5] built Oct 25 2026, 16:40:45, id: v3.7-33-g4e69ceb,avx2,ishioka,openmp\n",
+      "module_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/shtns/lib/python3.14/site-packages/shtns.py",
+      "python": "3.14.9 | packaged by conda-forge | (main, Oct 22 2026, 10:21:21) [GCC 15.3.0]",
+      "numpy": "2.5.4",
+      "distribution_name": "shtns",
+      "distribution_version": "3.7.5",
+      "wheel_metadata": "Wheel-Version: 1.0\nGenerator: setuptools (84.2.1)\nRoot-Is-Purelib: false\nTag: cp314-cp314-linux_x86_64\n\n",
+      "installer": "uv",
+      "binaries": [
+        {
+          "path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/shtns/lib/python3.14/site-packages/_shtns.cpython-314-x86_64-linux-gnu.so",
+          "sha256": "dac60c3dd3f0a93ae1f351ca62e444672c15bb2ac5f309fa22540635935e4054",
+          "ldd": "\tlinux-vdso.so.1 (0x000071db7c655000)\n\tlibfftw3_omp.so.3 => /usr/lib/x86_64-linux-gnu/libfftw3_omp.so.3 (0x000071db7c4fd000)\n\tlibfftw3.so.3 => /usr/lib/x86_64-linux-gnu/libfftw3.so.3 (0x000071db7c2d9000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000071db7c1b3000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000071db7bf92000)\n\tlibgomp.so.1 => /usr/lib/x86_64-linux-gnu/libgomp.so.1 (0x000071db7bf31000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000071db7c657000)\n"
+        }
+      ],
+      "direct_url": [
+        [
+          "shtns",
+          "{\"url\":\"file:///home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/shtns\",\"dir_info\":{}}"
+        ],
+        [
+          "sht-bench",
+          "{\"url\":\"file:///home/albert/sht_bench\",\"dir_info\":{\"editable\":true}}"
+        ]
+      ],
+      "native_import_output": "",
+      "python_executable": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/shtns/bin/python",
+      "freeze": "contourpy==1.4.0\ncycler==0.12.1\nfonttools==4.67.0\niniconfig==2.3.1\nkiwisolver==1.5.1\nmatplotlib==3.11.2\nnumpy==2.5.4\npackaging==26.3\npillow==13.0.0\npluggy==1.7.0\npygments==2.21.0\npyparsing==3.3.3\npytest==9.1.1\npython-dateutil==3.0.0\nscipy==1.18.1\n-e file:///home/albert/sht_bench\nshtns @ file:///home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/shtns\nsix==1.17.0\ntzdata==2026.5\n",
+      "tracked_source_changes_after_build": "",
+      "submodules": "",
+      "compiler_metadata_files": [
+        {
+          "source_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/shtns/Makefile",
+          "file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/build-metadata/shtns/Makefile",
+          "sha256": "d4724db8c06c552754be9c2628880039dc1d10844371337bf7d238bef1af9e2d"
+        },
+        {
+          "source_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/shtns/config.log",
+          "file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/build-metadata/shtns/config.log",
+          "sha256": "79a54b3fe6286526cf92c415f7cb9451717e76ef1f61c67d86fbf5fc9b995093"
+        },
+        {
+          "source_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/shtns/config.status",
+          "file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/build-metadata/shtns/config.status",
+          "sha256": "1f87d862334b6dc744a89f9656a7b163be601463b91e6e4bb6cff80544a05502"
+        },
+        {
+          "source_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/checkouts/shtns/sht_config.h",
+          "file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/build-metadata/shtns/sht_config.h",
+          "sha256": "50dc6d76550d5fa6f65378dbf2170b90458e90b869970bfcba45cf122d745933"
+        }
+      ]
+    },
+    "rustsht": {
+      "status": "built",
+      "build_kind": "git-source",
+      "build_origin": "detached source worktree from remote dev",
+      "origin": "https://github.com/mwyau/RustSHT.git",
+      "ref": "dev",
+      "sha": "3194dc095c71343931b2ba0cfa0fc4f72dcab4cf",
+      "source_snapshot_path": "/tmp/rustsht-dev-3194dc095c71",
+      "source_worktree_clean": true,
+      "build_command": [
+        "RUSTUP_TOOLCHAIN=1.99.0",
+        "uv",
+        "pip",
+        "install",
+        "--reinstall",
+        "--verbose",
+        "--python",
+        "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/bin/python",
+        "--no-deps",
+        "/tmp/rustsht-dev-3194dc095c71"
+      ],
+      "build_profile": "Cargo release profile (optimized); default parallel feature; no target-cpu override",
+      "rustup_toolchain": "1.99.0",
+      "compiler": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+      "rustflags": null,
+      "maturin_version": "1.15.0",
+      "python_executable": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/bin/python",
+      "python": "3.14.9 | packaged by conda-forge | (main, Oct 22 2026, 10:21:21) [GCC 15.3.0]",
+      "python_version": "3.14.9",
+      "numpy": "2.5.4",
+      "distribution_name": "rustsht",
+      "distribution_version": "0.1.0.dev0",
+      "module_path": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/lib/python3.14/site-packages/rustsht/__init__.py",
+      "native_api": [
+        "ShtPlan",
+        "ShtPlan32"
+      ],
+      "native_import_output": "",
+      "build_log": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/build-rustsht-dev-rustc-1.99.0.log",
+      "build_log_sha256": "7f232f5a9da78495f1b0bbc32da6970dd90df073b859ec100e08d2a29bb51746",
+      "binaries": [
+        {
+          "path": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/lib/python3.14/site-packages/rustsht/_rustsht.abi3.so",
+          "sha256": "793def549f49f62f317f3635df1b5b683f1dede660ed3f446c865b4d83d53b51",
+          "ldd": "\tlinux-vdso.so.1 (0x000070d3ecc3d000)\n\tlibgcc_s.so.1 => /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x000070d3ec73b000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000070d3ec615000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000070d3ec3f4000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000070d3ecc3f000)\n"
+        }
+      ]
+    },
+    "pyspharm": {
+      "status": "built",
+      "build_kind": "conda-forge",
+      "build_origin": "conda-forge",
+      "conda_executable": "/home/albert/miniforge3/bin/conda",
+      "conda_create_command": [
+        "/home/albert/miniforge3/bin/conda",
+        "create",
+        "--yes",
+        "--override-channels",
+        "--channel",
+        "conda-forge",
+        "--strict-channel-priority",
+        "--prefix",
+        "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/pyspharm",
+        "python=3.14.9",
+        "numpy=2.5.4",
+        "pyspharm=1.0.9"
+      ],
+      "resolved_conda_package": {
+        "name": "pyspharm",
+        "version": "1.0.9",
+        "build_string": "np2py314h2766e9b_1017",
+        "build_number": 1017,
+        "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+        "sha256": "1edea5872986bd960a9d42f234960e36fdfd8cf6a110c37daaa53baf20b94b00",
+        "md5": "eeff4953b1dc383de80803b5bfa9f2dc",
+        "depends": [
+          "python",
+          "numpy >=2.5.3,<3.0a0",
+          "libgcc >=15",
+          "libgfortran5 >=15.3.0",
+          "libgfortran",
+          "__glibc >=2.17,<3.0.a0",
+          "numpy >=1.25,<3",
+          "python_abi 3.14.* *_cp314"
+        ],
+        "subdir": "linux-64"
+      },
+      "sha": "1edea5872986bd960a9d42f234960e36fdfd8cf6a110c37daaa53baf20b94b00",
+      "import_banner": "",
+      "module_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/pyspharm/lib/python3.14/site-packages/spharm/__init__.py",
+      "python": "3.14.9 | packaged by conda-forge | (main, Oct 22 2026, 10:21:21) [GCC 15.3.0]",
+      "python_version": "3.14.9",
+      "numpy": "2.5.4",
+      "numpy_abi": 33554432,
+      "distribution_name": "pyspharm",
+      "distribution_version": "1.0.9",
+      "conda_record": {
+        "name": "pyspharm",
+        "version": "1.0.9",
+        "build": "np2py314h2766e9b_1017",
+        "build_number": 1017,
+        "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+        "subdir": "linux-64",
+        "fn": "pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+        "md5": "eeff4953b1dc383de80803b5bfa9f2dc",
+        "url": "https://conda.anaconda.org/conda-forge/linux-64/pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+        "sha256": "1edea5872986bd960a9d42f234960e36fdfd8cf6a110c37daaa53baf20b94b00",
+        "depends": [
+          "python",
+          "numpy >=2.5.3,<3.0a0",
+          "libgcc >=15",
+          "libgfortran5 >=15.3.0",
+          "libgfortran",
+          "__glibc >=2.17,<3.0.a0",
+          "numpy >=1.25,<3",
+          "python_abi 3.14.* *_cp314"
+        ],
+        "constrains": [],
+        "license": "LicenseRef-spherepack",
+        "timestamp": 1789575270539,
+        "size": 312827,
+        "requested_spec": "pyspharm=1.0.9",
+        "package_tarball_full_path": "/home/albert/miniforge3/pkgs/pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+        "extracted_package_dir": "/home/albert/miniforge3/pkgs/pyspharm-1.0.9-np2py314h2766e9b_1017",
+        "files": [
+          "etc/conda/test-files/pyspharm/1/conftest.py",
+          "etc/conda/test-files/pyspharm/1/tests/test_array_api.py",
+          "etc/conda/test-files/pyspharm/1/tests/test_hypothesis.py",
+          "etc/conda/test-files/pyspharm/1/tests/test_spharm.py",
+          "lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/INSTALLER",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/LICENSE.spherepack",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/METADATA",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/RECORD",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/REQUESTED",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/WHEEL",
+          "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/direct_url.json",
+          "lib/python3.14/site-packages/spharm/__init__.py",
+          "lib/python3.14/site-packages/spharm/__pycache__/__init__.cpython-314.pyc",
+          "lib/python3.14/site-packages/spharm/__pycache__/spharm.cpython-314.pyc",
+          "lib/python3.14/site-packages/spharm/spharm.py"
+        ],
+        "paths_data": {
+          "paths_version": 1,
+          "paths": [
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/conftest.py",
+              "path_type": "hardlink",
+              "sha256": "dca6fef5d2a53b355be56d588d49fc67332141bffe6a7df6b49f50d27ee1e89c",
+              "size_in_bytes": 564,
+              "sha256_in_prefix": "dca6fef5d2a53b355be56d588d49fc67332141bffe6a7df6b49f50d27ee1e89c"
+            },
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/tests/test_array_api.py",
+              "path_type": "hardlink",
+              "sha256": "5f3f665c3bbb913932205363195b59407bfe3ba7b9a135b28aaf11301fe27315",
+              "size_in_bytes": 560,
+              "sha256_in_prefix": "5f3f665c3bbb913932205363195b59407bfe3ba7b9a135b28aaf11301fe27315"
+            },
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/tests/test_hypothesis.py",
+              "path_type": "hardlink",
+              "sha256": "1197c660276f71837bd237256747557582f45c3a922d32a6919559bedbf191e0",
+              "size_in_bytes": 3933,
+              "sha256_in_prefix": "1197c660276f71837bd237256747557582f45c3a922d32a6919559bedbf191e0"
+            },
+            {
+              "_path": "etc/conda/test-files/pyspharm/1/tests/test_spharm.py",
+              "path_type": "hardlink",
+              "sha256": "0bed41deb4e06404fb7a6710f0fe55d338cbec52d5cc04f2f64d3a33802e6326",
+              "size_in_bytes": 10885,
+              "sha256_in_prefix": "0bed41deb4e06404fb7a6710f0fe55d338cbec52d5cc04f2f64d3a33802e6326"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+              "path_type": "hardlink",
+              "sha256": "94b3c6d2fa5b7083beef10be8e2bb3a9389f463cb2540909ffb2cd03861f5310",
+              "size_in_bytes": 918544,
+              "sha256_in_prefix": "94b3c6d2fa5b7083beef10be8e2bb3a9389f463cb2540909ffb2cd03861f5310"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/INSTALLER",
+              "path_type": "hardlink",
+              "sha256": "bc33022edcb7639ff53355b4e91dade50a0bbf0299efeb6171d1ec0ba5029cfc",
+              "size_in_bytes": 6,
+              "sha256_in_prefix": "bc33022edcb7639ff53355b4e91dade50a0bbf0299efeb6171d1ec0ba5029cfc"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/LICENSE.spherepack",
+              "path_type": "hardlink",
+              "sha256": "b69ff82f0a6a04b2cdbdd97d92dc256458f11bcf66a2f4efc2f010b7fd199fbb",
+              "size_in_bytes": 1732,
+              "sha256_in_prefix": "b69ff82f0a6a04b2cdbdd97d92dc256458f11bcf66a2f4efc2f010b7fd199fbb"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/METADATA",
+              "path_type": "hardlink",
+              "sha256": "815a9a60a1efb92b482cd3f0f96c079311e6a1881132afde5552cd2f1f7be9bc",
+              "size_in_bytes": 4617,
+              "sha256_in_prefix": "815a9a60a1efb92b482cd3f0f96c079311e6a1881132afde5552cd2f1f7be9bc"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/RECORD",
+              "path_type": "hardlink",
+              "sha256": "9088c40f3ba894a0589e501d59cdd4cf976c71b609e29ad4e4cca5b67c074c8f",
+              "size_in_bytes": 932,
+              "sha256_in_prefix": "9088c40f3ba894a0589e501d59cdd4cf976c71b609e29ad4e4cca5b67c074c8f"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/REQUESTED",
+              "path_type": "hardlink",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "size_in_bytes": 0,
+              "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/WHEEL",
+              "path_type": "hardlink",
+              "sha256": "4a9ea657d1fb755fe6b15979f7fd174d9946c17337bcfad156d83cc81e268bbc",
+              "size_in_bytes": 88,
+              "sha256_in_prefix": "4a9ea657d1fb755fe6b15979f7fd174d9946c17337bcfad156d83cc81e268bbc"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/pyspharm-1.0.9.dist-info/direct_url.json",
+              "path_type": "hardlink",
+              "sha256": "fd82f70ee90cac6cf4ee9e338b390e49b7e8006d7ed748e75923f14a70303f4a",
+              "size_in_bytes": 119,
+              "sha256_in_prefix": "fd82f70ee90cac6cf4ee9e338b390e49b7e8006d7ed748e75923f14a70303f4a"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/__init__.py",
+              "path_type": "hardlink",
+              "sha256": "7dea8c148edcfded6b97dbfc50ce31a7242911a8b84fa957e6918926b8f04d9b",
+              "size_in_bytes": 82,
+              "sha256_in_prefix": "7dea8c148edcfded6b97dbfc50ce31a7242911a8b84fa957e6918926b8f04d9b"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/__pycache__/__init__.cpython-314.pyc",
+              "path_type": "hardlink",
+              "sha256": "a34ead2ed5f3a03d319a019d06495ae5ff27246cc1391167eb47327a5d04a030",
+              "size_in_bytes": 499,
+              "sha256_in_prefix": "a34ead2ed5f3a03d319a019d06495ae5ff27246cc1391167eb47327a5d04a030"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/__pycache__/spharm.cpython-314.pyc",
+              "path_type": "hardlink",
+              "sha256": "faccdcd90c453f944cfda0eeb64f4506fb724be658031f4e3c47c17c40af8ffa",
+              "size_in_bytes": 51910,
+              "sha256_in_prefix": "faccdcd90c453f944cfda0eeb64f4506fb724be658031f4e3c47c17c40af8ffa"
+            },
+            {
+              "_path": "lib/python3.14/site-packages/spharm/spharm.py",
+              "path_type": "hardlink",
+              "sha256": "da281dff7cb43315c283f5148ce2b4d2cbeacfc8992b8b205ad8636668186424",
+              "size_in_bytes": 42950,
+              "sha256_in_prefix": "da281dff7cb43315c283f5148ce2b4d2cbeacfc8992b8b205ad8636668186424"
+            }
+          ]
+        },
+        "link": {
+          "source": "/home/albert/miniforge3/pkgs/pyspharm-1.0.9-np2py314h2766e9b_1017",
+          "type": 1
+        },
+        "requested_specs": [
+          "pyspharm=1.0.9"
+        ]
+      },
+      "precision_probe": {
+        "input_dtype": "float32",
+        "analysis_dtype": "complex64",
+        "synthesis_dtype": "float32"
+      },
+      "binaries": [
+        {
+          "path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/pyspharm/lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+          "sha256": "94b3c6d2fa5b7083beef10be8e2bb3a9389f463cb2540909ffb2cd03861f5310",
+          "ldd": "\tlinux-vdso.so.1 (0x000079d20b9f2000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000079d20b7dd000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000079d20b5bc000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000079d20b9f4000)\n"
+        }
+      ],
+      "conda_packages": [
+        {
+          "name": "libgfortran",
+          "version": "16.2.0",
+          "build": "h69a702a_7",
+          "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+          "url": "https://conda.anaconda.org/conda-forge/linux-64/libgfortran-16.2.0-h69a702a_7.conda",
+          "sha256": "9682ae4dd11487e10b904b3cb3ab6379cad25233d45fdfdf90d54349df244494"
+        },
+        {
+          "name": "numpy",
+          "version": "2.5.4",
+          "build": "py314hd3a7d6b_0",
+          "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+          "url": "https://conda.anaconda.org/conda-forge/linux-64/numpy-2.5.4-py314hd3a7d6b_0.conda",
+          "sha256": "7533361a15ff1d4c1e7069b9410d32a602a6a9350d717a43731b07e3565a6689"
+        },
+        {
+          "name": "pyspharm",
+          "version": "1.0.9",
+          "build": "np2py314h2766e9b_1017",
+          "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+          "url": "https://conda.anaconda.org/conda-forge/linux-64/pyspharm-1.0.9-np2py314h2766e9b_1017.conda",
+          "sha256": "1edea5872986bd960a9d42f234960e36fdfd8cf6a110c37daaa53baf20b94b00"
+        },
+        {
+          "name": "python",
+          "version": "3.14.9",
+          "build": "hcd007b5_100_cp314",
+          "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+          "url": "https://conda.anaconda.org/conda-forge/linux-64/python-3.14.9-hcd007b5_100_cp314.conda",
+          "sha256": "87874d825447bb21759c6378cbbc4ce380b2b639609bfd4cb67dc864641ac759"
+        },
+        {
+          "name": "libgcc",
+          "version": "16.2.0",
+          "build": "ha9f2e26_7",
+          "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+          "url": "https://conda.anaconda.org/conda-forge/linux-64/libgcc-16.2.0-ha9f2e26_7.conda",
+          "sha256": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea"
+        },
+        {
+          "name": "libgfortran5",
+          "version": "16.2.0",
+          "build": "h6b99dfc_7",
+          "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+          "url": "https://conda.anaconda.org/conda-forge/linux-64/libgfortran5-16.2.0-h6b99dfc_7.conda",
+          "sha256": "04dbab12c925b92977bb835dd2f5eda413607afa79f95a554e5a04b07a380322"
+        }
+      ],
+      "native_import_output": "",
+      "runtime_probe": {
+        "module_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/pyspharm/lib/python3.14/site-packages/spharm/__init__.py",
+        "native_module_path": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/pyspharm/lib/python3.14/site-packages/_spherepack.cpython-314-x86_64-linux-gnu.so",
+        "native_sha256": "94b3c6d2fa5b7083beef10be8e2bb3a9389f463cb2540909ffb2cd03861f5310",
+        "python": "3.14.9 | packaged by conda-forge | (main, Oct 22 2026, 10:21:21) [GCC 15.3.0]",
+        "python_version": "3.14.9",
+        "numpy": "2.5.4",
+        "numpy_abi": 33554432,
+        "analysis_dtype": "complex64",
+        "synthesis_dtype": "float32",
+        "linked_libraries": "\tlinux-vdso.so.1 (0x00007c6d31872000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007c6d3165d000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007c6d3143c000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007c6d31874000)\n"
+      },
+      "python_executable": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/envs/pyspharm/bin/python",
+      "freeze": "contourpy==1.4.0\ncycler==0.12.1\nfonttools==4.67.0\niniconfig==2.3.1\nkiwisolver==1.5.1\nmatplotlib==3.11.2\nnumpy @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_numpy_1791675316/work/dist/numpy-2.5.4-cp314-cp314-linux_x86_64.whl#sha256=7d3822dd8936e8f8f32ba03258b6a976ffeb298548df99098c8ea8f9232b53a5\npackaging==26.3\npillow==13.0.0\npip @ file:///home/conda/feedstock_root/build_artifacts/pip_1792524209666/work\npluggy==1.7.0\npygments==2.21.0\npyparsing==3.3.3\npyspharm @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pyspharm_1789575270/work\npytest==9.1.1\npython-dateutil==3.0.0\nscipy==1.18.1\n-e file:///home/albert/sht_bench\nsix==1.17.0\ntzdata==2026.5\n",
+      "conda_exports": {
+        "explicit_file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/pyspharm-conda-explicit.txt",
+        "explicit_sha256": "f65660b6e1c04a91192f987e71f99b97c5ad83c9d8d6d97c427e204becbd211d",
+        "environment_file": "/home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build-explicit-python/pyspharm-conda-environment.yml"
+      }
+    }
+  },
+  "compiler_environment": {
+    "CC": "/usr/bin/gcc",
+    "CXX": "/usr/bin/g++",
+    "FC": "/usr/bin/gfortran",
+    "CFLAGS": null,
+    "CXXFLAGS": null,
+    "FFLAGS": null,
+    "LDFLAGS": null,
+    "RUSTFLAGS": "-C target-cpu=native",
+    "DUCC0_OPTIMIZATION": "native",
+    "CMAKE_ARGS": null,
+    "CARGO_BUILD_TARGET": null
+  },
+  "compilers": {
+    "/usr/bin/gcc": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "/usr/bin/g++": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "/usr/bin/gfortran": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\n",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)\n"
+  },
+  "cpu": {
+    "command": [
+      "lscpu"
+    ],
+    "stdout": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  32\nOn-line CPU(s) list:                     0-31\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 9 5950X 16-Core Processor\nCPU family:                              25\nModel:                                   33\nThread(s) per core:                      2\nCore(s) per socket:                      16\nSocket(s):                               1\nStepping:                                0\nFrequency boost:                         enabled\nCPU(s) scaling MHz:                      76%\nCPU max MHz:                             5086.1812\nCPU min MHz:                             582.1540\nBogoMIPS:                                6787.65\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm debug_swap\nVirtualization:                          AMD-V\nL1d cache:                               512 KiB (16 instances)\nL1i cache:                               512 KiB (16 instances)\nL2 cache:                                8 MiB (16 instances)\nL3 cache:                                64 MiB (2 instances)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-31\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; Safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Mitigation; Clear CPU buffers\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  "fftw_version": {
+    "command": [
+      "pkg-config",
+      "--modversion",
+      "fftw3"
+    ],
+    "stdout": "3.3.10\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  "fftw_flags": {
+    "command": [
+      "pkg-config",
+      "--cflags",
+      "--libs",
+      "fftw3"
+    ],
+    "stdout": " -lfftw3\n",
+    "stderr": "",
+    "returncode": 0
+  },
+  "fast_scaling_note": "DUCC, SHTns and conda-forge pyspharm reused from build-explicit-python. RustSHT rebuilt from remote main for this sweep.",
+  "source_build_manifests": {
+    "baseline": {
+      "path": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-l1024/build-manifest.json",
+      "sha256": "e4e9eaef8d327b06f79026eae1e322e5c74d9e8c560f8053054f9fff96b118af"
+    },
+    "rustsht_refresh": {
+      "path": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-3194dc09/build-manifest.json",
+      "sha256": "231bdf1e7767e8fa60d65e2ae9595f5c2809b46d1c22b1a9bfccf2ce4455fbe1"
+    }
+  }
+}

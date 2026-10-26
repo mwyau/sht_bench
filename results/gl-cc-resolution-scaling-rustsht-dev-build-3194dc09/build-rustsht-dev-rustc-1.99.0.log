@@ -1,0 +1,107 @@
+DEBUG Found workspace root: /home/albert/sht_bench
+DEBUG Adding root workspace member: /home/albert/sht_bench
+DEBUG Skipping `pyproject.toml` in `/home/albert/sht_bench` (no `[tool.uv]` section)
+DEBUG Searching for user configuration in: /home/albert/.config/uv/uv.toml
+DEBUG uv 0.12.23 (x86_64-unknown-linux-gnu)
+DEBUG Marking explicit source tree for reinstall: /tmp/rustsht-dev-3194dc095c71
+DEBUG Checking for Python interpreter at path `results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/bin/python`
+Using Python 3.14.9 environment at: results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht
+DEBUG Using request connect timeout of 10s and read timeout of 30s
+DEBUG Found PEP 621 metadata for `/tmp/rustsht-dev-3194dc095c71` in `pyproject.toml` (rustsht)
+DEBUG Solving with installed Python version: 3.14.9
+DEBUG Solving with target Python version: >=3.14.9
+DEBUG Adding direct dependency: rustsht*
+DEBUG Searching for a compatible version of rustsht @ `file:///tmp/rustsht-dev-3194dc095c71` (*)
+DEBUG Found static `pyproject.toml` for: rustsht @ file:///tmp/rustsht-dev-3194dc095c71
+DEBUG No workspace root found, using project root
+DEBUG Tried 1 versions: rustsht 1
+DEBUG marker environment resolution took 0.000s
+Resolved 1 package in 1ms
+DEBUG Must revalidate requirement: rustsht
+DEBUG Computed cache info: Timestamp(SystemTime { tv_sec: 1792984220, tv_nsec: 388271305 }), None, None, {}, {"src": Some(Timestamp(Timestamp(SystemTime { tv_sec: 1792984220, tv_nsec: 907511374 })))}. Most recently modified: /tmp/rustsht-dev-3194dc095c71/pyproject.toml
+   Building rustsht @ file:///tmp/rustsht-dev-3194dc095c71
+DEBUG Building: rustsht @ file:///tmp/rustsht-dev-3194dc095c71
+DEBUG Assessing Python executable as base candidate: /home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build/envs/pyspharm/bin/python3.14
+DEBUG Creating build environment for: rustsht @ file:///tmp/rustsht-dev-3194dc095c71
+DEBUG Using base executable for virtual environment: /home/albert/sht_bench/results/pyspharm-conda-py314-20261025/build/envs/pyspharm/bin/python3.14
+DEBUG Resolving build requirements
+DEBUG Solving with installed Python version: 3.14.9
+DEBUG Solving with target Python version: >=3.14.9
+DEBUG Adding direct dependency: maturin>=1.15, <2
+DEBUG Found stale response for: https://pypi.org/simple/maturin/
+DEBUG Sending revalidation request for: https://pypi.org/simple/maturin/
+DEBUG Found not-modified response for: https://pypi.org/simple/maturin/
+DEBUG Searching for a compatible version of maturin (>=1.15, <2)
+DEBUG Selecting: maturin==1.15.0 [compatible] (maturin-1.15.0-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.musllinux_1_1_x86_64.whl)
+DEBUG Found fresh response for: https://files.pythonhosted.org/packages/fe/91/b495e19e2f5c503b540452b2039115e7b2363867e8c5ad4179eb752fa92c/maturin-1.15.0-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.musllinux_1_1_x86_64.whl.metadata
+DEBUG Tried 1 versions: maturin 1
+DEBUG marker environment resolution took 0.074s
+DEBUG Installing `maturin==1.15.0` in `/home/albert/.cache/uv/builds-v0/.tmpwPRn3o`
+DEBUG Must revalidate requirement: maturin
+DEBUG Downloading and building requirement for build: maturin==1.15.0
+DEBUG Found fresh response for: https://files.pythonhosted.org/packages/fe/91/b495e19e2f5c503b540452b2039115e7b2363867e8c5ad4179eb752fa92c/maturin-1.15.0-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.musllinux_1_1_x86_64.whl
+DEBUG Installing build requirement: maturin==1.15.0
+DEBUG Failed to reflink `/home/albert/.cache/uv/archive-v0/A_XQdtGkTkUeCRCb/maturin-1.15.0.dist-info/WHEEL` to `/home/albert/.cache/uv/builds-v0/.tmpwPRn3o/lib/python3.14/site-packages/maturin-1.15.0.dist-info/WHEEL`: Operation not permitted (os error 1), falling back
+DEBUG Creating PEP 517 build environment
+DEBUG Calling `maturin.get_requires_for_build_wheel()`
+DEBUG Calling `maturin.build_wheel(__import__("os").fsdecode(b"/home/albert/.cache/uv/builds-v0/.tmplHicUA"), {}, None)`
+DEBUG Running `maturin pep517 build-wheel -i /home/albert/.cache/uv/builds-v0/.tmpwPRn3o/bin/python --compatibility off`
+DEBUG 🍹 Building a mixed python/rust project
+DEBUG 🐍 Found CPython 3.14 at /home/albert/.cache/uv/builds-v0/.tmpwPRn3o/bin/python
+DEBUG 🔗 Found pyo3 bindings with abi3-py3.11 support
+DEBUG 📡 Using build options bindings from pyproject.toml
+DEBUG    Compiling autocfg v1.5.1
+DEBUG    Compiling target-lexicon v0.13.5
+DEBUG    Compiling proc-macro2 v1.0.107
+DEBUG    Compiling quote v1.0.47
+DEBUG    Compiling unicode-ident v1.0.27
+DEBUG    Compiling crossbeam-utils v0.8.23
+DEBUG    Compiling bytemuck v1.25.2
+DEBUG    Compiling crossbeam-epoch v0.9.21
+DEBUG    Compiling libc v0.2.190
+DEBUG    Compiling crossbeam-deque v0.8.8
+DEBUG    Compiling paste v1.0.15
+DEBUG    Compiling libm v0.2.16
+DEBUG    Compiling rayon-core v1.13.0
+DEBUG    Compiling heck v0.5.0
+DEBUG    Compiling version_check v0.9.5
+DEBUG    Compiling rawpointer v0.2.1
+DEBUG    Compiling bitflags v2.13.2
+DEBUG    Compiling strength_reduce v0.2.4
+DEBUG    Compiling reborrow v0.5.5
+DEBUG    Compiling cfg-if v1.0.5
+DEBUG    Compiling once_cell v1.21.4
+DEBUG    Compiling pulp-wasm-simd-flag v0.1.1
+DEBUG    Compiling either v1.19.0
+DEBUG    Compiling rustc-hash v2.1.3
+DEBUG    Compiling raw-cpuid v11.6.0
+DEBUG    Compiling pulp v0.22.3
+DEBUG    Compiling num-traits v0.2.19
+DEBUG    Compiling matrixmultiply v0.3.11
+DEBUG    Compiling pyo3-build-config v0.29.3
+DEBUG    Compiling syn v2.0.119
+DEBUG    Compiling pyo3-ffi v0.29.3
+DEBUG    Compiling pyo3 v0.29.3
+DEBUG    Compiling numpy v0.29.0
+DEBUG    Compiling num-integer v0.1.47
+DEBUG    Compiling num-complex v0.4.6
+DEBUG    Compiling primal-check v0.3.4
+DEBUG    Compiling transpose v0.2.3
+DEBUG    Compiling rayon v1.12.0
+DEBUG    Compiling ndarray v0.17.2
+DEBUG    Compiling rustfft v6.4.1
+DEBUG    Compiling pyo3-macros-backend v0.29.3
+DEBUG    Compiling pyo3-macros v0.29.3
+DEBUG    Compiling rustsht v0.1.0-dev.0 (/tmp/rustsht-dev-3194dc095c71)
+DEBUG    Compiling rustsht-python v0.1.0-dev.0 (/tmp/rustsht-dev-3194dc095c71/python)
+DEBUG     Finished `release` profile [optimized] target(s) in 20.42s
+DEBUG 📦 Built wheel for abi3 Python ≥ 3.11 to /tmp/rustsht-dev-3194dc095c71/target/wheels/rustsht-0.1.0.dev0-cp311-abi3-linux_x86_64.whl
+DEBUG /tmp/rustsht-dev-3194dc095c71/target/wheels/rustsht-0.1.0.dev0-cp311-abi3-linux_x86_64.whl
+DEBUG Built `rustsht @ file:///tmp/rustsht-dev-3194dc095c71` into `rustsht-0.1.0.dev0-cp311-abi3-linux_x86_64.whl`
+      Built rustsht @ file:///tmp/rustsht-dev-3194dc095c71
+Prepared 1 package in 20.84s
+DEBUG Uninstalled rustsht (16 files, 5 directories)
+Uninstalled 1 package in 1ms
+DEBUG Failed to reflink `/home/albert/.cache/uv/archive-v0/rPLPkqkP_H-SjD4H/rustsht-0.1.0.dev0.dist-info/WHEEL` to `/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/lib/python3.14/site-packages/rustsht-0.1.0.dev0.dist-info/WHEEL`: Operation not permitted (os error 1), falling back
+Installed 1 package in 7ms
+ ~ rustsht==0.1.0.dev0 (from file:///tmp/rustsht-dev-3194dc095c71)

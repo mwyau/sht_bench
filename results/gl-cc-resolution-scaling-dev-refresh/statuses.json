@@ -1,0 +1,1714 @@
+{
+  "schema": 1,
+  "unsupported_and_skipped": [
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N1024",
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N768",
+        "GL-N896",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N1024",
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N768",
+        "GL-N896",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N1024",
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N768",
+        "GL-N896",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "GL-N1024",
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N768",
+        "GL-N896",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-L1024",
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L768",
+        "CC-L896",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-L1024",
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L768",
+        "CC-L896",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-L1024",
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L768",
+        "CC-L896",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "shtns",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "Python API uses float64/complex128",
+      "case_ids": [
+        "CC-L1024",
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L768",
+        "CC-L896",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640,
+        768,
+        896,
+        1024
+      ],
+      "threads": [
+        1,
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "skipped",
+      "threads": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "reason": "conda-forge pyspharm public API has no native thread-count control; measured once at q1"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "GL",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "GL-N128",
+        "GL-N160",
+        "GL-N180",
+        "GL-N192",
+        "GL-N224",
+        "GL-N256",
+        "GL-N32",
+        "GL-N320",
+        "GL-N384",
+        "GL-N448",
+        "GL-N45",
+        "GL-N512",
+        "GL-N64",
+        "GL-N640",
+        "GL-N90"
+      ],
+      "lmax": [
+        32,
+        45,
+        64,
+        90,
+        128,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N768",
+      "resolution": "GL N=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N896",
+      "resolution": "GL N=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "GL",
+      "case_id": "GL-N1024",
+      "resolution": "GL N=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "unsupported",
+      "grid": "CC",
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "reason": "conda-forge pyspharm 1.0.9 (Spherepack) runtime uses float32/complex64",
+      "case_ids": [
+        "CC-L120",
+        "CC-L160",
+        "CC-L180",
+        "CC-L192",
+        "CC-L224",
+        "CC-L256",
+        "CC-L320",
+        "CC-L36",
+        "CC-L360",
+        "CC-L384",
+        "CC-L448",
+        "CC-L45",
+        "CC-L512",
+        "CC-L60",
+        "CC-L640",
+        "CC-L90"
+      ],
+      "lmax": [
+        36,
+        45,
+        60,
+        90,
+        120,
+        160,
+        180,
+        192,
+        224,
+        256,
+        320,
+        360,
+        384,
+        448,
+        512,
+        640
+      ],
+      "threads": [
+        1
+      ]
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L768",
+      "resolution": "CC L=768",
+      "lmax": 768,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L896",
+      "resolution": "CC L=896",
+      "lmax": 896,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float64",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "analysis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    },
+    {
+      "backend": "pyspharm",
+      "status": "degree_limit",
+      "grid": "CC",
+      "case_id": "CC-L1024",
+      "resolution": "CC L=1024",
+      "lmax": 1024,
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads": [
+        1
+      ],
+      "max_degree": 640,
+      "reason": "conda-forge pyspharm is capped at L640; no workload or native plan was constructed"
+    }
+  ],
+  "execution_failures_and_resource_limits": [
+    {
+      "id": "65401a3a5d967cb9cd5e",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N384",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    },
+    {
+      "id": "df64e850b5a6e804d2a8",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N384",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    },
+    {
+      "id": "68ba46ac5d7e90ecd46f",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N448",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    },
+    {
+      "id": "3a623861f31942e85db3",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N448",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    },
+    {
+      "id": "2d70c3ad5b240fae0b13",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N512",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    },
+    {
+      "id": "26f0693983faef166805",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N512",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    },
+    {
+      "id": "3e5f8a35f26669a9c308",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N640",
+      "precision": "float32",
+      "spin": 0,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    },
+    {
+      "id": "40aad028fbef6e419398",
+      "backend": "pyspharm",
+      "grid": "GL",
+      "case_id": "GL-N640",
+      "precision": "float32",
+      "spin": 1,
+      "operation": "synthesis",
+      "threads_requested": 1,
+      "status": "execution_failed",
+      "reason": "ValueError: output contains non-finite values"
+    }
+  ]
+}

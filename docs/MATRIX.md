@@ -17,7 +17,7 @@ Pyspharm has no public native thread control and is timed at **q1 only**. SHTns 
 
 ## Dense high-resolution profile
 
-The current primary result uses `--profile dense-to-1024`; `--profile standard` retains the seven-point ladder above.
+The current comparison uses `--profile dense-to-1024`; `--profile standard` retains the seven-point ladder above. The comparison refreshes RustSHT from `dev` and reuses the saved DUCC, SHTns, and pyspharm measurements.
 
 | Grid | Degrees |
 | --- | --- |
@@ -37,13 +37,17 @@ The primary timing runner is `scripts/run_fast_scaling.py`. It bypasses independ
 ## Run configuration
 
 ```bash
-uv run --extra plot python scripts/run_fast_scaling.py \
-  --build-manifest results/gl-cc-resolution-scaling-build/build-manifest.json \
-  --output results/gl-cc-resolution-scaling-l1024-reproduction \
-  --profile dense-to-1024 \
-  --backend ducc,shtns,rustsht,pyspharm \
+env -u OMP_WAIT_POLICY uv run --extra plot python scripts/run_fast_scaling.py \
+  --build-manifest results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/build-manifest.json \
+  --output results/gl-cc-resolution-scaling-rustsht-dev-3194dc09-reproduction \
+  --profile dense-to-1024 --backend rustsht \
   --grid GL,CC --threads 1,2,4,8,16 \
   --precision float64,float32 --min-time 0.005 --timeout 180
+
+uv run --extra plot python scripts/merge_scaling_results.py \
+  --baseline results/gl-cc-resolution-scaling-l1024 \
+  --rustsht-refresh results/gl-cc-resolution-scaling-rustsht-dev-3194dc09-reproduction \
+  --output results/gl-cc-resolution-scaling-dev-refresh-reproduction
 ```
 
 Run the small N32/L36 smoke first by adding `--smoke` and selecting a temporary output directory. The runner copies the exact build manifest into its output, writes partial data after each backend/resolution/thread workload, and supports compatible continuation with `--resume`. It runs q1 across the ladder first, then q8/q16, then q2/q4. Regenerate only the 16 primary figures using `--replot`.
@@ -52,4 +56,4 @@ Run the small N32/L36 smoke first by adding `--smoke` and selecting a temporary 
 
 Produce **16 scaling figures** for GL/CC × precision × spin × direction, with float64 first in the report and gallery. Each has **five panels** for q1/q2/q4/q8/q16, with an x-axis of increasing resolution and a logarithmic median-latency y-axis; each backend gets one curve based only on actually measured matching cases. Stop line segments at missing or failed degrees. Use the existing fixed backend colors. The q1-only pyspharm data may be shown only in the q1 panel, or as a clearly labeled *serial reference*, not a fake thread-scaling curve.
 
-Commit one tidy CSV, one JSON dataset containing raw samples and build metadata, a compact status list, and exactly 16 primary PNGs under `results/gl-cc-resolution-scaling-l1024/plots/`. The gallery is `plots/README.md`. See [current results](RESULTS.md) and the [historical archive](../archive/README.md).
+The merged comparison has one CSV, one JSON dataset with raw samples and per-backend build provenance, a status list, and exactly 16 primary PNGs under `results/gl-cc-resolution-scaling-dev-refresh/plots/`. The old main-build data remains under `results/gl-cc-resolution-scaling-l1024/`. The gallery is `plots/README.md`. See [current results](RESULTS.md) and the [historical archive](../archive/README.md).

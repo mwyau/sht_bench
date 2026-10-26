@@ -647,6 +647,12 @@ def _plot(output: Path) -> None:
         "# GL/CC resolution scaling figures", "",
         "Exploratory native allocating warm-call timings. Each figure separates grid, precision, spin and direction; the five panels show q1/q2/q4/q8/q16. Markers show measured points; line segments stop at missing or failed degrees. Float64 figures precede float32. SHTns is available at float64; conda-forge pyspharm is available at float32 and q1 only, with a hard L640 ceiling.", "",
     ]
+    merge = result.get("merge_provenance")
+    if merge:
+        source_sha = merge.get("rustsht_refresh_run", {}).get("source_sha", "unknown")
+        lines.extend([
+            f"RustSHT source: `dev` commit `{source_sha}`. DUCC, SHTns and pyspharm timings are preserved from the baseline run.", "",
+        ])
     for name in ordered_names:
         label = name.removesuffix(".png").replace("_", " · ")
         lines.extend([f"## {label}", "", f"![{label}]({name})", ""])

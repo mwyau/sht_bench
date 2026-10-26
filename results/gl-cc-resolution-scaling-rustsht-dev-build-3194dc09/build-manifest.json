@@ -1,0 +1,59 @@
+{
+  "schema": "sht_bench.source_build_manifest.v1",
+  "builds": {
+    "rustsht": {
+      "status": "built",
+      "build_kind": "git-source",
+      "build_origin": "detached source worktree from remote dev",
+      "origin": "https://github.com/mwyau/RustSHT.git",
+      "ref": "dev",
+      "sha": "3194dc095c71343931b2ba0cfa0fc4f72dcab4cf",
+      "source_snapshot_path": "/tmp/rustsht-dev-3194dc095c71",
+      "source_worktree_clean": true,
+      "build_command": [
+        "RUSTUP_TOOLCHAIN=1.99.0",
+        "uv",
+        "pip",
+        "install",
+        "--reinstall",
+        "--verbose",
+        "--python",
+        "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/bin/python",
+        "--no-deps",
+        "/tmp/rustsht-dev-3194dc095c71"
+      ],
+      "build_profile": "Cargo release profile (optimized); default parallel feature; no target-cpu override",
+      "rustup_toolchain": "1.99.0",
+      "compiler": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+      "rustflags": null,
+      "maturin_version": "1.15.0",
+      "python_executable": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/bin/python",
+      "python": "3.14.9 | packaged by conda-forge | (main, Oct 22 2026, 10:21:21) [GCC 15.3.0]",
+      "python_version": "3.14.9",
+      "numpy": "2.5.4",
+      "distribution_name": "rustsht",
+      "distribution_version": "0.1.0.dev0",
+      "module_path": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/lib/python3.14/site-packages/rustsht/__init__.py",
+      "native_api": [
+        "ShtPlan",
+        "ShtPlan32"
+      ],
+      "native_import_output": "",
+      "build_log": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/build-rustsht-dev-rustc-1.99.0.log",
+      "build_log_sha256": "7f232f5a9da78495f1b0bbc32da6970dd90df073b859ec100e08d2a29bb51746",
+      "binaries": [
+        {
+          "path": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/envs/rustsht/lib/python3.14/site-packages/rustsht/_rustsht.abi3.so",
+          "sha256": "793def549f49f62f317f3635df1b5b683f1dede660ed3f446c865b4d83d53b51",
+          "ldd": "\tlinux-vdso.so.1 (0x000070d3ecc3d000)\n\tlibgcc_s.so.1 => /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x000070d3ec73b000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000070d3ec615000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000070d3ec3f4000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000070d3ecc3f000)\n"
+        }
+      ]
+    }
+  },
+  "previous_rustsht_main": {
+    "ref": "main",
+    "sha": "579c09e5810045187e08f9525f7aaa4908a78adf",
+    "binary_sha256": "96e51f92183cb0ca6dc47d7da03affaf70f02a725d6a9f8567fbc175de59d09a"
+  }
+}

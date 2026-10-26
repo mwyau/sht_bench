@@ -1,0 +1,148 @@
+{
+  "method": "replace RustSHT rows by full workload key; never fall back to baseline RustSHT timings",
+  "key_fields": [
+    "backend",
+    "grid",
+    "case_id",
+    "lmax",
+    "mmax",
+    "precision",
+    "spin",
+    "operation",
+    "threads_requested"
+  ],
+  "baseline_run": {
+    "label": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-l1024",
+    "runner_sha256": "9eeffe3891d50699e93ecdea1aaca559c8caf9dbc08892e977a195571970bfa3",
+    "build_manifest_sha256": "e4e9eaef8d327b06f79026eae1e322e5c74d9e8c560f8053054f9fff96b118af"
+  },
+  "rustsht_refresh_run": {
+    "label": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-3194dc09",
+    "source_ref": "dev",
+    "source_sha": "3194dc095c71343931b2ba0cfa0fc4f72dcab4cf",
+    "runner_sha256": "9eeffe3891d50699e93ecdea1aaca559c8caf9dbc08892e977a195571970bfa3",
+    "build_manifest_sha256": "231bdf1e7767e8fa60d65e2ae9595f5c2809b46d1c22b1a9bfccf2ce4455fbe1"
+  },
+  "preserved_backends": [
+    "ducc",
+    "shtns",
+    "pyspharm"
+  ],
+  "preserved_cell_counts": {
+    "ducc": 1480,
+    "shtns": 740,
+    "pyspharm": 124
+  },
+  "replaced_rustsht_cell_count": 1480,
+  "rustsht_refresh_status_counts": {
+    "timed_successfully": 1480
+  },
+  "combined_build_manifest_sha256": "51675d68435221b930f9b9adf53d6faca3744de03397024f9759d1b47e94f324",
+  "baseline_run_config": {
+    "backend": [
+      "ducc",
+      "shtns",
+      "rustsht",
+      "pyspharm"
+    ],
+    "grid": [
+      "GL",
+      "CC"
+    ],
+    "threads": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "precision": [
+      "float64",
+      "float32"
+    ],
+    "resolution_profile": "dense-to-1024",
+    "thread_execution_order": [
+      1,
+      8,
+      16,
+      2,
+      4
+    ],
+    "thread_environment_policy": {
+      "OMP_WAIT_POLICY": null,
+      "OMP_PROC_BIND": null,
+      "OMP_PLACES": null,
+      "worker_affinity": "first q physical cores returned by source_runner.physical_cores",
+      "per_worker_thread_variables": {
+        "OMP_NUM_THREADS": "requested q",
+        "RAYON_NUM_THREADS": "requested q",
+        "DUCC0_NUM_THREADS": "requested q",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    "mmax": "full",
+    "rounds": 1,
+    "warmups": 1,
+    "samples": 3,
+    "min_time_s": 0.005,
+    "timeout_s": 180.0,
+    "memory_limit_bytes": null,
+    "smoke": false,
+    "build_manifest": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-build/build-manifest.json",
+    "build_manifest_sha256": "e4e9eaef8d327b06f79026eae1e322e5c74d9e8c560f8053054f9fff96b118af"
+  },
+  "rustsht_refresh_run_config": {
+    "backend": [
+      "rustsht"
+    ],
+    "grid": [
+      "GL",
+      "CC"
+    ],
+    "threads": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "precision": [
+      "float64",
+      "float32"
+    ],
+    "resolution_profile": "dense-to-1024",
+    "thread_execution_order": [
+      1,
+      8,
+      16,
+      2,
+      4
+    ],
+    "thread_environment_policy": {
+      "OMP_WAIT_POLICY": null,
+      "OMP_PROC_BIND": null,
+      "OMP_PLACES": null,
+      "worker_affinity": "first q physical cores returned by source_runner.physical_cores",
+      "per_worker_thread_variables": {
+        "OMP_NUM_THREADS": "requested q",
+        "RAYON_NUM_THREADS": "requested q",
+        "DUCC0_NUM_THREADS": "requested q",
+        "OPENBLAS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      }
+    },
+    "mmax": "full",
+    "rounds": 1,
+    "warmups": 1,
+    "samples": 3,
+    "min_time_s": 0.005,
+    "timeout_s": 180.0,
+    "memory_limit_bytes": null,
+    "smoke": false,
+    "build_manifest": "/home/albert/sht_bench/results/gl-cc-resolution-scaling-rustsht-dev-build-3194dc09/build-manifest.json",
+    "build_manifest_sha256": "231bdf1e7767e8fa60d65e2ae9595f5c2809b46d1c22b1a9bfccf2ce4455fbe1"
+  }
+}
