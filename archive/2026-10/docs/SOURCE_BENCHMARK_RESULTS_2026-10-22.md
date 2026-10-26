@@ -1,5 +1,8 @@
 # Spherical harmonic transform benchmark results: 2026-10-22 run
 
+> **Archived evidence note (2026-10-25):** The original report referenced 11 generated PNG images under `docs/figures/source-20261022/` that were not committed to this branch. The filenames below are retained as historical identifiers, not broken image links. Machine-readable conda-forge results and the separate October 25 figure gallery are preserved in the adjacent archived study.
+
+
 ## Status
 
 This report preserves the DUCC, SHTns, and RustSHT source-matrix runs recorded
@@ -112,11 +115,11 @@ The largest recorded relative L2 errors among the selected cells were
 unchanged float64 tolerance of 2e-10. These maxima apply to the selected smoke
 fixtures only.
 
-![GL scalar synthesis latency](figures/source-20261022/GL-spin0-f64-synthesis-q1.png)
+**GL scalar synthesis latency:** `figures/source-20261022/GL-spin0-f64-synthesis-q1.png` *(image was not committed)*
 
-![CC spin-1 error versus latency](figures/source-20261022/CC-spin1-f64-error-vs-latency-q1.png)
+**CC spin-1 error versus latency:** `figures/source-20261022/CC-spin1-f64-error-vs-latency-q1.png` *(image was not committed)*
 
-![F1 spin-1 synthesis latency](figures/source-20261022/F1-spin1-f64-synthesis-q1.png)
+**F1 spin-1 synthesis latency:** `figures/source-20261022/F1-spin1-f64-synthesis-q1.png` *(image was not committed)*
 
 ## Focused L64 q-matrix
 
@@ -169,14 +172,14 @@ those analysis panels because only timed, validated cells are plotted.
 
 | Spin | Operation | Allocation | Figure |
 | ---: | --- | --- | --- |
-| 0 | synthesis | allocating | [Plot](figures/source-20261022/L64-f64-spin0-allocating-synthesis-round0.png) |
-| 0 | synthesis | preallocated | [Plot](figures/source-20261022/L64-f64-spin0-preallocated-synthesis-round0.png) |
-| 0 | analysis | allocating | [Plot](figures/source-20261022/L64-f64-spin0-allocating-analysis-round0.png) |
-| 0 | analysis | preallocated | [Plot](figures/source-20261022/L64-f64-spin0-preallocated-analysis-round0.png) |
-| 1 | synthesis | allocating | [Plot](figures/source-20261022/L64-f64-spin1-allocating-synthesis-round0.png) |
-| 1 | synthesis | preallocated | [Plot](figures/source-20261022/L64-f64-spin1-preallocated-synthesis-round0.png) |
-| 1 | analysis | allocating | [Plot](figures/source-20261022/L64-f64-spin1-allocating-analysis-round0.png) |
-| 1 | analysis | preallocated | [Plot](figures/source-20261022/L64-f64-spin1-preallocated-analysis-round0.png) |
+| 0 | synthesis | allocating | `figures/source-20261022/L64-f64-spin0-allocating-synthesis-round0.png` *(not committed)* |
+| 0 | synthesis | preallocated | `figures/source-20261022/L64-f64-spin0-preallocated-synthesis-round0.png` *(not committed)* |
+| 0 | analysis | allocating | `figures/source-20261022/L64-f64-spin0-allocating-analysis-round0.png` *(not committed)* |
+| 0 | analysis | preallocated | `figures/source-20261022/L64-f64-spin0-preallocated-analysis-round0.png` *(not committed)* |
+| 1 | synthesis | allocating | `figures/source-20261022/L64-f64-spin1-allocating-synthesis-round0.png` *(not committed)* |
+| 1 | synthesis | preallocated | `figures/source-20261022/L64-f64-spin1-preallocated-synthesis-round0.png` *(not committed)* |
+| 1 | analysis | allocating | `figures/source-20261022/L64-f64-spin1-allocating-analysis-round0.png` *(not committed)* |
+| 1 | analysis | preallocated | `figures/source-20261022/L64-f64-spin1-preallocated-analysis-round0.png` *(not committed)* |
 
 The `timings.csv` keeps adapter setup, native constructor/grid
 precomputation, operation preparation, first requested operation, first A/S
@@ -264,7 +267,7 @@ The original and locked DUCC, SHTns, and RustSHT source SHAs and effective
 compiler settings match. Their binary hashes are not all identical, so the
 reproduction supports source/configuration reproducibility, not bitwise-identical
 builds. The conda-forge pyspharm artifact and native extension hashes are
-recorded in the [current environment provenance](../environments/pyspharm-conda-forge-linux-64.provenance.json).
+recorded in the [current environment provenance](../../../environments/pyspharm-conda-forge-linux-64.provenance.json).
 
 The locked-versus-original reproduction review contains 216 matched cells,
 all numerically validated with 30 timing samples each. Across 18 process
